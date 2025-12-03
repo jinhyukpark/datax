@@ -557,6 +557,7 @@ export interface BlogPost {
   category: string;
   readTime: string;
   imageGradient: string;
+  image?: string;
 }
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -569,6 +570,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "AI Agents",
     readTime: "5 min read",
     imageGradient: "from-purple-500 to-indigo-600",
+    image: "abstract_multi-agent_ai_collaboration"
   },
   {
     id: "2",
@@ -579,6 +581,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Tutorial",
     readTime: "10 min read",
     imageGradient: "from-emerald-500 to-teal-600",
+    image: "server_room_with_glowing_lights"
   },
   {
     id: "3",
@@ -589,6 +592,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Research",
     readTime: "8 min read",
     imageGradient: "from-blue-500 to-cyan-600",
+    image: "futuristic_data_retrieval_rag_concept"
   },
   {
     id: "4",
@@ -599,5 +603,50 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Deep Dive",
     readTime: "12 min read",
     imageGradient: "from-orange-500 to-red-600",
+    image: "voice_sound_wave_visualization"
+  },
+  {
+    id: "5",
+    title: "The Ethics of Autonomous Agents",
+    excerpt: "Exploring the moral implications and safety guardrails needed when deploying autonomous AI in critical infrastructure.",
+    author: "Sarah Chen",
+    date: "Oct 15, 2025",
+    category: "Ethics",
+    readTime: "7 min read",
+    imageGradient: "from-rose-500 to-pink-600",
+    image: "abstract_shield_security_logo_icon"
+  },
+  {
+    id: "6",
+    title: "Industrial IoT Data Standards 2026",
+    excerpt: "A comprehensive overview of the new data protocols shaping smart manufacturing and factory automation.",
+    author: "IoT Council",
+    date: "Oct 05, 2025",
+    category: "Industry Standards",
+    readTime: "9 min read",
+    imageGradient: "from-slate-600 to-slate-800",
+    image: "iot_data_icon_abstract"
+  },
+  {
+    id: "7",
+    title: "Financial Forecasting with Transformer Models",
+    excerpt: "How modern transformer architectures are outperforming traditional time-series analysis in market prediction.",
+    author: "Quant Team",
+    date: "Sep 28, 2025",
+    category: "Finance",
+    readTime: "15 min read",
+    imageGradient: "from-emerald-600 to-green-700",
+    image: "financial_data_icon_abstract"
+  },
+  {
+    id: "8",
+    title: "Optimizing API Latency for Real-time Agents",
+    excerpt: "Technical deep dive into caching strategies, edge computing, and protocol selection for sub-100ms response times.",
+    author: "DevOps Lead",
+    date: "Sep 10, 2025",
+    category: "Engineering",
+    readTime: "11 min read",
+    imageGradient: "from-indigo-500 to-blue-600",
+    image: "server_room_with_glowing_lights"
   }
 ];
