@@ -3,28 +3,80 @@ import { Footer } from "@/components/layout/footer";
 import { RESOURCES } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Database, Bot, FileSpreadsheet, Zap, Globe, Cpu, BarChart3, Truck, Factory, DollarSign, Cloud } from "lucide-react";
+import { Search, Filter, Database, Bot, FileSpreadsheet, Zap, Globe, Cpu, BarChart3, Truck, Factory, DollarSign, Cloud, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
 
-// Helper to get color based on category
-const getCategoryColor = (category: string) => {
-  const colors: Record<string, string> = {
-    "AI Assistant": "border-blue-200 bg-blue-50/50 dark:border-blue-900/50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300",
-    "Customer Service": "border-purple-200 bg-purple-50/50 dark:border-purple-900/50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-300",
-    "Manufacturing": "border-orange-200 bg-orange-50/50 dark:border-orange-900/50 dark:bg-orange-950/30 text-orange-700 dark:text-orange-300",
-    "AI/ML": "border-indigo-200 bg-indigo-50/50 dark:border-indigo-900/50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300",
-    "Analytics": "border-pink-200 bg-pink-50/50 dark:border-pink-900/50 dark:bg-pink-950/30 text-pink-700 dark:text-pink-300",
-    "Finance": "border-emerald-200 bg-emerald-50/50 dark:border-emerald-900/50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300",
-    "Operations": "border-cyan-200 bg-cyan-50/50 dark:border-cyan-900/50 dark:bg-cyan-950/30 text-cyan-700 dark:text-cyan-300",
-    "Transport": "border-sky-200 bg-sky-50/50 dark:border-sky-900/50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300",
-    "Weather": "border-yellow-200 bg-yellow-50/50 dark:border-yellow-900/50 dark:bg-yellow-950/30 text-yellow-700 dark:text-yellow-300",
-    "Financial Services": "border-teal-200 bg-teal-50/50 dark:border-teal-900/50 dark:bg-teal-950/30 text-teal-700 dark:text-teal-300",
-    "Artificial Intelligence": "border-violet-200 bg-violet-50/50 dark:border-violet-900/50 dark:bg-violet-950/30 text-violet-700 dark:text-violet-300",
-    "Industrial IoT": "border-slate-200 bg-slate-50/50 dark:border-slate-800 dark:bg-slate-900/50 text-slate-700 dark:text-slate-300",
+// Updated Bold Style Helpers
+const getCategoryStyles = (category: string) => {
+  const styles: Record<string, { header: string, border: string, icon: string }> = {
+    "AI Assistant": { 
+      header: "bg-blue-600 dark:bg-blue-700", 
+      border: "border-blue-600/30 dark:border-blue-500/30",
+      icon: "text-blue-100" 
+    },
+    "Customer Service": { 
+      header: "bg-purple-600 dark:bg-purple-700", 
+      border: "border-purple-600/30 dark:border-purple-500/30",
+      icon: "text-purple-100"
+    },
+    "Manufacturing": { 
+      header: "bg-orange-600 dark:bg-orange-700", 
+      border: "border-orange-600/30 dark:border-orange-500/30",
+      icon: "text-orange-100"
+    },
+    "AI/ML": { 
+      header: "bg-indigo-600 dark:bg-indigo-700", 
+      border: "border-indigo-600/30 dark:border-indigo-500/30",
+      icon: "text-indigo-100"
+    },
+    "Analytics": { 
+      header: "bg-pink-600 dark:bg-pink-700", 
+      border: "border-pink-600/30 dark:border-pink-500/30",
+      icon: "text-pink-100"
+    },
+    "Finance": { 
+      header: "bg-emerald-600 dark:bg-emerald-700", 
+      border: "border-emerald-600/30 dark:border-emerald-500/30",
+      icon: "text-emerald-100"
+    },
+    "Financial Services": { 
+      header: "bg-teal-600 dark:bg-teal-700", 
+      border: "border-teal-600/30 dark:border-teal-500/30",
+      icon: "text-teal-100"
+    },
+    "Operations": { 
+      header: "bg-cyan-600 dark:bg-cyan-700", 
+      border: "border-cyan-600/30 dark:border-cyan-500/30",
+      icon: "text-cyan-100"
+    },
+    "Transport": { 
+      header: "bg-sky-600 dark:bg-sky-700", 
+      border: "border-sky-600/30 dark:border-sky-500/30",
+      icon: "text-sky-100"
+    },
+    "Weather": { 
+      header: "bg-yellow-600 dark:bg-yellow-700", 
+      border: "border-yellow-600/30 dark:border-yellow-500/30",
+      icon: "text-yellow-100"
+    },
+    "Artificial Intelligence": { 
+      header: "bg-violet-600 dark:bg-violet-700", 
+      border: "border-violet-600/30 dark:border-violet-500/30",
+      icon: "text-violet-100"
+    },
+    "Industrial IoT": { 
+      header: "bg-slate-700 dark:bg-slate-800", 
+      border: "border-slate-600/30 dark:border-slate-500/30",
+      icon: "text-slate-100"
+    },
   };
-  return colors[category] || "border-slate-200 bg-slate-50/50 dark:border-slate-800 dark:bg-slate-900/50 text-slate-700 dark:text-slate-300";
+  return styles[category] || { 
+    header: "bg-slate-700 dark:bg-slate-800", 
+    border: "border-slate-600/30 dark:border-slate-500/30", 
+    icon: "text-slate-100" 
+  };
 };
 
 const getCategoryIcon = (category: string) => {
@@ -36,7 +88,7 @@ const getCategoryIcon = (category: string) => {
     case "Analytics": return BarChart3;
     case "Finance": return DollarSign;
     case "Financial Services": return DollarSign;
-    case "Operations": return Cloud; // approximate
+    case "Operations": return Cloud;
     case "Transport": return Truck;
     case "Transportation": return Truck;
     case "Weather": return Cloud;
@@ -132,36 +184,46 @@ export default function DataMap() {
         {/* Masonry Grid - Category Cards */}
         <div className="columns-1 gap-6 md:columns-2 lg:columns-3 xl:columns-4 space-y-6">
           {categories.map(category => {
-            const styles = getCategoryColor(category);
+            const styles = getCategoryStyles(category);
             const Icon = getCategoryIcon(category);
             
             return (
-              <div key={category} className={cn("break-inside-avoid mb-6 rounded-xl border p-5 shadow-sm transition-all", styles)}>
-                <div className="mb-4 flex items-center justify-between">
-                  <h3 className="font-heading text-lg font-bold flex items-center gap-2">
-                    <span className="opacity-70"><Icon className="h-4 w-4" /></span>
-                    {category} 
-                    <span className="text-sm opacity-60 font-normal ml-1">({groupedResources[category].length})</span>
+              <div key={category} className={`break-inside-avoid mb-6 rounded-xl border bg-white shadow-sm overflow-hidden transition-all hover:shadow-md dark:bg-slate-900 ${styles.border}`}>
+                {/* Bold Header */}
+                <div className={`px-4 py-3 flex items-center justify-between ${styles.header}`}>
+                  <h3 className="font-heading text-base font-bold text-white flex items-center gap-2">
+                    <Icon className={`h-4 w-4 ${styles.icon}`} />
+                    {category}
                   </h3>
+                  <span className="text-xs font-medium text-white/80 bg-black/20 px-2 py-0.5 rounded-full">
+                    {groupedResources[category].length}
+                  </span>
                 </div>
                 
-                <div className="flex flex-wrap gap-2">
+                {/* List Items */}
+                <div className="p-2 flex flex-col gap-1">
                   {groupedResources[category].map(resource => (
                     <Link key={resource.id} href={`/resource/${resource.id}`}>
-                      <a className="group flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm backdrop-blur-sm transition-all hover:bg-white hover:shadow-md hover:scale-105 dark:bg-black/40 dark:text-slate-200 dark:hover:bg-black/60 ring-1 ring-transparent hover:ring-slate-200 dark:hover:ring-slate-700">
-                        {/* Mini Type Indicator */}
-                        <span className={cn(
-                          "h-1.5 w-1.5 rounded-full",
-                          resource.type === 'API' ? "bg-blue-500" : 
-                          resource.type === 'Agent' ? "bg-purple-500" : "bg-green-500"
-                        )} />
-                        <span className="truncate max-w-[140px]">{resource.title}</span>
+                      <a className="group flex items-center justify-between rounded-lg px-3 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                        <div className="flex items-center gap-3 min-w-0">
+                          {/* Icon based on type */}
+                          {resource.type === 'API' && <Database className="h-4 w-4 shrink-0 text-blue-500" />}
+                          {resource.type === 'Agent' && <Bot className="h-4 w-4 shrink-0 text-purple-500" />}
+                          {resource.type === 'Dataset' && <FileSpreadsheet className="h-4 w-4 shrink-0 text-green-500" />}
+                          
+                          <span className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate group-hover:text-primary">
+                            {resource.title}
+                          </span>
+                        </div>
+                        
+                        {/* Arrow appears on hover */}
+                        <ArrowRight className="h-3 w-3 text-slate-400 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
                       </a>
                     </Link>
                   ))}
                   
-                  <button className="flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium text-current opacity-60 hover:opacity-100 transition-opacity">
-                    See more...
+                  <button className="mt-1 flex w-full items-center justify-center gap-1 rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-slate-50 hover:text-foreground dark:hover:bg-slate-800 transition-colors">
+                    View all {groupedResources[category].length} items
                   </button>
                 </div>
               </div>
