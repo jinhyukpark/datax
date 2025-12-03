@@ -42,7 +42,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["AI Assistant", "automation", "chat"],
-    image: "ai_agent_icon_abstract",
+    image: "abstract_ai_hexagon_logo_icon",
     publishedDate: "2025-07-13",
     views: 1240,
     featured: true,
@@ -56,6 +56,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["AI Assistant", "reasoning", "chat"],
+    image: "abstract_ai_hexagon_logo_icon",
     publishedDate: "2025-08-01",
     views: 1500
   },
@@ -67,6 +68,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Freemium",
     tags: ["AI Assistant", "ecommerce", "shopping"],
+    image: "abstract_shopping_bag_logo_icon",
     publishedDate: "2025-09-10",
     views: 800
   },
@@ -80,6 +82,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Customer Service", "support", "bot"],
+    image: "abstract_robot_head_logo_icon",
     publishedDate: "2025-08-20",
     views: 980
   },
@@ -91,6 +94,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Customer Service", "support", "smb"],
+    image: "abstract_robot_head_logo_icon",
     publishedDate: "2025-09-01",
     views: 450
   },
@@ -102,6 +106,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Customer Service", "integration", "helpdesk"],
+    image: "abstract_integration_puzzle_logo_icon",
     publishedDate: "2025-09-15",
     views: 600
   },
@@ -113,6 +118,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Customer Service", "voice", "call-center"],
+    image: "abstract_voice_wave_logo_icon",
     publishedDate: "2025-10-05",
     views: 1200
   },
@@ -138,6 +144,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Manufacturing", "digital-twin", "simulation"],
+    image: "iot_data_icon_abstract",
     publishedDate: "2025-10-25",
     views: 750
   },
@@ -149,6 +156,7 @@ export const RESOURCES: Resource[] = [
     type: "Dataset",
     price: "Paid",
     tags: ["Manufacturing", "vision", "quality"],
+    image: "iot_data_icon_abstract",
     publishedDate: "2025-11-01",
     views: 500
   },
@@ -162,6 +170,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["AI/ML", "nlp", "generation"],
+    image: "abstract_ai_hexagon_logo_icon",
     publishedDate: "2025-11-27",
     views: 486
   },
@@ -173,6 +182,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["AI/ML", "vision", "image"],
+    image: "abstract_ai_hexagon_logo_icon",
     publishedDate: "2025-10-12",
     views: 320
   },
@@ -184,6 +194,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Free",
     tags: ["AI/ML", "llm", "open-source"],
+    image: "abstract_ai_hexagon_logo_icon",
     publishedDate: "2025-09-20",
     views: 2000
   },
@@ -195,6 +206,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Freemium",
     tags: ["AI/ML", "image-gen", "art"],
+    image: "abstract_ai_hexagon_logo_icon",
     publishedDate: "2025-08-15",
     views: 1800
   },
@@ -208,6 +220,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Analytics", "insight", "reporting"],
+    image: "financial_data_icon_abstract",
     publishedDate: "2025-09-15",
     views: 1100
   },
@@ -219,6 +232,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Freemium",
     tags: ["Analytics", "dashboard", "metrics"],
+    image: "financial_data_icon_abstract",
     publishedDate: "2025-10-01",
     views: 750
   },
@@ -230,6 +244,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Analytics", "sales", "forecasting"],
+    image: "financial_data_icon_abstract",
     publishedDate: "2025-10-10",
     views: 650
   },
@@ -241,6 +256,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Analytics", "seo", "web"],
+    image: "financial_data_icon_abstract",
     publishedDate: "2025-11-05",
     views: 900
   },
@@ -266,6 +282,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Free",
     tags: ["Finance", "crypto", "blockchain"],
+    image: "financial_data_icon_abstract",
     publishedDate: "2025-09-05",
     views: 1300
   },
@@ -277,6 +294,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Finance", "tax", "accounting"],
+    image: "financial_data_icon_abstract",
     publishedDate: "2025-11-12",
     views: 550
   },
@@ -290,6 +308,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Financial Services", "intelligence", "report"],
+    image: "financial_data_icon_abstract",
     publishedDate: "2025-10-20",
     views: 1500
   },
@@ -301,6 +320,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Financial Services", "risk", "credit"],
+    image: "financial_data_icon_abstract",
     publishedDate: "2025-08-30",
     views: 800
   },
@@ -312,6 +332,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Financial Services", "security", "fraud"],
+    image: "abstract_shield_security_logo_icon",
     publishedDate: "2025-09-25",
     views: 1100
   },
