@@ -51,7 +51,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="absolute left-[15%] bottom-[25%] hidden lg:block animate-float-medium animation-delay-2000">
+        <div className="absolute left-[5%] bottom-[25%] hidden lg:block animate-float-medium animation-delay-2000">
           <div className="rounded-2xl bg-white p-4 shadow-xl ring-1 ring-slate-900/5 backdrop-blur-sm dark:bg-slate-900 dark:ring-slate-100/10">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
@@ -66,7 +66,7 @@ export default function Home() {
         </div>
 
         {/* Floating Elements - Right Side */}
-        <div className="absolute right-[10%] top-[25%] hidden lg:block animate-float-slow animation-delay-1000">
+        <div className="absolute right-[5%] top-[25%] hidden lg:block animate-float-slow animation-delay-1000">
            <div className="rounded-2xl bg-white p-4 shadow-xl ring-1 ring-slate-900/5 backdrop-blur-sm dark:bg-slate-900 dark:ring-slate-100/10">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
@@ -80,7 +80,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="absolute right-[18%] bottom-[20%] hidden lg:block animate-float-fast animation-delay-3000">
+        <div className="absolute right-[5%] bottom-[20%] hidden lg:block animate-float-fast animation-delay-3000">
            <div className="rounded-2xl bg-white p-4 shadow-xl ring-1 ring-slate-900/5 backdrop-blur-sm dark:bg-slate-900 dark:ring-slate-100/10">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
