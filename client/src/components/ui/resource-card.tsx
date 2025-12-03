@@ -48,7 +48,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
   };
 
   return (
-    <Card className="card-hover group flex h-full flex-col overflow-hidden border-border/50 bg-white dark:bg-slate-900">
+    <Card className="card-hover group flex h-full flex-col overflow-hidden border-border/50 bg-white dark:bg-slate-900 relative">
       <CardHeader className="p-5 pb-2">
         <div className="flex items-start justify-between">
           {/* INCREASED SIZE: h-16 w-16 for container, h-10 w-10 for image */}
@@ -69,6 +69,10 @@ export function ResourceCard({ resource }: ResourceCardProps) {
           >
             {resource.price}
           </Badge>
+          <div className="absolute top-5 right-16 flex items-center gap-1 rounded-full bg-black/5 px-2 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-white/10 dark:text-slate-300">
+            <Eye className="h-3 w-3" />
+            {resource.views > 1000 ? `${(resource.views / 1000).toFixed(1)}k` : resource.views}
+          </div>
         </div>
         <Link href={`/resource/${resource.id}`}>
           <a className="mt-4 block">
