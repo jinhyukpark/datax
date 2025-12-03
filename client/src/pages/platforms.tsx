@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Eye, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "wouter";
+import { useState } from "react";
 
 const gradients = [
   "bg-gradient-to-br from-purple-500 to-pink-500",
@@ -79,6 +80,16 @@ function PlatformCard({ resource, index }: { resource: Resource; index: number }
 }
 
 export default function Platforms() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  // Get unique categories from resources
+  const categories = Array.from(new Set(RESOURCES.map(r => r.tags[0])));
+  
+  // Filter resources based on selection
+  const filteredResources = selectedCategory 
+    ? RESOURCES.filter(r => r.tags.includes(selectedCategory))
+    : RESOURCES;
+
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950">
       <Navbar />
@@ -91,11 +102,48 @@ export default function Platforms() {
           </p>
         </div>
 
+        {/* Category Filters */}
+        <div className="mb-10 flex flex-wrap items-center justify-center gap-2">
+          <button
+            onClick={() => setSelectedCategory(null)}
+            className={cn(
+              "rounded-full px-4 py-2 text-sm font-medium transition-all",
+              selectedCategory === null
+                ? "bg-slate-900 text-white shadow-md dark:bg-slate-100 dark:text-slate-900"
+                : "bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+            )}
+          >
+            All Platforms
+          </button>
+          
+          {categories.map(category => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category === selectedCategory ? null : category)}
+              className={cn(
+                "rounded-full px-4 py-2 text-sm font-medium transition-all",
+                selectedCategory === category
+                  ? "bg-slate-900 text-white shadow-md dark:bg-slate-100 dark:text-slate-900"
+                  : "bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+              )}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {RESOURCES.map((resource, index) => (
+          {filteredResources.map((resource, index) => (
             <PlatformCard key={resource.id} resource={resource} index={index} />
           ))}
         </div>
+
+        {filteredResources.length === 0 && (
+          <div className="py-20 text-center">
+            <p className="text-muted-foreground">No platforms found for this category.</p>
+            <Button variant="link" onClick={() => setSelectedCategory(null)}>Clear filter</Button>
+          </div>
+        )}
         
         <div className="mt-20 rounded-2xl bg-linear-to-br from-indigo-50 to-purple-50 p-12 text-center dark:from-indigo-950/30 dark:to-purple-950/30">
            <h2 className="font-heading text-2xl font-bold text-foreground mb-4">Share Your Platform</h2>
