@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import { Link } from "wouter";
 import { useState } from "react";
 
+import { useLanguage } from "@/lib/language-context";
+
 const gradients = [
   "bg-gradient-to-br from-purple-500 to-pink-500",
   "bg-gradient-to-br from-blue-500 to-cyan-500",
@@ -19,6 +21,7 @@ const gradients = [
 
 function PlatformCard({ resource, index }: { resource: Resource; index: number }) {
   const gradient = gradients[index % gradients.length];
+  const { language } = useLanguage();
 
   return (
     <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800 hover:shadow-md transition-shadow duration-300">
@@ -36,7 +39,7 @@ function PlatformCard({ resource, index }: { resource: Resource; index: number }
         
         <div className="mt-4 text-center">
           <h3 className="font-heading text-xl font-bold leading-tight text-white text-shadow-sm">
-            {resource.title}
+            {language === '한국어' && resource.titleKo ? resource.titleKo : resource.title}
           </h3>
           <p className="mt-1 text-sm text-white/80 font-medium">
             {resource.provider}
@@ -54,12 +57,12 @@ function PlatformCard({ resource, index }: { resource: Resource; index: number }
         
         <Link href={`/resource/${resource.id}`}>
           <a className="mb-2 block font-heading text-lg font-bold text-foreground hover:text-primary">
-            {resource.title}
+            {language === '한국어' && resource.titleKo ? resource.titleKo : resource.title}
           </a>
         </Link>
         
         <p className="mb-6 line-clamp-3 text-sm text-muted-foreground">
-          {resource.description}
+          {language === '한국어' && resource.descriptionKo ? resource.descriptionKo : resource.description}
         </p>
         
         <div className="flex items-center justify-between text-xs text-muted-foreground border-t pt-4 mt-auto">
@@ -81,6 +84,7 @@ function PlatformCard({ resource, index }: { resource: Resource; index: number }
 
 export default function Platforms() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   // Get unique categories from resources
   const categories = Array.from(new Set(RESOURCES.map(r => r.tags[0])));
@@ -96,9 +100,9 @@ export default function Platforms() {
       
       <div className="container mx-auto px-4 py-12">
         <div className="mb-12 text-center">
-          <h1 className="font-heading text-4xl font-bold text-foreground md:text-5xl">Platforms</h1>
+          <h1 className="font-heading text-4xl font-bold text-foreground md:text-5xl">{t("Platforms", "플랫폼")}</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Discover and explore comprehensive data resources and AI solutions from leading Korean institutions
+            {t("Discover and explore comprehensive data resources and AI solutions from leading Korean institutions", "한국 주요 기관의 포괄적인 데이터 리소스와 AI 솔루션을 발견하고 탐색하세요")}
           </p>
         </div>
 
@@ -113,7 +117,7 @@ export default function Platforms() {
                 : "bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
             )}
           >
-            All Platforms
+            {t("All Platforms", "모든 플랫폼")}
           </button>
           
           {categories.map(category => (
@@ -140,19 +144,19 @@ export default function Platforms() {
 
         {filteredResources.length === 0 && (
           <div className="py-20 text-center">
-            <p className="text-muted-foreground">No platforms found for this category.</p>
-            <Button variant="link" onClick={() => setSelectedCategory(null)}>Clear filter</Button>
+            <p className="text-muted-foreground">{t("No platforms found for this category.", "이 카테고리에 대한 플랫폼을 찾을 수 없습니다.")}</p>
+            <Button variant="link" onClick={() => setSelectedCategory(null)}>{t("Clear filter", "필터 지우기")}</Button>
           </div>
         )}
         
         <div className="mt-20 rounded-2xl bg-linear-to-br from-indigo-50 to-purple-50 p-12 text-center dark:from-indigo-950/30 dark:to-purple-950/30">
-           <h2 className="font-heading text-2xl font-bold text-foreground mb-4">Share Your Platform</h2>
+           <h2 className="font-heading text-2xl font-bold text-foreground mb-4">{t("Share Your Platform", "플랫폼 공유하기")}</h2>
            <p className="text-muted-foreground max-w-xl mx-auto mb-8">
-             Join leading Korean institutions in showcasing your data APIs and AI agents to a wider audience
+             {t("Join leading Korean institutions in showcasing your data APIs and AI agents to a wider audience", "데이터 API와 AI 에이전트를 더 넓은 청중에게 선보이는 주요 한국 기관에 합류하세요")}
            </p>
            <Link href="/submit">
              <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700">
-               Submit Your Resource
+               {t("Submit Your Resource", "리소스 제출하기")}
              </Button>
            </Link>
         </div>

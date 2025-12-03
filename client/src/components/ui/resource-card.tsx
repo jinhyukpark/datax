@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, Eye, Clock, Database, Bot, FileSpreadsheet } from "lucide-react";
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/language-context";
 
 // Import generated images
 import aiAgentIcon from "@assets/generated_images/ai_agent_icon_abstract.png";
@@ -34,6 +35,8 @@ interface ResourceCardProps {
 }
 
 export function ResourceCard({ resource }: ResourceCardProps) {
+  const { language, t } = useLanguage();
+  
   // Icon based on type if no image
   const getTypeIcon = () => {
     switch (resource.type) {
@@ -70,14 +73,14 @@ export function ResourceCard({ resource }: ResourceCardProps) {
         <Link href={`/resource/${resource.id}`}>
           <a className="mt-5 block">
             <h3 className="font-heading text-lg font-semibold leading-tight text-foreground group-hover:text-primary line-clamp-2 h-12">
-              {resource.title}
+              {language === '한국어' && resource.titleKo ? resource.titleKo : resource.title}
             </h3>
           </a>
         </Link>
       </CardHeader>
       <CardContent className="flex-1 px-5 pb-2">
         <p className="line-clamp-3 text-sm text-muted-foreground">
-          {resource.description}
+          {language === '한국어' && resource.descriptionKo ? resource.descriptionKo : resource.description}
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           {resource.tags.slice(0, 2).map(tag => (
@@ -104,3 +107,4 @@ export function ResourceCard({ resource }: ResourceCardProps) {
     </Card>
   );
 }
+

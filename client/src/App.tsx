@@ -11,6 +11,7 @@ import Blog from "@/pages/blog";
 import BlogDetail from "@/pages/blog-detail";
 import Advertise from "@/pages/advertise";
 import Platforms from "@/pages/platforms";
+import { LanguageProvider } from "./lib/language-context";
 
 function Router() {
   return (
@@ -30,10 +31,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
+      <LanguageProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }

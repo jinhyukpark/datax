@@ -7,6 +7,8 @@ import { ArrowRight, Calendar, Clock } from "lucide-react";
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
 
+import { useLanguage } from "@/lib/language-context";
+
 // Import generated images
 import multiAgentImg from "@assets/generated_images/abstract_multi-agent_ai_collaboration.png";
 import serverRoomImg from "@assets/generated_images/server_room_with_glowing_lights.png";
@@ -27,6 +29,8 @@ const imageMap: Record<string, string> = {
 };
 
 export default function Blog() {
+  const { language, t } = useLanguage();
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
       <Navbar />
@@ -34,8 +38,12 @@ export default function Blog() {
       <div className="flex-1 py-16">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
-            <h1 className="font-heading text-4xl font-bold text-slate-900 dark:text-white md:text-5xl">Blog</h1>
-            <p className="mt-4 text-lg text-slate-600 dark:text-slate-400">News, tutorials, and deep dives on data platforms and AI agents.</p>
+            <h1 className="font-heading text-4xl font-bold text-slate-900 dark:text-white md:text-5xl">
+              {t("Blog", "블로그")}
+            </h1>
+            <p className="mt-4 text-lg text-slate-600 dark:text-slate-400">
+              {t("News, tutorials, and deep dives on data platforms and AI agents.", "데이터 플랫폼과 AI 에이전트에 대한 뉴스, 튜토리얼, 심층 분석을 제공합니다.")}
+            </p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -64,10 +72,10 @@ export default function Blog() {
                     </div>
                     <div className="p-5 flex flex-col h-[calc(100%-12rem)]">
                       <h2 className="mb-3 font-heading text-lg font-bold leading-tight text-slate-900 group-hover:text-primary transition-colors dark:text-slate-100 line-clamp-2">
-                        {post.title}
+                        {language === '한국어' && post.titleKo ? post.titleKo : post.title}
                       </h2>
                       <p className="mb-6 line-clamp-3 text-sm text-slate-600 dark:text-slate-400 flex-1">
-                        {post.excerpt}
+                        {language === '한국어' && post.excerptKo ? post.excerptKo : post.excerpt}
                       </p>
                       <div className="flex items-center justify-between text-xs text-muted-foreground mt-auto pt-4 border-t border-slate-100 dark:border-slate-800">
                         <div className="flex items-center gap-3">
@@ -79,7 +87,7 @@ export default function Blog() {
                           </span>
                         </div>
                         <div className="flex items-center gap-1 text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                          Read <ArrowRight className="h-3 w-3" />
+                          {t("Read", "읽기")} <ArrowRight className="h-3 w-3" />
                         </div>
                       </div>
                     </div>

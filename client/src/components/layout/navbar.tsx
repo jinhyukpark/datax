@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Database, Menu, X, Search, Globe, LogIn, ArrowLeft } from "lucide-react";
+import { Menu, X, Globe, LogIn, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import {
   DropdownMenu,
@@ -8,11 +8,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useLanguage } from "@/lib/language-context";
 
 export function Navbar() {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [language, setLanguage] = useState("English");
+  const { language, setLanguage, t } = useLanguage();
 
   const navLinks = [
     { name: "Data Map", href: "/data-map" },
@@ -21,13 +22,6 @@ export function Navbar() {
     { name: "Advertise", href: "/advertise" },
   ];
 
-  // Helper to determine if we should show the sub-nav
-  // We show it on all pages except home, or maybe specifically on certain pages
-  // The screenshot shows "Back" "Data Map" "Platforms" "Submit"
-  // It looks like a contextual nav. Let's add it globally for now to match the request "Each page..."
-  // But for Home, "Back" doesn't make sense unless we go back to history.
-  // Let's make it static for mockup purposes as requested.
-  
   return (
     <div className="sticky top-0 z-50 w-full bg-white dark:bg-slate-950">
       {/* Top Navbar */}
@@ -69,7 +63,7 @@ export function Navbar() {
                 <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground border border-slate-200 dark:border-slate-800 h-9">
                   <Globe className="h-4 w-4" />
                   {language}
-                </DropdownMenuTrigger>
+                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setLanguage("English")}>

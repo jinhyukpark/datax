@@ -13,7 +13,9 @@ export type PricingType = "Free" | "Paid" | "Freemium";
 export interface Resource {
   id: string;
   title: string;
+  titleKo?: string; // Korean Title
   description: string;
+  descriptionKo?: string; // Korean Description
   provider: string;
   type: ResourceType;
   price: PricingType;
@@ -37,7 +39,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "1",
     title: "ChatGPT Assistant Agent",
+    titleKo: "ChatGPT 어시스턴트 에이전트",
     description: "AI-powered conversational agent for customer support and internal knowledge base queries.",
+    descriptionKo: "고객 지원 및 내부 지식 기반 쿼리를 위한 AI 기반 대화형 에이전트입니다.",
     provider: "NextWave Automation",
     type: "Agent",
     price: "Paid",
@@ -51,7 +55,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "101",
     title: "Claude Professional Agent",
+    titleKo: "Claude 프로페셔널 에이전트",
     description: "Advanced reasoning agent powered by Claude for complex task breakdown.",
+    descriptionKo: "복잡한 작업 분석을 위해 Claude 기반으로 구동되는 고급 추론 에이전트입니다.",
     provider: "Anthropic",
     type: "Agent",
     price: "Paid",
@@ -63,7 +69,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "102",
     title: "Personal Shopper AI",
+    titleKo: "퍼스널 쇼퍼 AI",
     description: "E-commerce assistant that helps users find products based on natural language.",
+    descriptionKo: "자연어를 기반으로 사용자가 제품을 찾을 수 있도록 돕는 이커머스 어시스턴트입니다.",
     provider: "Shopify",
     type: "Agent",
     price: "Freemium",
@@ -77,7 +85,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "2",
     title: "ChatBot Agent Pro",
+    titleKo: "챗봇 에이전트 프로",
     description: "Advanced customer service bot with sentiment analysis and escalation protocols.",
+    descriptionKo: "감정 분석 및 에스컬레이션 프로토콜을 갖춘 고급 고객 서비스 봇입니다.",
     provider: "ServiceTech",
     type: "Agent",
     price: "Paid",
@@ -89,7 +99,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "3",
     title: "Customer Support Agent Lite",
+    titleKo: "고객 지원 에이전트 라이트",
     description: "Lightweight support agent for small businesses.",
+    descriptionKo: "소규모 비즈니스를 위한 경량형 지원 에이전트입니다.",
     provider: "ServiceTech",
     type: "Agent",
     price: "Paid",
@@ -101,7 +113,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "201",
     title: "HelpDesk AI Integrator",
+    titleKo: "헬프데스크 AI 통합기",
     description: "Connects AI agents to existing helpdesk software like Zendesk.",
+    descriptionKo: "AI 에이전트를 Zendesk와 같은 기존 헬프데스크 소프트웨어에 연결합니다.",
     provider: "IntegrateIO",
     type: "API",
     price: "Paid",
@@ -113,7 +127,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "202",
     title: "Voice Support Bot",
+    titleKo: "음성 지원 봇",
     description: "Voice-enabled customer support agent for call centers.",
+    descriptionKo: "콜센터를 위한 음성 인식 고객 지원 에이전트입니다.",
     provider: "VoiceAI",
     type: "Agent",
     price: "Paid",
@@ -127,7 +143,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "4",
     title: "Industrial Sensor Data",
+    titleKo: "산업용 센서 데이터",
     description: "Raw sensor data from manufacturing plants for predictive maintenance analysis.",
+    descriptionKo: "예지 보전 분석을 위한 제조 공장의 원시 센서 데이터입니다.",
     provider: "ManufacturingCore Tech",
     type: "API",
     price: "Paid",
@@ -139,7 +157,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "401",
     title: "Factory Twin Model",
+    titleKo: "팩토리 트윈 모델",
     description: "Digital twin API for simulating factory floor operations.",
+    descriptionKo: "공장 현장 운영 시뮬레이션을 위한 디지털 트윈 API입니다.",
     provider: "Siemens",
     type: "API",
     price: "Paid",
@@ -151,7 +171,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "402",
     title: "Quality Control Vision",
+    titleKo: "품질 관리 비전",
     description: "Computer vision dataset for detecting defects in manufacturing.",
+    descriptionKo: "제조 결함 탐지를 위한 컴퓨터 비전 데이터셋입니다.",
     provider: "VisionTech",
     type: "Dataset",
     price: "Paid",
@@ -165,7 +187,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "5",
     title: "GPT-4 API",
+    titleKo: "GPT-4 API",
     description: "Advanced language model API for natural language processing and generation.",
+    descriptionKo: "자연어 처리 및 생성을 위한 고급 언어 모델 API입니다.",
     provider: "OpenAI",
     type: "API",
     price: "Paid",
@@ -177,7 +201,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "6",
     title: "Vision Model V2",
+    titleKo: "비전 모델 V2",
     description: "Computer vision model for object detection and classification.",
+    descriptionKo: "객체 탐지 및 분류를 위한 컴퓨터 비전 모델입니다.",
     provider: "Visionary AI",
     type: "API",
     price: "Paid",
@@ -189,7 +215,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "501",
     title: "Llama 3 Fine-tuning",
+    titleKo: "Llama 3 파인튜닝",
     description: "API for fine-tuning Llama 3 models on custom datasets.",
+    descriptionKo: "커스텀 데이터셋에서 Llama 3 모델을 파인튜닝하기 위한 API입니다.",
     provider: "Meta",
     type: "API",
     price: "Free",
@@ -201,7 +229,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "502",
     title: "Stable Diffusion API",
+    titleKo: "Stable Diffusion API",
     description: "Image generation API based on Stable Diffusion XL.",
+    descriptionKo: "Stable Diffusion XL 기반의 이미지 생성 API입니다.",
     provider: "Stability AI",
     type: "API",
     price: "Freemium",
@@ -215,7 +245,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "7",
     title: "Data Analytics Agent",
+    titleKo: "데이터 분석 에이전트",
     description: "Automated data analyst that generates insights from raw CSV uploads.",
+    descriptionKo: "CSV 업로드에서 인사이트를 생성하는 자동화된 데이터 분석가입니다.",
     provider: "DataMind",
     type: "Agent",
     price: "Paid",
@@ -227,7 +259,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "8",
     title: "Unified Analytics Platform",
+    titleKo: "통합 분석 플랫폼",
     description: "Comprehensive dashboarding API for cross-platform metrics.",
+    descriptionKo: "크로스 플랫폼 지표를 위한 포괄적인 대시보드 API입니다.",
     provider: "MetricStream",
     type: "API",
     price: "Freemium",
@@ -239,7 +273,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "701",
     title: "Predictive Sales Model",
+    titleKo: "예측 판매 모델",
     description: "Forecasting API for sales trends based on historical data.",
+    descriptionKo: "과거 데이터를 기반으로 판매 추세를 예측하는 API입니다.",
     provider: "SalesForce",
     type: "API",
     price: "Paid",
@@ -251,7 +287,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "702",
     title: "Web Traffic Analyzer",
+    titleKo: "웹 트래픽 분석기",
     description: "Agent that analyzes web traffic logs and suggests SEO improvements.",
+    descriptionKo: "웹 트래픽 로그를 분석하고 SEO 개선을 제안하는 에이전트입니다.",
     provider: "SEO Master",
     type: "Agent",
     price: "Paid",
@@ -265,7 +303,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "9",
     title: "Financial Data API",
+    titleKo: "금융 데이터 API",
     description: "Real-time stock market and cryptocurrency data feed.",
+    descriptionKo: "실시간 주식 시장 및 암호화폐 데이터 피드입니다.",
     provider: "FinTech Solutions",
     type: "API",
     price: "Freemium",
@@ -277,7 +317,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "901",
     title: "Crypto Wallet Tracker",
+    titleKo: "암호화폐 지갑 추적기",
     description: "API to track portfolio value across multiple blockchains.",
+    descriptionKo: "여러 블록체인에 걸쳐 포트폴리오 가치를 추적하는 API입니다.",
     provider: "BlockFolio",
     type: "API",
     price: "Free",
@@ -289,7 +331,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "902",
     title: "Tax Calculation Agent",
+    titleKo: "세금 계산 에이전트",
     description: "AI agent that helps calculate estimated taxes for freelancers.",
+    descriptionKo: "프리랜서의 예상 세금 계산을 돕는 AI 에이전트입니다.",
     provider: "TaxEasy",
     type: "Agent",
     price: "Paid",
@@ -303,7 +347,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "10",
     title: "Financial Market Intelligence",
+    titleKo: "금융 시장 인텔리전스",
     description: "Deep dive analysis reports generated by AI agents on market trends.",
+    descriptionKo: "시장 동향에 대해 AI 에이전트가 생성한 심층 분석 보고서입니다.",
     provider: "QuantumFinance",
     type: "Agent",
     price: "Paid",
@@ -315,7 +361,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "1001",
     title: "Loan Risk Assessor",
+    titleKo: "대출 위험 평가기",
     description: "API for assessing loan applicant risk based on alternative data.",
+    descriptionKo: "대안 데이터를 기반으로 대출 신청자의 위험을 평가하는 API입니다.",
     provider: "CreditSafe",
     type: "API",
     price: "Paid",
@@ -327,7 +375,9 @@ export const RESOURCES: Resource[] = [
   {
     id: "1002",
     title: "Fraud Detection System",
+    titleKo: "사기 탐지 시스템",
     description: "Real-time fraud detection API for payment gateways.",
+    descriptionKo: "결제 게이트웨이를 위한 실시간 사기 탐지 API입니다.",
     provider: "SecurePay",
     type: "API",
     price: "Paid",
@@ -551,7 +601,9 @@ export const RESOURCES: Resource[] = [
 export interface BlogPost {
   id: string;
   title: string;
+  titleKo?: string;
   excerpt: string;
+  excerptKo?: string;
   author: string;
   date: string;
   category: string;
@@ -564,7 +616,9 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     id: "1",
     title: "Multi-Agent AI Systems: Why Teams of AIs Beat Solo Models",
+    titleKo: "멀티 에이전트 AI 시스템: AI 팀이 단일 모델보다 우수한 이유",
     excerpt: "Single agents hit a ceiling. Multi-agent systems scale by orchestrating specialized AIs that collaborate in real time.",
+    excerptKo: "단일 에이전트는 한계에 부딪힙니다. 멀티 에이전트 시스템은 실시간으로 협업하는 전문 AI를 조율하여 확장합니다.",
     author: "Nikolas Barwicki",
     date: "Nov 20, 2025",
     category: "AI Agents",
@@ -575,7 +629,9 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     id: "2",
     title: "How to Build an MCP Server in 15 Minutes",
+    titleKo: "15분 만에 MCP 서버 구축하기",
     excerpt: "A practical guide to spinning up your first Model Context Protocol server with real endpoints and auth.",
+    excerptKo: "실제 엔드포인트와 인증을 갖춘 첫 번째 Model Context Protocol 서버를 구축하는 실용적인 가이드입니다.",
     author: "Dev Team",
     date: "Nov 18, 2025",
     category: "Tutorial",
@@ -586,7 +642,9 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     id: "3",
     title: "Is RAG Still Relevant in 2026?",
+    titleKo: "2026년에도 RAG는 여전히 유효한가?",
     excerpt: "What retrieval-augmented generation is great at, where it breaks, and how to layer tools and agents on top.",
+    excerptKo: "검색 증강 생성(RAG)의 장점, 한계, 그리고 그 위에 도구와 에이전트를 계층화하는 방법에 대해 알아봅니다.",
     author: "Research Lab",
     date: "Nov 12, 2025",
     category: "Research",
@@ -597,7 +655,9 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     id: "4",
     title: "Voice AI Agents: The Definitive Guide",
+    titleKo: "음성 AI 에이전트: 완벽 가이드",
     excerpt: "Latency budgets, streaming architectures, and evaluation tips for production-ready voice agents.",
+    excerptKo: "프로덕션 준비가 된 음성 에이전트를 위한 레이턴시 예산, 스트리밍 아키텍처 및 평가 팁을 제공합니다.",
     author: "Audio Team",
     date: "Oct 21, 2025",
     category: "Deep Dive",
@@ -608,7 +668,9 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     id: "5",
     title: "The Ethics of Autonomous Agents",
+    titleKo: "자율 에이전트의 윤리",
     excerpt: "Exploring the moral implications and safety guardrails needed when deploying autonomous AI in critical infrastructure.",
+    excerptKo: "중요 인프라에 자율 AI를 배포할 때 필요한 도덕적 의미와 안전 가드레일을 탐구합니다.",
     author: "Sarah Chen",
     date: "Oct 15, 2025",
     category: "Ethics",
@@ -619,7 +681,9 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     id: "6",
     title: "Industrial IoT Data Standards 2026",
+    titleKo: "2026 산업용 IoT 데이터 표준",
     excerpt: "A comprehensive overview of the new data protocols shaping smart manufacturing and factory automation.",
+    excerptKo: "스마트 제조 및 공장 자동화를 형성하는 새로운 데이터 프로토콜에 대한 포괄적인 개요입니다.",
     author: "IoT Council",
     date: "Oct 05, 2025",
     category: "Industry Standards",
@@ -630,7 +694,9 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     id: "7",
     title: "Financial Forecasting with Transformer Models",
+    titleKo: "트랜스포머 모델을 이용한 재무 예측",
     excerpt: "How modern transformer architectures are outperforming traditional time-series analysis in market prediction.",
+    excerptKo: "현대 트랜스포머 아키텍처가 시장 예측에서 기존 시계열 분석을 어떻게 능가하고 있는지 알아봅니다.",
     author: "Quant Team",
     date: "Sep 28, 2025",
     category: "Finance",
@@ -641,7 +707,9 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     id: "8",
     title: "Optimizing API Latency for Real-time Agents",
+    titleKo: "실시간 에이전트를 위한 API 레이턴시 최적화",
     excerpt: "Technical deep dive into caching strategies, edge computing, and protocol selection for sub-100ms response times.",
+    excerptKo: "100ms 미만의 응답 시간을 위한 캐싱 전략, 엣지 컴퓨팅 및 프로토콜 선택에 대한 기술 심층 분석입니다.",
     author: "DevOps Lead",
     date: "Sep 10, 2025",
     category: "Engineering",

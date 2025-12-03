@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ExternalLink, Eye, Calendar, CheckCircle2, ShieldCheck, Zap, Tag, Building2, Globe } from "lucide-react";
 import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
+import { useLanguage } from "@/lib/language-context";
 
 // Import generated images
 import aiAgentIcon from "@assets/generated_images/ai_agent_icon_abstract.png";
@@ -22,8 +23,12 @@ const imageMap: Record<string, string> = {
 export default function ResourceDetail() {
   const [, params] = useRoute("/resource/:id");
   const resource = RESOURCES.find(r => r.id === params?.id);
+  const { language } = useLanguage();
 
   if (!resource) return <div>Resource not found</div>;
+
+  const displayTitle = language === '한국어' && resource.titleKo ? resource.titleKo : resource.title;
+  const displayDesc = language === '한국어' && resource.descriptionKo ? resource.descriptionKo : resource.description;
 
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950">
@@ -40,7 +45,7 @@ export default function ResourceDetail() {
             <a className="hover:text-primary">플랫폼</a>
           </Link>
           <span>&gt;</span>
-          <span className="text-foreground font-medium truncate max-w-[200px]">{resource.title}</span>
+          <span className="text-foreground font-medium truncate max-w-[200px]">{displayTitle}</span>
         </div>
 
         {/* Header Section */}
@@ -59,7 +64,7 @@ export default function ResourceDetail() {
             
             <div>
               <h1 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-                {resource.title}
+                {displayTitle}
               </h1>
               
               <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
@@ -118,7 +123,7 @@ export default function ResourceDetail() {
               <h2 className="mb-6 font-heading text-xl font-bold">플랫폼 소개</h2>
               
               <div className="prose max-w-none text-foreground dark:prose-invert">
-                <h3 className="text-lg font-semibold"># {resource.title}: {resource.description}</h3>
+                <h3 className="text-lg font-semibold"># {displayTitle}: {displayDesc}</h3>
                 
                 <p className="italic text-muted-foreground my-4">
                   "Harness the power of artificial intelligence to make smarter, faster, and more profitable financial decisions in today's complex markets."

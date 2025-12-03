@@ -7,6 +7,7 @@ import { Search, Filter, Database, Bot, FileSpreadsheet, Zap, Globe, Cpu, BarCha
 import { useState } from "react";
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/language-context";
 
 // Updated Bold Style Helpers
 const getCategoryStyles = (category: string) => {
@@ -99,6 +100,7 @@ const getCategoryIcon = (category: string) => {
 export default function DataMap() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState<string | null>(null);
+  const { language, t } = useLanguage();
 
   const filteredResources = RESOURCES.filter(r => {
     const matchesSearch = r.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -124,8 +126,8 @@ export default function DataMap() {
       
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="font-heading text-3xl font-bold text-foreground">Data Map</h1>
-          <p className="mt-2 text-muted-foreground">Explore the comprehensive catalog of industrial data and AI agents.</p>
+          <h1 className="font-heading text-3xl font-bold text-foreground">{t("Data Map", "데이터 맵")}</h1>
+          <p className="mt-2 text-muted-foreground">{t("Explore the comprehensive catalog of industrial data and AI agents.", "산업 데이터 및 AI 에이전트의 포괄적인 카탈로그를 탐색하세요.")}</p>
         </div>
 
         {/* Filters Section */}
@@ -135,13 +137,13 @@ export default function DataMap() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
                   <Filter className="h-4 w-4" />
-                  CATEGORIES
+                  {t("CATEGORIES", "카테고리")}
                 </div>
                 <button 
                   onClick={() => setSelectedType(null)}
                   className="text-xs text-primary hover:underline"
                 >
-                  Deselect All
+                  {t("Deselect All", "전체 선택 해제")}
                 </button>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -165,7 +167,7 @@ export default function DataMap() {
 
             <div className="flex-1 space-y-4">
               <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-                <span>$</span> PRICING
+                <span>$</span> {t("PRICING", "가격")}
               </div>
               <div className="flex flex-wrap gap-2">
                 {['Free', 'Paid', 'Freemium'].map(price => (
@@ -212,7 +214,7 @@ export default function DataMap() {
                           {resource.type === 'Dataset' && <FileSpreadsheet className="h-4 w-4 shrink-0 text-green-500" />}
                           
                           <span className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate group-hover:text-primary">
-                            {resource.title}
+                            {language === '한국어' && resource.titleKo ? resource.titleKo : resource.title}
                           </span>
                         </div>
                         
@@ -223,7 +225,7 @@ export default function DataMap() {
                   ))}
                   
                   <button className="mt-1 flex w-full items-center justify-center gap-1 rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-slate-50 hover:text-foreground dark:hover:bg-slate-800 transition-colors">
-                    View all {groupedResources[category].length} items
+                    {t("View all", "전체 보기")} {groupedResources[category].length} {t("items", "항목")}
                   </button>
                 </div>
               </div>
@@ -233,8 +235,8 @@ export default function DataMap() {
 
         {filteredResources.length === 0 && (
             <div className="py-20 text-center">
-              <p className="text-muted-foreground">No resources found matching your criteria.</p>
-              <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedType(null);}}>Clear all filters</Button>
+              <p className="text-muted-foreground">{t("No resources found matching your criteria.", "조건에 맞는 리소스가 없습니다.")}</p>
+              <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedType(null);}}>{t("Clear all filters", "모든 필터 지우기")}</Button>
             </div>
         )}
       </div>
