@@ -18,6 +18,17 @@ export default function DataMap() {
     return matchesSearch && matchesType;
   });
 
+  const groupedResources = filteredResources.reduce((acc, resource) => {
+    const category = resource.tags[0] || "Uncategorized";
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(resource);
+    return acc;
+  }, {} as Record<string, typeof filteredResources>);
+
+  const categories = Object.keys(groupedResources);
+
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950">
       <Navbar />
@@ -28,83 +39,109 @@ export default function DataMap() {
           <p className="mt-2 text-muted-foreground">Explore the comprehensive catalog of industrial data and AI agents.</p>
         </div>
 
-        <div className="flex flex-col gap-8 lg:flex-row">
-          {/* Filters Sidebar */}
-          <div className="w-full lg:w-64 shrink-0 space-y-6">
-            <div className="rounded-xl border bg-white p-5 shadow-sm dark:bg-slate-900">
-              <div className="mb-4 flex items-center gap-2">
-                <Filter className="h-4 w-4 text-primary" />
-                <h3 className="font-heading font-semibold">Filters</h3>
-              </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-foreground">Type</label>
-                  <div className="space-y-2">
-                    {['API', 'Agent', 'Dataset'].map(type => (
-                      <label key={type} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground cursor-pointer">
-                        <input 
-                          type="checkbox" 
-                          className="rounded border-slate-300"
-                          checked={selectedType === type}
-                          onChange={() => setSelectedType(selectedType === type ? null : type)}
-                        />
-                        {type}
-                      </label>
-                    ))}
-                  </div>
+        {/* Filters Section */}
+        <div className="mb-8 rounded-xl border bg-white p-6 shadow-sm dark:bg-slate-900">
+          <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+            <div className="flex-1 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                  <Filter className="h-4 w-4" />
+                  CATEGORIES
                 </div>
-
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-foreground">Price</label>
-                  <div className="space-y-2">
-                    {['Free', 'Freemium', 'Paid'].map(price => (
-                      <label key={price} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground cursor-pointer">
-                        <input type="checkbox" className="rounded border-slate-300" />
-                        {price}
-                      </label>
-                    ))}
-                  </div>
-                </div>
+                <button 
+                  onClick={() => setSelectedType(null)}
+                  className="text-xs text-primary hover:underline"
+                >
+                  Deselect All
+                </button>
               </div>
-            </div>
-          </div>
-
-          {/* Main Content */}
-          <div className="flex-1">
-            {/* Search Header */}
-            <div className="mb-6 flex flex-col gap-4 sm:flex-row">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input 
-                  placeholder="Search resources..." 
-                  className="pl-10 bg-white dark:bg-slate-900" 
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground whitespace-nowrap">
-                  Showing {filteredResources.length} results
-                </span>
+              <div className="flex flex-wrap gap-2">
+                {['API', 'Agent', 'Dataset'].map(type => (
+                  <button
+                    key={type}
+                    onClick={() => setSelectedType(selectedType === type ? null : type)}
+                    className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium transition-colors ${
+                      selectedType === type 
+                        ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900" 
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
+                    }`}
+                  >
+                    {type}
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Grid */}
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filteredResources.map(resource => (
-                <ResourceCard key={resource.id} resource={resource} />
-              ))}
+            <div className="w-px bg-slate-200 dark:bg-slate-800 self-stretch hidden md:block" />
+
+            <div className="flex-1 space-y-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                <span>$</span> PRICING
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {['Free', 'Paid', 'Freemium'].map(price => (
+                  <button
+                    key={price}
+                    className="inline-flex items-center rounded-full bg-slate-900 px-3 py-1 text-sm font-medium text-white transition-colors hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900"
+                  >
+                    {price}
+                  </button>
+                ))}
+              </div>
             </div>
-            
-            {filteredResources.length === 0 && (
-               <div className="py-20 text-center">
-                 <p className="text-muted-foreground">No resources found matching your criteria.</p>
-                 <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedType(null);}}>Clear all filters</Button>
-               </div>
-            )}
           </div>
         </div>
+
+        {/* Masonry Grid */}
+        <div className="columns-1 gap-6 md:columns-2 lg:columns-3 xl:columns-4 space-y-6">
+          {categories.map(category => (
+            <div key={category} className="break-inside-avoid mb-6">
+              <div className="mb-3 flex items-center justify-between px-1">
+                <h3 className="font-heading text-lg font-semibold capitalize text-foreground">
+                  {category}
+                </h3>
+                <span className="text-xs text-muted-foreground">
+                  {groupedResources[category].length} items
+                </span>
+              </div>
+              
+              <div className="space-y-3">
+                {groupedResources[category].map(resource => (
+                  <div key={resource.id} className="group relative rounded-xl border bg-white p-4 shadow-sm transition-all hover:shadow-md dark:bg-slate-900">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                         {resource.type === 'API' && <div className="h-2 w-2 rounded-full bg-blue-500" />}
+                         {resource.type === 'Agent' && <div className="h-2 w-2 rounded-full bg-purple-500" />}
+                         {resource.type === 'Dataset' && <div className="h-2 w-2 rounded-full bg-green-500" />}
+                         <span className="text-xs font-medium text-muted-foreground">{resource.type}</span>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full border ${
+                        resource.price === 'Paid' 
+                          ? 'bg-purple-50 text-purple-700 border-purple-100 dark:bg-purple-900/20 dark:text-purple-300' 
+                          : 'bg-slate-50 text-slate-600 border-slate-100 dark:bg-slate-800 dark:text-slate-400'
+                      }`}>
+                        {resource.price}
+                      </span>
+                    </div>
+                    
+                    <h4 className="font-medium text-foreground group-hover:text-primary line-clamp-1">
+                      {resource.title}
+                    </h4>
+                    
+                    <a href={`/resource/${resource.id}`} className="absolute inset-0 z-10" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {filteredResources.length === 0 && (
+            <div className="py-20 text-center">
+              <p className="text-muted-foreground">No resources found matching your criteria.</p>
+              <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedType(null);}}>Clear all filters</Button>
+            </div>
+        )}
       </div>
       
       <Footer />
