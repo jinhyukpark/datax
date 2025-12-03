@@ -17,10 +17,10 @@ export function Navbar() {
   const { language, setLanguage, t } = useLanguage();
 
   const navLinks = [
-    { name: "Data Map", href: "/data-map" },
-    { name: "Platforms", href: "/platforms" },
-    { name: "Blog", href: "/blog" },
-    { name: "Advertise", href: "/advertise" },
+    { name: t("Data Map", "데이터 맵"), href: "/data-map" },
+    { name: t("Platforms", "플랫폼"), href: "/platforms" },
+    { name: t("Blog", "블로그"), href: "/blog" },
+    { name: t("Advertise", "광고"), href: "/advertise" },
   ];
 
   return (
