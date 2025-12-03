@@ -64,12 +64,12 @@ export default function BlogDetail() {
         <header className="relative pt-12 pb-12 lg:pt-20 lg:pb-16 bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-800">
           <div className="container mx-auto px-4 max-w-4xl">
             <div className="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
-              <Link href="/">
-                <a className="hover:text-indigo-600 transition-colors flex items-center gap-1">Home</a>
+              <Link href="/" className="hover:text-indigo-600 transition-colors flex items-center gap-1">
+                Home
               </Link>
               <span className="text-slate-300">/</span>
-              <Link href="/blog">
-                <a className="hover:text-indigo-600 transition-colors">Blog</a>
+              <Link href="/blog" className="hover:text-indigo-600 transition-colors">
+                Blog
               </Link>
               <span className="text-slate-300">/</span>
               <span className="text-foreground font-medium truncate max-w-[200px]">{post.category}</span>
@@ -252,8 +252,7 @@ npm install -D typescript @types/node ts-node`}</code>
             {/* Navigation */}
             <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
               {prevPost ? (
-                <Link href={`/blog/${prevPost.id}`}>
-                  <a className="group block p-6 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/30 dark:border-slate-800 dark:hover:bg-indigo-900/10 transition-all">
+                <Link href={`/blog/${prevPost.id}`} className="group block p-6 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/30 dark:border-slate-800 dark:hover:bg-indigo-900/10 transition-all">
                     <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
                       <ArrowLeft className="h-3 w-3 group-hover:-translate-x-1 transition-transform" />
                       Previous Article
@@ -261,13 +260,11 @@ npm install -D typescript @types/node ts-node`}</code>
                     <div className="font-heading font-bold text-lg text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                       {language === '한국어' && prevPost.titleKo ? prevPost.titleKo : prevPost.title}
                     </div>
-                  </a>
                 </Link>
               ) : <div />}
 
               {nextPost ? (
-                <Link href={`/blog/${nextPost.id}`}>
-                  <a className="group block p-6 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/30 dark:border-slate-800 dark:hover:bg-indigo-900/10 transition-all text-right">
+                <Link href={`/blog/${nextPost.id}`} className="group block p-6 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/30 dark:border-slate-800 dark:hover:bg-indigo-900/10 transition-all text-right">
                     <div className="flex items-center justify-end gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
                       Next Article
                       <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
@@ -275,7 +272,6 @@ npm install -D typescript @types/node ts-node`}</code>
                     <div className="font-heading font-bold text-lg text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                       {language === '한국어' && nextPost.titleKo ? nextPost.titleKo : nextPost.title}
                     </div>
-                  </a>
                 </Link>
               ) : <div />}
             </div>

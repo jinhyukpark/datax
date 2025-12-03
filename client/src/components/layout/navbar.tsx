@@ -48,16 +48,16 @@ export function Navbar() {
                                (link.href === '/platforms' && location.startsWith('/resource/'));
                                
               return (
-                <Link key={link.name} href={link.href}>
-                  <a
-                    className={`text-sm font-medium transition-colors hover:text-primary ${
-                      isActive
-                        ? "text-primary font-semibold"
-                        : "text-muted-foreground"
-                    }`}
-                  >
-                    {link.name}
-                  </a>
+                <Link 
+                  key={link.name} 
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors hover:text-primary cursor-pointer ${
+                    isActive
+                      ? "text-primary font-semibold"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {link.name}
                 </Link>
               );
             })}
@@ -114,13 +114,13 @@ export function Navbar() {
         <div className="border-b bg-background md:hidden absolute top-16 left-0 w-full z-40">
           <div className="space-y-1 px-4 py-4">
             {navLinks.map((link) => (
-              <Link key={link.name} href={link.href}>
-                <a
-                  className="block rounded-md px-3 py-2 text-base font-medium text-foreground hover:bg-muted"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </a>
+              <Link 
+                key={link.name} 
+                href={link.href}
+                className="block rounded-md px-3 py-2 text-base font-medium text-foreground hover:bg-muted cursor-pointer"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {link.name}
               </Link>
             ))}
             <div className="mt-4 flex flex-col gap-2">
