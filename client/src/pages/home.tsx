@@ -118,16 +118,18 @@ export default function Home() {
 
           {/* Search Bar */}
           <div className="mx-auto max-w-2xl relative z-10">
-            <div className="relative flex items-center rounded-2xl bg-white p-2 shadow-2xl shadow-indigo-500/10 ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800 dark:shadow-none transform transition-transform hover:scale-[1.01]">
-              <Search className="ml-4 h-5 w-5 text-slate-400 shrink-0" />
-              <Input 
-                type="text" 
-                placeholder={t("Search for APIs, agents, or providers...", "API, 에이전트 또는 제공자 검색...")}
-                className="flex-1 border-none bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 text-base h-14 px-4 placeholder:text-slate-400"
-              />
-              <Button size="lg" className="rounded-xl px-8 shrink-0 h-12 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/50">
-                {t("Search", "검색")}
-              </Button>
+            <div className="relative rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-[3px] shadow-2xl shadow-indigo-500/20 transform transition-transform hover:scale-[1.01]">
+              <div className="relative flex items-center rounded-[13px] bg-white p-2 dark:bg-slate-900">
+                <Search className="ml-4 h-5 w-5 text-slate-400 shrink-0" />
+                <Input 
+                  type="text" 
+                  placeholder={t("Search for APIs, agents, or providers...", "API, 에이전트 또는 제공자 검색...")}
+                  className="flex-1 border-none bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 text-base h-14 px-4 placeholder:text-slate-400"
+                />
+                <Button size="lg" className="rounded-xl px-8 shrink-0 h-12 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/50">
+                  {t("Search", "검색")}
+                </Button>
+              </div>
             </div>
           </div>
 
