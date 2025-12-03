@@ -29,6 +29,26 @@ export default function PublisherProfile() {
   // Decode the provider ID (name) from the URL
   const providerName = params?.id ? decodeURIComponent(params.id) : "";
   
+  // Provider descriptions mapping
+  const providerDescriptions: Record<string, string> = {
+    "Anthropic": "Anthropic is an AI safety and research company that builds reliable, interpretable, and steerable AI systems. We are dedicated to creating AI that is helpful, honest, and harmless, with a focus on large-scale systems like Claude that can reason, code, and communicate effectively.",
+    "OpenAI": "OpenAI is an AI research and deployment company dedicated to ensuring that artificial general intelligence benefits all of humanity. We develop cutting-edge models like GPT-4 and DALL-E, providing powerful APIs for natural language processing, image generation, and more.",
+    "Shopify": "Shopify is a leading global commerce company, providing trusted tools to start, grow, market, and manage a retail business of any size. Our data solutions empower merchants with insights into customer behavior, inventory optimization, and sales trends.",
+    "ServiceTech": "ServiceTech specializes in advanced customer service automation solutions. Our AI-driven agents and analytics platforms help businesses reduce response times, improve customer satisfaction, and streamline support operations across multiple channels.",
+    "IntegrateIO": "IntegrateIO provides low-code data integration for cloud-based data warehouses. We help organizations build data pipelines, transform data, and connect disparate systems to create a unified view of their business intelligence.",
+    "VoiceAI": "VoiceAI is pioneering the future of voice interactions. Our state-of-the-art speech recognition and synthesis technologies enable developers to build immersive voice-enabled applications for customer support, accessibility, and entertainment.",
+    "Siemens": "Siemens is a technology company focused on industry, infrastructure, transport, and healthcare. Our digital twin and industrial IoT solutions help manufacturers optimize production, improve quality, and reduce resource consumption through data-driven insights.",
+    "Meta": "Meta builds technologies that help people connect, find communities, and grow businesses. We are committed to open science and open source AI, releasing powerful models like Llama to the community to foster innovation and collaboration.",
+    "SalesForce": "Salesforce is the world's #1 customer relationship management (CRM) platform. Our data and AI solutions help companies connect with their customers in a whole new way, unifying marketing, sales, service, commerce, and IT on a single platform.",
+    "Stability AI": "Stability AI is the world's leading open source generative AI company. We provide developers with the tools to create breakthrough applications across image, video, audio, and 3D generation, democratizing access to creative potential.",
+    "NextWave Automation": "NextWave Automation delivers enterprise-grade AI agent orchestration platforms. We enable businesses to deploy, manage, and scale autonomous workforce solutions that handle complex workflows with human-like reasoning and reliability."
+  };
+
+  // Generic description generator for others
+  const genericDescription = `A trusted provider of high-quality data resources and technological solutions. ${providerName} is committed to delivering reliable, scalable, and secure infrastructure to help organizations innovate and grow. Specialized in delivering value through data-driven insights and advanced API capabilities.`;
+
+  const description = providerDescriptions[providerName] || genericDescription;
+
   // Filter resources by this provider
   const providerResources = RESOURCES.filter(r => r.provider === providerName);
   
@@ -73,9 +93,8 @@ export default function PublisherProfile() {
                     Verified Publisher
                   </Badge>
                 </div>
-                <p className="text-lg text-muted-foreground max-w-2xl">
-                  Leading provider of enterprise-grade data solutions and AI agents. 
-                  Empowering organizations with reliable, scalable, and secure data infrastructure.
+                <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
+                  {description}
                 </p>
               </div>
 
