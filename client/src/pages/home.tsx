@@ -134,7 +134,7 @@ export default function Home() {
           </div>
 
           {/* Quick Categories */}
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
+          <div className="mt-16 flex flex-wrap justify-center gap-4">
             <Link href="/data-map?type=all">
               <Button variant="secondary" className="rounded-full px-6 h-10 bg-white shadow-sm hover:bg-slate-50 border border-slate-200 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700">{t("All Resources", "모든 리소스")}</Button>
             </Link>
