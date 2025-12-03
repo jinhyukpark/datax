@@ -25,73 +25,10 @@ export default function Home() {
         {/* Background decoration */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-white/80 dark:bg-slate-950/90" />
-          <img 
-            src={floatingHeroBg} 
-            alt="Background" 
-            className="h-full w-full object-cover opacity-40 dark:opacity-20 mix-blend-multiply dark:mix-blend-normal"
-          />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-slate-50/80 dark:via-slate-950/50 dark:to-slate-950" />
           
           {/* Grid Pattern */}
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-        </div>
-
-        {/* Floating Elements - Left Side */}
-        <div className="absolute left-[10%] top-[20%] hidden lg:block animate-float-slow">
-          <div className="rounded-2xl bg-white p-4 shadow-xl ring-1 ring-slate-900/5 backdrop-blur-sm dark:bg-slate-900 dark:ring-slate-100/10">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-                <Activity className="h-6 w-6" />
-              </div>
-              <div>
-                <div className="text-xs font-medium text-muted-foreground">Active Streams</div>
-                <div className="text-sm font-bold text-foreground">1.2M/sec</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute left-[5%] bottom-[25%] hidden lg:block animate-float-medium animation-delay-2000">
-          <div className="rounded-2xl bg-white p-4 shadow-xl ring-1 ring-slate-900/5 backdrop-blur-sm dark:bg-slate-900 dark:ring-slate-100/10">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
-                <Database className="h-6 w-6" />
-              </div>
-              <div>
-                <div className="text-xs font-medium text-muted-foreground">Data Sources</div>
-                <div className="text-sm font-bold text-foreground">500+ Connected</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Floating Elements - Right Side */}
-        <div className="absolute right-[5%] top-[25%] hidden lg:block animate-float-slow animation-delay-1000">
-           <div className="rounded-2xl bg-white p-4 shadow-xl ring-1 ring-slate-900/5 backdrop-blur-sm dark:bg-slate-900 dark:ring-slate-100/10">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
-                <Cpu className="h-6 w-6" />
-              </div>
-              <div>
-                <div className="text-xs font-medium text-muted-foreground">AI Agents</div>
-                <div className="text-sm font-bold text-foreground">Autonomous</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute right-[5%] bottom-[20%] hidden lg:block animate-float-fast animation-delay-3000">
-           <div className="rounded-2xl bg-white p-4 shadow-xl ring-1 ring-slate-900/5 backdrop-blur-sm dark:bg-slate-900 dark:ring-slate-100/10">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
-                <Shield className="h-6 w-6" />
-              </div>
-              <div>
-                <div className="text-xs font-medium text-muted-foreground">Security</div>
-                <div className="text-sm font-bold text-foreground">Enterprise Grade</div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div className="container relative mx-auto px-4 text-center">
