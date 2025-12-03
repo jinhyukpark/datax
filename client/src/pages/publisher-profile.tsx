@@ -114,8 +114,17 @@ export default function PublisherProfile() {
                 </div>
               </div>
 
+              {/* Data Types & Capabilities */}
+              <div className="mt-6 flex flex-wrap gap-2">
+                {["Artificial Intelligence", "Machine Learning", "Natural Language Processing", "Big Data"].map((capability) => (
+                  <Badge key={capability} variant="outline" className="bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
+                    {capability}
+                  </Badge>
+                ))}
+              </div>
+
               {/* Socials */}
-              <div className="flex gap-2 pt-2">
+              <div className="flex gap-2 pt-6">
                 <Button variant="outline" size="icon" className="h-8 w-8 rounded-full">
                   <Twitter className="h-4 w-4" />
                 </Button>
@@ -155,6 +164,34 @@ export default function PublisherProfile() {
                 </div>
               </CardContent>
             </Card>
+          </div>
+        </div>
+
+        {/* Major Activity History */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold font-heading mb-6 flex items-center gap-2">
+            <Calendar className="h-6 w-6 text-indigo-500" />
+            Activity History
+          </h2>
+          <div className="relative border-l-2 border-slate-200 dark:border-slate-800 ml-3 space-y-8 pb-4">
+            <div className="relative pl-8">
+              <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
+              <span className="text-sm text-muted-foreground font-mono mb-1 block">December 2025</span>
+              <h3 className="text-lg font-bold text-foreground">Released Inventory Management API v2.0</h3>
+              <p className="text-muted-foreground mt-1">Major update including real-time predictive analytics and enhanced security features.</p>
+            </div>
+            <div className="relative pl-8">
+              <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
+              <span className="text-sm text-muted-foreground font-mono mb-1 block">October 2025</span>
+              <h3 className="text-lg font-bold text-foreground">Strategic Partnership with CloudCorp</h3>
+              <p className="text-muted-foreground mt-1">Expanded infrastructure capabilities to support high-frequency trading data streams.</p>
+            </div>
+            <div className="relative pl-8">
+              <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
+              <span className="text-sm text-muted-foreground font-mono mb-1 block">July 2024</span>
+              <h3 className="text-lg font-bold text-foreground">Platform Launch</h3>
+              <p className="text-muted-foreground mt-1">Officially joined Data-X as a verified publisher with initial suite of 5 core APIs.</p>
+            </div>
           </div>
         </div>
 

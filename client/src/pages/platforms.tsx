@@ -55,7 +55,7 @@ function PlatformCard({ resource, index }: { resource: Resource; index: number }
            </Badge>
         </div>
         
-        <Link href={`/resource/${resource.id}`}>
+        <Link href={`/publisher/${encodeURIComponent(resource.provider)}`}>
           <a className="mb-2 block font-heading text-lg font-bold text-foreground hover:text-primary">
             {language === '한국어' && resource.titleKo ? resource.titleKo : resource.title}
           </a>
@@ -71,7 +71,7 @@ function PlatformCard({ resource, index }: { resource: Resource; index: number }
             {/* Mocking a formatted date like "November 27, 2025" */}
             {new Date(resource.publishedDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </div>
-          <Link href={`/resource/${resource.id}`}>
+          <Link href={`/publisher/${encodeURIComponent(resource.provider)}`}>
             <a className="text-muted-foreground hover:text-primary transition-colors">
               <ExternalLink className="h-4 w-4" />
             </a>
