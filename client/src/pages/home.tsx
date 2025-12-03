@@ -2,11 +2,12 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ArrowRight, Database, Cpu, CheckCircle } from "lucide-react";
+import { Search, ArrowRight, Sparkles, Database, Cpu, Activity, Shield, Key } from "lucide-react";
 import { RESOURCES } from "@/lib/data";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { Link } from "wouter";
-import heroDashboardImg from "@assets/generated_images/modern_data_analytics_dashboard_ui.png";
+import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
+import floatingHeroBg from "@assets/generated_images/abstract_3d_isometric_data_flow_visualization_with_floating_cubes_and_connecting_lines_in_blue_and_purple_gradients_on_white.png";
 
 import { useLanguage } from "@/lib/language-context";
 
@@ -20,98 +21,71 @@ export default function Home() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#8B5CF6] pt-20 pb-32 lg:pt-32 lg:pb-48">
-        <div className="container relative mx-auto px-4">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-            {/* Left Content */}
-            <div className="max-w-2xl text-left">
-              <h1 className="mb-6 font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl leading-tight">
-                {t("Centralize Data, Then", "데이터를 중앙화하고,")} <br />
-                {t("Monitor, Share & Take", "모니터링하고, 공유하며")} <br />
-                {t("Action, Faster", "더 빠르게 실행하세요")}
-              </h1>
-              
-              <p className="mb-8 text-lg text-purple-100 leading-relaxed max-w-xl">
-                {t(
-                  "Discover, connect, and manage premium data APIs and autonomous agents from public institutions and private enterprises. Transform data chaos into a competitive advantage.",
-                  "공공 기관 및 민간 기업의 프리미엄 데이터 API 및 자율 에이전트를 발견, 연결 및 관리하십시오. 데이터 혼란을 경쟁 우위로 전환하세요."
-                )}
-              </p>
+      <section className="relative overflow-hidden pt-20 pb-16 lg:pt-32 lg:pb-24">
+        {/* Background decoration */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-white/80 dark:bg-slate-950/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-slate-50/80 dark:via-slate-950/50 dark:to-slate-950" />
+          
+          {/* Grid Pattern */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+        </div>
 
-              {/* Search Bar - Integrated into new design */}
-              <div className="relative max-w-lg mb-8">
-                <div className="relative flex items-center rounded-lg bg-white p-1 shadow-lg">
-                  <Search className="ml-3 h-5 w-5 text-slate-400 shrink-0" />
-                  <Input 
-                    type="text" 
-                    placeholder={t("Search for APIs, agents...", "API, 에이전트 검색...")}
-                    className="flex-1 border-none bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 text-base h-12 px-3 placeholder:text-slate-400"
-                  />
-                  <Button size="lg" className="rounded-md px-6 h-10 bg-blue-500 hover:bg-blue-600 text-white font-medium">
-                    {t("Search", "검색")}
-                  </Button>
-                </div>
-              </div>
+        <div className="container relative mx-auto px-4 text-center">
+          <div className="mx-auto mb-8 inline-flex items-center rounded-full border border-indigo-100 bg-white/80 px-4 py-1.5 text-sm text-slate-600 shadow-sm backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300">
+            <Sparkles className="mr-2 h-4 w-4 text-indigo-500" />
+            <span className="font-medium">
+              {t("27 new resources added this week", "이번 주 27개의 새로운 리소스가 추가되었습니다")}
+            </span>
+          </div>
+          
+          <h1 className="mx-auto mb-6 max-w-4xl font-heading text-5xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl drop-shadow-sm">
+            {t("Industrial Data APIs &", "산업 데이터 API 및")} <br className="hidden sm:block" />
+            <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              {t("AI Agents Marketplace", "AI 에이전트 마켓플레이스")}
+            </span>
+          </h1>
+          
+          <p className="mx-auto mb-12 max-w-2xl text-lg text-slate-600 dark:text-slate-300 sm:text-xl leading-relaxed">
+            {t(
+              "Discover, connect, and manage premium data APIs and autonomous agents from public institutions and private enterprises.",
+              "공공 기관 및 민간 기업의 프리미엄 데이터 API 및 자율 에이전트를 발견, 연결 및 관리하십시오."
+            )}
+          </p>
 
-              {/* Feature Checklist */}
-              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-purple-100 font-medium">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  <span>No Credit Card</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  <span>Unlimited users</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  <span>Secure Protocols</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Content - Dashboard Image */}
-            <div className="relative hidden lg:block">
-              <div className="relative rounded-xl overflow-hidden shadow-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-2 transform rotate-1 hover:rotate-0 transition-transform duration-500">
-                <img 
-                  src={heroDashboardImg} 
-                  alt="Dashboard Preview" 
-                  className="w-full rounded-lg shadow-inner"
+          {/* Search Bar */}
+          <div className="mx-auto max-w-2xl relative z-10">
+            <div className="relative rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-[3px] shadow-2xl shadow-indigo-500/20 transform transition-transform hover:scale-[1.01]">
+              <div className="relative flex items-center rounded-[13px] bg-white p-2 dark:bg-slate-900">
+                <Search className="ml-4 h-5 w-5 text-slate-400 shrink-0" />
+                <Input 
+                  type="text" 
+                  placeholder={t("Search for APIs, agents, or providers...", "API, 에이전트 또는 제공자 검색...")}
+                  className="flex-1 border-none bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 text-base h-14 px-4 placeholder:text-slate-400"
                 />
-                {/* Floating badge example */}
-                <div className="absolute top-6 left-6 bg-white rounded-lg p-3 shadow-lg animate-float-slow">
-                  <div className="text-xs text-gray-500 font-medium">Growth</div>
-                  <div className="text-lg font-bold text-green-600">+24.5%</div>
-                </div>
+                <Button size="lg" className="rounded-xl px-8 shrink-0 h-12 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/50">
+                  {t("Search", "검색")}
+                </Button>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Curved Bottom Shape */}
-        <div className="absolute bottom-0 left-0 right-0">
-           <svg viewBox="0 0 1440 120" className="w-full h-[60px] sm:h-[100px] fill-slate-50/50 dark:fill-slate-950 block" preserveAspectRatio="none">
-             <path d="M0,0 C240,100 480,100 720,50 C960,0 1200,0 1440,60 L1440,120 L0,120 Z"></path>
-           </svg>
-        </div>
-      </section>
-
-      {/* Quick Categories - Moved below hero */}
-      <section className="container mx-auto px-4 -mt-8 relative z-10 mb-12">
-        <div className="flex flex-wrap justify-center gap-4">
-          <Link href="/data-map?type=all">
-            <Button variant="secondary" className="rounded-full px-6 h-12 bg-white shadow-lg hover:bg-slate-50 border border-slate-100 text-slate-700 font-medium dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700">{t("All Resources", "모든 리소스")}</Button>
-          </Link>
-          <Link href="/data-map?type=api">
-            <Button variant="outline" className="rounded-full px-6 h-12 gap-2 border-slate-200 bg-white/90 shadow-md hover:bg-white hover:border-blue-200 hover:text-blue-600 transition-all dark:bg-slate-900/50 dark:border-slate-700 dark:hover:bg-slate-800">
-              <Database className="h-4 w-4" /> {t("Data APIs", "데이터 API")}
-            </Button>
-          </Link>
-          <Link href="/data-map?type=agent">
-            <Button variant="outline" className="rounded-full px-6 h-12 gap-2 border-slate-200 bg-white/90 shadow-md hover:bg-white hover:border-purple-200 hover:text-purple-600 transition-all dark:bg-slate-900/50 dark:border-slate-700 dark:hover:bg-slate-800">
-              <Cpu className="h-4 w-4" /> {t("AI Agents", "AI 에이전트")}
-            </Button>
-          </Link>
+          {/* Quick Categories */}
+          <div className="mt-16 flex flex-wrap justify-center gap-4">
+            <Link href="/data-map?type=all">
+              <Button variant="secondary" className="rounded-full px-6 h-10 bg-white shadow-sm hover:bg-slate-50 border border-slate-200 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700">{t("All Resources", "모든 리소스")}</Button>
+            </Link>
+            <Link href="/data-map?type=api">
+              <Button variant="outline" className="rounded-full px-6 h-10 gap-2 border-slate-200 bg-white/50 hover:bg-white hover:border-blue-200 hover:text-blue-600 transition-all dark:bg-slate-900/50 dark:border-slate-700 dark:hover:bg-slate-800">
+                <Database className="h-4 w-4" /> {t("Data APIs", "데이터 API")}
+              </Button>
+            </Link>
+            <Link href="/data-map?type=agent">
+              <Button variant="outline" className="rounded-full px-6 h-10 gap-2 border-slate-200 bg-white/50 hover:bg-white hover:border-purple-200 hover:text-purple-600 transition-all dark:bg-slate-900/50 dark:border-slate-700 dark:hover:bg-slate-800">
+                <Cpu className="h-4 w-4" /> {t("AI Agents", "AI 에이전트")}
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
