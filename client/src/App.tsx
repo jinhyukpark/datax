@@ -9,13 +9,14 @@ import DataMap from "@/pages/data-map";
 import ResourceDetail from "@/pages/resource-detail";
 import Blog from "@/pages/blog";
 import Advertise from "@/pages/advertise";
+import Platforms from "@/pages/platforms";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/data-map" component={DataMap} />
-      <Route path="/platforms" component={DataMap} />
+      <Route path="/platforms" component={Platforms} />
       <Route path="/resource/:id" component={ResourceDetail} />
       <Route path="/blog" component={Blog} />
       <Route path="/advertise" component={Advertise} />
