@@ -10,7 +10,7 @@ export function Logo({ className, collapsed = false, light = false }: LogoProps)
   return (
     <div className={cn("flex items-center gap-3", className)}>
       {/* Geometric Symbol */}
-      <div className="relative flex h-10 w-10 shrink-0 items-center justify-center transform -skew-x-12">
+      <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
         <svg 
           width="40" 
           height="40" 
@@ -19,27 +19,32 @@ export function Logo({ className, collapsed = false, light = false }: LogoProps)
           xmlns="http://www.w3.org/2000/svg"
           className={cn("transition-all", light ? "text-white" : "text-slate-900 dark:text-white")}
         >
-          {/* Abstract Geometric Shapes based on the screenshot style */}
+          {/* Top Diamond */}
           <path 
-            d="M20 4L28 12L20 20L12 12L20 4Z" 
+            d="M20 3L29 12L20 21L11 12L20 3Z" 
             stroke="currentColor" 
-            strokeWidth="2.5" 
+            strokeWidth="3" 
+            strokeLinejoin="miter"
             fill="none"
           />
+          {/* Bottom Left Diamond */}
           <path 
-            d="M12 20L4 28L12 36L20 28L12 20Z" 
+            d="M11 21L20 30L11 39L2 30L11 21Z" 
             stroke="currentColor" 
-            strokeWidth="2.5" 
+            strokeWidth="3" 
+            strokeLinejoin="miter"
             fill="none"
           />
+          {/* Bottom Right Diamond */}
           <path 
-            d="M28 20L36 28L28 36L20 28L28 20Z" 
+            d="M29 21L38 30L29 39L20 30L29 21Z" 
             stroke="currentColor" 
-            strokeWidth="2.5" 
+            strokeWidth="3" 
+            strokeLinejoin="miter"
             fill="none"
           />
-          {/* Central Accent */}
-          <rect x="18" y="18" width="4" height="4" fill="#3B82F6" /> 
+          {/* Central Accent Square */}
+          <rect x="18.5" y="19.5" width="3" height="3" fill="#3B82F6" transform="rotate(45 20 21)" /> 
         </svg>
       </div>
 
