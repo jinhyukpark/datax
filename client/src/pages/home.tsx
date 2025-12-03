@@ -32,8 +32,8 @@ export default function Home() {
         </div>
 
         <div className="container relative mx-auto px-4 text-center">
-          <div className="mx-auto mb-8 inline-flex items-center rounded-full border border-indigo-100 bg-white/80 px-4 py-1.5 text-sm text-slate-600 shadow-sm backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300">
-            <Sparkles className="mr-2 h-4 w-4 text-indigo-500" />
+          <div className="mx-auto mb-8 inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50/80 px-6 py-2 text-sm font-semibold text-indigo-800 shadow-lg shadow-indigo-500/10 backdrop-blur-md transition-all hover:-translate-y-0.5 hover:shadow-indigo-500/20 dark:border-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-100 cursor-default">
+            <Sparkles className="mr-2 h-4 w-4 text-indigo-600 dark:text-indigo-400 fill-indigo-600/20" />
             <span className="font-medium">
               {t("27 new resources added this week", "이번 주 27개의 새로운 리소스가 추가되었습니다")}
             </span>
