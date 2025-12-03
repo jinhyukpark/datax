@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Database, Menu, X, Search, Globe, LogIn } from "lucide-react";
+import { Database, Menu, X, Search, Globe, LogIn, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import {
   DropdownMenu,
@@ -16,91 +16,129 @@ export function Navbar() {
 
   const navLinks = [
     { name: "Data Map", href: "/data-map" },
-    { name: "Platforms", href: "/platforms" }, // Assuming this is a filtered view or partners
+    { name: "Platforms", href: "/platforms" },
     { name: "Blog", href: "/blog" },
     { name: "Advertise", href: "/advertise" },
   ];
 
+  // Helper to determine if we should show the sub-nav
+  // We show it on all pages except home, or maybe specifically on certain pages
+  // The screenshot shows "Back" "Data Map" "Platforms" "Submit"
+  // It looks like a contextual nav. Let's add it globally for now to match the request "Each page..."
+  // But for Home, "Back" doesn't make sense unless we go back to history.
+  // Let's make it static for mockup purposes as requested.
+  
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md dark:bg-slate-950/80">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        {/* Logo */}
-        <Link href="/">
-          <a className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Database className="h-5 w-5" />
-            </div>
-            <span className="font-heading text-xl font-bold tracking-tight text-foreground">
-              Data-X
-            </span>
-          </a>
-        </Link>
+    <div className="sticky top-0 z-50 w-full bg-white dark:bg-slate-950">
+      {/* Top Navbar */}
+      <nav className="w-full border-b border-slate-200 dark:border-slate-800">
+        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+          {/* Logo */}
+          <Link href="/">
+            <a className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+                <span className="font-bold text-sm">EM</span>
+              </div>
+              <span className="font-heading text-xl font-bold tracking-tight text-foreground">
+                EM-Data
+              </span>
+            </a>
+          </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex md:items-center md:gap-8">
-          {navLinks.map((link) => (
-            <Link key={link.name} href={link.href}>
-              <a
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  location === link.href
-                    ? "text-primary"
-                    : "text-muted-foreground"
-                }`}
-              >
-                {link.name}
-              </a>
-            </Link>
-          ))}
-        </div>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex md:items-center md:gap-8">
+            {navLinks.map((link) => (
+              <Link key={link.name} href={link.href}>
+                <a
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    location === link.href
+                      ? "text-primary"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {link.name}
+                </a>
+              </Link>
+            ))}
+          </div>
 
-        {/* Actions */}
-        <div className="hidden items-center gap-4 md:flex">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground">
-                <Globe className="h-4 w-4" />
-                {language}
+          {/* Actions */}
+          <div className="hidden items-center gap-4 md:flex">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground border border-slate-200 dark:border-slate-800 h-9">
+                  <Globe className="h-4 w-4" />
+                  {language}
+                </DropdownMenuTrigger>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setLanguage("English")}>
+                  English
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLanguage("한국어")}>
+                  한국어
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Link href="/submit">
+               <Button size="sm" className="bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-50 dark:text-slate-900 h-9 px-4">
+                + Submit
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setLanguage("English")}>
-                English
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setLanguage("한국어")}>
-                한국어
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            </Link>
+            <Link href="/login">
+              <Button variant="outline" size="sm" className="gap-2 h-9">
+                <LogIn className="h-4 w-4" />
+                Login
+              </Button>
+            </Link>
+          </div>
 
-          <Link href="/submit">
-             <Button size="sm" className="bg-foreground text-background hover:bg-foreground/90">
-              + Submit
-            </Button>
+          {/* Mobile Menu Toggle */}
+          <button
+            className="md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6 text-foreground" />
+            ) : (
+              <Menu className="h-6 w-6 text-foreground" />
+            )}
+          </button>
+        </div>
+      </nav>
+
+      {/* Sub Navbar (Secondary Line) */}
+      <div className="w-full border-b border-slate-200 dark:border-slate-800 bg-white/50 backdrop-blur-sm dark:bg-slate-950/50">
+        <div className="container mx-auto flex h-12 items-center px-4 gap-6 text-sm">
+          <button className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors" onClick={() => window.history.back()}>
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </button>
+          
+          <div className="h-4 w-px bg-slate-200 dark:bg-slate-800" />
+          
+          <Link href="/data-map">
+            <a className={`font-medium transition-colors hover:text-primary ${location === '/data-map' ? 'text-foreground' : 'text-muted-foreground'}`}>
+              Data Map
+            </a>
           </Link>
-          <Link href="/login">
-            <Button variant="outline" size="sm" className="gap-2">
-              <LogIn className="h-4 w-4" />
-              Login
-            </Button>
+          <Link href="/platforms">
+             <a className={`font-medium transition-colors hover:text-primary ${location === '/platforms' ? 'text-foreground' : 'text-muted-foreground'}`}>
+              Platforms
+            </a>
+          </Link>
+          <Link href="/submit">
+             <a className="font-medium text-muted-foreground transition-colors hover:text-primary">
+              Submit
+            </a>
           </Link>
         </div>
-
-        {/* Mobile Menu Toggle */}
-        <button
-          className="md:hidden"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? (
-            <X className="h-6 w-6 text-foreground" />
-          ) : (
-            <Menu className="h-6 w-6 text-foreground" />
-          )}
-        </button>
       </div>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="border-b bg-background md:hidden">
+        <div className="border-b bg-background md:hidden absolute top-16 left-0 w-full z-40">
           <div className="space-y-1 px-4 py-4">
             {navLinks.map((link) => (
               <Link key={link.name} href={link.href}>
@@ -123,6 +161,6 @@ export function Navbar() {
           </div>
         </div>
       )}
-    </nav>
+    </div>
   );
 }
