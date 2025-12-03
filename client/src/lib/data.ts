@@ -33,95 +33,210 @@ export interface Resource {
 }
 
 export const RESOURCES: Resource[] = [
+  // AI Assistant
   {
     id: "1",
-    title: "Multi-Agent AI Systems Platform",
-    description: "Enterprise-grade multi-agent AI platform that orchestrates specialized AI agents to solve complex business problems through intelligent collaboration.",
+    title: "ChatGPT Assistant Agent",
+    description: "AI-powered conversational agent for customer support and internal knowledge base queries.",
     provider: "NextWave Automation",
     type: "Agent",
     price: "Paid",
-    priceAmount: "$499/mo",
-    tags: ["automation", "workflow", "enterprise"],
+    tags: ["AI Assistant", "automation", "chat"],
     image: "ai_agent_icon_abstract",
     publishedDate: "2025-07-13",
     views: 1240,
     featured: true,
-    specs: {
-      format: "JSON/REST",
-      frequency: "Real-time",
-      access: "API Key",
-    },
-    longDescription: "Imagine a team of specialized AIs working together to solve your biggest problems. This isn't about one AI doing everything. It's about creating a team of specialized AIs that work together.",
-    useCases: ["Customer Support Automation", "Complex Data Analysis", "Supply Chain Optimization"]
+    specs: { format: "JSON/REST", frequency: "Real-time", access: "API Key" }
   },
+  // Customer Service
   {
     id: "2",
-    title: "Industrial IoT Data Stream API",
-    description: "Real-time industrial sensor data API providing manufacturing metrics, equipment status, and predictive maintenance insights.",
-    provider: "ManufacturingCore Tech",
-    type: "API",
-    price: "Freemium",
-    tags: ["iot", "manufacturing", "sensor"],
-    image: "iot_data_icon_abstract",
-    publishedDate: "2025-11-15",
-    views: 856,
-    specs: {
-      format: "WebSocket/JSON",
-      frequency: "Real-time (<100ms)",
-      access: "OAuth 2.0",
-    },
+    title: "ChatBot Agent Pro",
+    description: "Advanced customer service bot with sentiment analysis and escalation protocols.",
+    provider: "ServiceTech",
+    type: "Agent",
+    price: "Paid",
+    tags: ["Customer Service", "support", "bot"],
+    publishedDate: "2025-08-20",
+    views: 980
   },
   {
     id: "3",
-    title: "Financial Market Intelligence Agent",
-    description: "AI-powered financial analysis agent that provides real-time market insights, risk assessment, and investment recommendations.",
-    provider: "QuantumFinance Analytics",
+    title: "Customer Support Agent Lite",
+    description: "Lightweight support agent for small businesses.",
+    provider: "ServiceTech",
     type: "Agent",
     price: "Paid",
-    priceAmount: "$299/mo",
-    tags: ["finance", "market", "analytics"],
-    image: "financial_data_icon_abstract",
-    publishedDate: "2025-10-08",
-    views: 2100,
-    featured: true,
-    specs: {
-      format: "PDF/JSON Report",
-      frequency: "Daily/On-demand",
-      access: "Dashboard/API",
-    },
+    tags: ["Customer Service", "support", "smb"],
+    publishedDate: "2025-09-01",
+    views: 450
   },
+  // Manufacturing
   {
     id: "4",
-    title: "Global Weather API",
-    description: "Real-time weather data for any location worldwide including historical data and 14-day forecasts.",
-    provider: "KOITA",
-    type: "API",
-    price: "Freemium",
-    tags: ["weather", "environment", "global"],
-    publishedDate: "2025-11-27",
-    views: 4300,
-  },
-  {
-    id: "5",
-    title: "GPT-4 Industrial Fine-tune",
-    description: "Advanced language model API fine-tuned for industrial technical documentation and safety protocols.",
-    provider: "KIAT",
+    title: "Industrial Sensor Data",
+    description: "Raw sensor data from manufacturing plants for predictive maintenance analysis.",
+    provider: "ManufacturingCore Tech",
     type: "API",
     price: "Paid",
-    tags: ["llm", "industrial", "safety"],
+    tags: ["Manufacturing", "iot", "sensor"],
+    image: "iot_data_icon_abstract",
+    publishedDate: "2025-11-15",
+    views: 856
+  },
+  // AI/ML
+  {
+    id: "5",
+    title: "GPT-4 API",
+    description: "Advanced language model API for natural language processing and generation.",
+    provider: "OpenAI",
+    type: "API",
+    price: "Paid",
+    tags: ["AI/ML", "nlp", "generation"],
     publishedDate: "2025-11-27",
-    views: 486,
+    views: 486
   },
   {
     id: "6",
+    title: "Vision Model V2",
+    description: "Computer vision model for object detection and classification.",
+    provider: "Visionary AI",
+    type: "API",
+    price: "Paid",
+    tags: ["AI/ML", "vision", "image"],
+    publishedDate: "2025-10-12",
+    views: 320
+  },
+  // Analytics
+  {
+    id: "7",
+    title: "Data Analytics Agent",
+    description: "Automated data analyst that generates insights from raw CSV uploads.",
+    provider: "DataMind",
+    type: "Agent",
+    price: "Paid",
+    tags: ["Analytics", "insight", "reporting"],
+    publishedDate: "2025-09-15",
+    views: 1100
+  },
+  {
+    id: "8",
+    title: "Unified Analytics Platform",
+    description: "Comprehensive dashboarding API for cross-platform metrics.",
+    provider: "MetricStream",
+    type: "API",
+    price: "Freemium",
+    tags: ["Analytics", "dashboard", "metrics"],
+    publishedDate: "2025-10-01",
+    views: 750
+  },
+  // Finance
+  {
+    id: "9",
+    title: "Financial Data API",
+    description: "Real-time stock market and cryptocurrency data feed.",
+    provider: "FinTech Solutions",
+    type: "API",
+    price: "Freemium",
+    tags: ["Finance", "market", "stocks"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-10-08",
+    views: 2100
+  },
+  // Financial Services
+  {
+    id: "10",
+    title: "Financial Market Intelligence",
+    description: "Deep dive analysis reports generated by AI agents on market trends.",
+    provider: "QuantumFinance",
+    type: "Agent",
+    price: "Paid",
+    tags: ["Financial Services", "intelligence", "report"],
+    publishedDate: "2025-10-20",
+    views: 1500
+  },
+  // Operations
+  {
+    id: "11",
+    title: "Operations Co-Pilot",
+    description: "AI assistant for managing daily operational workflows and scheduling.",
+    provider: "OpsGenie",
+    type: "Agent",
+    price: "Paid",
+    tags: ["Operations", "workflow", "management"],
+    publishedDate: "2025-11-05",
+    views: 600
+  },
+  // Transport
+  {
+    id: "12",
     title: "Public Transit Schedule",
-    description: "Open data API for city bus and subway schedules across major metropolitan areas.",
-    provider: "KISTEP",
+    description: "Real-time bus and subway schedules for major metropolitan areas.",
+    provider: "CityTransport",
     type: "Dataset",
     price: "Free",
-    tags: ["transport", "public", "schedule"],
+    tags: ["Transport", "public", "schedule"],
     publishedDate: "2025-11-27",
-    views: 4100,
+    views: 4100
+  },
+  // Transportation
+  {
+    id: "13",
+    title: "Logistics Route Optimizer",
+    description: "API for optimizing delivery routes based on traffic and weather conditions.",
+    provider: "LogiTech",
+    type: "API",
+    price: "Paid",
+    tags: ["Transportation", "logistics", "routing"],
+    publishedDate: "2025-09-30",
+    views: 890
+  },
+  // Weather
+  {
+    id: "14",
+    title: "Global Weather API",
+    description: "Current weather, forecasts, and historical data for any location.",
+    provider: "MeteoGlobal",
+    type: "API",
+    price: "Freemium",
+    tags: ["Weather", "forecast", "climate"],
+    publishedDate: "2025-11-27",
+    views: 4300
+  },
+  {
+    id: "15",
+    title: "OpenWeather API",
+    description: "Simple and fast weather API for developers.",
+    provider: "OpenWeather",
+    type: "API",
+    price: "Freemium",
+    tags: ["Weather", "simple", "fast"],
+    publishedDate: "2025-11-20",
+    views: 3200
+  },
+  // Artificial Intelligence
+  {
+    id: "16",
+    title: "Multi-Agent AI Systems",
+    description: "Orchestration platform for multiple specialized AI agents.",
+    provider: "NextWave",
+    type: "Agent",
+    price: "Paid",
+    tags: ["Artificial Intelligence", "orchestration", "multi-agent"],
+    publishedDate: "2025-07-13",
+    views: 1500
+  },
+  // Industrial IoT
+  {
+    id: "17",
+    title: "Industrial IoT Data Stream",
+    description: "High-frequency sensor data stream for industrial machinery.",
+    provider: "IoTech",
+    type: "API",
+    price: "Freemium",
+    tags: ["Industrial IoT", "stream", "machinery"],
+    publishedDate: "2025-11-15",
+    views: 900
   }
 ];
 
