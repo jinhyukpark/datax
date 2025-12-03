@@ -39,14 +39,14 @@ export default function Home() {
             </span>
           </div>
           
-          <h1 className="mx-auto mb-6 max-w-4xl font-heading text-5xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl drop-shadow-sm">
+          <h1 className="mx-auto mb-6 max-w-4xl font-heading text-5xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl drop-shadow-sm text-balance">
             {t("Industrial Data APIs &", "산업 데이터 API 및")} <br className="hidden sm:block" />
             <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
               {t("AI Agents Marketplace", "AI 에이전트 마켓플레이스")}
             </span>
           </h1>
           
-          <p className="mx-auto mb-12 max-w-2xl text-lg text-slate-600 dark:text-slate-300 sm:text-xl leading-relaxed">
+          <p className="mx-auto mb-12 max-w-2xl text-lg text-slate-600 dark:text-slate-300 sm:text-xl leading-relaxed text-balance">
             {t(
               "Discover, connect, and manage premium data APIs and autonomous agents from public institutions and private enterprises.",
               "공공 기관 및 민간 기업의 프리미엄 데이터 API 및 자율 에이전트를 발견, 연결 및 관리하십시오."

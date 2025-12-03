@@ -127,7 +127,7 @@ export default function DataMap() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="font-heading text-3xl font-bold text-foreground">{t("Data Map", "데이터 맵")}</h1>
-          <p className="mt-2 text-muted-foreground">{t("Explore the comprehensive catalog of industrial data and AI agents.", "산업 데이터 및 AI 에이전트의 포괄적인 카탈로그를 탐색하세요.")}</p>
+          <p className="mt-2 text-muted-foreground text-balance">{t("Explore the comprehensive catalog of industrial data and AI agents.", "산업 데이터 및 AI 에이전트의 포괄적인 카탈로그를 탐색하세요.")}</p>
         </div>
 
         {/* Filters Section */}

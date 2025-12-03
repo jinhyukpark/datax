@@ -155,7 +155,7 @@ export default function Platforms() {
       <div className="container mx-auto px-4 py-12">
         <div className="mb-12 text-center">
           <h1 className="font-heading text-4xl font-bold text-foreground md:text-5xl">{t("Platforms", "플랫폼")}</h1>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto text-balance">
             {t("Discover the organizations powering the next generation of industrial data and AI", "차세대 산업 데이터와 AI를 주도하는 조직을 발견하세요")}
           </p>
         </div>
