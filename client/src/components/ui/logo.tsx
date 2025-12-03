@@ -9,49 +9,37 @@ interface LogoProps {
 export function Logo({ className, collapsed = false, light = false }: LogoProps) {
   return (
     <div className={cn("flex items-center gap-3", className)}>
-      {/* AI Symbol */}
-      <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
-        <div className="absolute inset-0 bg-blue-500/20 blur-lg rounded-full" />
+      {/* Geometric Symbol */}
+      <div className="relative flex h-10 w-10 shrink-0 items-center justify-center transform -skew-x-12">
         <svg 
           width="40" 
           height="40" 
           viewBox="0 0 40 40" 
           fill="none" 
           xmlns="http://www.w3.org/2000/svg"
-          className={cn("relative z-10 transition-all", light ? "text-white" : "text-slate-900 dark:text-white")}
+          className={cn("transition-all", light ? "text-white" : "text-slate-900 dark:text-white")}
         >
-          <defs>
-            <linearGradient id="ai-gradient" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#60A5FA" />
-              <stop offset="100%" stopColor="#A855F7" />
-            </linearGradient>
-          </defs>
-          
-          {/* Neural Nodes / Connections */}
+          {/* Abstract Geometric Shapes based on the screenshot style */}
           <path 
-            d="M20 10C20 10 12 14 12 22C12 30 20 34 20 34" 
-            stroke="url(#ai-gradient)" 
+            d="M20 4L28 12L20 20L12 12L20 4Z" 
+            stroke="currentColor" 
             strokeWidth="2.5" 
-            strokeLinecap="round"
-            className="opacity-80"
+            fill="none"
           />
           <path 
-            d="M20 10C20 10 28 14 28 22C28 30 20 34 20 34" 
-            stroke="url(#ai-gradient)" 
+            d="M12 20L4 28L12 36L20 28L12 20Z" 
+            stroke="currentColor" 
             strokeWidth="2.5" 
-            strokeLinecap="round"
-            className="opacity-80"
+            fill="none"
           />
-          
-          {/* Central Core */}
-          <circle cx="20" cy="22" r="4" fill="url(#ai-gradient)" />
-          
-          {/* Orbiting Electron/Spark */}
-          <circle cx="20" cy="6" r="2" fill="#60A5FA" className="animate-pulse" />
-          
-          {/* Data Lines */}
-          <path d="M12 22L20 22" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.5" />
-          <path d="M28 22L20 22" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.5" />
+          <path 
+            d="M28 20L36 28L28 36L20 28L28 20Z" 
+            stroke="currentColor" 
+            strokeWidth="2.5" 
+            fill="none"
+          />
+          {/* Central Accent */}
+          <rect x="18" y="18" width="4" height="4" fill="#3B82F6" /> 
         </svg>
       </div>
 
@@ -59,17 +47,17 @@ export function Logo({ className, collapsed = false, light = false }: LogoProps)
       {!collapsed && (
         <div className="flex flex-col justify-center leading-none">
           <span className={cn(
-            "text-[10px] font-bold uppercase tracking-[0.3em] text-blue-500",
-            light ? "text-blue-300" : "text-blue-600 dark:text-blue-400"
+            "text-[10px] font-black uppercase tracking-[0.3em] italic text-slate-400",
+            light ? "text-slate-300" : "text-slate-500 dark:text-slate-400"
           )}>
-            Industrial AI
+            Industrial
           </span>
           <div className={cn(
-            "font-heading text-2xl font-black tracking-tighter flex items-center",
+            "font-heading text-2xl font-black tracking-tighter flex items-center italic transform -skew-x-6",
             light ? "text-white" : "text-slate-900 dark:text-white"
           )}>
             DATA
-            <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-purple-600 ml-0.5">-X</span>
+            <span className="text-blue-500 dark:text-blue-400 ml-0.5">-X</span>
           </div>
         </div>
       )}
