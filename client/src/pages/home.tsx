@@ -28,7 +28,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-slate-50/80 dark:via-slate-950/50 dark:to-slate-950" />
           
           {/* Grid Pattern */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808025_1px,transparent_1px),linear-gradient(to_bottom,#80808025_1px,transparent_1px)] bg-[size:24px_24px]" />
         </div>
 
         <div className="container relative mx-auto px-4 text-center">
