@@ -40,9 +40,9 @@ export default function Home() {
           </div>
           
           <h1 className="mx-auto mb-6 max-w-4xl font-heading text-5xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl drop-shadow-sm text-balance">
-            {t("Industrial Data APIs &", "산업 데이터 API 및")} <br className="hidden sm:block" />
+            {t("Expansion of Industrial Data", "산업데이터의 확장")} <br className="hidden sm:block" />
             <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-              {t("AI Agents Marketplace", "AI 에이전트 마켓플레이스")}
+              {t("AI Agent Marketplace", "AI 에이전트 마켓 플레이스")}
             </span>
           </h1>
           
