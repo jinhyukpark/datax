@@ -28,8 +28,19 @@ const imageMap: Record<string, string> = {
   "abstract_shield_security_logo_icon": shieldIcon
 };
 
+import { useState } from "react";
+
 export default function Blog() {
   const { language, t } = useLanguage();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  // Extract unique categories
+  const categories = Array.from(new Set(BLOG_POSTS.map(post => post.category)));
+
+  // Filter posts based on selection
+  const filteredPosts = selectedCategory
+    ? BLOG_POSTS.filter(post => post.category === selectedCategory)
+    : BLOG_POSTS;
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
@@ -46,8 +57,38 @@ export default function Blog() {
             </p>
           </div>
 
+          {/* Category Filter */}
+          <div className="mb-10 flex flex-wrap items-center justify-center gap-2">
+            <button
+              onClick={() => setSelectedCategory(null)}
+              className={cn(
+                "rounded-full px-4 py-2 text-sm font-medium transition-all",
+                selectedCategory === null
+                  ? "bg-slate-900 text-white shadow-md dark:bg-slate-100 dark:text-slate-900"
+                  : "bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+              )}
+            >
+              {t("All Posts", "전체 보기")}
+            </button>
+            
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category === selectedCategory ? null : category)}
+                className={cn(
+                  "rounded-full px-4 py-2 text-sm font-medium transition-all",
+                  selectedCategory === category
+                    ? "bg-slate-900 text-white shadow-md dark:bg-slate-100 dark:text-slate-900"
+                    : "bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+                )}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {BLOG_POSTS.map((post) => (
+            {filteredPosts.map((post) => (
               <Link key={post.id} href={`/blog/${post.id}`}>
                 <a className="group block h-full">
                   <Card className="h-full overflow-hidden border-slate-200 bg-white shadow-sm transition-all hover:shadow-md hover:-translate-y-1 dark:border-slate-800 dark:bg-slate-900">

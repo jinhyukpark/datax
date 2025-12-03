@@ -21,7 +21,7 @@ export default function Home() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-20 pb-16 lg:pt-32 lg:pb-24">
+      <section className="relative overflow-hidden pt-10 pb-16 lg:pt-20 lg:pb-24">
         {/* Background decoration */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-white/80 dark:bg-slate-950/90" />
