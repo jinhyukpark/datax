@@ -17,7 +17,7 @@ export default function Home() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-16 pb-24 lg:pt-32 lg:pb-40">
+      <section className="relative overflow-hidden pt-16 pb-12 lg:pt-32 lg:pb-20">
         {/* Background decoration */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-white/90 dark:bg-slate-950/90" />
@@ -79,7 +79,7 @@ export default function Home() {
       </section>
 
       {/* Featured Resources Grid */}
-      <section className="container mx-auto px-4 py-16">
+      <section className="container mx-auto px-4 pt-4 pb-16">
         <div className="mb-8 flex items-center justify-between">
           <h2 className="font-heading text-2xl font-bold text-foreground">Featured Resources</h2>
           <div className="flex items-center gap-2">
