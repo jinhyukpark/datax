@@ -8,6 +8,7 @@ import Home from "@/pages/home";
 import DataMap from "@/pages/data-map";
 import ResourceDetail from "@/pages/resource-detail";
 import Blog from "@/pages/blog";
+import BlogDetail from "@/pages/blog-detail";
 import Advertise from "@/pages/advertise";
 import Platforms from "@/pages/platforms";
 
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/platforms" component={Platforms} />
       <Route path="/resource/:id" component={ResourceDetail} />
       <Route path="/blog" component={Blog} />
+      <Route path="/blog/:id" component={BlogDetail} />
       <Route path="/advertise" component={Advertise} />
       <Route component={NotFound} />
     </Switch>
