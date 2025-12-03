@@ -102,36 +102,6 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Sub Navbar (Secondary Line) */}
-      {(location.startsWith('/resource/') || (location.startsWith('/blog/') && location !== '/blog')) && (
-        <div className="w-full border-b border-slate-200 dark:border-slate-800 bg-white/50 backdrop-blur-sm dark:bg-slate-950/50">
-          <div className="container mx-auto flex h-12 items-center px-4 gap-6 text-sm">
-            <button className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors" onClick={() => window.history.back()}>
-              <ArrowLeft className="h-4 w-4" />
-              Back
-            </button>
-            
-            <div className="h-4 w-px bg-slate-200 dark:bg-slate-800" />
-            
-            <Link href="/data-map">
-              <a className={`font-medium transition-colors hover:text-primary ${location === '/data-map' ? 'text-foreground' : 'text-muted-foreground'}`}>
-                Data Map
-              </a>
-            </Link>
-            <Link href="/platforms">
-               <a className={`font-medium transition-colors hover:text-primary ${location === '/platforms' ? 'text-foreground' : 'text-muted-foreground'}`}>
-                Platforms
-              </a>
-            </Link>
-            <Link href="/submit">
-               <a className="font-medium text-muted-foreground transition-colors hover:text-primary">
-                Submit
-              </a>
-            </Link>
-          </div>
-        </div>
-      )}
-
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="border-b bg-background md:hidden absolute top-16 left-0 w-full z-40">
