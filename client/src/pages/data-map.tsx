@@ -12,6 +12,131 @@ import { useLanguage } from "@/lib/language-context";
 // Updated Bold Style Helpers
 const getCategoryStyles = (category: string) => {
   const styles: Record<string, { header: string, border: string, icon: string }> = {
+    "Analysis": { 
+      header: "bg-blue-600 dark:bg-blue-700", 
+      border: "border-blue-600/30 dark:border-blue-500/30",
+      icon: "text-blue-100" 
+    },
+    "Patent": { 
+      header: "bg-indigo-600 dark:bg-indigo-700", 
+      border: "border-indigo-600/30 dark:border-indigo-500/30",
+      icon: "text-indigo-100" 
+    },
+    "Science": { 
+      header: "bg-violet-600 dark:bg-violet-700", 
+      border: "border-violet-600/30 dark:border-violet-500/30",
+      icon: "text-violet-100" 
+    },
+    "Growth": { 
+      header: "bg-emerald-600 dark:bg-emerald-700", 
+      border: "border-emerald-600/30 dark:border-emerald-500/30",
+      icon: "text-emerald-100" 
+    },
+    "Consulting": { 
+      header: "bg-teal-600 dark:bg-teal-700", 
+      border: "border-teal-600/30 dark:border-teal-500/30",
+      icon: "text-teal-100" 
+    },
+    "Network": { 
+      header: "bg-cyan-600 dark:bg-cyan-700", 
+      border: "border-cyan-600/30 dark:border-cyan-500/30",
+      icon: "text-cyan-100" 
+    },
+    "Ecosystem": { 
+      header: "bg-sky-600 dark:bg-sky-700", 
+      border: "border-sky-600/30 dark:border-sky-500/30",
+      icon: "text-sky-100" 
+    },
+    "News": { 
+      header: "bg-orange-600 dark:bg-orange-700", 
+      border: "border-orange-600/30 dark:border-orange-500/30",
+      icon: "text-orange-100" 
+    },
+    "Robot": { 
+      header: "bg-red-600 dark:bg-red-700", 
+      border: "border-red-600/30 dark:border-red-500/30",
+      icon: "text-red-100" 
+    },
+    "Equipment": { 
+      header: "bg-amber-600 dark:bg-amber-700", 
+      border: "border-amber-600/30 dark:border-amber-500/30",
+      icon: "text-amber-100" 
+    },
+    "Startup": { 
+      header: "bg-lime-600 dark:bg-lime-700", 
+      border: "border-lime-600/30 dark:border-lime-500/30",
+      icon: "text-lime-100" 
+    },
+    "Investment": { 
+      header: "bg-green-600 dark:bg-green-700", 
+      border: "border-green-600/30 dark:border-green-500/30",
+      icon: "text-green-100" 
+    },
+    "Innovation": { 
+      header: "bg-fuchsia-600 dark:bg-fuchsia-700", 
+      border: "border-fuchsia-600/30 dark:border-fuchsia-500/30",
+      icon: "text-fuchsia-100" 
+    },
+    "Ecommerce": { 
+      header: "bg-pink-600 dark:bg-pink-700", 
+      border: "border-pink-600/30 dark:border-pink-500/30",
+      icon: "text-pink-100" 
+    },
+    "Finance": { 
+      header: "bg-emerald-600 dark:bg-emerald-700", 
+      border: "border-emerald-600/30 dark:border-emerald-500/30",
+      icon: "text-emerald-100" 
+    },
+    "M&A": { 
+      header: "bg-rose-600 dark:bg-rose-700", 
+      border: "border-rose-600/30 dark:border-rose-500/30",
+      icon: "text-rose-100" 
+    },
+    "Energy": { 
+      header: "bg-yellow-600 dark:bg-yellow-700", 
+      border: "border-yellow-600/30 dark:border-yellow-500/30",
+      icon: "text-yellow-100" 
+    },
+    "Trade": { 
+      header: "bg-slate-600 dark:bg-slate-700", 
+      border: "border-slate-600/30 dark:border-slate-500/30",
+      icon: "text-slate-100" 
+    },
+    "Material": { 
+      header: "bg-stone-600 dark:bg-stone-700", 
+      border: "border-stone-600/30 dark:border-stone-500/30",
+      icon: "text-stone-100" 
+    },
+    "Industrial": { 
+      header: "bg-zinc-600 dark:bg-zinc-700", 
+      border: "border-zinc-600/30 dark:border-zinc-500/30",
+      icon: "text-zinc-100" 
+    },
+    "Spatial": { 
+      header: "bg-neutral-600 dark:bg-neutral-700", 
+      border: "border-neutral-600/30 dark:border-neutral-500/30",
+      icon: "text-neutral-100" 
+    },
+    "Power": { 
+      header: "bg-red-500 dark:bg-red-600", 
+      border: "border-red-500/30 dark:border-red-400/30",
+      icon: "text-red-100" 
+    },
+    "R&D": { 
+      header: "bg-blue-500 dark:bg-blue-600", 
+      border: "border-blue-500/30 dark:border-blue-400/30",
+      icon: "text-blue-100" 
+    },
+    "Waste": { 
+      header: "bg-green-500 dark:bg-green-600", 
+      border: "border-green-500/30 dark:border-green-400/30",
+      icon: "text-green-100" 
+    },
+    "Oil": { 
+      header: "bg-gray-600 dark:bg-gray-700", 
+      border: "border-gray-600/30 dark:border-gray-500/30",
+      icon: "text-gray-100" 
+    },
     "AI Assistant": { 
       header: "bg-blue-600 dark:bg-blue-700", 
       border: "border-blue-600/30 dark:border-blue-500/30",
@@ -37,11 +162,6 @@ const getCategoryStyles = (category: string) => {
       border: "border-pink-600/30 dark:border-pink-500/30",
       icon: "text-pink-100"
     },
-    "Finance": { 
-      header: "bg-emerald-600 dark:bg-emerald-700", 
-      border: "border-emerald-600/30 dark:border-emerald-500/30",
-      icon: "text-emerald-100"
-    },
     "Financial Services": { 
       header: "bg-teal-600 dark:bg-teal-700", 
       border: "border-teal-600/30 dark:border-teal-500/30",
@@ -65,12 +185,12 @@ const getCategoryStyles = (category: string) => {
     "Artificial Intelligence": { 
       header: "bg-violet-600 dark:bg-violet-700", 
       border: "border-violet-600/30 dark:border-violet-500/30",
-      icon: "text-violet-100"
+      icon: "text-violet-100" 
     },
     "Industrial IoT": { 
       header: "bg-slate-700 dark:bg-slate-800", 
       border: "border-slate-600/30 dark:border-slate-500/30",
-      icon: "text-slate-100"
+      icon: "text-slate-100" 
     },
   };
   return styles[category] || { 
