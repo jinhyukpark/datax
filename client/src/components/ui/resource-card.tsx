@@ -59,19 +59,21 @@ export function ResourceCard({ resource }: ResourceCardProps) {
               getTypeIcon()
             )}
           </div>
-          <Badge 
-            variant={resource.price === "Free" ? "secondary" : "outline"}
-            className={cn(
-              "font-medium h-fit",
-              resource.price === "Paid" && "border-purple-200 bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-300",
-              resource.price === "Freemium" && "border-orange-200 bg-orange-50 text-orange-700 dark:bg-orange-900/20 dark:text-orange-300"
-            )}
-          >
-            {resource.price}
-          </Badge>
-          <div className="absolute top-5 right-16 flex items-center gap-1 rounded-full bg-black/5 px-2 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-white/10 dark:text-slate-300">
-            <Eye className="h-3 w-3" />
-            {resource.views > 1000 ? `${(resource.views / 1000).toFixed(1)}k` : resource.views}
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+              <Eye className="h-3 w-3" />
+              {resource.views > 1000 ? `${(resource.views / 1000).toFixed(1)}k` : resource.views}
+            </div>
+            <Badge 
+              variant={resource.price === "Free" ? "secondary" : "outline"}
+              className={cn(
+                "font-medium h-fit",
+                resource.price === "Paid" && "border-purple-200 bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-300",
+                resource.price === "Freemium" && "border-orange-200 bg-orange-50 text-orange-700 dark:bg-orange-900/20 dark:text-orange-300"
+              )}
+            >
+              {resource.price}
+            </Badge>
           </div>
         </div>
         <Link href={`/resource/${resource.id}`}>
