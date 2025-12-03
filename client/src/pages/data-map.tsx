@@ -91,7 +91,7 @@ export default function DataMap() {
             </div>
 
             {/* Grid */}
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {filteredResources.map(resource => (
                 <ResourceCard key={resource.id} resource={resource} />
               ))}

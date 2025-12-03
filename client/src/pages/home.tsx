@@ -9,8 +9,8 @@ import { Link } from "wouter";
 import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
 
 export default function Home() {
-  // Get top 6 newest resources
-  const featuredResources = RESOURCES.slice(0, 6);
+  // Get top 8 newest resources
+  const featuredResources = RESOURCES.slice(0, 8);
 
   return (
     <div className="min-h-screen bg-slate-50/50 font-sans dark:bg-slate-950">
@@ -91,7 +91,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {featuredResources.map((resource) => (
             <ResourceCard key={resource.id} resource={resource} />
           ))}
