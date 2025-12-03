@@ -2,10 +2,17 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Database, Menu, X, Search, Globe, LogIn } from "lucide-react";
 import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Navbar() {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [language, setLanguage] = useState("English");
 
   const navLinks = [
     { name: "Data Map", href: "/data-map" },
@@ -48,10 +55,23 @@ export function Navbar() {
 
         {/* Actions */}
         <div className="hidden items-center gap-4 md:flex">
-          <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground">
-            <Globe className="h-4 w-4" />
-            English
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground">
+                <Globe className="h-4 w-4" />
+                {language}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setLanguage("English")}>
+                English
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage("한국어")}>
+                한국어
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Link href="/submit">
              <Button size="sm" className="bg-foreground text-background hover:bg-foreground/90">
               + Submit
@@ -93,6 +113,10 @@ export function Navbar() {
               </Link>
             ))}
             <div className="mt-4 flex flex-col gap-2">
+              <Button variant="ghost" size="sm" className="justify-start gap-2" onClick={() => setLanguage(language === "English" ? "한국어" : "English")}>
+                <Globe className="h-4 w-4" />
+                {language}
+              </Button>
               <Button className="w-full">+ Submit Resource</Button>
               <Button variant="outline" className="w-full">Login</Button>
             </div>
