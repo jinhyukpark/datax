@@ -47,13 +47,13 @@ export default function Home() {
           {/* Search Bar */}
           <div className="mx-auto max-w-2xl">
             <div className="relative flex items-center rounded-2xl bg-white p-2 shadow-lg ring-1 ring-slate-200/50 dark:bg-slate-900 dark:ring-slate-800">
-              <Search className="ml-3 h-5 w-5 text-muted-foreground" />
+              <Search className="ml-4 h-5 w-5 text-muted-foreground shrink-0" />
               <Input 
                 type="text" 
                 placeholder="Search for APIs, agents, or providers..." 
-                className="border-0 bg-transparent text-base placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="flex-1 border-none bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 text-base h-12 px-4 placeholder:text-muted-foreground/70"
               />
-              <Button size="lg" className="rounded-xl px-8">
+              <Button size="lg" className="rounded-xl px-8 shrink-0 h-12">
                 Search
               </Button>
             </div>
