@@ -11,6 +11,7 @@ import Blog from "@/pages/blog";
 import BlogDetail from "@/pages/blog-detail";
 import Advertise from "@/pages/advertise";
 import Platforms from "@/pages/platforms";
+import PublisherProfile from "@/pages/publisher-profile";
 import { LanguageProvider } from "./lib/language-context";
 
 function Router() {
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/data-map" component={DataMap} />
       <Route path="/platforms" component={Platforms} />
       <Route path="/resource/:id" component={ResourceDetail} />
+      <Route path="/publisher/:id" component={PublisherProfile} />
       <Route path="/blog" component={Blog} />
       <Route path="/blog/:id" component={BlogDetail} />
       <Route path="/advertise" component={Advertise} />

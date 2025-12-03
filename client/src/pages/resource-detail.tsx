@@ -375,8 +375,10 @@ export default function ResourceDetail() {
                       <p className="text-xs text-muted-foreground">Verified Publisher</p>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm" className="w-full text-xs h-8">
-                    View Publisher Profile
+                  <Button variant="outline" size="sm" className="w-full text-xs h-8" asChild>
+                    <Link href={`/publisher/${encodeURIComponent(resource.provider)}`}>
+                      View Publisher Profile
+                    </Link>
                   </Button>
                 </div>
               </CardContent>
