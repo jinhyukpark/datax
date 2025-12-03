@@ -41,19 +41,26 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:gap-8">
-            {navLinks.map((link) => (
-              <Link key={link.name} href={link.href}>
-                <a
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    location === link.href
-                      ? "text-primary"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  {link.name}
-                </a>
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              // Check if the link is active, handling sub-routes
+              const isActive = location === link.href || 
+                               (location.startsWith(link.href) && link.href !== '/') ||
+                               (link.href === '/platforms' && location.startsWith('/resource/'));
+                               
+              return (
+                <Link key={link.name} href={link.href}>
+                  <a
+                    className={`text-sm font-medium transition-colors hover:text-primary ${
+                      isActive
+                        ? "text-primary font-semibold"
+                        : "text-muted-foreground"
+                    }`}
+                  >
+                    {link.name}
+                  </a>
+                </Link>
+              );
+            })}
           </div>
 
           {/* Actions */}
