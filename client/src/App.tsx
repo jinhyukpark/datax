@@ -12,6 +12,8 @@ import BlogDetail from "@/pages/blog-detail";
 import Advertise from "@/pages/advertise";
 import Platforms from "@/pages/platforms";
 import PublisherProfile from "@/pages/publisher-profile";
+import Login from "@/pages/login";
+import Signup from "@/pages/signup";
 import { LanguageProvider } from "./lib/language-context";
 
 function Router() {
@@ -25,6 +27,8 @@ function Router() {
       <Route path="/blog" component={Blog} />
       <Route path="/blog/:id" component={BlogDetail} />
       <Route path="/advertise" component={Advertise} />
+      <Route path="/login" component={Login} />
+      <Route path="/signup" component={Signup} />
       <Route component={NotFound} />
     </Switch>
   );
