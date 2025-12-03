@@ -1,4 +1,5 @@
-import { Database, Github, Twitter, Linkedin } from "lucide-react";
+import { Github, Twitter, Linkedin } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 export function Footer() {
   return (
@@ -7,12 +8,7 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-4">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <Database className="h-5 w-5" />
-              </div>
-              <span className="font-heading text-xl font-bold text-foreground">
-                Data-X
-              </span>
+              <Logo />
             </div>
             <p className="text-sm text-muted-foreground">
               The premier marketplace for industrial data APIs and autonomous agents.

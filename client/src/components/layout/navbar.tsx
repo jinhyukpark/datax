@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Globe, LogIn, ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import { Logo } from "@/components/ui/logo";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,16 +27,11 @@ export function Navbar() {
     <div className="sticky top-0 z-50 w-full bg-white dark:bg-slate-950">
       {/* Top Navbar */}
       <nav className="w-full border-b border-slate-200 dark:border-slate-800">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <div className="container mx-auto flex h-18 items-center justify-between px-4 py-2">
           {/* Logo */}
           <Link href="/">
-            <a className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
-                <span className="font-bold text-sm">EM</span>
-              </div>
-              <span className="font-heading text-xl font-bold tracking-tight text-foreground">
-                EM-Data
-              </span>
+            <a className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+              <Logo />
             </a>
           </Link>
 
