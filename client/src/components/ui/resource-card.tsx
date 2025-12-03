@@ -49,7 +49,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
 
   return (
     <Card className="card-hover group flex h-full flex-col overflow-hidden border-border/50 bg-white dark:bg-slate-900">
-      <CardHeader className="p-5">
+      <CardHeader className="p-5 pb-2">
         <div className="flex items-start justify-between">
           {/* INCREASED SIZE: h-16 w-16 for container, h-10 w-10 for image */}
           <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-slate-50 border border-slate-100 shadow-sm dark:bg-slate-800 dark:border-slate-700">
@@ -71,14 +71,14 @@ export function ResourceCard({ resource }: ResourceCardProps) {
           </Badge>
         </div>
         <Link href={`/resource/${resource.id}`}>
-          <a className="mt-5 block">
-            <h3 className="font-heading text-lg font-semibold leading-tight text-foreground group-hover:text-primary line-clamp-2 h-12">
+          <a className="mt-4 block">
+            <h3 className="font-heading text-lg font-semibold leading-tight text-foreground group-hover:text-primary line-clamp-2">
               {language === '한국어' && resource.titleKo ? resource.titleKo : resource.title}
             </h3>
           </a>
         </Link>
       </CardHeader>
-      <CardContent className="flex-1 px-5 pb-2">
+      <CardContent className="flex-1 px-5 pb-2 pt-1">
         <p className="line-clamp-3 text-sm text-muted-foreground">
           {language === '한국어' && resource.descriptionKo ? resource.descriptionKo : resource.description}
         </p>
