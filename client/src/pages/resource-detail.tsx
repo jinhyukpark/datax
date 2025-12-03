@@ -7,6 +7,13 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselNext, 
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { 
   ExternalLink, 
   Eye, 
   Calendar, 
@@ -47,6 +54,13 @@ export default function ResourceDetail() {
 
   const displayTitle = language === '한국어' && resource.titleKo ? resource.titleKo : resource.title;
   const displayDesc = language === '한국어' && resource.descriptionKo ? resource.descriptionKo : resource.description;
+
+  const previewImages = [
+    { src: heroBg, label: "Interactive Dashboard View", views: resource.views },
+    { src: heroBg, label: "Data Analytics Panel", views: Math.floor(resource.views * 0.85) },
+    { src: heroBg, label: "API Integration Topology", views: Math.floor(resource.views * 0.7) },
+    { src: heroBg, label: "Real-time Monitoring", views: Math.floor(resource.views * 0.6) },
+  ];
 
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 font-sans">
@@ -111,27 +125,39 @@ export default function ResourceDetail() {
           
           {/* Left Column - Tabs & Content */}
           <div className="lg:col-span-8 space-y-8">
-            {/* Hero Image */}
-            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-900 shadow-sm dark:border-slate-800">
-              <div className="relative aspect-video w-full">
-                 <img 
-                   src={heroBg} 
-                   alt="Hero" 
-                   className="absolute inset-0 h-full w-full object-cover opacity-90"
-                 />
-                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                 <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-                   <div className="text-white">
-                     <p className="text-sm font-medium opacity-80">Preview</p>
-                     <p className="font-bold">Interactive Dashboard View</p>
-                   </div>
-                   <Badge className="bg-black/50 backdrop-blur-md border-none text-white hover:bg-black/60">
-                     <Eye className="mr-1.5 h-3 w-3" />
-                     {resource.views.toLocaleString()} views
-                   </Badge>
-                 </div>
-              </div>
-            </div>
+            {/* Hero Image Carousel */}
+            <Carousel className="w-full group">
+              <CarouselContent>
+                {previewImages.map((img, index) => (
+                  <CarouselItem key={index}>
+                    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-900 shadow-sm dark:border-slate-800">
+                      <div className="relative aspect-video w-full">
+                         <img 
+                           src={img.src} 
+                           alt={img.label} 
+                           className="absolute inset-0 h-full w-full object-cover opacity-90"
+                         />
+                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+                           <div className="text-white">
+                             <p className="text-xs font-medium opacity-70 mb-1">
+                               Preview {index + 1} of {previewImages.length}
+                             </p>
+                             <p className="font-bold text-lg tracking-tight">{img.label}</p>
+                           </div>
+                           <Badge className="bg-black/40 backdrop-blur-md border-white/10 text-white hover:bg-black/60 transition-colors">
+                             <Eye className="mr-1.5 h-3 w-3" />
+                             {img.views.toLocaleString()} views
+                           </Badge>
+                         </div>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-4 bg-black/20 border-white/20 text-white hover:bg-black/40 hover:border-white/40 opacity-0 group-hover:opacity-100 transition-all" />
+              <CarouselNext className="right-4 bg-black/20 border-white/20 text-white hover:bg-black/40 hover:border-white/40 opacity-0 group-hover:opacity-100 transition-all" />
+            </Carousel>
 
             {/* Tabs Interface */}
             <Tabs defaultValue="overview" className="w-full">
