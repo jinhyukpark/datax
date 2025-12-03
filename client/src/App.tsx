@@ -14,6 +14,7 @@ import Platforms from "@/pages/platforms";
 import PublisherProfile from "@/pages/publisher-profile";
 import Login from "@/pages/login";
 import Signup from "@/pages/signup";
+import MyPage from "@/pages/my-page";
 import { LanguageProvider } from "./lib/language-context";
 
 function Router() {
@@ -29,6 +30,7 @@ function Router() {
       <Route path="/advertise" component={Advertise} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
+      <Route path="/my-page" component={MyPage} />
       <Route component={NotFound} />
     </Switch>
   );

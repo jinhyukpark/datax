@@ -83,10 +83,14 @@ export function Navbar() {
                 + Submit
               </Button>
             </Link>
-            <Link href="/login">
-              <Button variant="outline" size="sm" className="gap-2 h-9">
-                <LogIn className="h-4 w-4" />
-                Login
+            
+            {/* Mock Logged In State - Link to My Page */}
+            <Link href="/my-page">
+              <Button variant="ghost" size="sm" className="gap-2 h-9 px-2 rounded-full border border-slate-200 dark:border-slate-800">
+                <div className="h-6 w-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs">
+                  KM
+                </div>
+                <span className="text-sm font-medium hidden sm:inline">Min-su</span>
               </Button>
             </Link>
           </div>

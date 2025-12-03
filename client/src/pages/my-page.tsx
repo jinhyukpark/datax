@@ -1,0 +1,318 @@
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { useLanguage } from "@/lib/language-context";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import { ResourceCard } from "@/components/ui/resource-card";
+import { RESOURCES } from "@/lib/data";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Settings, Share2, User } from "lucide-react";
+import { useState } from "react";
+import { useLocation } from "wouter";
+
+export default function MyPage() {
+  const { t } = useLanguage();
+  const [, setLocation] = useLocation();
+  
+  // Mock User Data
+  const [user, setUser] = useState({
+    name: "Kim Min-su",
+    email: "minsu.kim@example.com",
+    avatar: "https://github.com/shadcn.png",
+    company: "Data Innovation Lab",
+    role: "Data Analyst"
+  });
+
+  // Mock Favorites (using existing resources)
+  const favorites = RESOURCES.slice(0, 3);
+
+  // Mock Purchase History
+  const purchases = [
+    {
+      id: "p1",
+      resourceId: "4",
+      title: "Corporate Growth Big Data Center",
+      date: "2025-11-20",
+      price: "₩150,000",
+      status: "Completed"
+    },
+    {
+      id: "p2",
+      resourceId: "10",
+      title: "K-tools Smart Equipment Management Platform",
+      date: "2025-10-05",
+      price: "₩50,000",
+      status: "Completed"
+    }
+  ];
+
+  // Mock My Shared Data
+  const myData = [
+    {
+      id: "m1",
+      title: "Seoul Public Transport Usage 2024",
+      description: "Comprehensive analysis of public transport usage patterns in Seoul.",
+      views: 1250,
+      downloads: 340,
+      status: "Active",
+      date: "2025-09-15"
+    },
+    {
+      id: "m2",
+      title: "Korean Coffee Consumption Trends",
+      description: "Market research data on coffee consumption habits across age groups.",
+      views: 890,
+      downloads: 120,
+      status: "Active",
+      date: "2025-10-22"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
+      <Navbar />
+      
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row gap-8">
+          
+          {/* Sidebar / User Profile Summary */}
+          <div className="w-full md:w-1/4 space-y-6">
+            <Card>
+              <CardContent className="pt-6 flex flex-col items-center text-center">
+                <div className="relative mb-4 group">
+                  <Avatar className="h-24 w-24 cursor-pointer border-2 border-slate-200 dark:border-slate-800">
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                    <AvatarFallback>KM</AvatarFallback>
+                  </Avatar>
+                  <div className="absolute bottom-0 right-0 bg-primary text-white p-1.5 rounded-full cursor-pointer hover:bg-primary/90 transition-colors">
+                    <Camera className="h-4 w-4" />
+                  </div>
+                </div>
+                <h2 className="text-xl font-bold">{user.name}</h2>
+                <p className="text-sm text-muted-foreground mb-2">{user.email}</p>
+                <p className="text-xs font-medium bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-600 dark:text-slate-400">
+                  {user.role}
+                </p>
+              </CardContent>
+              <Separator />
+              <CardFooter className="flex flex-col p-2">
+                <Button variant="ghost" className="w-full justify-start gap-2 h-10">
+                  <Settings className="h-4 w-4" /> {t("Settings", "설정")}
+                </Button>
+                <Button variant="ghost" className="w-full justify-start gap-2 h-10 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20">
+                  <ArrowRight className="h-4 w-4 rotate-180" /> {t("Log out", "로그아웃")}
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
+
+          {/* Main Content Area */}
+          <div className="w-full md:w-3/4">
+            <h1 className="text-3xl font-bold mb-6">{t("My Page", "마이 페이지")}</h1>
+            
+            <Tabs defaultValue="profile" className="w-full">
+              <TabsList className="grid w-full grid-cols-4 mb-8">
+                <TabsTrigger value="profile" className="gap-2">
+                  <User className="h-4 w-4 hidden sm:inline" />
+                  {t("Profile", "프로필")}
+                </TabsTrigger>
+                <TabsTrigger value="favorites" className="gap-2">
+                  <Heart className="h-4 w-4 hidden sm:inline" />
+                  {t("Favorites", "즐겨찾기")}
+                </TabsTrigger>
+                <TabsTrigger value="purchases" className="gap-2">
+                  <CreditCard className="h-4 w-4 hidden sm:inline" />
+                  {t("Purchases", "구매 내역")}
+                </TabsTrigger>
+                <TabsTrigger value="my-data" className="gap-2">
+                  <Share2 className="h-4 w-4 hidden sm:inline" />
+                  {t("My Data", "공유 데이터")}
+                </TabsTrigger>
+              </TabsList>
+
+              {/* Profile Tab */}
+              <TabsContent value="profile" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{t("Account Information", "계정 정보")}</CardTitle>
+                    <CardDescription>
+                      {t("Update your profile details and manage your account settings.", "프로필 정보를 업데이트하고 계정 설정을 관리하세요.")}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">{t("Full Name", "이름")}</Label>
+                        <Input id="name" defaultValue={user.name} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">{t("Email", "이메일")}</Label>
+                        <Input id="email" defaultValue={user.email} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="company">{t("Company", "회사/소속")}</Label>
+                        <Input id="company" defaultValue={user.company} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="role">{t("Role", "직책")}</Label>
+                        <Input id="role" defaultValue={user.role} />
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-end">
+                    <Button>{t("Save Changes", "변경사항 저장")}</Button>
+                  </CardFooter>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{t("Security", "보안")}</CardTitle>
+                    <CardDescription>
+                      {t("Manage your password and account security.", "비밀번호 및 계정 보안을 관리하세요.")}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="current-password">{t("Current Password", "현재 비밀번호")}</Label>
+                      <Input id="current-password" type="password" />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="new-password">{t("New Password", "새 비밀번호")}</Label>
+                        <Input id="new-password" type="password" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="confirm-password">{t("Confirm Password", "비밀번호 확인")}</Label>
+                        <Input id="confirm-password" type="password" />
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-end">
+                    <Button variant="outline" className="gap-2">
+                      <Key className="h-4 w-4" /> {t("Change Password", "비밀번호 변경")}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </TabsContent>
+
+              {/* Favorites Tab */}
+              <TabsContent value="favorites">
+                <div className="mb-4">
+                  <h2 className="text-xl font-semibold mb-2">{t("Favorite Resources", "관심 상품")}</h2>
+                  <p className="text-muted-foreground">{t("Data products you have bookmarked.", "즐겨찾기한 데이터 상품 목록입니다.")}</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {favorites.map((resource) => (
+                    <ResourceCard key={resource.id} resource={resource} />
+                  ))}
+                </div>
+              </TabsContent>
+
+              {/* Purchases Tab */}
+              <TabsContent value="purchases">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{t("Purchase History", "구매 내역")}</CardTitle>
+                    <CardDescription>
+                      {t("View your transaction history and access purchased data.", "거래 내역을 확인하고 구매한 데이터에 액세스하세요.")}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="rounded-md border">
+                      <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 font-medium text-sm">
+                        <div className="col-span-6 md:col-span-5">{t("Product", "상품명")}</div>
+                        <div className="col-span-3 md:col-span-2">{t("Date", "날짜")}</div>
+                        <div className="col-span-3 md:col-span-2">{t("Amount", "금액")}</div>
+                        <div className="hidden md:col-span-2 md:block">{t("Status", "상태")}</div>
+                        <div className="hidden md:col-span-1 md:block text-center">{t("Action", "관리")}</div>
+                      </div>
+                      <div className="divide-y">
+                        {purchases.map((item) => (
+                          <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+                            <div className="col-span-6 md:col-span-5 font-medium truncate">{item.title}</div>
+                            <div className="col-span-3 md:col-span-2 text-muted-foreground">{item.date}</div>
+                            <div className="col-span-3 md:col-span-2 font-medium">{item.price}</div>
+                            <div className="hidden md:col-span-2 md:block">
+                              <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 shadow hover:bg-green-100/80">
+                                {item.status}
+                              </span>
+                            </div>
+                            <div className="hidden md:col-span-1 md:block text-center">
+                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <Download className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* My Shared Data Tab */}
+              <TabsContent value="my-data">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h2 className="text-xl font-semibold mb-1">{t("Shared Data", "공유한 데이터")}</h2>
+                    <p className="text-muted-foreground text-sm">{t("Manage data you have uploaded to the platform.", "플랫폼에 업로드한 데이터를 관리하세요.")}</p>
+                  </div>
+                  <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700">
+                    <Package className="h-4 w-4" />
+                    {t("Upload New Data", "새 데이터 업로드")}
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  {myData.map((item) => (
+                    <Card key={item.id} className="overflow-hidden">
+                      <div className="flex flex-col md:flex-row">
+                        <div className="p-6 flex-grow">
+                          <div className="flex justify-between items-start mb-2">
+                            <h3 className="text-lg font-bold hover:text-primary cursor-pointer">{item.title}</h3>
+                            <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                              {item.status}
+                            </span>
+                          </div>
+                          <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{item.description}</p>
+                          <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <History className="h-4 w-4" />
+                              <span>{item.date}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Eye className="h-4 w-4" />
+                              <span>{item.views} views</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Download className="h-4 w-4" />
+                              <span>{item.downloads} downloads</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l">
+                          <Button variant="outline" size="sm" className="w-full">
+                            {t("Edit", "수정")}
+                          </Button>
+                          <Button variant="outline" size="sm" className="w-full">
+                            {t("Analytics", "통계")}
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </main>
+      
+      <Footer />
+    </div>
+  );
+}
