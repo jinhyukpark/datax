@@ -35,6 +35,7 @@ export interface Resource {
 }
 
 export const RESOURCES: Resource[] = [
+  // Analysis
   {
     id: "1",
     title: "Social Trend Analysis",
@@ -50,6 +51,22 @@ export const RESOURCES: Resource[] = [
     views: 297
   },
   {
+    id: "101",
+    title: "Consumer Sentiment Analysis",
+    titleKo: "소비자 감성 분석",
+    description: "Real-time sentiment analysis of consumer reviews and feedback across multiple platforms.",
+    descriptionKo: "다양한 플랫폼의 소비자 리뷰 및 피드백에 대한 실시간 감성 분석",
+    provider: "소셜 트랜드 분석",
+    type: "API",
+    price: "Paid",
+    tags: ["Analysis", "Consumer", "Sentiment"],
+    image: "abstract_ai_hexagon_logo_icon",
+    publishedDate: "2025-08-05",
+    views: 150
+  },
+  
+  // Patent
+  {
     id: "2",
     title: "Image-based Patent Analysis Service",
     titleKo: "이미지 기반 특허 분석 서비스",
@@ -63,6 +80,22 @@ export const RESOURCES: Resource[] = [
     publishedDate: "2025-08-01",
     views: 411
   },
+  {
+    id: "201",
+    title: "Global Patent Search API",
+    titleKo: "글로벌 특허 검색 API",
+    description: "Comprehensive search API for international patents with advanced filtering options.",
+    descriptionKo: "고급 필터링 옵션을 갖춘 국제 특허에 대한 포괄적인 검색 API",
+    provider: "이미지 기반 특허 분석 서비스",
+    type: "API",
+    price: "Freemium",
+    tags: ["Patent", "Search", "Global"],
+    image: "abstract_ai_hexagon_logo_icon",
+    publishedDate: "2025-09-12",
+    views: 320
+  },
+
+  // Science
   {
     id: "3",
     title: "Wemeet Science",
@@ -78,6 +111,22 @@ export const RESOURCES: Resource[] = [
     views: 377
   },
   {
+    id: "301",
+    title: "Research Paper Summarizer",
+    titleKo: "연구 논문 요약기",
+    description: "AI agent that summarizes complex scientific papers into concise abstracts.",
+    descriptionKo: "복잡한 과학 논문을 간결한 초록으로 요약하는 AI 에이전트",
+    provider: "위밋 사이언스",
+    type: "Agent",
+    price: "Paid",
+    tags: ["Science", "Research", "Summary"],
+    image: "abstract_ai_hexagon_logo_icon",
+    publishedDate: "2025-10-01",
+    views: 210
+  },
+
+  // Growth
+  {
     id: "4",
     title: "Corporate Growth Big Data Center",
     titleKo: "기업성장 빅데이터 센터",
@@ -91,6 +140,22 @@ export const RESOURCES: Resource[] = [
     publishedDate: "2025-08-20",
     views: 389
   },
+  {
+    id: "401",
+    title: "Market Expansion Predictor",
+    titleKo: "시장 확장 예측기",
+    description: "Predictive analytics tool for identifying potential market expansion opportunities.",
+    descriptionKo: "잠재적인 시장 확장 기회를 식별하기 위한 예측 분석 도구",
+    provider: "기업성장 빅데이터 센터",
+    type: "API",
+    price: "Paid",
+    tags: ["Growth", "Market", "Prediction"],
+    image: "abstract_ai_hexagon_logo_icon",
+    publishedDate: "2025-09-05",
+    views: 180
+  },
+
+  // Consulting
   {
     id: "5",
     title: "Digital Industrial Innovation Maturity Diagnosis",
@@ -106,6 +171,22 @@ export const RESOURCES: Resource[] = [
     views: 1191
   },
   {
+    id: "501",
+    title: "Strategy Consultant AI",
+    titleKo: "전략 컨설턴트 AI",
+    description: "AI-powered business strategy consultant for small and medium enterprises.",
+    descriptionKo: "중소기업을 위한 AI 기반 비즈니스 전략 컨설턴트",
+    provider: "디지털 산업혁신 성숙도 진단",
+    type: "Agent",
+    price: "Paid",
+    tags: ["Consulting", "Strategy", "Business"],
+    image: "abstract_ai_hexagon_logo_icon",
+    publishedDate: "2025-10-15",
+    views: 450
+  },
+
+  // Network
+  {
     id: "6",
     title: "Regional Industry Transaction Network Analysis",
     titleKo: "지역산업 거래망 분석",
@@ -119,6 +200,22 @@ export const RESOURCES: Resource[] = [
     publishedDate: "2025-09-15",
     views: 324
   },
+  {
+    id: "601",
+    title: "Supply Chain Network Visualizer",
+    titleKo: "공급망 네트워크 시각화",
+    description: "Tool to visualize and analyze supply chain networks for improved efficiency.",
+    descriptionKo: "효율성 향상을 위해 공급망 네트워크를 시각화하고 분석하는 도구",
+    provider: "지역산업 거래망 분석",
+    type: "API",
+    price: "Paid",
+    tags: ["Network", "Supply Chain", "Visualization"],
+    image: "abstract_ai_hexagon_logo_icon",
+    publishedDate: "2025-10-20",
+    views: 290
+  },
+
+  // Ecosystem
   {
     id: "7",
     title: "Regional Industry Ecosystem Analysis",
@@ -134,6 +231,22 @@ export const RESOURCES: Resource[] = [
     views: 526
   },
   {
+    id: "701",
+    title: "Tech Ecosystem Monitor",
+    titleKo: "테크 생태계 모니터",
+    description: "Real-time monitoring of the technology startup ecosystem and investment trends.",
+    descriptionKo: "기술 스타트업 생태계 및 투자 동향에 대한 실시간 모니터링",
+    provider: "지역산업 생태계 분석",
+    type: "Dataset",
+    price: "Freemium",
+    tags: ["Ecosystem", "Tech", "Startup"],
+    image: "abstract_ai_hexagon_logo_icon",
+    publishedDate: "2025-11-01",
+    views: 310
+  },
+
+  // News
+  {
     id: "8",
     title: "Main Industry News Trend Analysis",
     titleKo: "주력산업 뉴스트랜드 분석",
@@ -147,6 +260,22 @@ export const RESOURCES: Resource[] = [
     publishedDate: "2025-11-15",
     views: 646
   },
+  {
+    id: "801",
+    title: "Global Financial News Feed",
+    titleKo: "글로벌 금융 뉴스 피드",
+    description: "Aggregated real-time financial news from major global sources.",
+    descriptionKo: "주요 글로벌 소스의 실시간 금융 뉴스 집계",
+    provider: "주력산업 뉴스트랜드 분석",
+    type: "API",
+    price: "Paid",
+    tags: ["News", "Financial", "Global"],
+    image: "iot_data_icon_abstract",
+    publishedDate: "2025-11-20",
+    views: 520
+  },
+
+  // Robot
   {
     id: "9",
     title: "KIRIA Advanced Robot Demonstration Support Digital Platform",
@@ -162,6 +291,22 @@ export const RESOURCES: Resource[] = [
     views: 4
   },
   {
+    id: "901",
+    title: "Industrial Robot Controller API",
+    titleKo: "산업용 로봇 제어 API",
+    description: "Standardized API for controlling various industrial robot arms.",
+    descriptionKo: "다양한 산업용 로봇 팔 제어를 위한 표준화된 API",
+    provider: "KIRIA 첨단로봇 실증지원 디지털 플랫폼",
+    type: "API",
+    price: "Paid",
+    tags: ["Robot", "Control", "Industrial"],
+    image: "iot_data_icon_abstract",
+    publishedDate: "2025-11-05",
+    views: 150
+  },
+
+  // Equipment
+  {
     id: "10",
     title: "K-tools Smart Equipment Management Platform",
     titleKo: "K-tools 스마트 장비관리 플랫폼",
@@ -175,6 +320,22 @@ export const RESOURCES: Resource[] = [
     publishedDate: "2025-11-01",
     views: 373
   },
+  {
+    id: "1001",
+    title: "Lab Equipment Scheduler",
+    titleKo: "실험실 장비 스케줄러",
+    description: "Booking and scheduling system for shared laboratory equipment.",
+    descriptionKo: "공용 실험실 장비를 위한 예약 및 일정 관리 시스템",
+    provider: "K-tools 스마트 장비관리 플랫폼",
+    type: "API",
+    price: "Free",
+    tags: ["Equipment", "Lab", "Scheduling"],
+    image: "iot_data_icon_abstract",
+    publishedDate: "2025-11-10",
+    views: 200
+  },
+
+  // Startup
   {
     id: "11",
     title: "Startup Ecosystem Network Visualization",
@@ -190,6 +351,22 @@ export const RESOURCES: Resource[] = [
     views: 324
   },
   {
+    id: "1101",
+    title: "Unicorn Startup Tracker",
+    titleKo: "유니콘 스타트업 추적기",
+    description: "Data feed tracking valuation and funding rounds of unicorn startups globally.",
+    descriptionKo: "전 세계 유니콘 스타트업의 가치 평가 및 투자 라운드를 추적하는 데이터 피드",
+    provider: "스타트업 생태계 네트워크 시각화",
+    type: "Dataset",
+    price: "Paid",
+    tags: ["Startup", "Unicorn", "Finance"],
+    image: "abstract_ai_hexagon_logo_icon",
+    publishedDate: "2025-12-01",
+    views: 410
+  },
+
+  // Investment
+  {
     id: "12",
     title: "Investment Network Analysis Service",
     titleKo: "투자 네트워크 분석 서비스",
@@ -203,6 +380,22 @@ export const RESOURCES: Resource[] = [
     publishedDate: "2025-10-12",
     views: 244
   },
+  {
+    id: "1201",
+    title: "Venture Capital Flow Data",
+    titleKo: "벤처 캐피탈 흐름 데이터",
+    description: "Comprehensive data on venture capital flows across different sectors and regions.",
+    descriptionKo: "다양한 부문 및 지역에 걸친 벤처 캐피탈 흐름에 대한 포괄적인 데이터",
+    provider: "투자 네트워크 분석 서비스",
+    type: "Dataset",
+    price: "Paid",
+    tags: ["Investment", "VC", "Finance"],
+    image: "abstract_ai_hexagon_logo_icon",
+    publishedDate: "2025-10-25",
+    views: 180
+  },
+
+  // Innovation
   {
     id: "13",
     title: "Digital Open Innovation Platform",
@@ -218,6 +411,22 @@ export const RESOURCES: Resource[] = [
     views: 360
   },
   {
+    id: "1301",
+    title: "Innovation Challenge Hub",
+    titleKo: "혁신 챌린지 허브",
+    description: "Platform connecting companies with innovators to solve specific business challenges.",
+    descriptionKo: "특정 비즈니스 과제를 해결하기 위해 기업과 혁신가를 연결하는 플랫폼",
+    provider: "디지털 오픈이노베이션 플랫폼",
+    type: "Agent",
+    price: "Paid",
+    tags: ["Innovation", "Challenge", "Collaboration"],
+    image: "abstract_ai_hexagon_logo_icon",
+    publishedDate: "2025-10-05",
+    views: 220
+  },
+
+  // Ecommerce
+  {
     id: "14",
     title: "Ecommerce Warehouse & Delivery",
     titleKo: "이커머스 Warehouse&Delivery",
@@ -231,6 +440,22 @@ export const RESOURCES: Resource[] = [
     publishedDate: "2025-08-15",
     views: 416
   },
+  {
+    id: "1401",
+    title: "Global Shipping Rates API",
+    titleKo: "글로벌 배송비 API",
+    description: "Real-time shipping rate calculation for international ecommerce orders.",
+    descriptionKo: "국제 이커머스 주문에 대한 실시간 배송비 계산",
+    provider: "이커머스 Warehouse&Delivery",
+    type: "API",
+    price: "Paid",
+    tags: ["Ecommerce", "Shipping", "API"],
+    image: "abstract_ai_hexagon_logo_icon",
+    publishedDate: "2025-09-01",
+    views: 350
+  },
+
+  // Finance
   {
     id: "15",
     title: "ETF/ETN Information",
@@ -246,6 +471,22 @@ export const RESOURCES: Resource[] = [
     views: 247
   },
   {
+    id: "1501",
+    title: "Stock Market Prediction Model",
+    titleKo: "주식 시장 예측 모델",
+    description: "AI model predicting short-term stock market trends based on historical data.",
+    descriptionKo: "과거 데이터를 기반으로 단기 주식 시장 추세를 예측하는 AI 모델",
+    provider: "ETF/ETN 정보",
+    type: "API",
+    price: "Paid",
+    tags: ["Finance", "Stock", "Prediction"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-10-10",
+    views: 420
+  },
+
+  // M&A
+  {
     id: "16",
     title: "M&A Market Statistics Analysis and Visualization",
     titleKo: "M&A 시장통계분석 및 시각화",
@@ -260,6 +501,22 @@ export const RESOURCES: Resource[] = [
     views: 229
   },
   {
+    id: "1601",
+    title: "Due Diligence Automation",
+    titleKo: "실사 자동화",
+    description: "Automated due diligence tool for M&A transactions.",
+    descriptionKo: "M&A 거래를 위한 자동화된 실사 도구",
+    provider: "M&A 시장통계분석 및 시각화",
+    type: "Agent",
+    price: "Paid",
+    tags: ["M&A", "Due Diligence", "Automation"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-10-15",
+    views: 190
+  },
+
+  // Energy
+  {
     id: "17",
     title: "EG-TIPS Energy Greenhouse Gas Comprehensive Portal",
     titleKo: "EG-TIPS 에너지온실가스 종합 포털",
@@ -272,48 +529,6 @@ export const RESOURCES: Resource[] = [
     image: "financial_data_icon_abstract",
     publishedDate: "2025-10-10",
     views: 7
-  },
-  {
-    id: "18",
-    title: "K.sight",
-    titleKo: "K.sight",
-    description: "Providing customized intelligent trade insurance data service based on 30 years of accumulated trade insurance data.",
-    descriptionKo: "30년간 축적된 무역보험 데이터에 맞춤형 지능형 무역보험 데이터 서비스 제공",
-    provider: "K.sight",
-    type: "Agent",
-    price: "Paid",
-    tags: ["Trade", "Insurance", "Data"],
-    image: "financial_data_icon_abstract",
-    publishedDate: "2025-11-05",
-    views: 7
-  },
-  {
-    id: "19",
-    title: "KICET koMap",
-    titleKo: "한국세라믹기술원 koMap",
-    description: "Systematic AI platform for integrated management of material data.",
-    descriptionKo: "소재데이터의 통합관리를 위한 체계적인 AI플랫폼",
-    provider: "한국세라믹기술원 koMap",
-    type: "API",
-    price: "Freemium",
-    tags: ["Material", "AI", "Platform"],
-    image: "financial_data_icon_abstract",
-    publishedDate: "2025-10-08",
-    views: 10
-  },
-  {
-    id: "20",
-    title: "Industrial Data-X",
-    titleKo: "산업데이터-X",
-    description: "Industrial Data-X platform where you can experience data value.",
-    descriptionKo: "데이터 가치를 경험할 수 있는 산업데이터-X 플랫폼",
-    provider: "산업데이터-X",
-    type: "API",
-    price: "Free",
-    tags: ["Industrial", "Data", "Platform"],
-    image: "financial_data_icon_abstract",
-    publishedDate: "2025-09-05",
-    views: 284
   },
   {
     id: "21",
@@ -330,20 +545,6 @@ export const RESOURCES: Resource[] = [
     views: 8
   },
   {
-    id: "22",
-    title: "Spatial Convergence Big Data Platform",
-    titleKo: "공간융합 빅데이터 플랫폼",
-    description: "First spatial information distribution platform created through collaboration between private and public sectors.",
-    descriptionKo: "민간과 공공이 협업하여 만든 최초의 공간정보 유통플랫폼",
-    provider: "공간융합 빅데이터 플랫폼",
-    type: "Agent",
-    price: "Paid",
-    tags: ["Spatial", "Big Data", "Platform"],
-    image: "financial_data_icon_abstract",
-    publishedDate: "2025-10-20",
-    views: 26
-  },
-  {
     id: "23",
     title: "K-ECP (KDN Energy Cloud Platform)",
     titleKo: "K-ECP(KDN 에너지 클라우드 플랫폼)",
@@ -356,6 +557,110 @@ export const RESOURCES: Resource[] = [
     image: "financial_data_icon_abstract",
     publishedDate: "2025-08-30",
     views: 40
+  },
+  {
+    id: "29",
+    title: "Energy Marketplace (EDS)",
+    titleKo: "에너지마켓플레이스(EDS)",
+    description: "Platform supporting sustainable energy use through renewable energy trading and spatial information provision.",
+    descriptionKo: "재생에너지 거래, 공간 정보 등 제공을 통해 지속 가능한 에너지 활용을 지원하는 플랫폼",
+    provider: "에너지마켓플레이스(EDS)",
+    type: "Dataset",
+    price: "Paid",
+    tags: ["Energy", "Marketplace", "Platform"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-10-05",
+    views: 87
+  },
+  {
+    id: "31",
+    title: "FIND Energy Platform",
+    titleKo: "FIND 에너지 플랫폼",
+    description: "Renewable energy platform providing finance, information, new business, and data.",
+    descriptionKo: "금융, 정보, 신사업, 데이터를 제공하는 신재생에너지 플랫폼",
+    provider: "FIND 에너지 플랫폼",
+    type: "API",
+    price: "Paid",
+    tags: ["Energy", "Platform", "Finance"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-09-30",
+    views: 22
+  },
+
+  // Trade
+  {
+    id: "18",
+    title: "K.sight",
+    titleKo: "K.sight",
+    description: "Providing customized intelligent trade insurance data service based on 30 years of accumulated trade insurance data.",
+    descriptionKo: "30년간 축적된 무역보험 데이터에 맞춤형 지능형 무역보험 데이터 서비스 제공",
+    provider: "K.sight",
+    type: "Agent",
+    price: "Paid",
+    tags: ["Trade", "Insurance", "Data"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-11-05",
+    views: 7
+  },
+  {
+    id: "27",
+    title: "Trade Investment Big Data Platform (TriBIG)",
+    titleKo: "무역투자빅데이터 플랫폼(TriBIG)",
+    description: "Export preparation starts with trade investment big data analysis.",
+    descriptionKo: "수출 준비는 무역투자 빅데이터 분석부터",
+    provider: "무역투자빅데이터 플랫폼(TriBIG)",
+    type: "Agent",
+    price: "Paid",
+    tags: ["Trade", "Investment", "Big Data"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-09-10",
+    views: 12
+  },
+
+  // Material
+  {
+    id: "19",
+    title: "KICET koMap",
+    titleKo: "한국세라믹기술원 koMap",
+    description: "Systematic AI platform for integrated management of material data.",
+    descriptionKo: "소재데이터의 통합관리를 위한 체계적인 AI플랫폼",
+    provider: "한국세라믹기술원 koMap",
+    type: "API",
+    price: "Freemium",
+    tags: ["Material", "AI", "Platform"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-10-08",
+    views: 10
+  },
+  {
+    id: "1901",
+    title: "Advanced Material Database",
+    titleKo: "첨단 소재 데이터베이스",
+    description: "Database of properties and applications for advanced composite materials.",
+    descriptionKo: "첨단 복합 재료의 특성 및 응용 분야에 대한 데이터베이스",
+    provider: "한국세라믹기술원 koMap",
+    type: "Dataset",
+    price: "Paid",
+    tags: ["Material", "Database", "Composite"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-11-15",
+    views: 85
+  },
+
+  // Industrial
+  {
+    id: "20",
+    title: "Industrial Data-X",
+    titleKo: "산업데이터-X",
+    description: "Industrial Data-X platform where you can experience data value.",
+    descriptionKo: "데이터 가치를 경험할 수 있는 산업데이터-X 플랫폼",
+    provider: "산업데이터-X",
+    type: "API",
+    price: "Free",
+    tags: ["Industrial", "Data", "Platform"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-09-05",
+    views: 284
   },
   {
     id: "24",
@@ -371,6 +676,38 @@ export const RESOURCES: Resource[] = [
     publishedDate: "2025-09-25",
     views: 35
   },
+
+  // Spatial
+  {
+    id: "22",
+    title: "Spatial Convergence Big Data Platform",
+    titleKo: "공간융합 빅데이터 플랫폼",
+    description: "First spatial information distribution platform created through collaboration between private and public sectors.",
+    descriptionKo: "민간과 공공이 협업하여 만든 최초의 공간정보 유통플랫폼",
+    provider: "공간융합 빅데이터 플랫폼",
+    type: "Agent",
+    price: "Paid",
+    tags: ["Spatial", "Big Data", "Platform"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-10-20",
+    views: 26
+  },
+  {
+    id: "2201",
+    title: "Urban 3D Mapping Data",
+    titleKo: "도시 3D 매핑 데이터",
+    description: "High-resolution 3D mapping data for major urban areas.",
+    descriptionKo: "주요 도시 지역을 위한 고해상도 3D 매핑 데이터",
+    provider: "공간융합 빅데이터 플랫폼",
+    type: "Dataset",
+    price: "Paid",
+    tags: ["Spatial", "3D", "Mapping"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-11-05",
+    views: 110
+  },
+
+  // R&D
   {
     id: "25",
     title: "KIAT Innovation Growth Platform",
@@ -380,7 +717,7 @@ export const RESOURCES: Resource[] = [
     provider: "KIAT 혁신성장 플랫폼",
     type: "Agent",
     price: "Paid",
-    tags: ["Innovation", "Growth", "Platform"],
+    tags: ["R&D", "Growth", "Platform"], // Changed first tag to R&D for grouping or Innovation
     image: "financial_data_icon_abstract",
     publishedDate: "2025-11-05",
     views: 10
@@ -399,20 +736,8 @@ export const RESOURCES: Resource[] = [
     publishedDate: "2025-10-15",
     views: 11
   },
-  {
-    id: "27",
-    title: "Trade Investment Big Data Platform (TriBIG)",
-    titleKo: "무역투자빅데이터 플랫폼(TriBIG)",
-    description: "Export preparation starts with trade investment big data analysis.",
-    descriptionKo: "수출 준비는 무역투자 빅데이터 분석부터",
-    provider: "무역투자빅데이터 플랫폼(TriBIG)",
-    type: "Agent",
-    price: "Paid",
-    tags: ["Trade", "Investment", "Big Data"],
-    image: "financial_data_icon_abstract",
-    publishedDate: "2025-09-10",
-    views: 12
-  },
+
+  // Waste
   {
     id: "28",
     title: "Cheongjeong Nuri - KORAD Open Innovation Platform",
@@ -428,19 +753,21 @@ export const RESOURCES: Resource[] = [
     views: 26
   },
   {
-    id: "29",
-    title: "Energy Marketplace (EDS)",
-    titleKo: "에너지마켓플레이스(EDS)",
-    description: "Platform supporting sustainable energy use through renewable energy trading and spatial information provision.",
-    descriptionKo: "재생에너지 거래, 공간 정보 등 제공을 통해 지속 가능한 에너지 활용을 지원하는 플랫폼",
-    provider: "에너지마켓플레이스(EDS)",
-    type: "Dataset",
+    id: "2801",
+    title: "Industrial Waste Tracking System",
+    titleKo: "산업 폐기물 추적 시스템",
+    description: "System for tracking industrial waste disposal and recycling processes.",
+    descriptionKo: "산업 폐기물 처리 및 재활용 과정을 추적하는 시스템",
+    provider: "청정누리 - KORAD 열린혁신 플랫폼",
+    type: "API",
     price: "Paid",
-    tags: ["Energy", "Marketplace", "Platform"],
+    tags: ["Waste", "Tracking", "Recycling"],
     image: "financial_data_icon_abstract",
-    publishedDate: "2025-10-05",
-    views: 87
+    publishedDate: "2025-12-05",
+    views: 95
   },
+
+  // Oil
   {
     id: "30",
     title: "Opinet",
@@ -456,19 +783,21 @@ export const RESOURCES: Resource[] = [
     views: 27
   },
   {
-    id: "31",
-    title: "FIND Energy Platform",
-    titleKo: "FIND 에너지 플랫폼",
-    description: "Renewable energy platform providing finance, information, new business, and data.",
-    descriptionKo: "금융, 정보, 신사업, 데이터를 제공하는 신재생에너지 플랫폼",
-    provider: "FIND 에너지 플랫폼",
-    type: "API",
+    id: "3001",
+    title: "Global Oil Market Analytics",
+    titleKo: "글로벌 석유 시장 분석",
+    description: "Advanced analytics on global oil supply, demand, and price trends.",
+    descriptionKo: "글로벌 석유 공급, 수요 및 가격 추세에 대한 고급 분석",
+    provider: "오피넷(Opinet)",
+    type: "Agent",
     price: "Paid",
-    tags: ["Energy", "Platform", "Finance"],
+    tags: ["Oil", "Market", "Analytics"],
     image: "financial_data_icon_abstract",
-    publishedDate: "2025-09-30",
-    views: 22
+    publishedDate: "2025-11-25",
+    views: 130
   },
+
+  // Power
   {
     id: "32",
     title: "KOWEPO Digital Sharing Center",
@@ -482,6 +811,20 @@ export const RESOURCES: Resource[] = [
     image: "financial_data_icon_abstract",
     publishedDate: "2025-08-25",
     views: 12
+  },
+  {
+    id: "3201",
+    title: "Power Grid Stability Monitor",
+    titleKo: "전력망 안정성 모니터",
+    description: "Real-time monitoring system for power grid stability and load balancing.",
+    descriptionKo: "전력망 안정성 및 부하 분산을 위한 실시간 모니터링 시스템",
+    provider: "한국서부발전 디지털공유센터",
+    type: "API",
+    price: "Paid",
+    tags: ["Power", "Grid", "Monitoring"],
+    image: "financial_data_icon_abstract",
+    publishedDate: "2025-09-10",
+    views: 115
   }
 ];
 
