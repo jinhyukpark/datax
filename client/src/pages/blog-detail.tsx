@@ -133,19 +133,19 @@ export default function BlogDetail() {
           {/* Left Sidebar - Social Share */}
           <div className="hidden lg:block lg:col-span-2 relative">
             <div className="sticky top-32 flex flex-col gap-4 items-end pr-4 border-r border-slate-100 dark:border-slate-800">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Share</span>
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-blue-500">
-                <Twitter className="h-5 w-5" />
+              <span className="text-xs font-extrabold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-2">Share</span>
+              <Button variant="outline" size="icon" className="h-10 w-10 rounded-full border-slate-200 bg-white hover:border-blue-400 hover:bg-blue-50 text-slate-700 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-200 dark:hover:border-blue-400 hover:text-blue-500 transition-all shadow-sm">
+                <Twitter className="h-5 w-5" strokeWidth={2} />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-blue-700">
-                <Linkedin className="h-5 w-5" />
+              <Button variant="outline" size="icon" className="h-10 w-10 rounded-full border-slate-200 bg-white hover:border-blue-700 hover:bg-blue-50 text-slate-700 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-200 dark:hover:border-blue-700 hover:text-blue-700 transition-all shadow-sm">
+                <Linkedin className="h-5 w-5" strokeWidth={2} />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-indigo-600">
-                <LinkIcon className="h-5 w-5" />
+              <Button variant="outline" size="icon" className="h-10 w-10 rounded-full border-slate-200 bg-white hover:border-indigo-500 hover:bg-indigo-50 text-slate-700 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-200 dark:hover:border-indigo-500 hover:text-indigo-600 transition-all shadow-sm">
+                <LinkIcon className="h-5 w-5" strokeWidth={2} />
               </Button>
-              <Separator className="my-2 w-8" />
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-amber-500">
-                <Bookmark className="h-5 w-5" />
+              <Separator className="my-2 w-8 bg-slate-200 dark:bg-slate-700" />
+              <Button variant="outline" size="icon" className="h-10 w-10 rounded-full border-slate-200 bg-white hover:border-amber-500 hover:bg-amber-50 text-slate-700 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-200 dark:hover:border-amber-500 hover:text-amber-600 transition-all shadow-sm">
+                <Bookmark className="h-5 w-5" strokeWidth={2} />
               </Button>
             </div>
           </div>
