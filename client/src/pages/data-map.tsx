@@ -219,14 +219,33 @@ const getCategoryIcon = (category: string) => {
 
 export default function DataMap() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedPrices, setSelectedPrices] = useState<string[]>([]);
   const { language, t } = useLanguage();
+
+  const toggleType = (type: string) => {
+    setSelectedTypes(prev => 
+      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+    );
+  };
+
+  const togglePrice = (price: string) => {
+    setSelectedPrices(prev => 
+      prev.includes(price) ? prev.filter(p => p !== price) : [...prev, price]
+    );
+  };
 
   const filteredResources = RESOURCES.filter(r => {
     const matchesSearch = r.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           r.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = selectedType ? r.type.toLowerCase() === selectedType.toLowerCase() : true;
-    return matchesSearch && matchesType;
+    
+    // If no types selected, show all. Otherwise check if type is in selectedTypes
+    const matchesType = selectedTypes.length === 0 || selectedTypes.some(t => t.toLowerCase() === r.type.toLowerCase());
+    
+    // If no prices selected, show all. Otherwise check if price is in selectedPrices
+    const matchesPrice = selectedPrices.length === 0 || selectedPrices.some(p => p.toLowerCase() === r.price.toLowerCase());
+
+    return matchesSearch && matchesType && matchesPrice;
   });
 
   const groupedResources = filteredResources.reduce((acc, resource) => {
@@ -259,20 +278,22 @@ export default function DataMap() {
                   <Filter className="h-4 w-4" />
                   {t("CATEGORIES", "카테고리")}
                 </div>
-                <button 
-                  onClick={() => setSelectedType(null)}
-                  className="text-xs text-primary hover:underline"
-                >
-                  {t("Deselect All", "전체 선택 해제")}
-                </button>
+                {(selectedTypes.length > 0 || selectedPrices.length > 0) && (
+                  <button 
+                    onClick={() => { setSelectedTypes([]); setSelectedPrices([]); }}
+                    className="text-xs text-primary hover:underline"
+                  >
+                    {t("Deselect All", "전체 선택 해제")}
+                  </button>
+                )}
               </div>
               <div className="flex flex-wrap gap-2">
                 {['API', 'Agent', 'Dataset'].map(type => (
                   <button
                     key={type}
-                    onClick={() => setSelectedType(selectedType === type ? null : type)}
+                    onClick={() => toggleType(type)}
                     className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium transition-colors ${
-                      selectedType === type 
+                      selectedTypes.includes(type)
                         ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900" 
                         : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
                     }`}
@@ -293,7 +314,12 @@ export default function DataMap() {
                 {['Free', 'Paid', 'Freemium'].map(price => (
                   <button
                     key={price}
-                    className="inline-flex items-center rounded-full bg-slate-900 px-3 py-1 text-sm font-medium text-white transition-colors hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900"
+                    onClick={() => togglePrice(price)}
+                    className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium transition-colors ${
+                      selectedPrices.includes(price)
+                        ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900" 
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
+                    }`}
                   >
                     {price}
                   </button>
@@ -356,7 +382,7 @@ export default function DataMap() {
         {filteredResources.length === 0 && (
             <div className="py-20 text-center">
               <p className="text-muted-foreground">{t("No resources found matching your criteria.", "조건에 맞는 리소스가 없습니다.")}</p>
-              <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedType(null);}}>{t("Clear all filters", "모든 필터 지우기")}</Button>
+              <Button variant="link" onClick={() => {setSearchTerm(""); setSelectedTypes([]); setSelectedPrices([]);}}>{t("Clear all filters", "모든 필터 지우기")}</Button>
             </div>
         )}
       </div>
