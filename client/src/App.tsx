@@ -15,6 +15,7 @@ import PublisherProfile from "@/pages/publisher-profile";
 import Login from "@/pages/login";
 import Signup from "@/pages/signup";
 import MyPage from "@/pages/my-page";
+import News from "@/pages/news";
 import { LanguageProvider } from "./lib/language-context";
 
 function Router() {
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/publisher/:id" component={PublisherProfile} />
       <Route path="/blog" component={Blog} />
       <Route path="/blog/:id" component={BlogDetail} />
+      <Route path="/news" component={News} />
       <Route path="/advertise" component={Advertise} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />

@@ -949,6 +949,120 @@ export const BLOG_POSTS: BlogPost[] = [
   }
 ];
 
+export interface NewsArticle {
+  id: string;
+  title: string;
+  titleKo?: string;
+  excerpt: string;
+  excerptKo?: string;
+  source: string;
+  date: string;
+  tags: string[];
+}
+
+export const NEWS_ARTICLES: NewsArticle[] = [
+  {
+    id: "1",
+    title: "Global AI Market to Reach $1.5 Trillion by 2030",
+    titleKo: "2030년까지 글로벌 AI 시장 1조 5천억 달러 도달 전망",
+    excerpt: "New report suggests exponential growth in artificial intelligence sectors, driven by generative AI adoption in enterprise.",
+    excerptKo: "새로운 보고서는 기업의 생성형 AI 도입에 힘입어 인공지능 부문의 기하급수적인 성장을 시사합니다.",
+    source: "TechDaily",
+    date: "2025-12-08",
+    tags: ["Market", "AI", "Economy"]
+  },
+  {
+    id: "2",
+    title: "Government Announces New Data Privacy Regulations",
+    titleKo: "정부, 새로운 데이터 개인정보 보호 규정 발표",
+    excerpt: "Stricter guidelines for handling personal user data will come into effect next month, impacting all tech companies.",
+    excerptKo: "개인 사용자 데이터 처리에 대한 엄격한 지침이 다음 달부터 시행되어 모든 기술 기업에 영향을 미칠 예정입니다.",
+    source: "PolicyWatch",
+    date: "2025-12-07",
+    tags: ["Regulation", "Privacy", "Government"]
+  },
+  {
+    id: "3",
+    title: "Breakthrough in Quantum Computing Stability",
+    titleKo: "양자 컴퓨팅 안정성 분야의 획기적인 발전",
+    excerpt: "Researchers have demonstrated a new method for error correction that could accelerate the path to practical quantum computers.",
+    excerptKo: "연구원들은 실용적인 양자 컴퓨터로 가는 길을 가속화할 수 있는 새로운 오류 수정 방법을 시연했습니다.",
+    source: "Science Today",
+    date: "2025-12-05",
+    tags: ["Quantum", "Tech", "Innovation"]
+  },
+  {
+    id: "4",
+    title: "Major Automaker Commits to 100% Electric by 2035",
+    titleKo: "주요 자동차 제조사, 2035년까지 100% 전기차 전환 약속",
+    excerpt: "Leading car manufacturer outlines aggressive roadmap to phase out internal combustion engines completely.",
+    excerptKo: "선도적인 자동차 제조사가 내연 기관을 완전히 단계적으로 폐지하기 위한 공격적인 로드맵을 발표했습니다.",
+    source: "AutoNews",
+    date: "2025-12-03",
+    tags: ["Automotive", "EV", "Sustainability"]
+  },
+  {
+    id: "5",
+    title: "Cybersecurity Threats on the Rise for IoT Devices",
+    titleKo: "IoT 기기에 대한 사이버 보안 위협 증가",
+    excerpt: "Experts warn of increasing vulnerabilities in smart home devices and industrial IoT networks.",
+    excerptKo: "전문가들은 스마트 홈 기기 및 산업용 IoT 네트워크의 취약성이 증가하고 있다고 경고합니다.",
+    source: "SecurityInsider",
+    date: "2025-12-01",
+    tags: ["Security", "IoT", "Cyber"]
+  },
+  {
+    id: "6",
+    title: "5G Expansion Continues in Rural Areas",
+    titleKo: "농촌 지역 5G 확장 지속",
+    excerpt: "Telecom providers are accelerating infrastructure projects to bring high-speed internet to underserved regions.",
+    excerptKo: "통신 사업자들은 소외된 지역에 초고속 인터넷을 제공하기 위해 인프라 프로젝트를 가속화하고 있습니다.",
+    source: "ConnectWorld",
+    date: "2025-11-28",
+    tags: ["5G", "Infrastructure", "Telecom"]
+  },
+  {
+    id: "7",
+    title: "AI in Healthcare: Diagnosing Rare Diseases",
+    titleKo: "헬스케어 분야의 AI: 희귀 질환 진단",
+    excerpt: "New AI algorithms are helping doctors identify rare genetic conditions faster than ever before.",
+    excerptKo: "새로운 AI 알고리즘은 의사들이 희귀 유전 질환을 그 어느 때보다 빠르게 식별하도록 돕고 있습니다.",
+    source: "HealthTech",
+    date: "2025-11-25",
+    tags: ["Healthcare", "AI", "Medical"]
+  },
+  {
+    id: "8",
+    title: "Renewable Energy Surpasses Coal in Power Generation",
+    titleKo: "재생 에너지, 전력 생산에서 석탄 추월",
+    excerpt: "For the first time, wind and solar power have generated more electricity than coal-fired plants globally.",
+    excerptKo: "처음으로 풍력 및 태양광 발전이 전 세계적으로 석탄 화력 발전소보다 더 많은 전기를 생산했습니다.",
+    source: "GreenEnergy",
+    date: "2025-11-22",
+    tags: ["Energy", "Environment", "Sustainability"]
+  },
+  {
+    id: "9",
+    title: "Tech Giants Collaborate on Open Source AI Models",
+    titleKo: "기술 거대 기업들, 오픈 소스 AI 모델 협력",
+    excerpt: "Competitors join forces to create standardized, safe, and transparent AI foundation models.",
+    excerptKo: "경쟁사들이 힘을 합쳐 표준화되고 안전하며 투명한 AI 파운데이션 모델을 만듭니다.",
+    source: "TechCrunch",
+    date: "2025-11-20",
+    tags: ["Open Source", "AI", "Collaboration"]
+  },
+  {
+    id: "10",
+    title: "Space Tourism Industry Sees Record Bookings",
+    titleKo: "우주 관광 산업, 기록적인 예약 달성",
+    excerpt: "Commercial space flights are becoming more accessible, with thousands on waiting lists for orbital trips.",
+    excerptKo: "상업용 우주 비행의 접근성이 높아지면서 궤도 여행 대기자 명단에 수천 명이 이름을 올렸습니다.",
+    source: "SpaceWeekly",
+    date: "2025-11-15",
+    tags: ["Space", "Tourism", "Future"]
+  }
+];
+
 export const PROVIDER_DESCRIPTIONS: Record<string, string> = {
   "소셜 트랜드 분석": "끊임없이 변화하는 웹 환경에 신속히 대응할 수 있도록 온라인에서 수집되는 다양한 형식의 빅데이터 분석서비스",
   "이미지 기반 특허 분석 서비스": "이미지 기반으로 글로벌 기술/기업/연구자/특허의 분석 콘텐츠를 연결한다.",
