@@ -15,6 +15,7 @@ import PublisherProfile from "@/pages/publisher-profile";
 import Login from "@/pages/login";
 import Signup from "@/pages/signup";
 import MyPage from "@/pages/my-page";
+import NewItems from "@/pages/new-items";
 import { LanguageProvider } from "./lib/language-context";
 
 function Router() {
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/data-map" component={DataMap} />
       <Route path="/platforms" component={Platforms} />
+      <Route path="/new" component={NewItems} />
       <Route path="/resource/:id" component={ResourceDetail} />
       <Route path="/publisher/:id" component={PublisherProfile} />
       <Route path="/blog" component={Blog} />

@@ -19,6 +19,7 @@ export function Navbar() {
   const navLinks = [
     { name: t("Data Map", "데이터 맵"), href: "/data-map" },
     { name: t("Platforms", "플랫폼"), href: "/platforms" },
+    { name: t("New", "신규"), href: "/new" },
     { name: t("Blog", "블로그"), href: "/blog" },
     { name: t("Advertise", "광고"), href: "/advertise" },
   ];
