@@ -46,7 +46,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Analysis", "Social", "Trend"],
-    image: "abstract_network_nodes_logo_icon",
+    image: "global_connectivity_cover",
     publishedDate: "2025-07-13",
     views: 297
   },
@@ -60,7 +60,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Analysis", "Consumer", "Sentiment"],
-    image: "abstract_pulse_signal_logo_icon",
+    image: "data_analytics_cover",
     publishedDate: "2025-08-05",
     views: 150
   },
@@ -76,7 +76,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Patent", "Image", "Analysis"],
-    image: "abstract_eye_aperture_logo_icon",
+    image: "ai_neural_cover",
     publishedDate: "2025-08-01",
     views: 411
   },
@@ -90,7 +90,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Freemium",
     tags: ["Patent", "Search", "Global"],
-    image: "abstract_eye_aperture_logo_icon",
+    image: "global_connectivity_cover",
     publishedDate: "2025-09-12",
     views: 320
   },
@@ -106,7 +106,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Free",
     tags: ["Science", "Matching", "Press"],
-    image: "abstract_atom_science_logo_icon",
+    image: "medical_research_cover",
     publishedDate: "2025-09-10",
     views: 377
   },
@@ -120,7 +120,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Science", "Research", "Summary"],
-    image: "abstract_atom_science_logo_icon",
+    image: "ai_neural_cover",
     publishedDate: "2025-10-01",
     views: 210
   },
@@ -136,7 +136,7 @@ export const RESOURCES: Resource[] = [
     type: "Dataset",
     price: "Paid",
     tags: ["Growth", "Management", "Big Data"],
-    image: "abstract_growth_chart_logo_icon",
+    image: "financial_trend_cover",
     publishedDate: "2025-08-20",
     views: 389
   },
@@ -150,7 +150,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Growth", "Market", "Prediction"],
-    image: "abstract_growth_chart_logo_icon",
+    image: "data_analytics_cover",
     publishedDate: "2025-09-05",
     views: 180
   },
@@ -166,7 +166,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Consulting", "Innovation", "Diagnosis"],
-    image: "abstract_shield_security_logo_icon",
+    image: "industrial_factory_cover",
     publishedDate: "2025-09-01",
     views: 1191
   },
@@ -180,7 +180,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Consulting", "Strategy", "Business"],
-    image: "abstract_network_nodes_logo_icon",
+    image: "ai_neural_cover",
     publishedDate: "2025-10-15",
     views: 450
   },
@@ -196,7 +196,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Network", "Analysis", "Graph"],
-    image: "abstract_network_nodes_logo_icon",
+    image: "global_connectivity_cover",
     publishedDate: "2025-09-15",
     views: 324
   },
@@ -210,7 +210,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Network", "Supply Chain", "Visualization"],
-    image: "abstract_network_nodes_logo_icon",
+    image: "smart_city_cover",
     publishedDate: "2025-10-20",
     views: 290
   },
@@ -226,7 +226,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Ecosystem", "Visualization", "Dashboard"],
-    image: "abstract_globe_earth_logo_icon",
+    image: "smart_city_cover",
     publishedDate: "2025-10-05",
     views: 526
   },
@@ -240,7 +240,7 @@ export const RESOURCES: Resource[] = [
     type: "Dataset",
     price: "Freemium",
     tags: ["Ecosystem", "Tech", "Startup"],
-    image: "abstract_globe_earth_logo_icon",
+    image: "data_analytics_cover",
     publishedDate: "2025-11-01",
     views: 310
   },
@@ -256,7 +256,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["News", "Trend", "Word Cloud"],
-    image: "abstract_pulse_signal_logo_icon",
+    image: "global_connectivity_cover",
     publishedDate: "2025-11-15",
     views: 646
   },
@@ -270,7 +270,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["News", "Financial", "Global"],
-    image: "abstract_pulse_signal_logo_icon",
+    image: "financial_trend_cover",
     publishedDate: "2025-11-20",
     views: 520
   },
@@ -286,7 +286,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Robot", "Support", "Certification"],
-    image: "abstract_gear_robot_logo_icon",
+    image: "industrial_factory_cover",
     publishedDate: "2025-10-25",
     views: 4
   },
@@ -300,7 +300,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Robot", "Control", "Industrial"],
-    image: "abstract_gear_robot_logo_icon",
+    image: "industrial_factory_cover",
     publishedDate: "2025-11-05",
     views: 150
   },
@@ -316,7 +316,7 @@ export const RESOURCES: Resource[] = [
     type: "Dataset",
     price: "Paid",
     tags: ["Equipment", "Management", "Smart"],
-    image: "abstract_gear_robot_logo_icon",
+    image: "industrial_factory_cover",
     publishedDate: "2025-11-01",
     views: 373
   },
@@ -330,7 +330,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Free",
     tags: ["Equipment", "Lab", "Scheduling"],
-    image: "abstract_gear_robot_logo_icon",
+    image: "medical_research_cover",
     publishedDate: "2025-11-10",
     views: 200
   },
@@ -346,7 +346,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Startup", "Network", "Visualization"],
-    image: "abstract_network_nodes_logo_icon",
+    image: "global_connectivity_cover",
     publishedDate: "2025-11-27",
     views: 324
   },
@@ -360,7 +360,7 @@ export const RESOURCES: Resource[] = [
     type: "Dataset",
     price: "Paid",
     tags: ["Startup", "Unicorn", "Finance"],
-    image: "abstract_network_nodes_logo_icon",
+    image: "financial_trend_cover",
     publishedDate: "2025-12-01",
     views: 410
   },
@@ -376,7 +376,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Investment", "Network", "Analysis"],
-    image: "abstract_growth_chart_logo_icon",
+    image: "financial_trend_cover",
     publishedDate: "2025-10-12",
     views: 244
   },
@@ -390,7 +390,7 @@ export const RESOURCES: Resource[] = [
     type: "Dataset",
     price: "Paid",
     tags: ["Investment", "VC", "Finance"],
-    image: "abstract_growth_chart_logo_icon",
+    image: "financial_trend_cover",
     publishedDate: "2025-10-25",
     views: 180
   },
@@ -406,7 +406,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Free",
     tags: ["Innovation", "Platform", "Business"],
-    image: "abstract_network_nodes_logo_icon",
+    image: "global_connectivity_cover",
     publishedDate: "2025-09-20",
     views: 360
   },
@@ -420,7 +420,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Innovation", "Challenge", "Collaboration"],
-    image: "abstract_network_nodes_logo_icon",
+    image: "ai_neural_cover",
     publishedDate: "2025-10-05",
     views: 220
   },
@@ -436,7 +436,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Freemium",
     tags: ["Ecommerce", "Logistics", "Warehouse"],
-    image: "abstract_globe_earth_logo_icon",
+    image: "smart_city_cover",
     publishedDate: "2025-08-15",
     views: 416
   },
@@ -450,7 +450,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Ecommerce", "Shipping", "API"],
-    image: "abstract_globe_earth_logo_icon",
+    image: "smart_city_cover",
     publishedDate: "2025-09-01",
     views: 350
   },
@@ -466,7 +466,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Finance", "ETF", "Analysis"],
-    image: "abstract_growth_chart_logo_icon",
+    image: "financial_trend_cover",
     publishedDate: "2025-09-15",
     views: 247
   },
@@ -480,7 +480,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Finance", "Stock", "Prediction"],
-    image: "abstract_growth_chart_logo_icon",
+    image: "financial_trend_cover",
     publishedDate: "2025-10-10",
     views: 420
   },
@@ -496,7 +496,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Freemium",
     tags: ["M&A", "Statistics", "Visualization"],
-    image: "abstract_shield_security_logo_icon",
+    image: "financial_trend_cover",
     publishedDate: "2025-10-01",
     views: 229
   },
@@ -510,7 +510,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["M&A", "Due Diligence", "Automation"],
-    image: "abstract_shield_security_logo_icon",
+    image: "data_analytics_cover",
     publishedDate: "2025-10-15",
     views: 190
   },
@@ -526,7 +526,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Energy", "Greenhouse", "Portal"],
-    image: "abstract_globe_earth_logo_icon",
+    image: "renewable_energy_cover",
     publishedDate: "2025-10-10",
     views: 7
   },
@@ -540,7 +540,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Energy", "Brokerage", "Platform"],
-    image: "abstract_cloud_data_logo_icon",
+    image: "renewable_energy_cover",
     publishedDate: "2025-11-12",
     views: 8
   },
@@ -554,7 +554,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Energy", "Cloud", "Platform"],
-    image: "abstract_cloud_data_logo_icon",
+    image: "renewable_energy_cover",
     publishedDate: "2025-08-30",
     views: 40
   },
@@ -568,7 +568,7 @@ export const RESOURCES: Resource[] = [
     type: "Dataset",
     price: "Paid",
     tags: ["Energy", "Marketplace", "Platform"],
-    image: "abstract_globe_earth_logo_icon",
+    image: "renewable_energy_cover",
     publishedDate: "2025-10-05",
     views: 87
   },
@@ -582,7 +582,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Energy", "Platform", "Finance"],
-    image: "abstract_globe_earth_logo_icon",
+    image: "renewable_energy_cover",
     publishedDate: "2025-09-30",
     views: 22
   },
@@ -598,7 +598,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Trade", "Insurance", "Data"],
-    image: "abstract_eye_aperture_logo_icon",
+    image: "global_connectivity_cover",
     publishedDate: "2025-11-05",
     views: 7
   },
@@ -612,7 +612,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Trade", "Investment", "Big Data"],
-    image: "abstract_globe_earth_logo_icon",
+    image: "data_analytics_cover",
     publishedDate: "2025-09-10",
     views: 12
   },
@@ -628,7 +628,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Freemium",
     tags: ["Material", "AI", "Platform"],
-    image: "abstract_cube_blockchain_logo_icon",
+    image: "industrial_factory_cover",
     publishedDate: "2025-10-08",
     views: 10
   },
@@ -642,7 +642,7 @@ export const RESOURCES: Resource[] = [
     type: "Dataset",
     price: "Paid",
     tags: ["Material", "Database", "Composite"],
-    image: "abstract_atom_science_logo_icon",
+    image: "medical_research_cover",
     publishedDate: "2025-11-15",
     views: 85
   },
@@ -658,7 +658,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Free",
     tags: ["Industrial", "Data", "Platform"],
-    image: "abstract_cube_blockchain_logo_icon",
+    image: "industrial_factory_cover",
     publishedDate: "2025-09-05",
     views: 284
   },
@@ -672,7 +672,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Industrial", "Complex", "Platform"],
-    image: "abstract_gear_robot_logo_icon",
+    image: "industrial_factory_cover",
     publishedDate: "2025-09-25",
     views: 35
   },
@@ -688,7 +688,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Spatial", "Big Data", "Platform"],
-    image: "abstract_cube_blockchain_logo_icon",
+    image: "smart_city_cover",
     publishedDate: "2025-10-20",
     views: 26
   },
@@ -702,7 +702,7 @@ export const RESOURCES: Resource[] = [
     type: "Dataset",
     price: "Paid",
     tags: ["Spatial", "3D", "Mapping"],
-    image: "abstract_cube_blockchain_logo_icon",
+    image: "smart_city_cover",
     publishedDate: "2025-11-05",
     views: 110
   },
@@ -718,7 +718,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["R&D", "Growth", "Platform"],
-    image: "abstract_growth_chart_logo_icon",
+    image: "ai_neural_cover",
     publishedDate: "2025-11-05",
     views: 10
   },
@@ -732,7 +732,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["R&D", "Digital", "Platform"],
-    image: "abstract_cloud_data_logo_icon",
+    image: "medical_research_cover",
     publishedDate: "2025-10-15",
     views: 11
   },
@@ -748,7 +748,7 @@ export const RESOURCES: Resource[] = [
     type: "Dataset",
     price: "Free",
     tags: ["Waste", "Management", "Platform"],
-    image: "abstract_shield_security_logo_icon",
+    image: "renewable_energy_cover",
     publishedDate: "2025-11-27",
     views: 26
   },
@@ -762,7 +762,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Waste", "Tracking", "Recycling"],
-    image: "abstract_shield_security_logo_icon",
+    image: "industrial_factory_cover",
     publishedDate: "2025-12-05",
     views: 95
   },
@@ -778,7 +778,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Freemium",
     tags: ["Oil", "Price", "Information"],
-    image: "abstract_pulse_signal_logo_icon",
+    image: "financial_trend_cover",
     publishedDate: "2025-11-10",
     views: 27
   },
@@ -792,7 +792,7 @@ export const RESOURCES: Resource[] = [
     type: "Agent",
     price: "Paid",
     tags: ["Oil", "Market", "Analytics"],
-    image: "abstract_pulse_signal_logo_icon",
+    image: "data_analytics_cover",
     publishedDate: "2025-11-25",
     views: 130
   },
@@ -808,7 +808,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Power", "Data", "Platform"],
-    image: "abstract_cloud_data_logo_icon",
+    image: "renewable_energy_cover",
     publishedDate: "2025-08-25",
     views: 12
   },
@@ -822,7 +822,7 @@ export const RESOURCES: Resource[] = [
     type: "API",
     price: "Paid",
     tags: ["Power", "Grid", "Monitoring"],
-    image: "abstract_cloud_data_logo_icon",
+    image: "smart_city_cover",
     publishedDate: "2025-09-10",
     views: 115
   }
