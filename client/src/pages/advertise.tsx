@@ -2,7 +2,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle2, Zap, ExternalLink, Eye, TrendingUp } from "lucide-react";
+import { CheckCircle2, Zap, Target, Award, Rocket } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 
 export default function Advertise() {
@@ -22,19 +22,35 @@ export default function Advertise() {
           </p>
         </div>
 
-        {/* Stats */}
+        {/* Benefits (Replacing Stats) */}
         <div className="mx-auto mt-16 grid max-w-5xl gap-6 md:grid-cols-3">
           {[
-            { label: t("Outbound clicks per month", "월간 아웃바운드 클릭 수"), value: "7,000+", icon: ExternalLink },
-            { label: t("Page views per month", "월간 페이지 조회수"), value: "60,000", icon: Eye },
-            { label: t("Active users per month", "월간 활성 사용자 수"), value: "15,000+", icon: TrendingUp },
-          ].map((stat) => (
-            <Card key={stat.label} className="flex flex-col items-center p-8 text-center">
+            { 
+              label: t("Targeted Audience", "타겟 오디언스"), 
+              value: t("Decision Makers", "의사 결정권자"),
+              desc: t("Reach professionals and decision-makers in the data industry.", "데이터 산업의 전문가 및 의사 결정권자에게 도달하세요."),
+              icon: Target 
+            },
+            { 
+              label: t("Brand Authority", "브랜드 권위"), 
+              value: t("Industry Leader", "산업 리더"),
+              desc: t("Position your brand as a leader in the AI & Data ecosystem.", "AI 및 데이터 생태계에서 브랜드를 리더로 포지셔닝하세요."),
+              icon: Award 
+            },
+            { 
+              label: t("Growth Potential", "성장 잠재력"), 
+              value: t("Early Access", "초기 선점 기회"),
+              desc: t("Secure your spot early and grow with our rapidly expanding platform.", "초기 입지를 선점하고 빠르게 성장하는 플랫폼과 함께 성장하세요."),
+              icon: Rocket 
+            },
+          ].map((benefit) => (
+            <Card key={benefit.label} className="flex flex-col items-center p-8 text-center hover:shadow-lg transition-shadow duration-300">
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
-                <stat.icon className="h-6 w-6" />
+                <benefit.icon className="h-6 w-6" />
               </div>
-              <div className="font-heading text-3xl font-bold">{stat.value}</div>
-              <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
+              <div className="font-heading text-2xl font-bold mb-2">{benefit.value}</div>
+              <div className="text-sm font-semibold text-primary mb-2">{benefit.label}</div>
+              <p className="text-sm text-muted-foreground">{benefit.desc}</p>
             </Card>
           ))}
         </div>
