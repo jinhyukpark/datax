@@ -9,12 +9,12 @@ import { Search, Grid, List, Tag, Calendar, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { motion } from "framer-motion";
-import networkNodesIcon from "@assets/generated_images/abstract_network_nodes_logo_icon.png";
-import shieldSecurityIcon from "@assets/generated_images/abstract_shield_security_logo_icon.png";
-import atomScienceIcon from "@assets/generated_images/abstract_atom_science_logo_icon.png";
-import gearRobotIcon from "@assets/generated_images/abstract_gear_robot_logo_icon.png";
-import pulseSignalIcon from "@assets/generated_images/abstract_pulse_signal_logo_icon.png";
-import globeEarthIcon from "@assets/generated_images/abstract_globe_earth_logo_icon.png";
+import networkNodesIcon from "@assets/generated_images/global_network_connections.png";
+import shieldSecurityIcon from "@assets/generated_images/cybersecurity_shield_lock.png";
+import atomScienceIcon from "@assets/generated_images/quantum_computing_chip.png";
+import gearRobotIcon from "@assets/generated_images/robotic_arm_automation.png";
+import pulseSignalIcon from "@assets/generated_images/ai_market_growth_chart.png";
+import globeEarthIcon from "@assets/generated_images/green_energy_solar_panels.png";
 import integrationIcon from "@assets/generated_images/abstract_integration_puzzle_logo_icon.png";
 
 const imageMap: Record<string, string> = {
@@ -153,6 +153,17 @@ export default function News() {
                   <CardContent className={`p-6 ${viewMode === "list" ? "w-full" : ""}`}>
                     <div className="flex flex-col h-full justify-between gap-4">
                       <div className="flex gap-5">
+                        {article.image && imageMap[article.image] && (
+                          <div className="flex-shrink-0">
+                            <div className="h-24 w-24 rounded-xl overflow-hidden bg-slate-50 border border-slate-100 dark:bg-slate-800 dark:border-slate-700 flex items-center justify-center">
+                              <img 
+                                src={imageMap[article.image]} 
+                                alt={article.title} 
+                                className="h-full w-full object-cover" 
+                              />
+                            </div>
+                          </div>
+                        )}
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-3 text-sm text-muted-foreground">
                             <span className="font-semibold text-primary">{article.source}</span>
@@ -172,17 +183,6 @@ export default function News() {
                               : article.excerpt}
                           </p>
                         </div>
-                        {article.image && imageMap[article.image] && (
-                          <div className="flex-shrink-0">
-                            <div className="h-24 w-24 rounded-xl overflow-hidden bg-slate-50 border border-slate-100 dark:bg-slate-800 dark:border-slate-700 flex items-center justify-center">
-                              <img 
-                                src={imageMap[article.image]} 
-                                alt={article.title} 
-                                className="h-14 w-14 object-contain" 
-                              />
-                            </div>
-                          </div>
-                        )}
                       </div>
 
                       <div className="flex items-center justify-between mt-auto">
