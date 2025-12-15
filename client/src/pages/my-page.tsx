@@ -10,10 +10,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { RESOURCES } from "@/lib/data";
-import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Settings, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock } from "lucide-react";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Settings, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function MyPage() {
   const { t } = useLanguage();
@@ -79,17 +81,45 @@ export default function MyPage() {
       id: "r1",
       title: "Global EV Market Analysis AI Agent",
       description: "AI Agent that aggregates and analyzes global electric vehicle market trends.",
-      date: "2025-12-14",
-      status: "verifying", // submitted, verifying, verified
+      dates: {
+        submitted: "2025-12-14",
+        verifying: "2025-12-15",
+        verified: null,
+        rejected: null
+      },
+      status: "verifying", // submitted, verifying, verified, rejected
       step: 2
     },
     {
       id: "r2",
       title: "Medical Image Diagnostic Helper",
       description: "Assistant AI for preliminary analysis of X-ray images.",
-      date: "2025-12-10",
+      dates: {
+        submitted: "2025-12-10",
+        verifying: null,
+        verified: null,
+        rejected: null
+      },
       status: "submitted",
       step: 1
+    },
+    {
+      id: "r3",
+      title: "Crypto Trading Bot V2",
+      description: "Automated trading bot for cryptocurrency markets with risk management.",
+      dates: {
+        submitted: "2025-12-01",
+        verifying: "2025-12-03",
+        verified: null,
+        rejected: "2025-12-05"
+      },
+      status: "rejected",
+      step: 3, 
+      rejectionReason: "Security vulnerability detected in dependency scan. Please update libraries.",
+      messages: [
+        { sender: "admin", text: "We found a critical vulnerability in the 'crypto-js' version you are using.", date: "2025-12-05 14:30" },
+        { sender: "user", text: "I will update the package and resubmit.", date: "2025-12-05 15:45" }
+      ]
     }
   ];
 
