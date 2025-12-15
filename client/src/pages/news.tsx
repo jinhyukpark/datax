@@ -69,21 +69,46 @@ export default function News() {
         </div>
 
         {/* Controls: Search, View Mode, Tags */}
-        <div className="mb-8 space-y-6">
-          <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-            {/* Search */}
-            <div className="relative w-full md:w-96">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <div className="mb-8 space-y-8">
+          {/* Search - Centered and Wider */}
+          <div className="flex justify-center">
+            <div className="relative w-full max-w-2xl">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <Input
                 placeholder={t("Search news...", "뉴스 검색...")}
-                className="pl-10"
+                className="pl-12 h-12 text-base shadow-sm border-slate-200 dark:border-slate-800"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
+            {/* Tags */}
+            <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+              <Button
+                variant={selectedTag === null ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedTag(null)}
+                className="rounded-full text-xs"
+              >
+                All
+              </Button>
+              {allTags.map((tag) => (
+                <Button
+                  key={tag}
+                  variant={selectedTag === tag ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
+                  className="rounded-full text-xs"
+                >
+                  #{tag}
+                </Button>
+              ))}
+            </div>
 
             {/* View Toggle */}
-            <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-1 rounded-lg border">
+            <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-1 rounded-lg border shrink-0">
               <Button
                 variant={viewMode === "grid" ? "default" : "ghost"}
                 size="sm"
@@ -101,29 +126,6 @@ export default function News() {
                 <List className="h-4 w-4" />
               </Button>
             </div>
-          </div>
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant={selectedTag === null ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSelectedTag(null)}
-              className="rounded-full text-xs"
-            >
-              All
-            </Button>
-            {allTags.map((tag) => (
-              <Button
-                key={tag}
-                variant={selectedTag === tag ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
-                className="rounded-full text-xs"
-              >
-                #{tag}
-              </Button>
-            ))}
           </div>
         </div>
 
