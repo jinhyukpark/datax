@@ -17,6 +17,7 @@ export default function Submit() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [features, setFeatures] = useState<string[]>([""]);
+  const [useCases, setUseCases] = useState<{ title: string; content: string }[]>([{ title: "", content: "" }]);
 
   const addFeature = () => {
     if (features.length < 5) setFeatures([...features, ""]);
@@ -32,6 +33,22 @@ export default function Submit() {
     const newFeatures = [...features];
     newFeatures[index] = value;
     setFeatures(newFeatures);
+  };
+
+  const addUseCase = () => {
+    if (useCases.length < 5) setUseCases([...useCases, { title: "", content: "" }]);
+  };
+
+  const removeUseCase = (index: number) => {
+    if (useCases.length > 1) {
+      setUseCases(useCases.filter((_, i) => i !== index));
+    }
+  };
+
+  const updateUseCase = (index: number, field: 'title' | 'content', value: string) => {
+    const newUseCases = [...useCases];
+    newUseCases[index] = { ...newUseCases[index], [field]: value };
+    setUseCases(newUseCases);
   };
 
   // Simulating Auth Check
@@ -406,19 +423,54 @@ export default function Submit() {
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="usecases" className="flex justify-between font-semibold">
-                    <span>Use Cases</span>
-                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/600</span>
-                  </Label>
-                  <Textarea 
-                    id="usecases" 
-                    placeholder={`• Content creation for marketing teams
-• Academic research and writing
-• Technical documentation`} 
-                    maxLength={600} 
-                    className="min-h-[160px] font-mono text-sm leading-relaxed" 
-                  />
-                  <p className="text-xs text-muted-foreground">Enter each use case on a new line. Maximum 5 use cases recommended.</p>
+                  <div className="flex justify-between items-center">
+                    <Label className="font-semibold">Use Cases</Label>
+                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{useCases.length}/5</span>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {useCases.map((useCase, index) => (
+                      <div key={index} className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800 animate-in fade-in slide-in-from-bottom-2 duration-300 relative group">
+                        <div className="space-y-3">
+                          <Input 
+                            value={useCase.title}
+                            onChange={(e) => updateUseCase(index, 'title', e.target.value)}
+                            placeholder={`Use Case Title ${index + 1}`}
+                            className="h-11 font-medium"
+                          />
+                          <Textarea 
+                            value={useCase.content}
+                            onChange={(e) => updateUseCase(index, 'content', e.target.value)}
+                            placeholder="Describe this use case..."
+                            className="min-h-[80px] resize-y"
+                          />
+                        </div>
+                        {useCases.length > 1 && (
+                          <Button 
+                            type="button" 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={() => removeUseCase(index)}
+                            className="absolute top-2 right-2 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 h-8 w-8"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {useCases.length < 5 && (
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={addUseCase}
+                      className="w-full border-dashed border-2 h-11 text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors"
+                    >
+                      <Plus className="mr-2 h-4 w-4" /> Add Use Case
+                    </Button>
+                  )}
+                  <p className="text-xs text-muted-foreground">Add up to 5 specific use cases.</p>
                 </div>
               </div>
 
