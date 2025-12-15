@@ -120,6 +120,19 @@ export default function MyPage() {
         { sender: "admin", text: "We found a critical vulnerability in the 'crypto-js' version you are using.", date: "2025-12-05 14:30" },
         { sender: "user", text: "I will update the package and resubmit.", date: "2025-12-05 15:45" }
       ]
+    },
+    {
+      id: "r4",
+      title: "Real-time Traffic Optimization AI",
+      description: "AI system for optimizing traffic signal timings based on real-time flow data.",
+      dates: {
+        submitted: "2025-11-15",
+        verifying: "2025-11-16",
+        verified: "2025-11-18",
+        rejected: null
+      },
+      status: "verified",
+      step: 3
     }
   ];
 
