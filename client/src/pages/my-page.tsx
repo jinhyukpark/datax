@@ -10,9 +10,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { RESOURCES } from "@/lib/data";
-import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Settings, Share2, User } from "lucide-react";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Settings, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export default function MyPage() {
   const { t } = useLanguage();
@@ -50,7 +51,7 @@ export default function MyPage() {
     }
   ];
 
-  // Mock My Shared Data
+  // Mock My Shared Data (Approved)
   const myData = [
     {
       id: "m1",
@@ -69,6 +70,26 @@ export default function MyPage() {
       downloads: 120,
       status: "Active",
       date: "2025-10-22"
+    }
+  ];
+
+  // Mock Requested Data
+  const requestedData = [
+    {
+      id: "r1",
+      title: "Global EV Market Analysis AI Agent",
+      description: "AI Agent that aggregates and analyzes global electric vehicle market trends.",
+      date: "2025-12-14",
+      status: "verifying", // submitted, verifying, verified
+      step: 2
+    },
+    {
+      id: "r2",
+      title: "Medical Image Diagnostic Helper",
+      description: "Assistant AI for preliminary analysis of X-ray images.",
+      date: "2025-12-10",
+      status: "submitted",
+      step: 1
     }
   ];
 
@@ -258,54 +279,182 @@ export default function MyPage() {
               <TabsContent value="my-data">
                 <div className="flex justify-between items-center mb-6">
                   <div>
-                    <h2 className="text-xl font-semibold mb-1">{t("Shared Data", "공유한 데이터")}</h2>
-                    <p className="text-muted-foreground text-sm">{t("Manage data you have uploaded to the platform.", "플랫폼에 업로드한 데이터를 관리하세요.")}</p>
+                    <h2 className="text-xl font-semibold mb-1">{t("My Data", "나의 데이터")}</h2>
+                    <p className="text-muted-foreground text-sm">{t("Manage your shared data and view requests.", "공유한 데이터 및 요청 상태를 관리하세요.")}</p>
                   </div>
-                  <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700">
+                  <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700" onClick={() => setLocation('/submit')}>
                     <Package className="h-4 w-4" />
                     {t("Upload New Data", "새 데이터 업로드")}
                   </Button>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4">
-                  {myData.map((item) => (
-                    <Card key={item.id} className="overflow-hidden">
-                      <div className="flex flex-col md:flex-row">
-                        <div className="p-6 flex-grow">
-                          <div className="flex justify-between items-start mb-2">
-                            <h3 className="text-lg font-bold hover:text-primary cursor-pointer">{item.title}</h3>
-                            <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                              {item.status}
-                            </span>
+                <Tabs defaultValue="approved" className="w-full">
+                  <TabsList className="w-full justify-start h-auto p-0 bg-transparent gap-6 border-b mb-6 rounded-none">
+                    <TabsTrigger 
+                      value="approved" 
+                      className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-0 py-3 font-semibold"
+                    >
+                      {t("Approved", "승인됨")}
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="request" 
+                      className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-0 py-3 font-semibold"
+                    >
+                      {t("Request", "승인요청")}
+                    </TabsTrigger>
+                  </TabsList>
+                  
+                  {/* Approved Tab Content */}
+                  <TabsContent value="approved" className="mt-0">
+                    <div className="grid grid-cols-1 gap-4">
+                      {myData.map((item) => (
+                        <Card key={item.id} className="overflow-hidden">
+                          <div className="flex flex-col md:flex-row">
+                            <div className="p-6 flex-grow">
+                              <div className="flex justify-between items-start mb-2">
+                                <h3 className="text-lg font-bold hover:text-primary cursor-pointer">{item.title}</h3>
+                                <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                                  {item.status}
+                                </span>
+                              </div>
+                              <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{item.description}</p>
+                              <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                                <div className="flex items-center gap-1">
+                                  <History className="h-4 w-4" />
+                                  <span>{item.date}</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Eye className="h-4 w-4" />
+                                  <span>{item.views} views</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Download className="h-4 w-4" />
+                                  <span>{item.downloads} downloads</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l min-w-[140px]">
+                              <Button variant="outline" size="sm" className="w-full">
+                                {t("Edit", "수정")}
+                              </Button>
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button variant="outline" size="sm" className="w-full gap-2">
+                                    <BarChart2 className="h-3 w-3" />
+                                    {t("Analytics", "통계")}
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-[600px]">
+                                  <DialogHeader>
+                                    <DialogTitle>{t("Data Analytics", "데이터 분석")}</DialogTitle>
+                                  </DialogHeader>
+                                  <div className="py-6">
+                                    <div className="h-[200px] w-full bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center mb-6">
+                                      <BarChart2 className="h-16 w-16 text-slate-300 dark:text-slate-600" />
+                                      <span className="sr-only">Analytics Chart Placeholder</span>
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-4 text-center">
+                                      <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
+                                        <div className="text-2xl font-bold text-primary">{item.views}</div>
+                                        <div className="text-xs text-muted-foreground">Total Views</div>
+                                      </div>
+                                      <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
+                                        <div className="text-2xl font-bold text-blue-600">{item.downloads}</div>
+                                        <div className="text-xs text-muted-foreground">Downloads</div>
+                                      </div>
+                                      <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
+                                        <div className="text-2xl font-bold text-green-600">4.8</div>
+                                        <div className="text-xs text-muted-foreground">Rating</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+                            </div>
                           </div>
-                          <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{item.description}</p>
-                          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <History className="h-4 w-4" />
-                              <span>{item.date}</span>
+                        </Card>
+                      ))}
+                    </div>
+                  </TabsContent>
+
+                  {/* Request Tab Content */}
+                  <TabsContent value="request" className="mt-0">
+                    <div className="space-y-4">
+                      {requestedData.map((item) => (
+                        <Card key={item.id} className="overflow-hidden">
+                          <CardContent className="p-6">
+                            <div className="flex flex-col md:flex-row gap-6 justify-between">
+                              <div className="flex-grow">
+                                <div className="flex justify-between items-start mb-2">
+                                  <h3 className="text-lg font-bold">{item.title}</h3>
+                                  <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                    <Clock className="h-3 w-3" /> {item.date}
+                                  </span>
+                                </div>
+                                <p className="text-muted-foreground text-sm mb-6">{item.description}</p>
+                                
+                                {/* Progress Bar */}
+                                <div className="relative pt-2 pb-6">
+                                  {/* Line */}
+                                  <div className="absolute top-[15px] left-0 w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full" />
+                                  <div 
+                                    className="absolute top-[15px] left-0 h-1 bg-green-500 rounded-full transition-all duration-500" 
+                                    style={{ width: item.step === 1 ? '0%' : item.step === 2 ? '50%' : '100%' }}
+                                  />
+                                  
+                                  <div className="relative flex justify-between w-full">
+                                    {/* Step 1 */}
+                                    <div className="flex flex-col items-center gap-2">
+                                      <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 z-10 bg-white dark:bg-slate-950 ${item.step >= 1 ? 'border-green-500 text-green-500' : 'border-slate-200 text-slate-300'}`}>
+                                        <CheckCircle2 className="h-4 w-4" />
+                                      </div>
+                                      <span className={`text-xs font-medium ${item.step >= 1 ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                        {t("Submitted", "제출완료")}
+                                      </span>
+                                    </div>
+
+                                    {/* Step 2 */}
+                                    <div className="flex flex-col items-center gap-2">
+                                      <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 z-10 bg-white dark:bg-slate-950 ${
+                                        item.step === 2 ? 'border-blue-500 text-blue-500 animate-pulse' : 
+                                        item.step > 2 ? 'border-green-500 text-green-500' : 
+                                        'border-slate-200 text-slate-300'
+                                      }`}>
+                                        {item.step === 2 ? <Loader2 className="h-4 w-4 animate-spin" /> : <Circle className="h-4 w-4" />}
+                                      </div>
+                                      <span className={`text-xs font-medium ${item.step === 2 ? 'text-blue-600' : item.step > 2 ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                        {t("Verifying", "검증중")}
+                                      </span>
+                                    </div>
+
+                                    {/* Step 3 */}
+                                    <div className="flex flex-col items-center gap-2">
+                                      <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 z-10 bg-white dark:bg-slate-950 ${item.step === 3 ? 'border-green-500 text-green-500' : 'border-slate-200 text-slate-300'}`}>
+                                        <Circle className="h-4 w-4" />
+                                      </div>
+                                      <span className={`text-xs font-medium ${item.step === 3 ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                        {t("Verified", "검증완료")}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              <div className="flex flex-col justify-center min-w-[120px]">
+                                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 text-center">
+                                  <div className="text-xs text-muted-foreground mb-1">Current Status</div>
+                                  <div className={`font-bold ${item.step === 2 ? 'text-blue-600' : 'text-green-600'}`}>
+                                    {item.step === 1 ? 'Submitted' : item.step === 2 ? 'Under Review' : 'Approved'}
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            <div className="flex items-center gap-1">
-                              <Eye className="h-4 w-4" />
-                              <span>{item.views} views</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Download className="h-4 w-4" />
-                              <span>{item.downloads} downloads</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l">
-                          <Button variant="outline" size="sm" className="w-full">
-                            {t("Edit", "수정")}
-                          </Button>
-                          <Button variant="outline" size="sm" className="w-full">
-                            {t("Analytics", "통계")}
-                          </Button>
-                        </div>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </TabsContent>
             </Tabs>
           </div>
