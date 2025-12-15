@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent } from "@/components/ui/card";
-import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useLanguage } from "@/lib/language-context";
@@ -16,6 +16,23 @@ export default function Submit() {
   const [, setLocation] = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [features, setFeatures] = useState<string[]>([""]);
+
+  const addFeature = () => {
+    if (features.length < 5) setFeatures([...features, ""]);
+  };
+
+  const removeFeature = (index: number) => {
+    if (features.length > 1) {
+      setFeatures(features.filter((_, i) => i !== index));
+    }
+  };
+
+  const updateFeature = (index: number, value: string) => {
+    const newFeatures = [...features];
+    newFeatures[index] = value;
+    setFeatures(newFeatures);
+  };
 
   // Simulating Auth Check
   useEffect(() => {
@@ -344,21 +361,48 @@ export default function Submit() {
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="features" className="flex justify-between font-semibold">
-                    <span>Key Features</span>
-                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/600</span>
-                  </Label>
-                  <div className="relative">
-                    <Textarea 
-                      id="features" 
-                      placeholder={`• AI-powered content generation
-• Multi-language support
-• Real-time collaboration`} 
-                      maxLength={600} 
-                      className="min-h-[160px] font-mono text-sm leading-relaxed pl-4" 
-                    />
+                  <div className="flex justify-between items-center">
+                    <Label className="font-semibold">Key Features</Label>
+                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{features.length}/5</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Enter each feature on a new line. Maximum 5 features recommended.</p>
+                  
+                  <div className="space-y-3">
+                    {features.map((feature, index) => (
+                      <div key={index} className="flex gap-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                        <div className="flex-1 relative">
+                          <Input 
+                            value={feature}
+                            onChange={(e) => updateFeature(index, e.target.value)}
+                            placeholder={`Feature ${index + 1}`}
+                            className="h-11"
+                          />
+                        </div>
+                        {features.length > 1 && (
+                          <Button 
+                            type="button" 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={() => removeFeature(index)}
+                            className="text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 shrink-0"
+                          >
+                            <Trash2 className="h-5 w-5" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {features.length < 5 && (
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={addFeature}
+                      className="w-full border-dashed border-2 h-11 text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors"
+                    >
+                      <Plus className="mr-2 h-4 w-4" /> Add Feature
+                    </Button>
+                  )}
+                  <p className="text-xs text-muted-foreground">Add up to 5 key features of your AI Agent.</p>
                 </div>
 
                 <div className="space-y-3">
