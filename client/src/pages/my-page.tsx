@@ -21,8 +21,6 @@ import { SubmitForm } from "@/components/submit-form";
 import { AnalyticsView } from "@/components/analytics-view";
 import { toast } from "sonner";
 import { format, differenceInDays } from "date-fns";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function MyPage() {
   const { t } = useLanguage();
