@@ -3,24 +3,77 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Card, CardContent } from "@/components/ui/card";
-import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, AlertTriangle, Save, Star, MessageSquare } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useLocation } from "wouter";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
+import { Resource } from "@/lib/data";
 
 interface SubmitFormProps {
   onSuccess?: () => void;
   className?: string;
+  initialData?: Resource;
+  mode?: 'create' | 'edit-request' | 'edit-approved';
 }
 
-export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
+export function SubmitForm({ onSuccess, className, initialData, mode = 'create' }: SubmitFormProps) {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [features, setFeatures] = useState<string[]>([""]);
-  const [useCases, setUseCases] = useState<{ title: string; content: string }[]>([{ title: "", content: "" }]);
+  const [showReapprovalWarning, setShowReapprovalWarning] = useState(false);
+  
+  // Form State
+  const [features, setFeatures] = useState<string[]>(initialData?.features || [""]);
+  const [useCases, setUseCases] = useState<{ title: string; content: string }[]>(
+    initialData?.useCases?.map(u => ({ title: u, content: "" })) || [{ title: "", content: "" }]
+  );
+  
+  // Additional Tabs State
+  const [documentation, setDocumentation] = useState(initialData?.documentation || {
+    title: "Quick Start",
+    content: "# Install the SDK\nnpm install @em-data/sdk\n\n# Initialize client\nconst client = new EMDataClient({\n  apiKey: 'YOUR_API_KEY'\n});",
+    endpoints: [
+      { method: "GET", path: "/v1/resources/list", description: "Retrieve a paginated list of available resources matching the filter criteria." },
+      { method: "POST", path: "/v1/agents/interact", description: "Send a prompt to the AI agent and receive a streamed response." }
+    ]
+  });
+
+  const [pricingPlans, setPricingPlans] = useState(initialData?.pricingPlans || [
+    { name: "Starter", price: "$29", features: ["1,000 Requests", "Standard Support", "Basic Analytics"], recommended: false },
+    { name: "Pro", price: "$78", features: ["50,000 Requests", "Priority Support", "Advanced Analytics", "SLA Guarantee"], recommended: true },
+    { name: "Enterprise", price: "$127", features: ["Unlimited Requests", "Priority Support", "Advanced Analytics", "SLA Guarantee", "Custom Integration"], recommended: false }
+  ]);
+
+  const [reviews, setReviews] = useState(initialData?.reviews || [
+    { id: "rv1", user: "User 1", rating: 5, date: "2 days ago", comment: "This resource has significantly improved our workflow. The integration was straightforward and the documentation is excellent. Highly recommended for teams looking to scale." },
+    { id: "rv2", user: "User 2", rating: 5, date: "2 days ago", comment: "Excellent data quality and reliable API. The support team is also very responsive." },
+    { id: "rv3", user: "User 3", rating: 4, date: "3 days ago", comment: "Great tool, but documentation could be a bit more detailed for edge cases." }
+  ]);
+
+  const [replyText, setReplyText] = useState<{[key: string]: string}>({});
+
+  useEffect(() => {
+    if (initialData) {
+      if (initialData.features) setFeatures(initialData.features);
+      if (initialData.useCases) setUseCases(initialData.useCases.map(u => ({ title: u, content: "" })));
+      // In a real app, we would load other data too if it existed in initialData
+    }
+  }, [initialData]);
 
   const addFeature = () => {
     if (features.length < 5) setFeatures([...features, ""]);
@@ -54,16 +107,39 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
     setUseCases(newUseCases);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleGeneralSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
+    if (mode === 'edit-approved') {
+      setShowReapprovalWarning(true);
+      return;
+    }
+
+    submitGeneralData();
+  };
+
+  const submitGeneralData = () => {
+    setIsSubmitting(true);
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
       if (onSuccess) onSuccess();
     }, 1500);
+  };
+
+  const handleSaveAdditional = (type: 'documentation' | 'pricing' | 'reviews') => {
+    toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} updated successfully`);
+  };
+
+  const handleReplyReview = (reviewId: string) => {
+    const reply = replyText[reviewId];
+    if (!reply) return;
+    
+    const newReviews = reviews.map(r => r.id === reviewId ? { ...r, reply } : r);
+    setReviews(newReviews);
+    setReplyText({ ...replyText, [reviewId]: '' });
+    toast.success("Reply posted successfully");
   };
 
   if (submitted) {
@@ -73,15 +149,18 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
           <ShieldCheck className="h-10 w-10" />
         </div>
         
-        <h1 className="text-2xl font-bold mb-4">{t("Submission Received", "제출이 완료되었습니다")}</h1>
+        <h1 className="text-2xl font-bold mb-4">
+          {mode === 'edit-approved' 
+            ? t("Re-approval Requested", "재승인 요청됨")
+            : t("Submission Received", "제출이 완료되었습니다")}
+        </h1>
         <p className="text-muted-foreground mb-8 text-base">
-          {t(
-            "Your AI Agent has been successfully submitted and is currently under verification.", 
-            "AI 에이전트가 성공적으로 제출되었으며 현재 검증이 진행 중입니다."
-          )}
+          {mode === 'edit-approved'
+            ? t("Your changes have been submitted and moved to the Request tab for verification.", "변경 사항이 제출되었으며 검증을 위해 승인 요청 탭으로 이동되었습니다.")
+            : t("Your AI Agent has been successfully submitted and is currently under verification.", "AI 에이전트가 성공적으로 제출되었으며 현재 검증이 진행 중입니다.")}
         </p>
 
-        {/* Progress Steps */}
+        {/* Progress Steps (Simplified for edit mode) */}
         <div className="relative flex justify-between w-full max-w-md mx-auto mb-10 px-4">
           {/* Line */}
           <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-200 dark:bg-slate-800 -z-10 -translate-y-1/2" />
@@ -112,56 +191,18 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
           </div>
         </div>
 
-        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg text-sm text-blue-700 dark:text-blue-300 mb-8 w-full max-w-lg">
-          <p>
-            {t(
-              "Our team is reviewing your submission to ensure it meets our quality standards. You will be notified via email once the verification is complete.",
-              "저희 팀이 제출된 내용을 검토하여 품질 기준을 충족하는지 확인하고 있습니다. 검증이 완료되면 이메일로 알려드립니다."
-            )}
-          </p>
-        </div>
-
-        <Button onClick={() => setLocation('/my-page')} variant="outline" className="w-full max-w-xs">
-          {t("Go to My Page", "마이 페이지로 이동")}
+        <Button onClick={() => {
+          if (onSuccess) onSuccess();
+          // Ideally close modal here
+        }} variant="outline" className="w-full max-w-xs">
+          {t("Close", "닫기")}
         </Button>
       </div>
     );
   }
 
-  return (
-    <div className={className}>
-      <div className="mb-8 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-xs font-bold text-green-600 mb-4">
-            <ShieldCheck className="h-3 w-3" /> 59 CERTIFIED DOMAIN RATING
-        </div>
-        
-        <h1 className="text-2xl md:text-3xl font-extrabold mb-4 text-slate-900 dark:text-slate-50 tracking-tight">
-          Submit Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">AI Agent</span>
-        </h1>
-        
-        <p className="text-muted-foreground text-sm max-w-lg mx-auto leading-relaxed">
-          Connect with global users and join thousands of innovative agentic solutions.
-        </p>
-      </div>
-
-      <div className="mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-0.5 shadow-md">
-        <div className="bg-white/10 backdrop-blur-sm rounded-[10px] p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md shrink-0">
-              <Loader2 className="h-5 w-5 text-white animate-spin-slow" />
-            </div>
-            <div className="text-left">
-              <h3 className="font-bold text-sm">Want to maximize visibility?</h3>
-              <p className="text-blue-100 text-xs">Get featured on our homepage.</p>
-            </div>
-          </div>
-          <Button size="sm" className="bg-white text-blue-600 hover:bg-blue-50 font-bold border-0 shadow-sm w-full sm:w-auto text-xs whitespace-nowrap">
-            View Sponsorships →
-          </Button>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-6">
+  const GeneralForm = () => (
+    <form onSubmit={handleGeneralSubmit} className="space-y-6">
         <div className="space-y-8">
             {/* Section Header */}
             <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
@@ -179,14 +220,14 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
                 <span>AI Agent Name <span className="text-red-500">*</span></span>
                 <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/35</span>
                 </Label>
-                <Input id="name" placeholder="e.g. AutoGPT" required maxLength={35} className="h-10" />
+                <Input id="name" defaultValue={initialData?.title} placeholder="e.g. AutoGPT" required maxLength={35} className="h-10" />
             </div>
             <div className="space-y-3">
                 <Label htmlFor="founder" className="flex justify-between font-semibold text-sm">
                 <span>Founders / Company Name</span>
                 <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/50</span>
                 </Label>
-                <Input id="founder" placeholder="e.g. OpenAI" maxLength={50} className="h-10" />
+                <Input id="founder" defaultValue={initialData?.founder || initialData?.provider} placeholder="e.g. OpenAI" maxLength={50} className="h-10" />
             </div>
 
             <div className="space-y-3">
@@ -194,7 +235,7 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
                 <span>Website URL <span className="text-red-500">*</span></span>
                 <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/100</span>
                 </Label>
-                <Input id="website" placeholder="https://" required maxLength={100} className="h-10" />
+                <Input id="website" defaultValue={initialData?.websiteUrl} placeholder="https://" required maxLength={100} className="h-10" />
             </div>
             <div className="space-y-3">
                 <Label htmlFor="affiliate" className="flex justify-between font-semibold text-sm">
@@ -209,14 +250,14 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
                 <span>Demo URL</span>
                 <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/200</span>
                 </Label>
-                <Input id="demo" placeholder="https://youtube.com/..." maxLength={200} className="h-10" />
+                <Input id="demo" defaultValue={initialData?.demoUrl} placeholder="https://youtube.com/..." maxLength={200} className="h-10" />
             </div>
             <div className="space-y-3">
                 <Label htmlFor="docs" className="flex justify-between font-semibold text-sm">
                 <span>Documentation URL</span>
                 <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/200</span>
                 </Label>
-                <Input id="docs" placeholder="https://docs..." maxLength={200} className="h-10" />
+                <Input id="docs" defaultValue={initialData?.docsUrl} placeholder="https://docs..." maxLength={200} className="h-10" />
             </div>
             </div>
 
@@ -227,7 +268,7 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
                 <span className="flex items-center gap-2">Contact Email <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full font-normal">Auto-filled</span> <span className="text-red-500">*</span></span>
                 <span className="text-[10px] text-muted-foreground">19/50</span>
                 </Label>
-                <Input id="email" value="jh.park@illunex.com" disabled className="h-10 bg-white dark:bg-slate-900 text-slate-600 font-medium" />
+                <Input id="email" defaultValue={initialData?.contactEmail || "jh.park@illunex.com"} disabled className="h-10 bg-white dark:bg-slate-900 text-slate-600 font-medium" />
                 <p className="text-[10px] text-muted-foreground flex items-center gap-1">
                 <ShieldCheck className="h-3 w-3" /> Notifications sent here
                 </p>
@@ -247,23 +288,23 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
                 <Label htmlFor="linkedin" className="font-semibold text-sm">LinkedIn URL</Label>
-                <Input id="linkedin" placeholder="https://linkedin.com/in/..." maxLength={100} className="h-10" />
+                <Input id="linkedin" defaultValue={initialData?.socialLinks?.linkedin} placeholder="https://linkedin.com/in/..." maxLength={100} className="h-10" />
             </div>
             <div className="space-y-2">
                 <Label htmlFor="twitter" className="font-semibold text-sm">Twitter URL</Label>
-                <Input id="twitter" placeholder="https://twitter.com/..." maxLength={100} className="h-10" />
+                <Input id="twitter" defaultValue={initialData?.socialLinks?.twitter} placeholder="https://twitter.com/..." maxLength={100} className="h-10" />
             </div>
             <div className="space-y-2">
                 <Label htmlFor="github" className="font-semibold text-sm">GitHub URL</Label>
-                <Input id="github" placeholder="https://github.com/..." maxLength={100} className="h-10" />
+                <Input id="github" defaultValue={initialData?.socialLinks?.github} placeholder="https://github.com/..." maxLength={100} className="h-10" />
             </div>
             <div className="space-y-2">
                 <Label htmlFor="discord" className="font-semibold text-sm">Discord URL</Label>
-                <Input id="discord" placeholder="https://discord.gg/..." maxLength={100} className="h-10" />
+                <Input id="discord" defaultValue={initialData?.socialLinks?.discord} placeholder="https://discord.gg/..." maxLength={100} className="h-10" />
             </div>
             <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="telegram" className="font-semibold text-sm">Telegram URL</Label>
-                <Input id="telegram" placeholder="https://t.me/..." maxLength={100} className="h-10" />
+                <Input id="telegram" defaultValue={initialData?.socialLinks?.telegram} placeholder="https://t.me/..." maxLength={100} className="h-10" />
             </div>
             </div>
 
@@ -280,7 +321,7 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
                 <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Access Model <span className="text-red-500">*</span></Label>
-                <RadioGroup defaultValue="open" className="gap-2">
+                <RadioGroup defaultValue={initialData?.accessModel?.toLowerCase() || "open"} className="gap-2">
                 <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
                     <RadioGroupItem value="open" id="open" />
                     <Label htmlFor="open" className="cursor-pointer font-medium text-sm">Open Source</Label>
@@ -298,7 +339,7 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
 
             <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
                 <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Pricing Model <span className="text-red-500">*</span></Label>
-                <RadioGroup defaultValue="free" className="gap-2">
+                <RadioGroup defaultValue={initialData?.price?.toLowerCase() || "free"} className="gap-2">
                 <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
                     <RadioGroupItem value="free" id="free" />
                     <Label htmlFor="free" className="cursor-pointer font-medium text-sm">Free</Label>
@@ -316,7 +357,7 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
 
             <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
                 <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Industry <span className="text-red-500">*</span></Label>
-                <RadioGroup defaultValue="horizontal" className="gap-2">
+                <RadioGroup defaultValue={initialData?.industry?.toLowerCase() || "horizontal"} className="gap-2">
                 <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
                     <RadioGroupItem value="horizontal" id="horizontal" />
                     <Label htmlFor="horizontal" className="cursor-pointer font-medium text-sm">Horizontal</Label>
@@ -345,7 +386,7 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
                 <span>Tagline <span className="text-red-500">*</span></span>
                 <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/100</span>
                 </Label>
-                <Input id="tagline" placeholder="A catchy one-liner for your AI Agent card" required maxLength={100} className="h-10 font-medium" />
+                <Input id="tagline" defaultValue={initialData?.tagline} placeholder="A catchy one-liner for your AI Agent card" required maxLength={100} className="h-10 font-medium" />
             </div>
 
             <div className="space-y-3">
@@ -353,7 +394,7 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
                 <span>Description <span className="text-red-500">*</span></span>
                 <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/750</span>
                 </Label>
-                <Textarea id="description" placeholder="Describe your AI Agent in detail. What problem does it solve? Who is it for?" required maxLength={750} className="min-h-[120px] resize-y" />
+                <Textarea id="description" defaultValue={initialData?.description} placeholder="Describe your AI Agent in detail. What problem does it solve? Who is it for?" required maxLength={750} className="min-h-[120px] resize-y" />
             </div>
 
             <div className="space-y-3">
@@ -433,14 +474,14 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
                         onClick={() => removeUseCase(index)}
                         className="absolute top-2 right-2 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 h-7 w-7"
                         >
-                        <Trash2 className="h-3.5 w-3.5" />
+                        <Trash2 className="h-4 w-4" />
                         </Button>
                     )}
                     </div>
                 ))}
                 </div>
 
-                {useCases.length < 5 && (
+                {features.length < 5 && (
                 <Button 
                     type="button" 
                     variant="outline" 
@@ -451,54 +492,364 @@ export function SubmitForm({ onSuccess, className }: SubmitFormProps) {
                     <Plus className="mr-2 h-3 w-3" /> Add Use Case
                 </Button>
                 )}
-                <p className="text-[10px] text-muted-foreground">Add up to 5 specific use cases.</p>
-            </div>
             </div>
 
-            {/* File Uploads */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-            <div className="group relative border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-4 text-center space-y-2 hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all cursor-pointer">
-                <div className="mx-auto h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <Upload className="h-5 w-5 text-slate-400 group-hover:text-blue-500" />
+            <div className="space-y-3">
+                <Label className="font-semibold text-sm">Hero Image</Label>
+                <div className="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                <div className="h-10 w-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 mb-2">
+                    <Upload className="h-5 w-5" />
                 </div>
-                <div>
-                <h3 className="font-bold text-sm mb-0.5 group-hover:text-blue-600">Logo Icon <span className="text-red-500">*</span></h3>
-                <p className="text-[10px] text-muted-foreground">Rec: 512x512px (Square)</p>
+                <p className="text-sm font-medium">Click to upload or drag and drop</p>
+                <p className="text-xs text-muted-foreground mt-1">SVG, PNG, JPG (max. 800x400px)</p>
                 </div>
-                <Button type="button" variant="outline" size="sm" className="h-7 text-xs mt-1 group-hover:border-blue-500 group-hover:text-blue-600">Select File</Button>
-            </div>
-
-            <div className="group relative border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-4 text-center space-y-2 hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all cursor-pointer">
-                <div className="mx-auto h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <Upload className="h-5 w-5 text-slate-400 group-hover:text-blue-500" />
-                </div>
-                <div>
-                <h3 className="font-bold text-sm mb-0.5 group-hover:text-blue-600">Thumbnail Image</h3>
-                <p className="text-[10px] text-muted-foreground">Rec: 1200x630px (Landscape)</p>
-                </div>
-                <Button type="button" variant="outline" size="sm" className="h-7 text-xs mt-1 group-hover:border-blue-500 group-hover:text-blue-600">Select File</Button>
             </div>
             </div>
         </div>
 
-        <div className="flex justify-end pt-4 sticky bottom-0 bg-white/90 dark:bg-slate-950/90 backdrop-blur-sm p-4 -mx-4 -mb-4 border-t border-slate-100 dark:border-slate-800 z-10">
-            <Button 
-            type="submit" 
-            size="lg" 
-            className="w-full h-12 text-base font-bold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg rounded-full" 
-            disabled={isSubmitting}
-            >
+        <div className="sticky bottom-0 bg-white dark:bg-slate-950 p-4 border-t border-slate-100 dark:border-slate-800 -mx-6 -mb-6 mt-8 flex justify-end gap-3 z-10">
+            <Button type="button" variant="outline" onClick={() => {}}>Cancel</Button>
+            <Button type="submit" disabled={isSubmitting} className="min-w-[120px] bg-blue-600 hover:bg-blue-700">
             {isSubmitting ? (
                 <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Submitting...
                 </>
             ) : (
-                "Submit AI Agent"
+                <>Submit Agent</>
             )}
             </Button>
         </div>
-      </form>
+
+        {/* Re-approval Warning Dialog */}
+        <AlertDialog open={showReapprovalWarning} onOpenChange={setShowReapprovalWarning}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="flex items-center gap-2 text-amber-600">
+                <AlertTriangle className="h-5 w-5" />
+                {t("Re-approval Required", "재승인이 필요합니다")}
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                {t(
+                  "Modifying basic information of an approved resource requires re-approval. The resource will be moved to the 'Request' tab until verified.", 
+                  "승인된 리소스의 기본 정보를 수정하면 재승인이 필요합니다. 검증이 완료될 때까지 리소스가 '승인요청' 탭으로 이동됩니다."
+                )}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t("Cancel", "취소")}</AlertDialogCancel>
+              <AlertDialogAction onClick={submitGeneralData} className="bg-amber-600 hover:bg-amber-700">
+                {t("Confirm & Submit", "확인 및 제출")}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+    </form>
+  );
+
+  const DocumentationForm = () => (
+    <div className="space-y-6 py-4">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label>{t("Documentation Title", "문서 제목")}</Label>
+          <Input 
+            value={documentation.title} 
+            onChange={(e) => setDocumentation({...documentation, title: e.target.value})}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label>{t("Content (Markdown)", "내용 (Markdown)")}</Label>
+          <Textarea 
+            className="min-h-[300px] font-mono text-sm" 
+            value={documentation.content}
+            onChange={(e) => setDocumentation({...documentation, content: e.target.value})}
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label>{t("API Endpoints", "API 엔드포인트")}</Label>
+          {documentation.endpoints?.map((endpoint, idx) => (
+            <Card key={idx} className="p-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-2">
+                <select 
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  value={endpoint.method}
+                  onChange={(e) => {
+                    const newEndpoints = [...(documentation.endpoints || [])];
+                    newEndpoints[idx].method = e.target.value;
+                    setDocumentation({...documentation, endpoints: newEndpoints});
+                  }}
+                >
+                  <option>GET</option>
+                  <option>POST</option>
+                  <option>PUT</option>
+                  <option>DELETE</option>
+                </select>
+                <Input 
+                  className="md:col-span-3"
+                  value={endpoint.path} 
+                  onChange={(e) => {
+                    const newEndpoints = [...(documentation.endpoints || [])];
+                    newEndpoints[idx].path = e.target.value;
+                    setDocumentation({...documentation, endpoints: newEndpoints});
+                  }}
+                />
+              </div>
+              <Input 
+                placeholder="Description"
+                value={endpoint.description}
+                onChange={(e) => {
+                  const newEndpoints = [...(documentation.endpoints || [])];
+                  newEndpoints[idx].description = e.target.value;
+                  setDocumentation({...documentation, endpoints: newEndpoints});
+                }}
+              />
+            </Card>
+          ))}
+          <Button variant="outline" size="sm" onClick={() => {
+            setDocumentation({
+              ...documentation,
+              endpoints: [...(documentation.endpoints || []), { method: "GET", path: "/new/endpoint", description: "" }]
+            });
+          }}>
+            <Plus className="h-4 w-4 mr-2" /> {t("Add Endpoint", "엔드포인트 추가")}
+          </Button>
+        </div>
+      </div>
+      <div className="flex justify-end">
+        <Button onClick={() => handleSaveAdditional('documentation')} className="gap-2">
+          <Save className="h-4 w-4" /> {t("Save Documentation", "문서 저장")}
+        </Button>
+      </div>
+    </div>
+  );
+
+  const PricingForm = () => (
+    <div className="space-y-6 py-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {pricingPlans.map((plan, idx) => (
+          <Card key={idx} className={`relative ${plan.recommended ? 'border-primary shadow-md' : ''}`}>
+            {plan.recommended && (
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">
+                MOST POPULAR
+              </div>
+            )}
+            <CardHeader>
+              <Input 
+                value={plan.name}
+                className="font-bold text-lg mb-2"
+                onChange={(e) => {
+                  const newPlans = [...pricingPlans];
+                  newPlans[idx].name = e.target.value;
+                  setPricingPlans(newPlans);
+                }}
+              />
+              <div className="flex items-center gap-1">
+                <Input 
+                  value={plan.price}
+                  className="text-2xl font-bold w-24"
+                  onChange={(e) => {
+                    const newPlans = [...pricingPlans];
+                    newPlans[idx].price = e.target.value;
+                    setPricingPlans(newPlans);
+                  }}
+                />
+                <span className="text-muted-foreground">/mo</span>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {plan.features.map((feature, fIdx) => (
+                  <div key={fIdx} className="flex gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 mt-1" />
+                    <Input 
+                      value={feature}
+                      className="h-7 text-sm"
+                      onChange={(e) => {
+                        const newPlans = [...pricingPlans];
+                        newPlans[idx].features[fIdx] = e.target.value;
+                        setPricingPlans(newPlans);
+                      }}
+                    />
+                  </div>
+                ))}
+                <Button variant="ghost" size="sm" className="w-full text-xs" onClick={() => {
+                  const newPlans = [...pricingPlans];
+                  newPlans[idx].features.push("New Feature");
+                  setPricingPlans(newPlans);
+                }}>
+                  <Plus className="h-3 w-3 mr-1" /> Add Feature
+                </Button>
+              </div>
+              <div className="mt-4 flex items-center gap-2">
+                <input 
+                  type="checkbox" 
+                  checked={plan.recommended}
+                  onChange={(e) => {
+                    const newPlans = pricingPlans.map((p, i) => ({
+                      ...p,
+                      recommended: i === idx ? e.target.checked : false // Only one recommended
+                    }));
+                    setPricingPlans(newPlans);
+                  }}
+                  className="h-4 w-4 rounded border-gray-300"
+                />
+                <Label className="text-sm">Recommended Plan</Label>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <div className="flex justify-end">
+        <Button onClick={() => handleSaveAdditional('pricing')} className="gap-2">
+          <Save className="h-4 w-4" /> {t("Save Pricing", "가격 설정 저장")}
+        </Button>
+      </div>
+    </div>
+  );
+
+  const ReviewsForm = () => (
+    <div className="space-y-6 py-4">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl font-bold">4.8</div>
+          <div className="space-y-1">
+            <div className="flex text-amber-500">
+              <Star className="h-5 w-5 fill-current" />
+              <Star className="h-5 w-5 fill-current" />
+              <Star className="h-5 w-5 fill-current" />
+              <Star className="h-5 w-5 fill-current" />
+              <Star className="h-5 w-5 fill-current text-slate-200 dark:text-slate-800" />
+            </div>
+            <p className="text-sm text-muted-foreground">Based on {reviews.length} reviews</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        {reviews.map((review) => (
+          <Card key={review.id}>
+            <CardContent className="p-4">
+              <div className="flex justify-between items-start mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700" />
+                  <div>
+                    <p className="font-semibold text-sm">{review.user}</p>
+                    <p className="text-xs text-muted-foreground">{review.date}</p>
+                  </div>
+                </div>
+                <div className="flex text-amber-500">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className={`h-3 w-3 ${i < review.rating ? 'fill-current' : 'text-slate-200 dark:text-slate-800'}`} />
+                  ))}
+                </div>
+              </div>
+              <p className="text-sm text-slate-700 dark:text-slate-300 mb-4">{review.comment}</p>
+              
+              {review.reply ? (
+                <div className="bg-slate-50 dark:bg-slate-900 p-3 rounded-lg ml-4 border-l-2 border-primary">
+                  <p className="text-xs font-bold mb-1 text-primary">Your Reply</p>
+                  <p className="text-sm">{review.reply}</p>
+                </div>
+              ) : (
+                <div className="flex gap-2 ml-4">
+                  <Input 
+                    placeholder="Write a reply..." 
+                    className="h-9 text-sm"
+                    value={replyText[review.id] || ''}
+                    onChange={(e) => setReplyText({...replyText, [review.id]: e.target.value})}
+                  />
+                  <Button size="sm" onClick={() => handleReplyReview(review.id)}>Reply</Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className={className}>
+      <div className="mb-8 text-center">
+        {mode === 'create' && (
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-xs font-bold text-green-600 mb-4">
+              <ShieldCheck className="h-3 w-3" /> 59 CERTIFIED DOMAIN RATING
+          </div>
+        )}
+        
+        <h1 className="text-2xl md:text-3xl font-extrabold mb-4 text-slate-900 dark:text-slate-50 tracking-tight">
+          {mode === 'create' ? (
+            <>Submit Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">AI Agent</span></>
+          ) : (
+            <>Manage <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">{initialData?.title}</span></>
+          )}
+        </h1>
+        
+        {mode === 'create' && (
+          <p className="text-muted-foreground text-sm max-w-lg mx-auto leading-relaxed">
+            Connect with global users and join thousands of innovative agentic solutions.
+          </p>
+        )}
+      </div>
+
+      {mode === 'edit-approved' ? (
+        <Tabs defaultValue="overview" className="w-full">
+          <TabsList className="grid w-full grid-cols-4 mb-8">
+            <TabsTrigger value="overview">{t("Overview", "기본 정보")}</TabsTrigger>
+            <TabsTrigger value="documentation">{t("Documentation", "문서")}</TabsTrigger>
+            <TabsTrigger value="pricing">{t("Pricing", "가격")}</TabsTrigger>
+            <TabsTrigger value="reviews">{t("Reviews", "리뷰")}</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview">
+            <Alert className="mb-6 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200">
+              <AlertTitle>{t("Info", "안내")}</AlertTitle>
+              <AlertDescription>
+                {t(
+                  "Changes to basic information will require re-approval from the administration team.", 
+                  "기본 정보를 변경하면 관리자 팀의 재승인이 필요합니다."
+                )}
+              </AlertDescription>
+            </Alert>
+            <GeneralForm />
+          </TabsContent>
+
+          <TabsContent value="documentation">
+            <DocumentationForm />
+          </TabsContent>
+
+          <TabsContent value="pricing">
+            <PricingForm />
+          </TabsContent>
+
+          <TabsContent value="reviews">
+            <ReviewsForm />
+          </TabsContent>
+        </Tabs>
+      ) : (
+        <>
+          {mode === 'create' && (
+            <div className="mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-0.5 shadow-md">
+              <div className="bg-white/10 backdrop-blur-sm rounded-[10px] p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md shrink-0">
+                    <Loader2 className="h-5 w-5 text-white animate-spin-slow" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className="font-bold text-sm">Want to maximize visibility?</h3>
+                    <p className="text-blue-100 text-xs">Get featured on our homepage.</p>
+                  </div>
+                </div>
+                <Button size="sm" className="bg-white text-blue-600 hover:bg-blue-50 font-bold border-0 shadow-sm w-full sm:w-auto text-xs whitespace-nowrap">
+                  View Sponsorships →
+                </Button>
+              </div>
+            </div>
+          )}
+          <GeneralForm />
+        </>
+      )}
     </div>
   );
 }

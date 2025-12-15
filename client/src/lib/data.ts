@@ -51,6 +51,25 @@ export interface Resource {
     discord?: string;
     telegram?: string;
   };
+  documentation?: {
+    title: string;
+    content: string;
+    endpoints?: { method: string; path: string; description: string }[];
+  };
+  pricingPlans?: {
+    name: string;
+    price: string;
+    features: string[];
+    recommended?: boolean;
+  }[];
+  reviews?: {
+    id: string;
+    user: string;
+    rating: number;
+    date: string;
+    comment: string;
+    reply?: string;
+  }[];
 }
 
 export const RESOURCES: Resource[] = [

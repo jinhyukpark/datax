@@ -16,11 +16,12 @@ import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { SubmitForm } from "@/components/submit-form";
+import { Resource } from "@/lib/data";
 
 export default function MyPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
+  const [editingResource, setEditingResource] = useState<Resource | null>(null);
   
   // Mock User Data
   const [user, setUser] = useState({
@@ -380,9 +381,24 @@ export default function MyPage() {
                               </div>
                             </div>
                             <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l min-w-[140px]">
-                              <Button variant="outline" size="sm" className="w-full">
-                                {t("Edit", "수정")}
-                              </Button>
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button variant="outline" size="sm" className="w-full">
+                                    {t("Edit", "수정")}
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-[900px] h-[90vh] overflow-y-auto">
+                                  <SubmitForm 
+                                    initialData={item as Resource} 
+                                    mode="edit-approved" 
+                                    onSuccess={() => {
+                                      // In a real app, refresh data
+                                      // For now, close dialog is handled inside SubmitForm or we could use state
+                                    }}
+                                  />
+                                </DialogContent>
+                              </Dialog>
+                              
                               <Dialog>
                                 <DialogTrigger asChild>
                                   <Button variant="outline" size="sm" className="w-full gap-2">
