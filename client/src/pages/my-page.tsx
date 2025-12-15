@@ -13,7 +13,7 @@ import { RESOURCES } from "@/lib/data";
 import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Resource } from "@/lib/data";
@@ -21,12 +21,24 @@ import { SubmitForm } from "@/components/submit-form";
 import { AnalyticsView } from "@/components/analytics-view";
 import { toast } from "sonner";
 import { format, differenceInDays } from "date-fns";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function MyPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
   const [editingResource, setEditingResource] = useState<Resource | null>(null);
   const [myPurchases, setMyPurchases] = useState<any[]>([]);
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
+  const [selectedPaymentItem, setSelectedPaymentItem] = useState<string | null>(null);
+  
+  // Payment Form State
+  const [paymentInfo, setPaymentInfo] = useState({
+    cardNumber: "",
+    expiryDate: "",
+    cvc: "",
+    cardholderName: ""
+  });
 
   useEffect(() => {
     const stored = localStorage.getItem('my_purchases');
@@ -35,10 +47,19 @@ export default function MyPage() {
     }
   }, []);
 
-  const handlePayPending = (id: string) => {
-    const updated = myPurchases.map(p => p.id === id ? {...p, status: 'Completed'} : p);
+  const openPaymentDialog = (id: string) => {
+    setSelectedPaymentItem(id);
+    setPaymentInfo({ cardNumber: "", expiryDate: "", cvc: "", cardholderName: "" }); // Reset form
+    setPaymentDialogOpen(true);
+  };
+
+  const handlePayConfirm = () => {
+    if (!selectedPaymentItem) return;
+    
+    const updated = myPurchases.map(p => p.id === selectedPaymentItem ? {...p, status: 'Completed'} : p);
     setMyPurchases(updated);
     localStorage.setItem('my_purchases', JSON.stringify(updated));
+    setPaymentDialogOpen(false);
     toast.success(t("Payment successful!", "결제가 완료되었습니다!"));
   };
   
@@ -410,7 +431,7 @@ export default function MyPage() {
                                   </div>
                                   <div className="hidden md:col-span-1 md:block text-center">
                                     {item.status === 'Pending Payment' && (
-                                      <Button size="sm" className="h-8 text-xs" onClick={() => handlePayPending(item.id)}>
+                                      <Button size="sm" className="h-8 text-xs" onClick={() => openPaymentDialog(item.id)}>
                                         Pay
                                       </Button>
                                     )}
@@ -425,6 +446,65 @@ export default function MyPage() {
                   </CardContent>
                 </Card>
               </TabsContent>
+
+              <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>{t("Enter Payment Details", "결제 정보 입력")}</DialogTitle>
+                    <DialogDescription>
+                      {t("Secure payment processing for your advertising purchase.", "광고 구매를 위한 안전한 결제 처리를 위해 정보를 입력하세요.")}
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="mp-card-number">{t("Card Number", "카드 번호")}</Label>
+                      <Input 
+                        id="mp-card-number" 
+                        placeholder="0000 0000 0000 0000" 
+                        value={paymentInfo.cardNumber}
+                        onChange={(e) => setPaymentInfo({...paymentInfo, cardNumber: e.target.value})}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="mp-expiry">{t("Expiry Date", "유효기간")}</Label>
+                        <Input 
+                          id="mp-expiry" 
+                          placeholder="MM/YY" 
+                          value={paymentInfo.expiryDate}
+                          onChange={(e) => setPaymentInfo({...paymentInfo, expiryDate: e.target.value})}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="mp-cvc">{t("CVC", "CVC")}</Label>
+                        <Input 
+                          id="mp-cvc" 
+                          placeholder="123" 
+                          value={paymentInfo.cvc}
+                          onChange={(e) => setPaymentInfo({...paymentInfo, cvc: e.target.value})}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="mp-name">{t("Cardholder Name", "카드 소유자 이름")}</Label>
+                      <Input 
+                        id="mp-name" 
+                        placeholder="John Doe" 
+                        value={paymentInfo.cardholderName}
+                        onChange={(e) => setPaymentInfo({...paymentInfo, cardholderName: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setPaymentDialogOpen(false)}>
+                      {t("Cancel", "취소")}
+                    </Button>
+                    <Button className="bg-blue-600 hover:bg-blue-700" onClick={handlePayConfirm}>
+                      {t("Confirm Payment", "결제 확인")}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
 
               {/* My Shared Data Tab */}
               <TabsContent value="my-data">

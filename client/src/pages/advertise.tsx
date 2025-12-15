@@ -11,6 +11,8 @@ import { DateRange } from "react-day-picker";
 import { addDays, format, differenceInDays } from "date-fns";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function Advertise() {
   const { t } = useLanguage();
@@ -21,6 +23,15 @@ export default function Advertise() {
   });
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [paymentStep, setPaymentStep] = useState<'dates' | 'payment'>('dates');
+
+  // Payment Form State
+  const [paymentInfo, setPaymentInfo] = useState({
+    cardNumber: "",
+    expiryDate: "",
+    cvc: "",
+    cardholderName: ""
+  });
 
   const adProducts = [
     {
@@ -111,6 +122,7 @@ export default function Advertise() {
 
   const handleSelectDates = (product: any) => {
     setSelectedProduct(product);
+    setPaymentStep('dates');
     setIsModalOpen(true);
   };
 
@@ -121,8 +133,13 @@ export default function Advertise() {
     return selectedProduct.priceValue * weeks;
   };
 
-  const handleAction = (action: 'pay' | 'cart') => {
+  const handleAction = (action: 'pay' | 'cart' | 'confirm_pay') => {
     if (!date?.from || !date?.to || !selectedProduct) return;
+
+    if (action === 'pay') {
+      setPaymentStep('payment');
+      return;
+    }
 
     const newItem = {
       id: Math.random().toString(36).substr(2, 9),
@@ -133,7 +150,7 @@ export default function Advertise() {
         to: date.to.toISOString()
       },
       price: `$${calculateTotal()}`,
-      status: action === 'pay' ? 'Completed' : 'Pending Payment',
+      status: action === 'confirm_pay' ? 'Completed' : 'Pending Payment',
       type: 'advertise',
       date: format(new Date(), 'yyyy-MM-dd')
     };
@@ -145,7 +162,7 @@ export default function Advertise() {
 
     setIsModalOpen(false);
     
-    if (action === 'pay') {
+    if (action === 'confirm_pay') {
       toast.success(t("Payment successful!", "결제가 완료되었습니다!"));
       setLocation('/my-page');
     } else {
@@ -257,54 +274,118 @@ export default function Advertise() {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>{t("Select Duration", "기간 선택")}</DialogTitle>
+            <DialogTitle>
+              {paymentStep === 'dates' ? t("Select Duration", "기간 선택") : t("Enter Payment Details", "결제 정보 입력")}
+            </DialogTitle>
             <DialogDescription>
-              {t("Choose the dates for your advertisement.", "광고를 게재할 기간을 선택하세요.")}
+              {paymentStep === 'dates' ? t("Choose the dates for your advertisement.", "광고를 게재할 기간을 선택하세요.") : t("Secure payment processing.", "안전한 결제 처리를 위해 정보를 입력하세요.")}
             </DialogDescription>
           </DialogHeader>
           
-          <div className="flex flex-col items-center justify-center py-4">
-            <div className="border rounded-md p-4 mb-4 bg-white dark:bg-slate-950">
-              <Calendar
-                mode="range"
-                defaultMonth={date?.from}
-                selected={date}
-                onSelect={setDate}
-                numberOfMonths={1}
-                disabled={(date) => date < new Date()}
-              />
+          {paymentStep === 'dates' ? (
+            <div className="flex flex-col items-center justify-center py-4">
+              <div className="border rounded-md p-4 mb-4 bg-white dark:bg-slate-950">
+                <Calendar
+                  mode="range"
+                  defaultMonth={date?.from}
+                  selected={date}
+                  onSelect={setDate}
+                  numberOfMonths={1}
+                  disabled={(date) => date < new Date()}
+                />
+              </div>
+              
+              {date?.from && date?.to && (
+                <div className="w-full bg-slate-50 dark:bg-slate-900 p-4 rounded-lg">
+                  <div className="flex justify-between mb-2">
+                    <span className="text-sm text-muted-foreground">{t("Selected Product", "선택한 상품")}</span>
+                    <span className="font-medium">{selectedProduct?.title}</span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span className="text-sm text-muted-foreground">{t("Duration", "기간")}</span>
+                    <span className="font-medium">
+                      {format(date.from, "MMM dd")} - {format(date.to, "MMM dd")} 
+                      {' '}({differenceInDays(date.to, date.from) + 1} days)
+                    </span>
+                  </div>
+                  <div className="border-t border-slate-200 dark:border-slate-800 my-2 pt-2 flex justify-between items-center">
+                    <span className="font-bold">{t("Total Price", "총 결제금액")}</span>
+                    <span className="text-xl font-bold text-blue-600">${calculateTotal()}</span>
+                  </div>
+                </div>
+              )}
             </div>
-            
-            {date?.from && date?.to && (
-              <div className="w-full bg-slate-50 dark:bg-slate-900 p-4 rounded-lg">
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm text-muted-foreground">{t("Selected Product", "선택한 상품")}</span>
-                  <span className="font-medium">{selectedProduct?.title}</span>
+          ) : (
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="card-number">{t("Card Number", "카드 번호")}</Label>
+                <Input 
+                  id="card-number" 
+                  placeholder="0000 0000 0000 0000" 
+                  value={paymentInfo.cardNumber}
+                  onChange={(e) => setPaymentInfo({...paymentInfo, cardNumber: e.target.value})}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="expiry">{t("Expiry Date", "유효기간")}</Label>
+                  <Input 
+                    id="expiry" 
+                    placeholder="MM/YY" 
+                    value={paymentInfo.expiryDate}
+                    onChange={(e) => setPaymentInfo({...paymentInfo, expiryDate: e.target.value})}
+                  />
                 </div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm text-muted-foreground">{t("Duration", "기간")}</span>
-                  <span className="font-medium">
-                    {format(date.from, "MMM dd")} - {format(date.to, "MMM dd")} 
-                    {' '}({differenceInDays(date.to, date.from) + 1} days)
-                  </span>
+                <div className="space-y-2">
+                  <Label htmlFor="cvc">{t("CVC", "CVC")}</Label>
+                  <Input 
+                    id="cvc" 
+                    placeholder="123" 
+                    value={paymentInfo.cvc}
+                    onChange={(e) => setPaymentInfo({...paymentInfo, cvc: e.target.value})}
+                  />
                 </div>
-                <div className="border-t border-slate-200 dark:border-slate-800 my-2 pt-2 flex justify-between items-center">
-                  <span className="font-bold">{t("Total Price", "총 결제금액")}</span>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="name">{t("Cardholder Name", "카드 소유자 이름")}</Label>
+                <Input 
+                  id="name" 
+                  placeholder="John Doe" 
+                  value={paymentInfo.cardholderName}
+                  onChange={(e) => setPaymentInfo({...paymentInfo, cardholderName: e.target.value})}
+                />
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg mt-4">
+                <div className="flex justify-between items-center">
+                  <span className="font-bold">{t("Total to Pay", "결제 금액")}</span>
                   <span className="text-xl font-bold text-blue-600">${calculateTotal()}</span>
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           <DialogFooter className="flex-col sm:flex-row gap-2">
-            <Button variant="outline" className="w-full sm:w-auto" onClick={() => handleAction('cart')}>
-              <ShoppingCart className="mr-2 h-4 w-4" />
-              {t("Add to Cart", "장바구니 담기")}
-            </Button>
-            <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700" onClick={() => handleAction('pay')}>
-              <CreditCard className="mr-2 h-4 w-4" />
-              {t("Pay Immediately", "바로 결제하기")}
-            </Button>
+            {paymentStep === 'dates' ? (
+              <>
+                <Button variant="outline" className="w-full sm:w-auto" onClick={() => handleAction('cart')}>
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  {t("Add to Cart", "장바구니 담기")}
+                </Button>
+                <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700" onClick={() => handleAction('pay')}>
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  {t("Pay Immediately", "바로 결제하기")}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" className="w-full sm:w-auto" onClick={() => setPaymentStep('dates')}>
+                  {t("Back", "뒤로가기")}
+                </Button>
+                <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700" onClick={() => handleAction('confirm_pay')}>
+                  {t("Confirm Payment", "결제 확인")}
+                </Button>
+              </>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>
