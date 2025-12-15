@@ -958,6 +958,7 @@ export interface NewsArticle {
   source: string;
   date: string;
   tags: string[];
+  image?: string;
 }
 
 export const NEWS_ARTICLES: NewsArticle[] = [
@@ -969,7 +970,8 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     excerptKo: "새로운 보고서는 기업의 생성형 AI 도입에 힘입어 인공지능 부문의 기하급수적인 성장을 시사합니다.",
     source: "TechDaily",
     date: "2025-12-08",
-    tags: ["Market", "AI", "Economy"]
+    tags: ["Market", "AI", "Economy"],
+    image: "abstract_network_nodes_logo_icon"
   },
   {
     id: "2",
@@ -979,7 +981,8 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     excerptKo: "개인 사용자 데이터 처리에 대한 엄격한 지침이 다음 달부터 시행되어 모든 기술 기업에 영향을 미칠 예정입니다.",
     source: "PolicyWatch",
     date: "2025-12-07",
-    tags: ["Regulation", "Privacy", "Government"]
+    tags: ["Regulation", "Privacy", "Government"],
+    image: "abstract_shield_security_logo_icon"
   },
   {
     id: "3",
@@ -989,7 +992,8 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     excerptKo: "연구원들은 실용적인 양자 컴퓨터로 가는 길을 가속화할 수 있는 새로운 오류 수정 방법을 시연했습니다.",
     source: "Science Today",
     date: "2025-12-05",
-    tags: ["Quantum", "Tech", "Innovation"]
+    tags: ["Quantum", "Tech", "Innovation"],
+    image: "abstract_atom_science_logo_icon"
   },
   {
     id: "4",
@@ -999,7 +1003,8 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     excerptKo: "선도적인 자동차 제조사가 내연 기관을 완전히 단계적으로 폐지하기 위한 공격적인 로드맵을 발표했습니다.",
     source: "AutoNews",
     date: "2025-12-03",
-    tags: ["Automotive", "EV", "Sustainability"]
+    tags: ["Automotive", "EV", "Sustainability"],
+    image: "abstract_gear_robot_logo_icon"
   },
   {
     id: "5",
@@ -1009,7 +1014,8 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     excerptKo: "전문가들은 스마트 홈 기기 및 산업용 IoT 네트워크의 취약성이 증가하고 있다고 경고합니다.",
     source: "SecurityInsider",
     date: "2025-12-01",
-    tags: ["Security", "IoT", "Cyber"]
+    tags: ["Security", "IoT", "Cyber"],
+    image: "abstract_shield_security_logo_icon"
   },
   {
     id: "6",
@@ -1019,7 +1025,8 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     excerptKo: "통신 사업자들은 소외된 지역에 초고속 인터넷을 제공하기 위해 인프라 프로젝트를 가속화하고 있습니다.",
     source: "ConnectWorld",
     date: "2025-11-28",
-    tags: ["5G", "Infrastructure", "Telecom"]
+    tags: ["5G", "Infrastructure", "Telecom"],
+    image: "abstract_network_nodes_logo_icon"
   },
   {
     id: "7",
@@ -1029,7 +1036,8 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     excerptKo: "새로운 AI 알고리즘은 의사들이 희귀 유전 질환을 그 어느 때보다 빠르게 식별하도록 돕고 있습니다.",
     source: "HealthTech",
     date: "2025-11-25",
-    tags: ["Healthcare", "AI", "Medical"]
+    tags: ["Healthcare", "AI", "Medical"],
+    image: "abstract_pulse_signal_logo_icon"
   },
   {
     id: "8",
@@ -1039,7 +1047,8 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     excerptKo: "처음으로 풍력 및 태양광 발전이 전 세계적으로 석탄 화력 발전소보다 더 많은 전기를 생산했습니다.",
     source: "GreenEnergy",
     date: "2025-11-22",
-    tags: ["Energy", "Environment", "Sustainability"]
+    tags: ["Energy", "Environment", "Sustainability"],
+    image: "abstract_globe_earth_logo_icon"
   },
   {
     id: "9",
@@ -1049,7 +1058,8 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     excerptKo: "경쟁사들이 힘을 합쳐 표준화되고 안전하며 투명한 AI 파운데이션 모델을 만듭니다.",
     source: "TechCrunch",
     date: "2025-11-20",
-    tags: ["Open Source", "AI", "Collaboration"]
+    tags: ["Open Source", "AI", "Collaboration"],
+    image: "abstract_integration_puzzle_logo_icon"
   },
   {
     id: "10",
@@ -1059,7 +1069,8 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     excerptKo: "상업용 우주 비행의 접근성이 높아지면서 궤도 여행 대기자 명단에 수천 명이 이름을 올렸습니다.",
     source: "SpaceWeekly",
     date: "2025-11-15",
-    tags: ["Space", "Tourism", "Future"]
+    tags: ["Space", "Tourism", "Future"],
+    image: "abstract_globe_earth_logo_icon"
   }
 ];
 
