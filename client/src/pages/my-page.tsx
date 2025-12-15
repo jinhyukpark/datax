@@ -65,7 +65,8 @@ export default function MyPage() {
       views: 1250,
       downloads: 340,
       status: "Active",
-      date: "2025-09-15"
+      date: "2025-09-15",
+      unreadReviews: 3
     },
     {
       id: "m2",
@@ -74,7 +75,8 @@ export default function MyPage() {
       views: 890,
       downloads: 120,
       status: "Active",
-      date: "2025-10-22"
+      date: "2025-10-22",
+      unreadReviews: 0
     }
   ];
 
@@ -139,6 +141,11 @@ export default function MyPage() {
     }
   ];
 
+  // Calculate statistics
+  const pendingRequestsCount = requestedData.filter(r => r.status === 'submitted' || r.status === 'verifying').length;
+  const approvedDataCount = myData.length;
+  const totalUnreadReviews = myData.reduce((acc, curr) => acc + curr.unreadReviews, 0);
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
       <Navbar />
@@ -148,32 +155,53 @@ export default function MyPage() {
           
           {/* Sidebar / User Profile Summary */}
           <div className="w-full md:w-1/4 space-y-6">
-            <Card>
-              <CardContent className="pt-6 flex flex-col items-center text-center">
+            <Card className="overflow-hidden border-slate-200 dark:border-slate-800 shadow-sm">
+              <CardContent className="pt-8 flex flex-col items-center text-center pb-6">
                 <div className="relative mb-4 group">
-                  <Avatar className="h-24 w-24 cursor-pointer border-2 border-slate-200 dark:border-slate-800">
+                  <Avatar className="h-24 w-24 cursor-pointer border-4 border-white dark:border-slate-900 shadow-lg">
                     <AvatarImage src={user.avatar} alt={user.name} />
                     <AvatarFallback>KM</AvatarFallback>
                   </Avatar>
-                  <div className="absolute bottom-0 right-0 bg-primary text-white p-1.5 rounded-full cursor-pointer hover:bg-primary/90 transition-colors">
-                    <Camera className="h-4 w-4" />
+                  <div className="absolute bottom-1 right-1 bg-blue-600 text-white p-1.5 rounded-full cursor-pointer hover:bg-blue-700 transition-colors shadow-sm">
+                    <Camera className="h-3.5 w-3.5" />
                   </div>
                 </div>
-                <h2 className="text-xl font-bold">{user.name}</h2>
-                <p className="text-sm text-muted-foreground mb-2">{user.email}</p>
-                <p className="text-xs font-medium bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-600 dark:text-slate-400">
+                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">{user.name}</h2>
+                <p className="text-sm text-muted-foreground mb-3">{user.email}</p>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200">
                   {user.role}
-                </p>
+                </span>
+
+                {/* Statistics */}
+                <div className="grid grid-cols-3 gap-2 w-full mt-6 pt-6 border-t border-slate-100 dark:border-slate-800">
+                  <div className="flex flex-col items-center">
+                    <span className="text-lg font-bold text-slate-900 dark:text-slate-50">{pendingRequestsCount}</span>
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Pending</span>
+                  </div>
+                  <div className="flex flex-col items-center border-l border-r border-slate-100 dark:border-slate-800">
+                    <span className="text-lg font-bold text-slate-900 dark:text-slate-50">{approvedDataCount}</span>
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Approved</span>
+                  </div>
+                  <div className="flex flex-col items-center relative">
+                    <span className="text-lg font-bold text-slate-900 dark:text-slate-50">{totalUnreadReviews}</span>
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Messages</span>
+                    {totalUnreadReviews > 0 && (
+                      <span className="absolute -top-1 -right-1 h-2.5 w-2.5 bg-red-500 rounded-full animate-pulse" />
+                    )}
+                  </div>
+                </div>
               </CardContent>
-              <Separator />
-              <CardFooter className="flex flex-col p-2">
-                <Button variant="ghost" className="w-full justify-start gap-2 h-10">
-                  <Settings className="h-4 w-4" /> {t("Settings", "설정")}
+              
+              <div className="bg-slate-50 dark:bg-slate-900/50 p-2 border-t border-slate-100 dark:border-slate-800">
+                <Button variant="ghost" className="w-full justify-start gap-3 h-10 px-4 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50">
+                  <Settings className="h-4 w-4" /> 
+                  <span className="font-medium text-sm">{t("Settings", "설정")}</span>
                 </Button>
-                <Button variant="ghost" className="w-full justify-start gap-2 h-10 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20">
-                  <ArrowRight className="h-4 w-4 rotate-180" /> {t("Log out", "로그아웃")}
+                <Button variant="ghost" className="w-full justify-start gap-3 h-10 px-4 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20">
+                  <ArrowRight className="h-4 w-4 rotate-180" /> 
+                  <span className="font-medium text-sm">{t("Log out", "로그아웃")}</span>
                 </Button>
-              </CardFooter>
+              </div>
             </Card>
           </div>
 
@@ -384,9 +412,16 @@ export default function MyPage() {
                             <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l min-w-[140px]">
                               <Dialog>
                                 <DialogTrigger asChild>
-                                  <Button variant="outline" size="sm" className="w-full">
-                                    {t("Edit", "수정")}
-                                  </Button>
+                                  <div className="relative w-full">
+                                    <Button variant="outline" size="sm" className="w-full">
+                                      {t("Edit", "수정")}
+                                    </Button>
+                                    {(item as any).unreadReviews > 0 && (
+                                      <span className="absolute -top-1.5 -right-1.5 h-4 w-4 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold border-2 border-white dark:border-slate-900">
+                                        {(item as any).unreadReviews}
+                                      </span>
+                                    )}
+                                  </div>
                                 </DialogTrigger>
                                 <DialogContent className="sm:max-w-[900px] h-[90vh] overflow-y-auto">
                                   <SubmitForm 

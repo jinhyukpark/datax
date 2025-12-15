@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, AlertTriangle, Save, Star, MessageSquare } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, AlertTriangle, Save, Star, MessageSquare, ChevronDown, ChevronUp, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useLocation } from "wouter";
@@ -708,7 +708,22 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create' 
     </div>
   );
 
-  const ReviewsForm = () => (
+import { ChevronDown, ChevronUp, MessageCircle, X } from "lucide-react";
+
+// ... existing imports
+
+  const ReviewsForm = () => {
+    const [expandedReviewId, setExpandedReviewId] = useState<string | null>(null);
+
+    const toggleReply = (reviewId: string) => {
+      if (expandedReviewId === reviewId) {
+        setExpandedReviewId(null);
+      } else {
+        setExpandedReviewId(reviewId);
+      }
+    };
+
+    return (
     <div className="space-y-6 py-4">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
@@ -728,11 +743,13 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create' 
 
       <div className="space-y-4">
         {reviews.map((review) => (
-          <Card key={review.id}>
-            <CardContent className="p-4">
-              <div className="flex justify-between items-start mb-2">
-                <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700" />
+          <Card key={review.id} className="overflow-hidden">
+            <CardContent className="p-5">
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-slate-500">
+                    {review.user.charAt(0)}
+                  </div>
                   <div>
                     <p className="font-semibold text-sm">{review.user}</p>
                     <p className="text-xs text-muted-foreground">{review.date}</p>
@@ -740,34 +757,79 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create' 
                 </div>
                 <div className="flex text-amber-500">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className={`h-3 w-3 ${i < review.rating ? 'fill-current' : 'text-slate-200 dark:text-slate-800'}`} />
+                    <Star key={i} className={`h-3.5 w-3.5 ${i < review.rating ? 'fill-current' : 'text-slate-200 dark:text-slate-800'}`} />
                   ))}
                 </div>
               </div>
-              <p className="text-sm text-slate-700 dark:text-slate-300 mb-4">{review.comment}</p>
+              <p className="text-sm text-slate-700 dark:text-slate-300 mb-4 pl-13 leading-relaxed">{review.comment}</p>
               
-              {review.reply ? (
-                <div className="bg-slate-50 dark:bg-slate-900 p-3 rounded-lg ml-4 border-l-2 border-primary">
-                  <p className="text-xs font-bold mb-1 text-primary">Your Reply</p>
-                  <p className="text-sm">{review.reply}</p>
-                </div>
-              ) : (
-                <div className="flex gap-2 ml-4">
-                  <Input 
-                    placeholder="Write a reply..." 
-                    className="h-9 text-sm"
-                    value={replyText[review.id] || ''}
-                    onChange={(e) => setReplyText({...replyText, [review.id]: e.target.value})}
-                  />
-                  <Button size="sm" onClick={() => handleReplyReview(review.id)}>Reply</Button>
-                </div>
-              )}
+              <div className="pl-13">
+                {review.reply ? (
+                  <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div className="flex items-center gap-2 mb-2">
+                       <div className="h-6 w-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                         <MessageCircle className="h-3 w-3 text-blue-600" />
+                       </div>
+                       <p className="text-xs font-bold text-primary">Your Reply</p>
+                    </div>
+                    <p className="text-sm pl-8">{review.reply}</p>
+                  </div>
+                ) : (
+                  <div>
+                    {expandedReviewId === review.id ? (
+                       <div className="animate-in fade-in slide-in-from-top-2 duration-200">
+                         <div className="relative">
+                            <Input 
+                              placeholder="Write a reply..." 
+                              className="h-11 pr-20 text-sm bg-slate-50 dark:bg-slate-900/50"
+                              value={replyText[review.id] || ''}
+                              onChange={(e) => setReplyText({...replyText, [review.id]: e.target.value})}
+                              autoFocus
+                            />
+                            <div className="absolute right-1 top-1 flex gap-1">
+                                <Button 
+                                  size="sm" 
+                                  variant="ghost" 
+                                  className="h-9 w-9 p-0 rounded-full text-muted-foreground hover:bg-slate-200 dark:hover:bg-slate-700"
+                                  onClick={() => toggleReply(review.id)}
+                                >
+                                  <X className="h-4 w-4" />
+                                </Button>
+                                <Button 
+                                  size="sm" 
+                                  className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md"
+                                  onClick={() => {
+                                    handleReplyReview(review.id);
+                                    setExpandedReviewId(null);
+                                  }}
+                                >
+                                  Reply
+                                </Button>
+                            </div>
+                         </div>
+                       </div>
+                    ) : (
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-muted-foreground hover:text-primary gap-1.5 h-8 px-2 -ml-2"
+                        onClick={() => toggleReply(review.id)}
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                        Reply
+                        <ChevronDown className="h-3 w-3 opacity-50" />
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
         ))}
       </div>
     </div>
   );
+  };
 
   return (
     <div className={className}>
