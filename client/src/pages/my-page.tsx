@@ -322,106 +322,120 @@ export default function MyPage() {
               </TabsContent>
 
               {/* Purchases Tab */}
-              <TabsContent value="purchases">
+              <TabsContent value="purchases" className="space-y-6">
+                {/* Data Products Card */}
                 <Card>
                   <CardHeader>
-                    <CardTitle>{t("Purchase History", "구매 내역")}</CardTitle>
+                    <CardTitle>{t("Data Product Purchases", "데이터 상품 구매 내역")}</CardTitle>
                     <CardDescription>
                       {t("View your transaction history and access purchased data.", "거래 내역을 확인하고 구매한 데이터에 액세스하세요.")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Tabs defaultValue="data-products" className="w-full">
-                      <TabsList className="mb-4">
-                        <TabsTrigger value="data-products">{t("Data Products", "데이터 상품")}</TabsTrigger>
-                        <TabsTrigger value="advertising">{t("Advertising", "광고")}</TabsTrigger>
-                      </TabsList>
-
-                      <TabsContent value="data-products">
-                        <div className="rounded-md border">
-                          <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 font-medium text-sm">
-                            <div className="col-span-6 md:col-span-5">{t("Product", "상품명")}</div>
-                            <div className="col-span-3 md:col-span-2">{t("Date", "날짜")}</div>
-                            <div className="col-span-3 md:col-span-2">{t("Amount", "금액")}</div>
-                            <div className="hidden md:col-span-2 md:block">{t("Status", "상태")}</div>
-                            <div className="hidden md:col-span-1 md:block text-center">{t("Action", "관리")}</div>
+                    <div className="rounded-md border">
+                      <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 font-medium text-sm">
+                        <div className="col-span-6 md:col-span-5">{t("Product", "상품명")}</div>
+                        <div className="col-span-3 md:col-span-2">{t("Date", "날짜")}</div>
+                        <div className="col-span-3 md:col-span-2">{t("Amount", "금액")}</div>
+                        <div className="hidden md:col-span-2 md:block">{t("Status", "상태")}</div>
+                        <div className="hidden md:col-span-1 md:block text-center">{t("Action", "관리")}</div>
+                      </div>
+                      <div className="divide-y">
+                        {purchases.map((item) => (
+                          <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+                            <div className="col-span-6 md:col-span-5 font-medium truncate">{item.title}</div>
+                            <div className="col-span-3 md:col-span-2 text-muted-foreground">{item.date}</div>
+                            <div className="col-span-3 md:col-span-2 font-medium">{item.price}</div>
+                            <div className="hidden md:col-span-2 md:block">
+                              <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 shadow hover:bg-green-100/80">
+                                {item.status}
+                              </span>
+                            </div>
+                            <div className="hidden md:col-span-1 md:block text-center">
+                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <Download className="h-4 w-4" />
+                              </Button>
+                            </div>
                           </div>
-                          <div className="divide-y">
-                            {purchases.map((item) => (
-                              <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
-                                <div className="col-span-6 md:col-span-5 font-medium truncate">{item.title}</div>
-                                <div className="col-span-3 md:col-span-2 text-muted-foreground">{item.date}</div>
-                                <div className="col-span-3 md:col-span-2 font-medium">{item.price}</div>
-                                <div className="hidden md:col-span-2 md:block">
-                                  <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 shadow hover:bg-green-100/80">
-                                    {item.status}
-                                  </span>
-                                </div>
-                                <div className="hidden md:col-span-1 md:block text-center">
-                                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                                    <Download className="h-4 w-4" />
-                                  </Button>
-                                </div>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Advertising Card */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{t("Advertising Purchases", "광고 구매 내역")}</CardTitle>
+                    <CardDescription>
+                      {t("Manage your advertising campaigns and payments.", "광고 캠페인 및 결제를 관리하세요.")}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="rounded-md border">
+                      <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 font-medium text-sm">
+                        <div className="col-span-6 md:col-span-5">{t("Product", "상품명")}</div>
+                        <div className="col-span-3 md:col-span-2">{t("Duration", "기간")}</div>
+                        <div className="col-span-3 md:col-span-2">{t("Amount", "금액")}</div>
+                        <div className="hidden md:col-span-2 md:block">{t("Status", "상태")}</div>
+                        <div className="hidden md:col-span-1 md:block text-center">{t("Action", "관리")}</div>
+                      </div>
+                      <div className="divide-y">
+                        {/* Mock Data for Preview as requested */}
+                        {[
+                          {
+                            id: "ad1",
+                            title: "Banner Ad",
+                            dateRange: { from: "2025-12-01", to: "2025-12-07" },
+                            days: 7,
+                            price: "$79",
+                            status: "Completed"
+                          },
+                          {
+                            id: "ad2",
+                            title: "Listing Ad",
+                            dateRange: { from: "2025-12-15", to: "2025-12-22" },
+                            days: 7,
+                            price: "$69",
+                            status: "Pending Payment"
+                          },
+                          // Include user's actual purchases if any
+                          ...myPurchases.map(p => ({
+                             ...p, 
+                             days: differenceInDays(new Date(p.dateRange.to), new Date(p.dateRange.from)) + 1 
+                          })).filter(p => p.id !== "ad1" && p.id !== "ad2") // Avoid dupes if user adds same mock data
+                        ].map((item) => (
+                          <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+                            <div className="col-span-6 md:col-span-5">
+                              <div className="font-medium truncate">{item.title}</div>
+                              <div className="text-xs text-muted-foreground mt-0.5">
+                                {format(new Date(item.dateRange.from), 'MMM dd')} - {format(new Date(item.dateRange.to), 'MMM dd')}
                               </div>
-                            ))}
-                          </div>
-                        </div>
-                      </TabsContent>
-
-                      <TabsContent value="advertising">
-                        {myPurchases.length === 0 ? (
-                          <div className="text-center py-12 text-muted-foreground">
-                            <ShoppingCart className="mx-auto h-12 w-12 mb-4 opacity-20" />
-                            <p>{t("No advertising history found.", "광고 구매 내역이 없습니다.")}</p>
-                            <Button variant="link" onClick={() => setLocation('/advertise')}>
-                              {t("Browse Ad Products", "광고 상품 둘러보기")}
-                            </Button>
-                          </div>
-                        ) : (
-                          <div className="rounded-md border">
-                            <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 font-medium text-sm">
-                              <div className="col-span-6 md:col-span-5">{t("Product", "상품명")}</div>
-                              <div className="col-span-3 md:col-span-2">{t("Duration", "기간")}</div>
-                              <div className="col-span-3 md:col-span-2">{t("Amount", "금액")}</div>
-                              <div className="hidden md:col-span-2 md:block">{t("Status", "상태")}</div>
-                              <div className="hidden md:col-span-1 md:block text-center">{t("Action", "관리")}</div>
                             </div>
-                            <div className="divide-y">
-                              {myPurchases.map((item) => (
-                                <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
-                                  <div className="col-span-6 md:col-span-5">
-                                    <div className="font-medium truncate">{item.title}</div>
-                                    <div className="text-xs text-muted-foreground mt-0.5">
-                                      {format(new Date(item.dateRange.from), 'MMM dd')} - {format(new Date(item.dateRange.to), 'MMM dd')}
-                                    </div>
-                                  </div>
-                                  <div className="col-span-3 md:col-span-2 text-muted-foreground">
-                                    {differenceInDays(new Date(item.dateRange.to), new Date(item.dateRange.from)) + 1} days
-                                  </div>
-                                  <div className="col-span-3 md:col-span-2 font-medium">{item.price}</div>
-                                  <div className="hidden md:col-span-2 md:block">
-                                    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent shadow ${
-                                      item.status === 'Completed' 
-                                        ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-100/80'
-                                        : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 hover:bg-yellow-100/80'
-                                    }`}>
-                                      {item.status}
-                                    </span>
-                                  </div>
-                                  <div className="hidden md:col-span-1 md:block text-center">
-                                    {item.status === 'Pending Payment' && (
-                                      <Button size="sm" className="h-8 text-xs" onClick={() => handlePayPending(item.id)}>
-                                        Pay
-                                      </Button>
-                                    )}
-                                  </div>
-                                </div>
-                              ))}
+                            <div className="col-span-3 md:col-span-2 text-muted-foreground">
+                              {item.days} days
+                            </div>
+                            <div className="col-span-3 md:col-span-2 font-medium">{item.price}</div>
+                            <div className="hidden md:col-span-2 md:block">
+                              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent shadow ${
+                                item.status === 'Completed' 
+                                  ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-100/80'
+                                  : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 hover:bg-yellow-100/80'
+                              }`}>
+                                {item.status}
+                              </span>
+                            </div>
+                            <div className="hidden md:col-span-1 md:block text-center">
+                              {item.status === 'Pending Payment' && (
+                                <Button size="sm" className="h-8 text-xs" onClick={() => handlePayPending(item.id)}>
+                                  Pay
+                                </Button>
+                              )}
                             </div>
                           </div>
-                        )}
-                      </TabsContent>
-                    </Tabs>
+                        ))}
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
