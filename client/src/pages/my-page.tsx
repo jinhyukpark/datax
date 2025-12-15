@@ -440,10 +440,12 @@ export default function MyPage() {
                                       <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 z-10 bg-white dark:bg-slate-950 ${item.step >= 1 || item.status === 'rejected' ? 'border-green-500 text-green-500' : 'border-slate-200 text-slate-300'}`}>
                                         <CheckCircle2 className="h-4 w-4" />
                                       </div>
-                                      <span className={`text-xs font-medium ${item.step >= 1 || item.status === 'rejected' ? 'text-green-600' : 'text-muted-foreground'}`}>
-                                        {t("Submitted", "제출완료")}
-                                      </span>
-                                      {item.dates.submitted && <span className="text-[10px] text-muted-foreground absolute top-14">{item.dates.submitted}</span>}
+                                      <div className="flex flex-col items-center">
+                                        <span className={`text-xs font-medium ${item.step >= 1 || item.status === 'rejected' ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                          {t("Submitted", "제출완료")}
+                                        </span>
+                                        {item.dates.submitted && <span className="text-[10px] text-muted-foreground mt-0.5">{item.dates.submitted}</span>}
+                                      </div>
                                     </div>
 
                                     {/* Step 2: Verifying */}
@@ -458,10 +460,12 @@ export default function MyPage() {
                                          (item.step > 2 || item.status === 'rejected') ? <CheckCircle2 className="h-4 w-4" /> :
                                          <Circle className="h-4 w-4" />}
                                       </div>
-                                      <span className={`text-xs font-medium ${item.step === 2 && item.status !== 'rejected' ? 'text-blue-600' : (item.step > 2 || item.status === 'rejected') ? 'text-green-600' : 'text-muted-foreground'}`}>
-                                        {t("Verifying", "검증중")}
-                                      </span>
-                                      {item.dates.verifying && <span className="text-[10px] text-muted-foreground absolute top-14">{item.dates.verifying}</span>}
+                                      <div className="flex flex-col items-center">
+                                        <span className={`text-xs font-medium ${item.step === 2 && item.status !== 'rejected' ? 'text-blue-600' : (item.step > 2 || item.status === 'rejected') ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                          {t("Verifying", "검증중")}
+                                        </span>
+                                        {item.dates.verifying && <span className="text-[10px] text-muted-foreground mt-0.5">{item.dates.verifying}</span>}
+                                      </div>
                                     </div>
 
                                     {/* Step 3: Verified / Rejected */}
@@ -472,11 +476,13 @@ export default function MyPage() {
                                       }`}>
                                         {item.status === 'rejected' ? <XCircle className="h-4 w-4" /> : <Circle className="h-4 w-4" />}
                                       </div>
-                                      <span className={`text-xs font-medium ${item.status === 'rejected' ? 'text-red-600' : item.step === 3 ? 'text-green-600' : 'text-muted-foreground'}`}>
-                                        {item.status === 'rejected' ? t("Rejected", "반려됨") : t("Verified", "검증완료")}
-                                      </span>
-                                      {item.status === 'rejected' && item.dates.rejected && <span className="text-[10px] text-red-400 absolute top-14">{item.dates.rejected}</span>}
-                                      {item.status !== 'rejected' && item.dates.verified && <span className="text-[10px] text-muted-foreground absolute top-14">{item.dates.verified}</span>}
+                                      <div className="flex flex-col items-center">
+                                        <span className={`text-xs font-medium ${item.status === 'rejected' ? 'text-red-600' : item.step === 3 ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                          {item.status === 'rejected' ? t("Rejected", "반려됨") : t("Verified", "검증완료")}
+                                        </span>
+                                        {item.status === 'rejected' && item.dates.rejected && <span className="text-[10px] text-red-400 mt-0.5">{item.dates.rejected}</span>}
+                                        {item.status !== 'rejected' && item.dates.verified && <span className="text-[10px] text-muted-foreground mt-0.5">{item.dates.verified}</span>}
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
