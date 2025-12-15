@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { RESOURCES } from "@/lib/data";
-import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Settings, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send } from "lucide-react";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -194,10 +194,6 @@ export default function MyPage() {
               </CardContent>
               
               <div className="bg-slate-50 dark:bg-slate-900/50 p-2 border-t border-slate-100 dark:border-slate-800">
-                <Button variant="ghost" className="w-full justify-start gap-3 h-10 px-4 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50">
-                  <Settings className="h-4 w-4" /> 
-                  <span className="font-medium text-sm">{t("Settings", "설정")}</span>
-                </Button>
                 <Button variant="ghost" className="w-full justify-start gap-3 h-10 px-4 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20">
                   <ArrowRight className="h-4 w-4 rotate-180" /> 
                   <span className="font-medium text-sm">{t("Log out", "로그아웃")}</span>
