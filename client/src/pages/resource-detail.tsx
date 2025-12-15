@@ -241,31 +241,45 @@ export default function ResourceDetail() {
                   </div>
 
                   {displayFeatures && displayFeatures.length > 0 && (
-                    <>
-                      <h3>{t("Key Features", "주요 기능")}</h3>
-                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div className="mt-8">
+                      <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Zap className="h-5 w-5 text-amber-500" />
+                        {t("Key Features", "주요 기능")}
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {displayFeatures.map((feature, idx) => (
-                          <li key={idx} className="flex items-center gap-2">
-                            <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" /> 
-                            <span>{feature}</span>
-                          </li>
+                          <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:border-slate-200 dark:hover:border-slate-700">
+                            <div className="mt-0.5 h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center shrink-0">
+                              <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
+                            </div>
+                            <div>
+                              <p className="font-medium text-slate-900 dark:text-slate-100">{feature}</p>
+                            </div>
+                          </div>
                         ))}
-                      </ul>
-                    </>
+                      </div>
+                    </div>
                   )}
 
                   {displayUseCases && displayUseCases.length > 0 && (
-                    <>
-                      <h3>{t("Use Cases", "활용 사례")}</h3>
-                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div className="mt-8">
+                      <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Briefcase className="h-5 w-5 text-blue-500" />
+                        {t("Use Cases", "활용 사례")}
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {displayUseCases.map((useCase, idx) => (
-                          <li key={idx} className="flex items-center gap-2">
-                            <Briefcase className="h-4 w-4 text-blue-500 shrink-0" /> 
-                            <span>{useCase}</span>
-                          </li>
+                          <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:border-slate-200 dark:hover:border-slate-700">
+                            <div className="mt-0.5 h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
+                              <Briefcase className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <div>
+                              <p className="font-medium text-slate-900 dark:text-slate-100">{useCase}</p>
+                            </div>
+                          </div>
                         ))}
-                      </ul>
-                    </>
+                      </div>
+                    </div>
                   )}
 
                   {!displayFeatures && !displayUseCases && (
