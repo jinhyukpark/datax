@@ -18,6 +18,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Resource } from "@/lib/data";
 import { SubmitForm } from "@/components/submit-form";
+import { AnalyticsView } from "@/components/analytics-view";
 
 export default function MyPage() {
   const { t } = useLanguage();
@@ -442,30 +443,8 @@ export default function MyPage() {
                                     {t("Analytics", "통계")}
                                   </Button>
                                 </DialogTrigger>
-                                <DialogContent className="sm:max-w-[600px]">
-                                  <DialogHeader>
-                                    <DialogTitle>{t("Data Analytics", "데이터 분석")}</DialogTitle>
-                                  </DialogHeader>
-                                  <div className="py-6">
-                                    <div className="h-[200px] w-full bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center mb-6">
-                                      <BarChart2 className="h-16 w-16 text-slate-300 dark:text-slate-600" />
-                                      <span className="sr-only">Analytics Chart Placeholder</span>
-                                    </div>
-                                    <div className="grid grid-cols-3 gap-4 text-center">
-                                      <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
-                                        <div className="text-2xl font-bold text-primary">{item.views}</div>
-                                        <div className="text-xs text-muted-foreground">Total Views</div>
-                                      </div>
-                                      <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
-                                        <div className="text-2xl font-bold text-blue-600">{item.downloads}</div>
-                                        <div className="text-xs text-muted-foreground">Downloads</div>
-                                      </div>
-                                      <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
-                                        <div className="text-2xl font-bold text-green-600">4.8</div>
-                                        <div className="text-xs text-muted-foreground">Rating</div>
-                                      </div>
-                                    </div>
-                                  </div>
+                                <DialogContent className="sm:max-w-[1000px] h-[90vh] overflow-y-auto">
+                                    <AnalyticsView resourceId={item.id} resourceTitle={item.title} />
                                 </DialogContent>
                               </Dialog>
                             </div>
