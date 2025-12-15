@@ -34,7 +34,8 @@ import {
   Twitter,
   Github,
   Link as LinkIcon,
-  Briefcase
+  Briefcase,
+  Check
 } from "lucide-react";
 import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
 import { useLanguage } from "@/lib/language-context";
@@ -242,19 +243,14 @@ export default function ResourceDetail() {
 
                   {displayFeatures && displayFeatures.length > 0 && (
                     <div className="mt-8">
-                      <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                        <Zap className="h-5 w-5 text-amber-500" />
+                      <h3 className="text-xl font-bold mb-4 text-foreground">
                         {t("Key Features", "주요 기능")}
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {displayFeatures.map((feature, idx) => (
-                          <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:border-slate-200 dark:hover:border-slate-700">
-                            <div className="mt-0.5 h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center shrink-0">
-                              <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-900 dark:text-slate-100">{feature}</p>
-                            </div>
+                          <div key={idx} className="flex items-center gap-3 p-3.5 rounded-lg bg-green-50/80 dark:bg-green-900/20 border border-green-100/50 dark:border-green-800/30">
+                            <Star className="h-4 w-4 text-green-500 shrink-0" />
+                            <span className="text-sm font-medium text-slate-700 dark:text-slate-200">{feature}</span>
                           </div>
                         ))}
                       </div>
@@ -263,19 +259,14 @@ export default function ResourceDetail() {
 
                   {displayUseCases && displayUseCases.length > 0 && (
                     <div className="mt-8">
-                      <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                        <Briefcase className="h-5 w-5 text-blue-500" />
+                      <h3 className="text-xl font-bold mb-4 text-foreground">
                         {t("Use Cases", "활용 사례")}
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {displayUseCases.map((useCase, idx) => (
-                          <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:border-slate-200 dark:hover:border-slate-700">
-                            <div className="mt-0.5 h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
-                              <Briefcase className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-slate-900 dark:text-slate-100">{useCase}</p>
-                            </div>
+                          <div key={idx} className="flex items-center gap-3 p-3.5 rounded-lg bg-blue-50/80 dark:bg-blue-900/20 border border-blue-100/50 dark:border-blue-800/30">
+                            <Check className="h-4 w-4 text-blue-500 shrink-0" />
+                            <span className="text-sm font-medium text-slate-700 dark:text-slate-200">{useCase}</span>
                           </div>
                         ))}
                       </div>
