@@ -289,20 +289,22 @@ export default function MyPage() {
                 </div>
 
                 <Tabs defaultValue="approved" className="w-full">
-                  <TabsList className="w-full justify-start h-auto p-0 bg-transparent gap-6 border-b mb-6 rounded-none">
-                    <TabsTrigger 
-                      value="approved" 
-                      className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-0 py-3 font-semibold"
-                    >
-                      {t("Approved", "승인됨")}
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="request" 
-                      className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-0 py-3 font-semibold"
-                    >
-                      {t("Request", "승인요청")}
-                    </TabsTrigger>
-                  </TabsList>
+                  <div className="border-b border-slate-200 dark:border-slate-800 mb-6">
+                    <TabsList className="w-full justify-start h-auto p-0 bg-transparent rounded-none">
+                      <TabsTrigger 
+                        value="approved" 
+                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 font-semibold text-muted-foreground data-[state=active]:text-primary"
+                      >
+                        {t("Approved", "승인됨")}
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="request" 
+                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 font-semibold text-muted-foreground data-[state=active]:text-primary"
+                      >
+                        {t("Request", "승인요청")}
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
                   
                   {/* Approved Tab Content */}
                   <TabsContent value="approved" className="mt-0">
@@ -394,11 +396,11 @@ export default function MyPage() {
                                 <p className="text-muted-foreground text-sm mb-6">{item.description}</p>
                                 
                                 {/* Progress Bar */}
-                                <div className="relative pt-2 pb-6">
-                                  {/* Line */}
-                                  <div className="absolute top-[15px] left-0 w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full" />
+                                <div className="relative pb-6">
+                                  {/* Line - positioned at center of h-8 (32px) circle. Top should be 14px (16px center - 2px half height) */}
+                                  <div className="absolute top-[14px] left-0 w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full" />
                                   <div 
-                                    className="absolute top-[15px] left-0 h-1 bg-green-500 rounded-full transition-all duration-500" 
+                                    className="absolute top-[14px] left-0 h-1 bg-green-500 rounded-full transition-all duration-500" 
                                     style={{ width: item.step === 1 ? '0%' : item.step === 2 ? '50%' : '100%' }}
                                   />
                                   
