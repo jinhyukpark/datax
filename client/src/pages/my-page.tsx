@@ -420,63 +420,130 @@ export default function MyPage() {
                                 <div className="flex justify-between items-start mb-2">
                                   <h3 className="text-lg font-bold">{item.title}</h3>
                                   <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                    <Clock className="h-3 w-3" /> {item.date}
+                                    <Clock className="h-3 w-3" /> {item.dates.submitted}
                                   </span>
                                 </div>
                                 <p className="text-muted-foreground text-sm mb-6">{item.description}</p>
                                 
                                 {/* Progress Bar */}
-                                <div className="relative pb-6">
+                                <div className="relative pb-10">
                                   {/* Line - positioned at center of h-8 (32px) circle. Top should be 14px (16px center - 2px half height) */}
                                   <div className="absolute top-[14px] left-0 w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full" />
                                   <div 
-                                    className="absolute top-[14px] left-0 h-1 bg-green-500 rounded-full transition-all duration-500" 
-                                    style={{ width: item.step === 1 ? '0%' : item.step === 2 ? '50%' : '100%' }}
+                                    className={`absolute top-[14px] left-0 h-1 rounded-full transition-all duration-500 ${item.status === 'rejected' ? 'bg-red-500' : 'bg-green-500'}`}
+                                    style={{ width: item.status === 'rejected' ? '100%' : item.step === 1 ? '0%' : item.step === 2 ? '50%' : '100%' }}
                                   />
                                   
                                   <div className="relative flex justify-between w-full">
-                                    {/* Step 1 */}
+                                    {/* Step 1: Submitted */}
                                     <div className="flex flex-col items-center gap-2">
-                                      <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 z-10 bg-white dark:bg-slate-950 ${item.step >= 1 ? 'border-green-500 text-green-500' : 'border-slate-200 text-slate-300'}`}>
+                                      <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 z-10 bg-white dark:bg-slate-950 ${item.step >= 1 || item.status === 'rejected' ? 'border-green-500 text-green-500' : 'border-slate-200 text-slate-300'}`}>
                                         <CheckCircle2 className="h-4 w-4" />
                                       </div>
-                                      <span className={`text-xs font-medium ${item.step >= 1 ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                      <span className={`text-xs font-medium ${item.step >= 1 || item.status === 'rejected' ? 'text-green-600' : 'text-muted-foreground'}`}>
                                         {t("Submitted", "제출완료")}
                                       </span>
+                                      {item.dates.submitted && <span className="text-[10px] text-muted-foreground absolute top-14">{item.dates.submitted}</span>}
                                     </div>
 
-                                    {/* Step 2 */}
+                                    {/* Step 2: Verifying */}
                                     <div className="flex flex-col items-center gap-2">
                                       <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 z-10 bg-white dark:bg-slate-950 ${
+                                        item.status === 'rejected' ? 'border-green-500 text-green-500' :
                                         item.step === 2 ? 'border-blue-500 text-blue-500 animate-pulse' : 
                                         item.step > 2 ? 'border-green-500 text-green-500' : 
                                         'border-slate-200 text-slate-300'
                                       }`}>
-                                        {item.step === 2 ? <Loader2 className="h-4 w-4 animate-spin" /> : <Circle className="h-4 w-4" />}
+                                        {item.step === 2 && item.status !== 'rejected' ? <Loader2 className="h-4 w-4 animate-spin" /> : 
+                                         (item.step > 2 || item.status === 'rejected') ? <CheckCircle2 className="h-4 w-4" /> :
+                                         <Circle className="h-4 w-4" />}
                                       </div>
-                                      <span className={`text-xs font-medium ${item.step === 2 ? 'text-blue-600' : item.step > 2 ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                      <span className={`text-xs font-medium ${item.step === 2 && item.status !== 'rejected' ? 'text-blue-600' : (item.step > 2 || item.status === 'rejected') ? 'text-green-600' : 'text-muted-foreground'}`}>
                                         {t("Verifying", "검증중")}
                                       </span>
+                                      {item.dates.verifying && <span className="text-[10px] text-muted-foreground absolute top-14">{item.dates.verifying}</span>}
                                     </div>
 
-                                    {/* Step 3 */}
+                                    {/* Step 3: Verified / Rejected */}
                                     <div className="flex flex-col items-center gap-2">
-                                      <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 z-10 bg-white dark:bg-slate-950 ${item.step === 3 ? 'border-green-500 text-green-500' : 'border-slate-200 text-slate-300'}`}>
-                                        <Circle className="h-4 w-4" />
+                                      <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 z-10 bg-white dark:bg-slate-950 ${
+                                        item.status === 'rejected' ? 'border-red-500 text-red-500' :
+                                        item.step === 3 ? 'border-green-500 text-green-500' : 'border-slate-200 text-slate-300'
+                                      }`}>
+                                        {item.status === 'rejected' ? <XCircle className="h-4 w-4" /> : <Circle className="h-4 w-4" />}
                                       </div>
-                                      <span className={`text-xs font-medium ${item.step === 3 ? 'text-green-600' : 'text-muted-foreground'}`}>
-                                        {t("Verified", "검증완료")}
+                                      <span className={`text-xs font-medium ${item.status === 'rejected' ? 'text-red-600' : item.step === 3 ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                        {item.status === 'rejected' ? t("Rejected", "반려됨") : t("Verified", "검증완료")}
                                       </span>
+                                      {item.status === 'rejected' && item.dates.rejected && <span className="text-[10px] text-red-400 absolute top-14">{item.dates.rejected}</span>}
+                                      {item.status !== 'rejected' && item.dates.verified && <span className="text-[10px] text-muted-foreground absolute top-14">{item.dates.verified}</span>}
                                     </div>
                                   </div>
                                 </div>
+
+                                {/* Rejection Details */}
+                                {item.status === 'rejected' && (
+                                  <div className="mt-6 animate-in fade-in slide-in-from-top-2">
+                                    <Alert variant="destructive" className="mb-4 bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900">
+                                      <AlertCircle className="h-4 w-4" />
+                                      <AlertTitle>Submission Rejected</AlertTitle>
+                                      <AlertDescription>
+                                        {item.rejectionReason}
+                                      </AlertDescription>
+                                    </Alert>
+                                    
+                                    <div className="flex gap-3">
+                                      <Button size="sm" onClick={() => setLocation('/submit')} className="bg-red-600 hover:bg-red-700 text-white">
+                                        Edit & Resubmit
+                                      </Button>
+                                      <Dialog>
+                                        <DialogTrigger asChild>
+                                          <Button variant="outline" size="sm" className="gap-2">
+                                            <MessageSquare className="h-4 w-4" /> Message Admin
+                                          </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="sm:max-w-[500px]">
+                                          <DialogHeader>
+                                            <DialogTitle>Messages</DialogTitle>
+                                          </DialogHeader>
+                                          <div className="flex flex-col h-[400px]">
+                                            <ScrollArea className="flex-1 p-4 border rounded-md mb-4 bg-slate-50 dark:bg-slate-900">
+                                              <div className="space-y-4">
+                                                {item.messages?.map((msg, idx) => (
+                                                  <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                                    <div className={`max-w-[80%] rounded-lg p-3 text-sm ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-white dark:bg-slate-800 border'}`}>
+                                                      <p>{msg.text}</p>
+                                                      <p className={`text-[10px] mt-1 ${msg.sender === 'user' ? 'text-blue-100' : 'text-muted-foreground'}`}>{msg.date}</p>
+                                                    </div>
+                                                  </div>
+                                                ))}
+                                              </div>
+                                            </ScrollArea>
+                                            <div className="flex gap-2">
+                                              <Input placeholder="Type your message..." />
+                                              <Button size="icon">
+                                                <Send className="h-4 w-4" />
+                                              </Button>
+                                            </div>
+                                          </div>
+                                        </DialogContent>
+                                      </Dialog>
+                                    </div>
+                                  </div>
+                                )}
+
                               </div>
                               
-                              <div className="flex flex-col justify-center min-w-[120px]">
-                                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 text-center">
+                              <div className="flex flex-col justify-start min-w-[120px]">
+                                <div className={`rounded-lg p-3 text-center ${item.status === 'rejected' ? 'bg-red-50 dark:bg-red-900/20' : 'bg-slate-50 dark:bg-slate-900'}`}>
                                   <div className="text-xs text-muted-foreground mb-1">Current Status</div>
-                                  <div className={`font-bold ${item.step === 2 ? 'text-blue-600' : 'text-green-600'}`}>
-                                    {item.step === 1 ? 'Submitted' : item.step === 2 ? 'Under Review' : 'Approved'}
+                                  <div className={`font-bold ${
+                                    item.status === 'rejected' ? 'text-red-600' : 
+                                    item.step === 2 ? 'text-blue-600' : 'text-green-600'
+                                  }`}>
+                                    {item.status === 'rejected' ? 'Rejected' : 
+                                     item.step === 1 ? 'Submitted' : 
+                                     item.step === 2 ? 'Under Review' : 'Approved'}
                                   </div>
                                 </div>
                               </div>
