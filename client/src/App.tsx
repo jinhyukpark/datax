@@ -16,6 +16,7 @@ import Login from "@/pages/login";
 import Signup from "@/pages/signup";
 import MyPage from "@/pages/my-page";
 import News from "@/pages/news";
+import Submit from "@/pages/submit";
 import { LanguageProvider } from "./lib/language-context";
 
 function Router() {
@@ -33,6 +34,7 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/my-page" component={MyPage} />
+      <Route path="/submit" component={Submit} />
       <Route component={NotFound} />
     </Switch>
   );
