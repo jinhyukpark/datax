@@ -17,6 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Resource } from "@/lib/data";
+import { SubmitForm } from "@/components/submit-form";
 
 export default function MyPage() {
   const { t } = useLanguage();
