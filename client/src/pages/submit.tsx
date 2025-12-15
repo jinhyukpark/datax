@@ -107,267 +107,323 @@ export default function Submit() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-blue-50/80 to-transparent dark:from-blue-950/20 dark:to-transparent -z-10" />
+      <div className="absolute top-20 right-0 w-96 h-96 bg-purple-100/50 dark:bg-purple-900/10 rounded-full blur-3xl -z-10" />
+      <div className="absolute top-40 left-0 w-72 h-72 bg-blue-100/50 dark:bg-blue-900/10 rounded-full blur-3xl -z-10" />
+
       <Navbar />
       
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto text-center mb-10">
-          <h1 className="text-4xl font-bold mb-4 text-slate-900 dark:text-slate-50">Submit AI Agent</h1>
-          <p className="text-muted-foreground text-lg mb-6">
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-4xl mx-auto text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-full border border-green-200 dark:border-green-900 shadow-sm text-sm font-bold text-green-600 mb-6 animate-fade-in-up">
+             <ShieldCheck className="h-4 w-4" /> 59 CERTIFIED DOMAIN RATING
+          </div>
+          
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-slate-900 dark:text-slate-50 tracking-tight">
+            Submit Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">AI Agent</span>
+          </h1>
+          
+          <p className="text-muted-foreground text-lg md:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
             Connect with global users and join thousands of innovative agentic solutions. Gain visibility, attract new users, and receive valuable feedback.
           </p>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 rounded-full border shadow-sm text-sm font-semibold text-green-600">
-             <ShieldCheck className="h-4 w-4" /> 59 CERTIFIED DOMAIN RATING
+        </div>
+
+        <div className="max-w-4xl mx-auto mb-10 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl p-1 shadow-lg transform hover:scale-[1.01] transition-transform duration-300">
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md">
+                <Loader2 className="h-6 w-6 text-white animate-spin-slow" />
+              </div>
+              <div className="text-left">
+                <h3 className="font-bold text-lg">Want to maximize your visibility?</h3>
+                <p className="text-blue-100 text-sm">Get featured on our homepage and newsletter.</p>
+              </div>
+            </div>
+            <Button className="bg-white text-blue-600 hover:bg-blue-50 font-bold border-0 shadow-lg px-6">
+              View Sponsorship Options →
+            </Button>
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto mb-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900 rounded-xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <span className="font-medium text-lg">Want to maximize your visibility?</span>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            View Sponsorship Options →
-          </Button>
-        </div>
-
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto space-y-8">
-          <Card>
-            <CardContent className="p-8 space-y-8">
-              {/* Basic Info */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="flex justify-between">
+          <Card className="border-0 shadow-xl ring-1 ring-slate-200 dark:ring-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
+            <CardContent className="p-8 md:p-10 space-y-10">
+              {/* Section Header */}
+              <div className="flex items-center gap-4 pb-6 border-b border-slate-100 dark:border-slate-800">
+                <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-lg">1</div>
+                <div>
+                  <h2 className="text-xl font-bold">Basic Information</h2>
+                  <p className="text-sm text-muted-foreground">Tell us about your AI Agent</p>
+                </div>
+              </div>
+
+              {/* Basic Info Fields */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-3">
+                  <Label htmlFor="name" className="flex justify-between font-semibold">
                     <span>AI Agent Name <span className="text-red-500">*</span></span>
-                    <span className="text-xs text-muted-foreground">0/35</span>
+                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/35</span>
                   </Label>
-                  <Input id="name" placeholder="Enter AI Agent name" required maxLength={35} />
+                  <Input id="name" placeholder="e.g. AutoGPT" required maxLength={35} className="h-12 border-slate-200 focus:border-blue-500 transition-colors" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="founder" className="flex justify-between">
+                <div className="space-y-3">
+                  <Label htmlFor="founder" className="flex justify-between font-semibold">
                     <span>Founders / Company Name</span>
-                    <span className="text-xs text-muted-foreground">0/50</span>
+                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/50</span>
                   </Label>
-                  <Input id="founder" placeholder="Enter creator name" maxLength={50} />
+                  <Input id="founder" placeholder="e.g. OpenAI" maxLength={50} className="h-12 border-slate-200 focus:border-blue-500 transition-colors" />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="website" className="flex justify-between">
+                <div className="space-y-3">
+                  <Label htmlFor="website" className="flex justify-between font-semibold">
                     <span>Website URL <span className="text-red-500">*</span></span>
-                    <span className="text-xs text-muted-foreground">0/100</span>
+                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/100</span>
                   </Label>
-                  <Input id="website" placeholder="Enter website or github url" required maxLength={100} />
+                  <Input id="website" placeholder="https://" required maxLength={100} className="h-12 border-slate-200 focus:border-blue-500 transition-colors" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="affiliate" className="flex justify-between">
+                <div className="space-y-3">
+                  <Label htmlFor="affiliate" className="flex justify-between font-semibold">
                     <span>Affiliate Link</span>
-                    <span className="text-xs text-muted-foreground">0/300</span>
+                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/300</span>
                   </Label>
-                  <Input id="affiliate" placeholder="Enter affiliate link (if available)" maxLength={300} />
+                  <Input id="affiliate" placeholder="https://" maxLength={300} className="h-12 border-slate-200 focus:border-blue-500 transition-colors" />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="demo" className="flex justify-between">
+                <div className="space-y-3">
+                  <Label htmlFor="demo" className="flex justify-between font-semibold">
                     <span>Demo URL</span>
-                    <span className="text-xs text-muted-foreground">0/200</span>
+                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/200</span>
                   </Label>
-                  <Input id="demo" placeholder="Enter a YouTube or Vimeo URL" maxLength={200} />
+                  <Input id="demo" placeholder="https://youtube.com/..." maxLength={200} className="h-12 border-slate-200 focus:border-blue-500 transition-colors" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="docs" className="flex justify-between">
+                <div className="space-y-3">
+                  <Label htmlFor="docs" className="flex justify-between font-semibold">
                     <span>Documentation URL</span>
-                    <span className="text-xs text-muted-foreground">0/200</span>
+                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/200</span>
                   </Label>
-                  <Input id="docs" placeholder="Enter documentation URL" maxLength={200} />
+                  <Input id="docs" placeholder="https://docs..." maxLength={200} className="h-12 border-slate-200 focus:border-blue-500 transition-colors" />
                 </div>
               </div>
 
               {/* Contact Email */}
-              <div className="space-y-2">
-                <Label htmlFor="email" className="flex justify-between items-center">
-                  <span className="flex items-center gap-2">Contact Email <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">Auto-filled</span> <span className="text-red-500">*</span></span>
-                  <span className="text-xs text-muted-foreground">19/50</span>
-                </Label>
-                <Input id="email" value="jh.park@illunex.com" disabled className="bg-slate-50 text-slate-500" />
-                <p className="text-xs text-muted-foreground">This email will be used for notifications and communications</p>
+              <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+                <div className="space-y-3">
+                  <Label htmlFor="email" className="flex justify-between items-center font-semibold">
+                    <span className="flex items-center gap-2">Contact Email <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-normal">Auto-filled</span> <span className="text-red-500">*</span></span>
+                    <span className="text-xs text-muted-foreground">19/50</span>
+                  </Label>
+                  <Input id="email" value="jh.park@illunex.com" disabled className="h-12 bg-white dark:bg-slate-900 border-slate-200 text-slate-600 font-medium" />
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <ShieldCheck className="h-3 w-3" /> This email will be used for notifications and communications
+                  </p>
+                </div>
+              </div>
+
+              {/* Social Links Header */}
+              <div className="flex items-center gap-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+                <div className="h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center font-bold text-lg">2</div>
+                <div>
+                  <h2 className="text-xl font-bold">Social Presence</h2>
+                  <p className="text-sm text-muted-foreground">Where can users find you?</p>
+                </div>
               </div>
 
               {/* Social Links */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
-                <div className="space-y-2">
-                  <Label htmlFor="linkedin" className="flex justify-between">
-                    <span>LinkedIn URL</span>
-                    <span className="text-xs text-muted-foreground">0/100</span>
-                  </Label>
-                  <Input id="linkedin" placeholder="Enter LinkedIn profile URL" maxLength={100} />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <Label htmlFor="linkedin" className="font-semibold">LinkedIn URL</Label>
+                  <Input id="linkedin" placeholder="https://linkedin.com/in/..." maxLength={100} className="h-12" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="twitter" className="flex justify-between">
-                    <span>Twitter URL</span>
-                    <span className="text-xs text-muted-foreground">0/100</span>
-                  </Label>
-                  <Input id="twitter" placeholder="Enter Twitter profile URL" maxLength={100} />
+                <div className="space-y-3">
+                  <Label htmlFor="twitter" className="font-semibold">Twitter URL</Label>
+                  <Input id="twitter" placeholder="https://twitter.com/..." maxLength={100} className="h-12" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="github" className="flex justify-between">
-                    <span>GitHub URL</span>
-                    <span className="text-xs text-muted-foreground">0/100</span>
-                  </Label>
-                  <Input id="github" placeholder="Enter GitHub profile URL" maxLength={100} />
+                <div className="space-y-3">
+                  <Label htmlFor="github" className="font-semibold">GitHub URL</Label>
+                  <Input id="github" placeholder="https://github.com/..." maxLength={100} className="h-12" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="discord" className="flex justify-between">
-                    <span>Discord URL</span>
-                    <span className="text-xs text-muted-foreground">0/100</span>
-                  </Label>
-                  <Input id="discord" placeholder="Enter Discord server URL" maxLength={100} />
+                <div className="space-y-3">
+                  <Label htmlFor="discord" className="font-semibold">Discord URL</Label>
+                  <Input id="discord" placeholder="https://discord.gg/..." maxLength={100} className="h-12" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="telegram" className="flex justify-between">
-                    <span>Telegram URL</span>
-                    <span className="text-xs text-muted-foreground">0/100</span>
-                  </Label>
-                  <Input id="telegram" placeholder="Enter Telegram URL" maxLength={100} />
+                <div className="space-y-3 md:col-span-2">
+                  <Label htmlFor="telegram" className="font-semibold">Telegram URL</Label>
+                  <Input id="telegram" placeholder="https://t.me/..." maxLength={100} className="h-12" />
+                </div>
+              </div>
+
+              {/* Categorization Header */}
+              <div className="flex items-center gap-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+                <div className="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 flex items-center justify-center font-bold text-lg">3</div>
+                <div>
+                  <h2 className="text-xl font-bold">Classification</h2>
+                  <p className="text-sm text-muted-foreground">Help users find your agent</p>
                 </div>
               </div>
 
               {/* Categorization */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4 border-t">
-                <div className="space-y-4">
-                  <Label className="text-base">Access Model <span className="text-red-500">*</span></Label>
-                  <RadioGroup defaultValue="open">
-                    <div className="flex items-center space-x-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="space-y-4 bg-slate-50 dark:bg-slate-900/30 p-5 rounded-xl border border-slate-100 dark:border-slate-800">
+                  <Label className="text-base font-bold text-slate-900 dark:text-slate-100">Access Model <span className="text-red-500">*</span></Label>
+                  <RadioGroup defaultValue="open" className="gap-3">
+                    <div className="flex items-center space-x-3 p-2 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
                       <RadioGroupItem value="open" id="open" />
-                      <Label htmlFor="open">Open Source</Label>
+                      <Label htmlFor="open" className="cursor-pointer font-medium">Open Source</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-3 p-2 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
                       <RadioGroupItem value="closed" id="closed" />
-                      <Label htmlFor="closed">Closed Source</Label>
+                      <Label htmlFor="closed" className="cursor-pointer font-medium">Closed Source</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-3 p-2 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
                       <RadioGroupItem value="api" id="api" />
-                      <Label htmlFor="api">API</Label>
+                      <Label htmlFor="api" className="cursor-pointer font-medium">API</Label>
                     </div>
                   </RadioGroup>
                 </div>
 
-                <div className="space-y-4">
-                  <Label className="text-base">Pricing Model <span className="text-red-500">*</span></Label>
-                  <RadioGroup defaultValue="free">
-                    <div className="flex items-center space-x-2">
+                <div className="space-y-4 bg-slate-50 dark:bg-slate-900/30 p-5 rounded-xl border border-slate-100 dark:border-slate-800">
+                  <Label className="text-base font-bold text-slate-900 dark:text-slate-100">Pricing Model <span className="text-red-500">*</span></Label>
+                  <RadioGroup defaultValue="free" className="gap-3">
+                    <div className="flex items-center space-x-3 p-2 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
                       <RadioGroupItem value="free" id="free" />
-                      <Label htmlFor="free">Free</Label>
+                      <Label htmlFor="free" className="cursor-pointer font-medium">Free</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-3 p-2 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
                       <RadioGroupItem value="freemium" id="freemium" />
-                      <Label htmlFor="freemium">Freemium</Label>
+                      <Label htmlFor="freemium" className="cursor-pointer font-medium">Freemium</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-3 p-2 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
                       <RadioGroupItem value="paid" id="paid" />
-                      <Label htmlFor="paid">Paid</Label>
+                      <Label htmlFor="paid" className="cursor-pointer font-medium">Paid</Label>
                     </div>
                   </RadioGroup>
                 </div>
 
-                <div className="space-y-4">
-                  <Label className="text-base">Industry <span className="text-red-500">*</span></Label>
-                  <RadioGroup defaultValue="horizontal">
-                    <div className="flex items-center space-x-2">
+                <div className="space-y-4 bg-slate-50 dark:bg-slate-900/30 p-5 rounded-xl border border-slate-100 dark:border-slate-800">
+                  <Label className="text-base font-bold text-slate-900 dark:text-slate-100">Industry <span className="text-red-500">*</span></Label>
+                  <RadioGroup defaultValue="horizontal" className="gap-3">
+                    <div className="flex items-center space-x-3 p-2 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
                       <RadioGroupItem value="horizontal" id="horizontal" />
-                      <Label htmlFor="horizontal">Horizontal</Label>
+                      <Label htmlFor="horizontal" className="cursor-pointer font-medium">Horizontal</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-3 p-2 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
                       <RadioGroupItem value="vertical" id="vertical" />
-                      <Label htmlFor="vertical">Vertical</Label>
+                      <Label htmlFor="vertical" className="cursor-pointer font-medium">Vertical</Label>
                     </div>
                   </RadioGroup>
+                </div>
+              </div>
+
+              {/* Details Header */}
+              <div className="flex items-center gap-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+                <div className="h-10 w-10 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 flex items-center justify-center font-bold text-lg">4</div>
+                <div>
+                  <h2 className="text-xl font-bold">Details & Assets</h2>
+                  <p className="text-sm text-muted-foreground">Make your listing stand out</p>
                 </div>
               </div>
 
               {/* Tagline & Description Section (Merged) */}
-              <div className="space-y-2 pt-4 border-t">
-                <Label htmlFor="tagline" className="flex justify-between">
-                  <span>Tagline <span className="text-red-500">*</span></span>
-                  <span className="text-xs text-muted-foreground">0/100</span>
-                </Label>
-                <Input id="tagline" placeholder="This is used on your AI Agent card." required maxLength={100} />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="description" className="flex justify-between">
-                  <span>Description <span className="text-red-500">*</span></span>
-                  <span className="text-xs text-muted-foreground">0/750</span>
-                </Label>
-                <Textarea id="description" placeholder="Briefly describe your AI Agent, the description is used on your AI Agent page." required maxLength={750} className="min-h-[120px]" />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="features" className="flex justify-between">
-                  <span>Key Features</span>
-                  <span className="text-xs text-muted-foreground">0/600</span>
-                </Label>
-                <Textarea 
-                  id="features" 
-                  placeholder={`Enter one feature per line, for example:
-AI-powered content generation
-Multi-language support
-Real-time collaboration`} 
-                  maxLength={600} 
-                  className="min-h-[120px] font-mono text-sm" 
-                />
-                <p className="text-xs text-muted-foreground">Enter each feature on a new line. Maximum 5 features recommended.</p>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="usecases" className="flex justify-between">
-                  <span>Use Cases</span>
-                  <span className="text-xs text-muted-foreground">0/600</span>
-                </Label>
-                <Textarea 
-                  id="usecases" 
-                  placeholder={`Enter one use case per line, for example:
-Content creation for marketing teams
-Academic research and writing
-Technical documentation`} 
-                  maxLength={600} 
-                  className="min-h-[120px] font-mono text-sm" 
-                />
-                <p className="text-xs text-muted-foreground">Enter each use case on a new line. Maximum 5 use cases recommended.</p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="border-2 border-dashed rounded-lg p-6 text-center space-y-4 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer">
-                  <div className="mx-auto h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                    <Upload className="h-6 w-6 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1">Logo icon<span className="text-red-500">*</span></h3>
-                    <p className="text-xs text-muted-foreground">Accepted formats: jpeg, png, webp, svg+xml</p>
-                  </div>
-                  <Button type="button" variant="outline" size="sm">Select File</Button>
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <Label htmlFor="tagline" className="flex justify-between font-semibold">
+                    <span>Tagline <span className="text-red-500">*</span></span>
+                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/100</span>
+                  </Label>
+                  <Input id="tagline" placeholder="A catchy one-liner for your AI Agent card" required maxLength={100} className="h-12 font-medium" />
                 </div>
 
-                <div className="border-2 border-dashed rounded-lg p-6 text-center space-y-4 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer">
-                  <div className="mx-auto h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                    <Upload className="h-6 w-6 text-muted-foreground" />
+                <div className="space-y-3">
+                  <Label htmlFor="description" className="flex justify-between font-semibold">
+                    <span>Description <span className="text-red-500">*</span></span>
+                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/750</span>
+                  </Label>
+                  <Textarea id="description" placeholder="Describe your AI Agent in detail. What problem does it solve? Who is it for?" required maxLength={750} className="min-h-[160px] resize-y" />
+                </div>
+
+                <div className="space-y-3">
+                  <Label htmlFor="features" className="flex justify-between font-semibold">
+                    <span>Key Features</span>
+                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/600</span>
+                  </Label>
+                  <div className="relative">
+                    <Textarea 
+                      id="features" 
+                      placeholder={`• AI-powered content generation
+• Multi-language support
+• Real-time collaboration`} 
+                      maxLength={600} 
+                      className="min-h-[160px] font-mono text-sm leading-relaxed pl-4" 
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">Enter each feature on a new line. Maximum 5 features recommended.</p>
+                </div>
+
+                <div className="space-y-3">
+                  <Label htmlFor="usecases" className="flex justify-between font-semibold">
+                    <span>Use Cases</span>
+                    <span className="text-xs text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/600</span>
+                  </Label>
+                  <Textarea 
+                    id="usecases" 
+                    placeholder={`• Content creation for marketing teams
+• Academic research and writing
+• Technical documentation`} 
+                    maxLength={600} 
+                    className="min-h-[160px] font-mono text-sm leading-relaxed" 
+                  />
+                  <p className="text-xs text-muted-foreground">Enter each use case on a new line. Maximum 5 use cases recommended.</p>
+                </div>
+              </div>
+
+              {/* File Uploads */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                <div className="group relative border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-8 text-center space-y-4 hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all cursor-pointer">
+                  <div className="mx-auto h-16 w-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Upload className="h-8 w-8 text-slate-400 group-hover:text-blue-500" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Thumbnail Image</h3>
-                    <p className="text-xs text-muted-foreground">Accepted formats: jpeg, png, webp, svg+xml</p>
+                    <h3 className="font-bold text-lg mb-1 group-hover:text-blue-600">Logo Icon <span className="text-red-500">*</span></h3>
+                    <p className="text-xs text-muted-foreground mb-4">Recommended: 512x512px (Square)</p>
+                    <p className="text-xs text-slate-400">JPG, PNG, WEBP, SVG</p>
                   </div>
-                  <Button type="button" variant="outline" size="sm">Select File</Button>
+                  <Button type="button" variant="outline" size="sm" className="mt-2 group-hover:border-blue-500 group-hover:text-blue-600">Select File</Button>
+                </div>
+
+                <div className="group relative border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-8 text-center space-y-4 hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all cursor-pointer">
+                  <div className="mx-auto h-16 w-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Upload className="h-8 w-8 text-slate-400 group-hover:text-blue-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1 group-hover:text-blue-600">Thumbnail Image</h3>
+                    <p className="text-xs text-muted-foreground mb-4">Recommended: 1200x630px (Landscape)</p>
+                    <p className="text-xs text-slate-400">JPG, PNG, WEBP, SVG</p>
+                  </div>
+                  <Button type="button" variant="outline" size="sm" className="mt-2 group-hover:border-blue-500 group-hover:text-blue-600">Select File</Button>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Button type="submit" size="lg" className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Submitting...
-              </>
-            ) : (
-              "Submit AI Agent"
-            )}
-          </Button>
+          <div className="flex justify-end pt-4">
+            <Button 
+              type="submit" 
+              size="lg" 
+              className="w-full md:w-auto min-w-[200px] h-14 text-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 rounded-full" 
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Submit AI Agent"
+              )}
+            </Button>
+          </div>
         </form>
       </div>
       
