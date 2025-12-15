@@ -280,12 +280,9 @@ export default function Submit() {
                   </RadioGroup>
                 </div>
               </div>
-            </CardContent>
-          </Card>
 
-          <Card>
-            <CardContent className="p-8 space-y-8">
-              <div className="space-y-2">
+              {/* Tagline & Description Section (Merged) */}
+              <div className="space-y-2 pt-4 border-t">
                 <Label htmlFor="tagline" className="flex justify-between">
                   <span>Tagline <span className="text-red-500">*</span></span>
                   <span className="text-xs text-muted-foreground">0/100</span>
