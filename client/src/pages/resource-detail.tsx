@@ -29,7 +29,12 @@ import {
   Layout,
   MessageSquare,
   Terminal,
-  Database
+  Database,
+  Linkedin,
+  Twitter,
+  Github,
+  Link as LinkIcon,
+  Briefcase
 } from "lucide-react";
 import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
 import { useLanguage } from "@/lib/language-context";
@@ -54,6 +59,9 @@ export default function ResourceDetail() {
 
   const displayTitle = language === '한국어' && resource.titleKo ? resource.titleKo : resource.title;
   const displayDesc = language === '한국어' && resource.descriptionKo ? resource.descriptionKo : resource.description;
+  const displayTagline = language === '한국어' && resource.taglineKo ? resource.taglineKo : resource.tagline;
+  const displayFeatures = language === '한국어' && resource.featuresKo ? resource.featuresKo : resource.features;
+  const displayUseCases = language === '한국어' && resource.useCasesKo ? resource.useCasesKo : resource.useCases;
 
   const previewImages = [
     { src: heroBg, label: "Interactive Dashboard View", views: resource.views },
@@ -102,16 +110,32 @@ export default function ResourceDetail() {
                 {displayTitle}
               </h1>
               
+              {displayTagline && (
+                <p className="text-xl font-medium text-indigo-600 dark:text-indigo-400 mb-4">
+                  {displayTagline}
+                </p>
+              )}
+              
               <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed">
                 {displayDesc}
               </p>
             </div>
 
             <div className="flex flex-col gap-3 shrink-0 md:min-w-[200px]">
-              <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20">
-                <ExternalLink className="mr-2 h-4 w-4" />
-                {t("Access Resource", "리소스 접근")}
+              <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
+                <a href={resource.websiteUrl || resource.demoUrl || "#"} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  {t("Access Resource", "리소스 접근")}
+                </a>
               </Button>
+              {resource.demoUrl && (
+                <Button variant="outline" className="border-slate-200 dark:border-slate-800" asChild>
+                  <a href={resource.demoUrl} target="_blank" rel="noopener noreferrer">
+                    <Eye className="mr-2 h-4 w-4" />
+                    {t("View Demo", "데모 보기")}
+                  </a>
+                </Button>
+              )}
               <Button variant="outline" className="border-slate-200 dark:border-slate-800">
                 <ShieldCheck className="mr-2 h-4 w-4 text-green-600" />
                 {t("Verified Provider", "인증된 제공자")}
@@ -216,15 +240,47 @@ export default function ResourceDetail() {
                     </Card>
                   </div>
 
-                  <h3>Key Capabilities</h3>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Real-time data processing</li>
-                    <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Advanced analytics dashboard</li>
-                    <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Automated reporting workflows</li>
-                    <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Custom API integrations</li>
-                    <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> 24/7 technical support</li>
-                    <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Comprehensive documentation</li>
-                  </ul>
+                  {displayFeatures && displayFeatures.length > 0 && (
+                    <>
+                      <h3>{t("Key Features", "주요 기능")}</h3>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {displayFeatures.map((feature, idx) => (
+                          <li key={idx} className="flex items-center gap-2">
+                            <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" /> 
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+
+                  {displayUseCases && displayUseCases.length > 0 && (
+                    <>
+                      <h3>{t("Use Cases", "활용 사례")}</h3>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {displayUseCases.map((useCase, idx) => (
+                          <li key={idx} className="flex items-center gap-2">
+                            <Briefcase className="h-4 w-4 text-blue-500 shrink-0" /> 
+                            <span>{useCase}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+
+                  {!displayFeatures && !displayUseCases && (
+                    <>
+                      <h3>Key Capabilities</h3>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Real-time data processing</li>
+                        <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Advanced analytics dashboard</li>
+                        <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Automated reporting workflows</li>
+                        <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Custom API integrations</li>
+                        <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> 24/7 technical support</li>
+                        <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Comprehensive documentation</li>
+                      </ul>
+                    </>
+                  )}
                 </div>
               </TabsContent>
 
@@ -364,6 +420,21 @@ export default function ResourceDetail() {
                         {resource.publishedDate}
                       </p>
                     </div>
+                    
+                    {resource.accessModel && (
+                      <div>
+                        <p className="text-muted-foreground mb-1">{t("Access Model", "접근 모델")}</p>
+                        <Badge variant="outline" className="font-medium">{resource.accessModel}</Badge>
+                      </div>
+                    )}
+                    
+                    {resource.industry && (
+                      <div>
+                        <p className="text-muted-foreground mb-1">{t("Industry", "산업 분야")}</p>
+                        <p className="font-medium">{resource.industry}</p>
+                      </div>
+                    )}
+
                     <div>
                       <p className="text-muted-foreground mb-1">{t("License", "라이선스")}</p>
                       <p className="font-medium">Commercial</p>
@@ -376,6 +447,55 @@ export default function ResourceDetail() {
                 </div>
 
                 <div className="h-px bg-slate-100 dark:bg-slate-800" />
+                
+                {resource.socialLinks && Object.keys(resource.socialLinks).length > 0 && (
+                  <>
+                    <div>
+                      <h4 className="font-medium mb-3 flex items-center gap-2">
+                        <Globe className="h-4 w-4 text-muted-foreground" />
+                        {t("Social Presence", "소셜 미디어")}
+                      </h4>
+                      <div className="flex gap-2">
+                        {resource.socialLinks.linkedin && (
+                          <Button variant="outline" size="icon" className="h-8 w-8" asChild>
+                            <a href={resource.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
+                              <Linkedin className="h-4 w-4 text-blue-700" />
+                            </a>
+                          </Button>
+                        )}
+                        {resource.socialLinks.twitter && (
+                          <Button variant="outline" size="icon" className="h-8 w-8" asChild>
+                            <a href={resource.socialLinks.twitter} target="_blank" rel="noopener noreferrer">
+                              <Twitter className="h-4 w-4 text-sky-500" />
+                            </a>
+                          </Button>
+                        )}
+                        {resource.socialLinks.github && (
+                          <Button variant="outline" size="icon" className="h-8 w-8" asChild>
+                            <a href={resource.socialLinks.github} target="_blank" rel="noopener noreferrer">
+                              <Github className="h-4 w-4" />
+                            </a>
+                          </Button>
+                        )}
+                        {resource.socialLinks.discord && (
+                          <Button variant="outline" size="icon" className="h-8 w-8" asChild>
+                            <a href={resource.socialLinks.discord} target="_blank" rel="noopener noreferrer">
+                              <MessageSquare className="h-4 w-4 text-indigo-500" />
+                            </a>
+                          </Button>
+                        )}
+                        {resource.socialLinks.telegram && (
+                          <Button variant="outline" size="icon" className="h-8 w-8" asChild>
+                            <a href={resource.socialLinks.telegram} target="_blank" rel="noopener noreferrer">
+                              <MessageSquare className="h-4 w-4 text-blue-400" />
+                            </a>
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                    <div className="h-px bg-slate-100 dark:bg-slate-800" />
+                  </>
+                )}
 
                 <div>
                   <h4 className="font-medium mb-3 flex items-center gap-2">
@@ -399,6 +519,9 @@ export default function ResourceDetail() {
                     <div>
                       <p className="font-bold text-sm">{resource.provider}</p>
                       <p className="text-xs text-muted-foreground">Verified Publisher</p>
+                      {resource.founder && (
+                         <p className="text-xs text-muted-foreground mt-0.5">Founder: {resource.founder}</p>
+                      )}
                     </div>
                   </div>
                   <Button variant="outline" size="sm" className="w-full text-xs h-8" asChild>
@@ -406,6 +529,14 @@ export default function ResourceDetail() {
                       View Publisher Profile
                     </Link>
                   </Button>
+                  
+                  {resource.contactEmail && (
+                    <Button variant="ghost" size="sm" className="w-full text-xs h-8 mt-2" asChild>
+                      <a href={`mailto:${resource.contactEmail}`}>
+                        Contact Publisher
+                      </a>
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>

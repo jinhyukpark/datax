@@ -14,12 +14,21 @@ export interface Resource {
   id: string;
   title: string;
   titleKo?: string; // Korean Title
+  tagline?: string;
+  taglineKo?: string;
   description: string;
   descriptionKo?: string; // Korean Description
   provider: string;
+  founder?: string;
+  websiteUrl?: string;
+  demoUrl?: string;
+  docsUrl?: string;
+  contactEmail?: string;
   type: ResourceType;
+  accessModel?: "Open" | "Closed" | "API";
   price: PricingType;
   priceAmount?: string;
+  industry?: "Horizontal" | "Vertical";
   tags: string[];
   image?: string;
   publishedDate: string;
@@ -31,7 +40,17 @@ export interface Resource {
     access: string;
   };
   longDescription?: string;
+  features?: string[];
+  featuresKo?: string[];
   useCases?: string[];
+  useCasesKo?: string[];
+  socialLinks?: {
+    linkedin?: string;
+    twitter?: string;
+    github?: string;
+    discord?: string;
+    telegram?: string;
+  };
 }
 
 export const RESOURCES: Resource[] = [
@@ -40,15 +59,57 @@ export const RESOURCES: Resource[] = [
     id: "1",
     title: "Social Trend Analysis",
     titleKo: "소셜 트랜드 분석",
+    tagline: "Real-time social media trend analysis for data-driven decisions",
+    taglineKo: "데이터 기반 의사결정을 위한 실시간 소셜 미디어 트렌드 분석",
     description: "Big data analysis service collected online to quickly respond to the constantly changing web environment.",
     descriptionKo: "끊임없이 변화하는 웹 환경에 신속히 대응할 수 있도록 온라인에서 수집되는 다양한 형식의 빅데이터 분석서비스",
-    provider: "소셜 트랜드 분석",
+    provider: "Social Trend Co.",
+    founder: "Jane Doe",
+    websiteUrl: "https://example.com",
+    demoUrl: "https://demo.example.com",
+    docsUrl: "https://docs.example.com",
+    contactEmail: "contact@socialtrend.com",
     type: "API",
+    accessModel: "API",
     price: "Paid",
+    industry: "Horizontal",
     tags: ["Analysis", "Social", "Trend"],
     image: "abstract_network_nodes_logo_icon",
     publishedDate: "2025-07-13",
-    views: 297
+    views: 297,
+    features: [
+      "Real-time sentiment analysis",
+      "Multi-platform data aggregation",
+      "Customizable reporting dashboards",
+      "Trend forecasting algorithms",
+      "API integration support"
+    ],
+    featuresKo: [
+      "실시간 감성 분석",
+      "다중 플랫폼 데이터 집계",
+      "사용자 정의 가능한 보고 대시보드",
+      "트렌드 예측 알고리즘",
+      "API 통합 지원"
+    ],
+    useCases: [
+      "Brand monitoring",
+      "Campaign performance tracking",
+      "Market research",
+      "Competitor analysis",
+      "Crisis management"
+    ],
+    useCasesKo: [
+      "브랜드 모니터링",
+      "캠페인 성과 추적",
+      "시장 조사",
+      "경쟁사 분석",
+      "위기 관리"
+    ],
+    socialLinks: {
+      linkedin: "https://linkedin.com",
+      twitter: "https://twitter.com",
+      github: "https://github.com"
+    }
   },
   {
     id: "101",
