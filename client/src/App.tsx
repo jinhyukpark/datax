@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, Router as WouterRouter } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -18,25 +18,28 @@ import MyPage from "@/pages/my-page";
 import News from "@/pages/news";
 import Submit from "@/pages/submit";
 import { LanguageProvider } from "./lib/language-context";
+import { useHashLocation } from "./lib/hash-location";
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/data-map" component={DataMap} />
-      <Route path="/platforms" component={Platforms} />
-      <Route path="/resource/:id" component={ResourceDetail} />
-      <Route path="/publisher/:id" component={PublisherProfile} />
-      <Route path="/blog" component={Blog} />
-      <Route path="/blog/:id" component={BlogDetail} />
-      <Route path="/news" component={News} />
-      <Route path="/advertise" component={Advertise} />
-      <Route path="/login" component={Login} />
-      <Route path="/signup" component={Signup} />
-      <Route path="/my-page" component={MyPage} />
-      <Route path="/submit" component={Submit} />
-      <Route component={NotFound} />
-    </Switch>
+    <WouterRouter hook={useHashLocation}>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/data-map" component={DataMap} />
+        <Route path="/platforms" component={Platforms} />
+        <Route path="/resource/:id" component={ResourceDetail} />
+        <Route path="/publisher/:id" component={PublisherProfile} />
+        <Route path="/blog" component={Blog} />
+        <Route path="/blog/:id" component={BlogDetail} />
+        <Route path="/news" component={News} />
+        <Route path="/advertise" component={Advertise} />
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/my-page" component={MyPage} />
+        <Route path="/submit" component={Submit} />
+        <Route component={NotFound} />
+      </Switch>
+    </WouterRouter>
   );
 }
 
