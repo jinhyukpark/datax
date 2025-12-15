@@ -10,6 +10,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLanguage } from "@/lib/language-context";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { SubmitForm } from "@/components/submit-form";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function Navbar() {
   const [location] = useLocation();
@@ -79,11 +82,20 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Link href="/submit">
-               <Button size="sm" className="bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-50 dark:text-slate-900 h-9 px-4">
-                + Submit
-              </Button>
-            </Link>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button size="sm" className="bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-50 dark:text-slate-900 h-9 px-4">
+                  + Submit
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl h-[90vh] p-0">
+                <ScrollArea className="h-full max-h-[90vh]">
+                  <div className="p-6 md:p-8">
+                    <SubmitForm />
+                  </div>
+                </ScrollArea>
+              </DialogContent>
+            </Dialog>
             
             {/* Mock Logged In State - Link to My Page */}
             <Link href="/my-page">

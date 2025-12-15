@@ -16,6 +16,7 @@ import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { SubmitForm } from "@/components/submit-form";
 
 export default function MyPage() {
   const { t } = useLanguage();
@@ -512,9 +513,20 @@ export default function MyPage() {
                                     </Alert>
                                     
                                     <div className="flex gap-3">
-                                      <Button size="sm" onClick={() => setLocation('/submit')} className="bg-red-600 hover:bg-red-700 text-white">
-                                        Edit & Resubmit
-                                      </Button>
+                                      <Dialog>
+                                        <DialogTrigger asChild>
+                                          <Button size="sm" className="bg-red-600 hover:bg-red-700 text-white">
+                                            Edit & Resubmit
+                                          </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="max-w-4xl h-[90vh] p-0">
+                                          <ScrollArea className="h-full max-h-[90vh]">
+                                            <div className="p-6 md:p-8">
+                                              <SubmitForm />
+                                            </div>
+                                          </ScrollArea>
+                                        </DialogContent>
+                                      </Dialog>
                                       <Dialog>
                                         <DialogTrigger asChild>
                                           <Button variant="outline" size="sm" className="gap-2">
