@@ -2,11 +2,25 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle2, Target, Award, Rocket, Megaphone, Layout, Star, PanelRight, Calendar } from "lucide-react";
+import { CheckCircle2, Target, Award, Rocket, Megaphone, Layout, Star, PanelRight, Calendar as CalendarIcon, ShoppingCart, CreditCard } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
+import { Calendar } from "@/components/ui/calendar";
+import { DateRange } from "react-day-picker";
+import { addDays, format, differenceInDays } from "date-fns";
+import { useLocation } from "wouter";
+import { toast } from "sonner";
 
 export default function Advertise() {
   const { t } = useLanguage();
+  const [, setLocation] = useLocation();
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 7),
+  });
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const adProducts = [
     {
@@ -14,6 +28,7 @@ export default function Advertise() {
       title: t("Banner Ad", "배너 광고"),
       subtitle: t("Below header on all pages", "모든 페이지의 헤더 아래"),
       description: t("Premium banner placement visible on every page of the website, right below the header.", "웹사이트의 모든 페이지에서 헤더 바로 아래에 표시되는 프리미엄 배너 배치입니다."),
+      priceValue: 79,
       price: "$79",
       period: t("/week", "/주"),
       discount: t("10% off each extra week", "추가 주당 10% 할인"),
@@ -34,6 +49,7 @@ export default function Advertise() {
       title: t("Listing Ad", "리스팅 광고"),
       subtitle: t("Agent listing & category pages", "에이전트 목록 및 카테고리 페이지"),
       description: t("Your logo displayed on every agent listing page, including category pages and search results.", "카테고리 페이지 및 검색 결과를 포함한 모든 에이전트 목록 페이지에 로고가 표시됩니다."),
+      priceValue: 69,
       price: "$69",
       period: t("/week", "/주"),
       discount: t("5% off each extra week", "추가 주당 5% 할인"),
@@ -54,6 +70,7 @@ export default function Advertise() {
       title: t("Agent Sidebar Ad", "에이전트 사이드바 광고"),
       subtitle: t("Agent detail page sidebar", "에이전트 상세 페이지 사이드바"),
       description: t("Your logo in the sidebar of every individual agent detail page.", "모든 개별 에이전트 상세 페이지의 사이드바에 로고가 표시됩니다."),
+      priceValue: 59,
       price: "$59",
       period: t("/week", "/주"),
       discount: t("5% off each extra week", "추가 주당 5% 할인"),
@@ -74,6 +91,7 @@ export default function Advertise() {
       title: t("Sponsor Logo", "스폰서 로고"),
       subtitle: t("Homepage sponsors section", "홈페이지 스폰서 섹션"),
       description: t("Your logo in the Sponsors section on the homepage, alongside other sponsors.", "홈페이지의 스폰서 섹션에 다른 스폰서와 함께 귀하의 로고가 표시됩니다."),
+      priceValue: 29,
       price: "$29",
       period: t("/week", "/주"),
       discount: t("5% off each extra week", "추가 주당 5% 할인"),
@@ -90,6 +108,50 @@ export default function Advertise() {
       borderColor: "border-amber-500/20"
     }
   ];
+
+  const handleSelectDates = (product: any) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const calculateTotal = () => {
+    if (!date?.from || !date?.to || !selectedProduct) return 0;
+    const days = differenceInDays(date.to, date.from) + 1;
+    const weeks = Math.ceil(days / 7);
+    return selectedProduct.priceValue * weeks;
+  };
+
+  const handleAction = (action: 'pay' | 'cart') => {
+    if (!date?.from || !date?.to || !selectedProduct) return;
+
+    const newItem = {
+      id: Math.random().toString(36).substr(2, 9),
+      productId: selectedProduct.id,
+      title: selectedProduct.title,
+      dateRange: {
+        from: date.from.toISOString(),
+        to: date.to.toISOString()
+      },
+      price: `$${calculateTotal()}`,
+      status: action === 'pay' ? 'Completed' : 'Pending Payment',
+      type: 'advertise',
+      date: format(new Date(), 'yyyy-MM-dd')
+    };
+
+    // Save to localStorage
+    const storageKey = 'my_purchases'; // Single source of truth for simplicity in mockup
+    const existing = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    localStorage.setItem(storageKey, JSON.stringify([newItem, ...existing]));
+
+    setIsModalOpen(false);
+    
+    if (action === 'pay') {
+      toast.success(t("Payment successful!", "결제가 완료되었습니다!"));
+      setLocation('/my-page');
+    } else {
+      toast.success(t("Added to cart", "장바구니에 추가되었습니다"));
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950">
@@ -181,8 +243,8 @@ export default function Advertise() {
                     <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
                     {product.availability}
                   </div>
-                  <Button className="w-full gap-2" variant="outline">
-                    <Calendar className="h-4 w-4" />
+                  <Button className="w-full gap-2" variant="outline" onClick={() => handleSelectDates(product)}>
+                    <CalendarIcon className="h-4 w-4" />
                     {t("Select Dates", "날짜 선택")}
                   </Button>
                 </div>
@@ -191,6 +253,61 @@ export default function Advertise() {
           </div>
         </div>
       </div>
+
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t("Select Duration", "기간 선택")}</DialogTitle>
+            <DialogDescription>
+              {t("Choose the dates for your advertisement.", "광고를 게재할 기간을 선택하세요.")}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="flex flex-col items-center justify-center py-4">
+            <div className="border rounded-md p-4 mb-4 bg-white dark:bg-slate-950">
+              <Calendar
+                mode="range"
+                defaultMonth={date?.from}
+                selected={date}
+                onSelect={setDate}
+                numberOfMonths={1}
+                disabled={(date) => date < new Date()}
+              />
+            </div>
+            
+            {date?.from && date?.to && (
+              <div className="w-full bg-slate-50 dark:bg-slate-900 p-4 rounded-lg">
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm text-muted-foreground">{t("Selected Product", "선택한 상품")}</span>
+                  <span className="font-medium">{selectedProduct?.title}</span>
+                </div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm text-muted-foreground">{t("Duration", "기간")}</span>
+                  <span className="font-medium">
+                    {format(date.from, "MMM dd")} - {format(date.to, "MMM dd")} 
+                    {' '}({differenceInDays(date.to, date.from) + 1} days)
+                  </span>
+                </div>
+                <div className="border-t border-slate-200 dark:border-slate-800 my-2 pt-2 flex justify-between items-center">
+                  <span className="font-bold">{t("Total Price", "총 결제금액")}</span>
+                  <span className="text-xl font-bold text-blue-600">${calculateTotal()}</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <Button variant="outline" className="w-full sm:w-auto" onClick={() => handleAction('cart')}>
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              {t("Add to Cart", "장바구니 담기")}
+            </Button>
+            <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700" onClick={() => handleAction('pay')}>
+              <CreditCard className="mr-2 h-4 w-4" />
+              {t("Pay Immediately", "바로 결제하기")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </div>

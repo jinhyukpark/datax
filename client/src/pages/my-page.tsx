@@ -10,8 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { RESOURCES } from "@/lib/data";
-import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send } from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -19,11 +19,28 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Resource } from "@/lib/data";
 import { SubmitForm } from "@/components/submit-form";
 import { AnalyticsView } from "@/components/analytics-view";
+import { toast } from "sonner";
+import { format, differenceInDays } from "date-fns";
 
 export default function MyPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
   const [editingResource, setEditingResource] = useState<Resource | null>(null);
+  const [myPurchases, setMyPurchases] = useState<any[]>([]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('my_purchases');
+    if (stored) {
+      setMyPurchases(JSON.parse(stored));
+    }
+  }, []);
+
+  const handlePayPending = (id: string) => {
+    const updated = myPurchases.map(p => p.id === id ? {...p, status: 'Completed'} : p);
+    setMyPurchases(updated);
+    localStorage.setItem('my_purchases', JSON.stringify(updated));
+    toast.success(t("Payment successful!", "결제가 완료되었습니다!"));
+  };
   
   // Mock User Data
   const [user, setUser] = useState({
@@ -314,34 +331,97 @@ export default function MyPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="rounded-md border">
-                      <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 font-medium text-sm">
-                        <div className="col-span-6 md:col-span-5">{t("Product", "상품명")}</div>
-                        <div className="col-span-3 md:col-span-2">{t("Date", "날짜")}</div>
-                        <div className="col-span-3 md:col-span-2">{t("Amount", "금액")}</div>
-                        <div className="hidden md:col-span-2 md:block">{t("Status", "상태")}</div>
-                        <div className="hidden md:col-span-1 md:block text-center">{t("Action", "관리")}</div>
-                      </div>
-                      <div className="divide-y">
-                        {purchases.map((item) => (
-                          <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
-                            <div className="col-span-6 md:col-span-5 font-medium truncate">{item.title}</div>
-                            <div className="col-span-3 md:col-span-2 text-muted-foreground">{item.date}</div>
-                            <div className="col-span-3 md:col-span-2 font-medium">{item.price}</div>
-                            <div className="hidden md:col-span-2 md:block">
-                              <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 shadow hover:bg-green-100/80">
-                                {item.status}
-                              </span>
+                    <Tabs defaultValue="data-products" className="w-full">
+                      <TabsList className="mb-4">
+                        <TabsTrigger value="data-products">{t("Data Products", "데이터 상품")}</TabsTrigger>
+                        <TabsTrigger value="advertising">{t("Advertising", "광고")}</TabsTrigger>
+                      </TabsList>
+
+                      <TabsContent value="data-products">
+                        <div className="rounded-md border">
+                          <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 font-medium text-sm">
+                            <div className="col-span-6 md:col-span-5">{t("Product", "상품명")}</div>
+                            <div className="col-span-3 md:col-span-2">{t("Date", "날짜")}</div>
+                            <div className="col-span-3 md:col-span-2">{t("Amount", "금액")}</div>
+                            <div className="hidden md:col-span-2 md:block">{t("Status", "상태")}</div>
+                            <div className="hidden md:col-span-1 md:block text-center">{t("Action", "관리")}</div>
+                          </div>
+                          <div className="divide-y">
+                            {purchases.map((item) => (
+                              <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+                                <div className="col-span-6 md:col-span-5 font-medium truncate">{item.title}</div>
+                                <div className="col-span-3 md:col-span-2 text-muted-foreground">{item.date}</div>
+                                <div className="col-span-3 md:col-span-2 font-medium">{item.price}</div>
+                                <div className="hidden md:col-span-2 md:block">
+                                  <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 shadow hover:bg-green-100/80">
+                                    {item.status}
+                                  </span>
+                                </div>
+                                <div className="hidden md:col-span-1 md:block text-center">
+                                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                                    <Download className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </TabsContent>
+
+                      <TabsContent value="advertising">
+                        {myPurchases.length === 0 ? (
+                          <div className="text-center py-12 text-muted-foreground">
+                            <ShoppingCart className="mx-auto h-12 w-12 mb-4 opacity-20" />
+                            <p>{t("No advertising history found.", "광고 구매 내역이 없습니다.")}</p>
+                            <Button variant="link" onClick={() => setLocation('/advertise')}>
+                              {t("Browse Ad Products", "광고 상품 둘러보기")}
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="rounded-md border">
+                            <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 font-medium text-sm">
+                              <div className="col-span-6 md:col-span-5">{t("Product", "상품명")}</div>
+                              <div className="col-span-3 md:col-span-2">{t("Duration", "기간")}</div>
+                              <div className="col-span-3 md:col-span-2">{t("Amount", "금액")}</div>
+                              <div className="hidden md:col-span-2 md:block">{t("Status", "상태")}</div>
+                              <div className="hidden md:col-span-1 md:block text-center">{t("Action", "관리")}</div>
                             </div>
-                            <div className="hidden md:col-span-1 md:block text-center">
-                              <Button variant="ghost" size="icon" className="h-8 w-8">
-                                <Download className="h-4 w-4" />
-                              </Button>
+                            <div className="divide-y">
+                              {myPurchases.map((item) => (
+                                <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+                                  <div className="col-span-6 md:col-span-5">
+                                    <div className="font-medium truncate">{item.title}</div>
+                                    <div className="text-xs text-muted-foreground mt-0.5">
+                                      {format(new Date(item.dateRange.from), 'MMM dd')} - {format(new Date(item.dateRange.to), 'MMM dd')}
+                                    </div>
+                                  </div>
+                                  <div className="col-span-3 md:col-span-2 text-muted-foreground">
+                                    {differenceInDays(new Date(item.dateRange.to), new Date(item.dateRange.from)) + 1} days
+                                  </div>
+                                  <div className="col-span-3 md:col-span-2 font-medium">{item.price}</div>
+                                  <div className="hidden md:col-span-2 md:block">
+                                    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent shadow ${
+                                      item.status === 'Completed' 
+                                        ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-100/80'
+                                        : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 hover:bg-yellow-100/80'
+                                    }`}>
+                                      {item.status}
+                                    </span>
+                                  </div>
+                                  <div className="hidden md:col-span-1 md:block text-center">
+                                    {item.status === 'Pending Payment' && (
+                                      <Button size="sm" className="h-8 text-xs" onClick={() => handlePayPending(item.id)}>
+                                        Pay
+                                      </Button>
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    </div>
+                        )}
+                      </TabsContent>
+                    </Tabs>
                   </CardContent>
                 </Card>
               </TabsContent>
