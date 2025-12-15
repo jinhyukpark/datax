@@ -708,10 +708,6 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create' 
     </div>
   );
 
-import { ChevronDown, ChevronUp, MessageCircle, X } from "lucide-react";
-
-// ... existing imports
-
   const ReviewsForm = () => {
     const [expandedReviewId, setExpandedReviewId] = useState<string | null>(null);
 
