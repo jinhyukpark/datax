@@ -1,5 +1,6 @@
 import { Github, Twitter, Linkedin } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
+import { Link } from "wouter";
 
 export function Footer() {
   return (
@@ -19,20 +20,21 @@ export function Footer() {
           <div>
             <h3 className="mb-4 font-heading font-semibold text-foreground">Platform</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-primary">Data Map</a></li>
-              <li><a href="#" className="hover:text-primary">AI Agents</a></li>
-              <li><a href="#" className="hover:text-primary">Submit Resource</a></li>
-              <li><a href="#" className="hover:text-primary">Pricing</a></li>
+              <li><Link href="/data-map" className="hover:text-primary">Data Map</Link></li>
+              <li><Link href="/platforms" className="hover:text-primary">AI Agents</Link></li>
+              <li><Link href="/submit" className="hover:text-primary">Submit Resource</Link></li>
+              <li><Link href="#" className="hover:text-primary">Pricing</Link></li>
             </ul>
           </div>
 
           <div>
             <h3 className="mb-4 font-heading font-semibold text-foreground">Company</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-primary">About Us</a></li>
-              <li><a href="#" className="hover:text-primary">Blog</a></li>
-              <li><a href="#" className="hover:text-primary">Careers</a></li>
-              <li><a href="#" className="hover:text-primary">Contact</a></li>
+              <li><Link href="#" className="hover:text-primary">About Us</Link></li>
+              <li><Link href="/blog" className="hover:text-primary">Blog</Link></li>
+              <li><Link href="#" className="hover:text-primary">Careers</Link></li>
+              <li><Link href="#" className="hover:text-primary">Contact</Link></li>
+              <li><Link href="/admin" className="hover:text-primary font-medium text-indigo-600">Admin Portal</Link></li>
             </ul>
           </div>
 
