@@ -417,7 +417,7 @@ export default function PaymentManagement() {
                     <p className="text-sm font-medium">{selectedPayment.user}</p>
                   </div>
                   <div className="space-y-1">
-                    <span className="text-xs font-medium text-muted-foreground">Status</span>
+                    <span className="text-xs font-medium text-muted-foreground block">Status</span>
                     <Badge variant="outline">{selectedPayment.status}</Badge>
                   </div>
                 </div>
