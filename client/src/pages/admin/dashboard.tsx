@@ -12,10 +12,10 @@ import {
   Calendar as CalendarIcon
 } from "lucide-react";
 import { 
-  LineChart, 
-  Line, 
-  BarChart, 
-  Bar, 
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
   XAxis, 
   YAxis, 
   CartesianGrid, 
@@ -77,6 +77,38 @@ const generateRevenueData = (timeframe: 'daily' | 'monthly' | 'yearly') => {
   }
 };
 
+const generateStorageData = (timeframe: 'daily' | 'monthly' | 'yearly') => {
+  let baseStorage = 50; // Base storage in TB
+  
+  if (timeframe === 'daily') {
+    return Array.from({ length: 14 }).map((_, i) => {
+      baseStorage += Math.random() * 0.5;
+      return {
+        date: format(addDays(new Date(), i - 13), 'MM/dd'),
+        storage: Number(baseStorage.toFixed(2))
+      };
+    });
+  } else if (timeframe === 'monthly') {
+    baseStorage = 30;
+    return Array.from({ length: 12 }).map((_, i) => {
+      baseStorage += Math.random() * 5;
+      return {
+        date: format(subMonths(new Date(), 11 - i), 'MMM'),
+        storage: Number(baseStorage.toFixed(2))
+      };
+    });
+  } else {
+    baseStorage = 10;
+    return Array.from({ length: 5 }).map((_, i) => {
+      baseStorage += Math.random() * 20;
+      return {
+        date: format(subYears(new Date(), 4 - i), 'yyyy'),
+        storage: Number(baseStorage.toFixed(2))
+      };
+    });
+  }
+};
+
 const SUBMISSION_STATUS_DATA = [
   { name: 'Approved', value: 45, color: '#22c55e' },
   { name: 'Pending', value: 12, color: '#eab308' },
@@ -104,6 +136,7 @@ export default function Dashboard() {
   // Derived state (simulating data fetching based on filters)
   const trafficData = generateTrafficData(timeframe);
   const revenueData = generateRevenueData(timeframe);
+  const storageData = generateStorageData(timeframe);
 
   return (
     <AdminLayout title="Dashboard">
@@ -266,6 +299,52 @@ export default function Dashboard() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {/* Storage Capacity Chart */}
+          <Card className="col-span-2 border-slate-200 dark:border-slate-800">
+            <CardHeader>
+              <CardTitle>Data Storage Growth ({timeframe})</CardTitle>
+              <CardDescription>
+                Total accumulated data volume in TB
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={250}>
+                <AreaChart data={storageData}>
+                  <defs>
+                    <linearGradient id="colorStorage" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <XAxis 
+                    dataKey="date" 
+                    stroke="#888888" 
+                    fontSize={12} 
+                    tickLine={false} 
+                    axisLine={false} 
+                  />
+                  <YAxis 
+                    stroke="#888888" 
+                    fontSize={12} 
+                    tickLine={false} 
+                    axisLine={false}
+                    tickFormatter={(value) => `${value}TB`}
+                  />
+                  <Tooltip 
+                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="storage" 
+                    stroke="#f59e0b" 
+                    fillOpacity={1} 
+                    fill="url(#colorStorage)" 
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
           {/* Submission Status Pie Chart */}
           <Card className="col-span-1 border-slate-200 dark:border-slate-800">
             <CardHeader>
@@ -273,7 +352,7 @@ export default function Dashboard() {
               <CardDescription>Distribution of data submission requests</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[200px] w-full">
+              <div className="h-[250px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -296,35 +375,37 @@ export default function Dashboard() {
               </div>
             </CardContent>
           </Card>
-          
-          {/* Recent Activity List (Placeholder) */}
-          <Card className="col-span-2 border-slate-200 dark:border-slate-800">
-            <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Latest platform events and notifications</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[
-                  { user: "Kim Min-su", action: "purchased", target: "Corporate Growth Data", time: "2 mins ago" },
-                  { user: "Tech Corp", action: "submitted", target: "New API Resource", time: "15 mins ago" },
-                  { user: "Lee Ji-won", action: "commented on", target: "Smart Factory Blog", time: "1 hour ago" },
-                  { user: "Global Systems", action: "paid for", target: "Banner Advertisement", time: "3 hours ago" },
-                ].map((activity, i) => (
-                  <div key={i} className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 last:border-0 pb-2 last:pb-0">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-blue-500" />
-                      <p className="text-sm">
-                        <span className="font-semibold">{activity.user}</span> {activity.action} <span className="font-medium text-primary">{activity.target}</span>
-                      </p>
-                    </div>
-                    <span className="text-xs text-muted-foreground">{activity.time}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
+          
+        {/* Recent Activity List */}
+        <Card className="border-slate-200 dark:border-slate-800">
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
+            <CardDescription>Latest platform events and notifications</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {[
+                { user: "Kim Min-su", action: "purchased", target: "Corporate Growth Data", time: "2 mins ago" },
+                { user: "Tech Corp", action: "submitted", target: "New API Resource", time: "15 mins ago" },
+                { user: "Lee Ji-won", action: "commented on", target: "Smart Factory Blog", time: "1 hour ago" },
+                { user: "Global Systems", action: "paid for", target: "Banner Advertisement", time: "3 hours ago" },
+                { user: "Park Sung-hoon", action: "registered", target: "New Account", time: "5 hours ago" },
+                { user: "Vision AI", action: "updated", target: "Defect Detection Model", time: "1 day ago" },
+              ].map((activity, i) => (
+                <div key={i} className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 last:border-0 pb-2 last:pb-0">
+                  <div className="flex items-center gap-2">
+                    <div className="h-2 w-2 rounded-full bg-blue-500" />
+                    <p className="text-sm">
+                      <span className="font-semibold">{activity.user}</span> {activity.action} <span className="font-medium text-primary">{activity.target}</span>
+                    </p>
+                  </div>
+                  <span className="text-xs text-muted-foreground">{activity.time}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </AdminLayout>
   );
