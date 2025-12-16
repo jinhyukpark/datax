@@ -39,9 +39,9 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
       {/* Sidebar */}
       <aside className="w-64 bg-slate-900 text-slate-300 flex-shrink-0 flex flex-col h-screen sticky top-0">
         <div className="p-6 border-b border-slate-800">
-          <div className="flex items-center gap-2 text-white">
-            <Logo />
-            <span className="font-bold text-lg tracking-tight ml-2 bg-slate-800 px-2 py-0.5 rounded text-xs">ADMIN</span>
+          <div className="flex items-center gap-2">
+            <Logo light />
+            <span className="font-bold tracking-tight bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] ml-1 self-start mt-1">ADMIN</span>
           </div>
         </div>
         
