@@ -23,6 +23,7 @@ import AdminManagement from "@/pages/admin/admins";
 import SubmissionManagement from "@/pages/admin/submissions";
 import PaymentManagement from "@/pages/admin/payments";
 import Dashboard from "@/pages/admin/dashboard";
+import Notifications from "@/pages/admin/notifications";
 import { LanguageProvider } from "./lib/language-context";
 import { useHashLocation } from "./lib/hash-location";
 
@@ -52,6 +53,7 @@ function Router() {
         <Route path="/admin/admins" component={AdminManagement} />
         <Route path="/admin/submissions" component={SubmissionManagement} />
         <Route path="/admin/payments" component={PaymentManagement} />
+        <Route path="/admin/notifications" component={Notifications} />
 
         <Route component={NotFound} />
       </Switch>

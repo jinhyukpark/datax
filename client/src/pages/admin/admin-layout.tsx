@@ -206,6 +206,13 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                     </div>
                   )}
                 </ScrollArea>
+                <div className="p-2 border-t bg-slate-50/50 text-center">
+                  <Link href="/admin/notifications">
+                    <a className="text-xs text-blue-600 hover:text-blue-700 font-medium hover:underline block py-1">
+                      View all notifications
+                    </a>
+                  </Link>
+                </div>
               </PopoverContent>
             </Popover>
             <Button variant="ghost" size="icon" className="text-slate-500">
