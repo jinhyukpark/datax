@@ -55,7 +55,8 @@ export default function AdminManagement() {
   ]);
 
   // Invitation Form State
-  const [inviteEmails, setInviteEmails] = useState("");
+  const [inviteEmails, setInviteEmails] = useState<string[]>([]);
+  const [emailInput, setEmailInput] = useState("");
 
   const togglePermission = (adminId: number, perm: keyof typeof MOCK_ADMINS[0]['permissions']) => {
     setAdmins(admins.map(admin => {
@@ -107,8 +108,30 @@ export default function AdminManagement() {
     toast.success(`${newAdmins.length} admin(s) added successfully`);
   };
 
+  const handleEmailKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      const email = emailInput.trim().replace(',', '');
+      if (email) {
+        if (!inviteEmails.includes(email)) {
+          setInviteEmails([...inviteEmails, email]);
+        }
+        setEmailInput("");
+      }
+    } else if (e.key === 'Backspace' && !emailInput && inviteEmails.length > 0) {
+      setInviteEmails(inviteEmails.slice(0, -1));
+    }
+  };
+
+  const removeEmailTag = (emailToRemove: string) => {
+    setInviteEmails(inviteEmails.filter(email => email !== emailToRemove));
+  };
+
   const handleInviteSubmit = () => {
-    const emails = inviteEmails.split(/[\n,]+/).map(e => e.trim()).filter(e => e);
+    const emails = [...inviteEmails];
+    if (emailInput.trim()) {
+      emails.push(emailInput.trim());
+    }
     
     if (emails.length === 0) {
       toast.error("Please enter at least one email address");
@@ -117,7 +140,8 @@ export default function AdminManagement() {
 
     // Mock invite logic
     setNewAdminOpen(false);
-    setInviteEmails("");
+    setInviteEmails([]);
+    setEmailInput("");
     toast.success(`Invitations sent to ${emails.length} recipients`);
   };
 
@@ -216,14 +240,28 @@ export default function AdminManagement() {
                   <div className="space-y-4 py-4">
                     <div className="space-y-2">
                       <Label>Email Addresses</Label>
-                      <Textarea 
-                        placeholder="Enter email addresses separated by commas or new lines..." 
-                        className="min-h-[150px]"
-                        value={inviteEmails}
-                        onChange={(e) => setInviteEmails(e.target.value)}
-                      />
+                      <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-white dark:bg-slate-950 min-h-[100px] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+                        {inviteEmails.map((email) => (
+                          <Badge key={email} variant="secondary" className="gap-1 pr-1">
+                            {email}
+                            <button
+                              onClick={() => removeEmailTag(email)}
+                              className="ml-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full p-0.5"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </Badge>
+                        ))}
+                        <input
+                          className="flex-1 bg-transparent border-none outline-none min-w-[200px] text-sm py-1"
+                          placeholder={inviteEmails.length === 0 ? "Type email and press Enter..." : ""}
+                          value={emailInput}
+                          onChange={(e) => setEmailInput(e.target.value)}
+                          onKeyDown={handleEmailKeyDown}
+                        />
+                      </div>
                       <p className="text-xs text-muted-foreground">
-                        Invitation links will be sent to these users. They can set up their profiles upon clicking the link.
+                        Type email addresses and press Enter or Comma to add them as tags.
                       </p>
                     </div>
                   </div>
