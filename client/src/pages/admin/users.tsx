@@ -23,11 +23,11 @@ import { useState } from "react";
 
 // Mock User Data
 const MOCK_USERS = [
-  { id: 1, name: "Kim Min-su", email: "minsu@example.com", type: "Individual", status: "Active", joined: "2024-10-15", purchases: 5 },
-  { id: 2, name: "Lee Ji-won", email: "jiwon@techcorp.com", type: "Corporate", status: "Active", joined: "2024-11-02", purchases: 12 },
-  { id: 3, name: "Park Sung-hoon", email: "park.sh@data.io", type: "Corporate", status: "Suspended", joined: "2024-09-20", purchases: 0 },
-  { id: 4, name: "Choi Yu-jin", email: "yujin@example.com", type: "Individual", status: "Active", joined: "2024-12-05", purchases: 2 },
-  { id: 5, name: "Global Systems Inc.", email: "contact@globalsys.com", type: "Corporate", status: "Active", joined: "2024-08-10", purchases: 25 },
+  { id: 1, name: "Kim Min-su", email: "minsu@example.com", type: "Individual", status: "Active", joined: "2024-10-15", dataPurchases: 5, adPurchases: 1 },
+  { id: 2, name: "Lee Ji-won", email: "jiwon@techcorp.com", type: "Corporate", status: "Active", joined: "2024-11-02", dataPurchases: 12, adPurchases: 4 },
+  { id: 3, name: "Park Sung-hoon", email: "park.sh@data.io", type: "Corporate", status: "Suspended", joined: "2024-09-20", dataPurchases: 0, adPurchases: 0 },
+  { id: 4, name: "Choi Yu-jin", email: "yujin@example.com", type: "Individual", status: "Active", joined: "2024-12-05", dataPurchases: 2, adPurchases: 0 },
+  { id: 5, name: "Global Systems Inc.", email: "contact@globalsys.com", type: "Corporate", status: "Active", joined: "2024-08-10", dataPurchases: 25, adPurchases: 8 },
 ];
 
 export default function UserManagement() {
@@ -73,7 +73,8 @@ export default function UserManagement() {
                 <TableHead>Type</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Joined Date</TableHead>
-                <TableHead className="text-right">Purchases</TableHead>
+                <TableHead className="text-right">Data Purchases</TableHead>
+                <TableHead className="text-right">Ad Purchases</TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
@@ -104,7 +105,8 @@ export default function UserManagement() {
                     </Badge>
                   </TableCell>
                   <TableCell>{user.joined}</TableCell>
-                  <TableCell className="text-right font-medium">{user.purchases}</TableCell>
+                  <TableCell className="text-right font-medium">{user.dataPurchases}</TableCell>
+                  <TableCell className="text-right font-medium">{user.adPurchases}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
