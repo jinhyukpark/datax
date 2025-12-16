@@ -17,6 +17,11 @@ import Signup from "@/pages/signup";
 import MyPage from "@/pages/my-page";
 import News from "@/pages/news";
 import Submit from "@/pages/submit";
+import AdminLogin from "@/pages/admin/admin-login";
+import UserManagement from "@/pages/admin/users";
+import AdminManagement from "@/pages/admin/admins";
+import SubmissionManagement from "@/pages/admin/submissions";
+import PaymentManagement from "@/pages/admin/payments";
 import { LanguageProvider } from "./lib/language-context";
 import { useHashLocation } from "./lib/hash-location";
 
@@ -37,6 +42,16 @@ function Router() {
         <Route path="/signup" component={Signup} />
         <Route path="/my-page" component={MyPage} />
         <Route path="/submit" component={Submit} />
+        
+        {/* Admin Routes */}
+        <Route path="/admin" component={AdminLogin} />
+        <Route path="/admin/login" component={AdminLogin} />
+        <Route path="/admin/dashboard" component={UserManagement} /> {/* Default to Users for now */}
+        <Route path="/admin/users" component={UserManagement} />
+        <Route path="/admin/admins" component={AdminManagement} />
+        <Route path="/admin/submissions" component={SubmissionManagement} />
+        <Route path="/admin/payments" component={PaymentManagement} />
+
         <Route component={NotFound} />
       </Switch>
     </WouterRouter>
