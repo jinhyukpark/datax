@@ -14,6 +14,8 @@ import {
 import { 
   AreaChart,
   Area,
+  LineChart,
+  Line,
   BarChart,
   Bar,
   XAxis, 
