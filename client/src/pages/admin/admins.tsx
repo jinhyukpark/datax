@@ -13,9 +13,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Plus, Trash2, Edit } from "lucide-react";
+import { Plus, Trash2, Edit, X, Mail } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 // Mock Admin Data
 const MOCK_ADMINS = [
@@ -45,6 +48,14 @@ const MOCK_ADMINS = [
 export default function AdminManagement() {
   const [admins, setAdmins] = useState(MOCK_ADMINS);
   const [newAdminOpen, setNewAdminOpen] = useState(false);
+  
+  // Registration Form State
+  const [registerRows, setRegisterRows] = useState([
+    { name: "", email: "", role: "", password: "" }
+  ]);
+
+  // Invitation Form State
+  const [inviteEmails, setInviteEmails] = useState("");
 
   const togglePermission = (adminId: number, perm: keyof typeof MOCK_ADMINS[0]['permissions']) => {
     setAdmins(admins.map(admin => {
@@ -62,6 +73,54 @@ export default function AdminManagement() {
     toast.success("Permission updated");
   };
 
+  const addRegisterRow = () => {
+    setRegisterRows([...registerRows, { name: "", email: "", role: "", password: "" }]);
+  };
+
+  const removeRegisterRow = (index: number) => {
+    if (registerRows.length > 1) {
+      const newRows = [...registerRows];
+      newRows.splice(index, 1);
+      setRegisterRows(newRows);
+    }
+  };
+
+  const updateRegisterRow = (index: number, field: string, value: string) => {
+    const newRows = [...registerRows];
+    newRows[index] = { ...newRows[index], [field]: value };
+    setRegisterRows(newRows);
+  };
+
+  const handleRegisterSubmit = () => {
+    // In a real app, this would validate and submit to backend
+    const newAdmins = registerRows.map((row, idx) => ({
+      id: admins.length + idx + 1,
+      name: row.name || "New Admin",
+      email: row.email,
+      role: row.role || "Admin",
+      permissions: { users: false, admins: false, submissions: false, payments: false }
+    }));
+    
+    setAdmins([...admins, ...newAdmins]);
+    setNewAdminOpen(false);
+    setRegisterRows([{ name: "", email: "", role: "", password: "" }]);
+    toast.success(`${newAdmins.length} admin(s) added successfully`);
+  };
+
+  const handleInviteSubmit = () => {
+    const emails = inviteEmails.split(/[\n,]+/).map(e => e.trim()).filter(e => e);
+    
+    if (emails.length === 0) {
+      toast.error("Please enter at least one email address");
+      return;
+    }
+
+    // Mock invite logic
+    setNewAdminOpen(false);
+    setInviteEmails("");
+    toast.success(`Invitations sent to ${emails.length} recipients`);
+  };
+
   return (
     <AdminLayout title="Admin Management">
       <div className="space-y-6">
@@ -76,32 +135,106 @@ export default function AdminManagement() {
                 Add Admin
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="sm:max-w-[600px]">
               <DialogHeader>
                 <DialogTitle>Add New Admin</DialogTitle>
-                <DialogDescription>Create a new admin account and set initial permissions.</DialogDescription>
+                <DialogDescription>Add administrators directly or invite them via email.</DialogDescription>
               </DialogHeader>
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label>Name</Label>
-                  <Input placeholder="Admin Name" />
-                </div>
-                <div className="space-y-2">
-                  <Label>Email</Label>
-                  <Input placeholder="admin@example.com" />
-                </div>
-                <div className="space-y-2">
-                  <Label>Role Title</Label>
-                  <Input placeholder="e.g. Content Manager" />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setNewAdminOpen(false)}>Cancel</Button>
-                <Button onClick={() => {
-                  setNewAdminOpen(false);
-                  toast.success("New admin added");
-                }}>Create Account</Button>
-              </DialogFooter>
+              
+              <Tabs defaultValue="direct" className="w-full">
+                <TabsList className="grid w-full grid-cols-2 mb-4">
+                  <TabsTrigger value="direct">Direct Registration</TabsTrigger>
+                  <TabsTrigger value="invite">Email Invitation</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="direct">
+                  <ScrollArea className="max-h-[400px] pr-4">
+                    <div className="space-y-4">
+                      {registerRows.map((row, index) => (
+                        <div key={index} className="space-y-2 p-4 border rounded-md relative bg-slate-50 dark:bg-slate-900/50">
+                          {registerRows.length > 1 && (
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="absolute top-2 right-2 h-6 w-6 text-muted-foreground hover:text-red-500"
+                              onClick={() => removeRegisterRow(index)}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          )}
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-1">
+                              <Label className="text-xs">Name</Label>
+                              <Input 
+                                placeholder="Admin Name" 
+                                value={row.name}
+                                onChange={(e) => updateRegisterRow(index, 'name', e.target.value)}
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <Label className="text-xs">Email</Label>
+                              <Input 
+                                placeholder="admin@example.com" 
+                                value={row.email}
+                                onChange={(e) => updateRegisterRow(index, 'email', e.target.value)}
+                              />
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-1">
+                              <Label className="text-xs">Role Title</Label>
+                              <Input 
+                                placeholder="e.g. Manager" 
+                                value={row.role}
+                                onChange={(e) => updateRegisterRow(index, 'role', e.target.value)}
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <Label className="text-xs">Password (Optional)</Label>
+                              <Input 
+                                type="password"
+                                placeholder="••••••••" 
+                                value={row.password}
+                                onChange={(e) => updateRegisterRow(index, 'password', e.target.value)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      <Button variant="outline" size="sm" className="w-full gap-2 border-dashed" onClick={addRegisterRow}>
+                        <Plus className="h-4 w-4" /> Add Another
+                      </Button>
+                    </div>
+                  </ScrollArea>
+                  <DialogFooter className="mt-4">
+                    <Button variant="outline" onClick={() => setNewAdminOpen(false)}>Cancel</Button>
+                    <Button onClick={handleRegisterSubmit}>Register Admins</Button>
+                  </DialogFooter>
+                </TabsContent>
+                
+                <TabsContent value="invite">
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label>Email Addresses</Label>
+                      <Textarea 
+                        placeholder="Enter email addresses separated by commas or new lines..." 
+                        className="min-h-[150px]"
+                        value={inviteEmails}
+                        onChange={(e) => setInviteEmails(e.target.value)}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Invitation links will be sent to these users. They can set up their profiles upon clicking the link.
+                      </p>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setNewAdminOpen(false)}>Cancel</Button>
+                    <Button onClick={handleInviteSubmit} className="gap-2">
+                      <Mail className="h-4 w-4" /> Send Invitations
+                    </Button>
+                  </DialogFooter>
+                </TabsContent>
+              </Tabs>
             </DialogContent>
           </Dialog>
         </div>
