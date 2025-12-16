@@ -240,9 +240,9 @@ export default function AdminManagement() {
                   <div className="space-y-4 py-4">
                     <div className="space-y-2">
                       <Label>Email Addresses</Label>
-                      <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-white dark:bg-slate-950 min-h-[100px] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+                      <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-white dark:bg-slate-950 min-h-[42px] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 transition-all">
                         {inviteEmails.map((email) => (
-                          <Badge key={email} variant="secondary" className="gap-1 pr-1">
+                          <Badge key={email} variant="secondary" className="gap-1 pr-1 h-7">
                             {email}
                             <button
                               onClick={() => removeEmailTag(email)}
@@ -253,7 +253,7 @@ export default function AdminManagement() {
                           </Badge>
                         ))}
                         <input
-                          className="flex-1 bg-transparent border-none outline-none min-w-[200px] text-sm py-1"
+                          className="flex-1 bg-transparent border-none outline-none min-w-[200px] text-sm py-0.5 h-7"
                           placeholder={inviteEmails.length === 0 ? "Type email and press Enter..." : ""}
                           value={emailInput}
                           onChange={(e) => setEmailInput(e.target.value)}
