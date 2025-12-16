@@ -28,6 +28,7 @@ import {
   Cell,
   Legend
 } from "recharts";
+// Force re-render
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
