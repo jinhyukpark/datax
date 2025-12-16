@@ -22,6 +22,16 @@ import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 // Mock Submissions with detailed data
 const MOCK_SUBMISSIONS = [
@@ -124,6 +134,12 @@ export default function SubmissionManagement() {
   const [rejectDialog, setRejectDialog] = useState<{open: boolean, id: number | null}>({ open: false, id: null });
   const [rejectReason, setRejectReason] = useState("");
   const [viewDialog, setViewDialog] = useState<{open: boolean, item: typeof MOCK_SUBMISSIONS[0] | null}>({ open: false, item: null });
+  
+  // Alert Dialog State
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertConfig, setAlertConfig] = useState<{title: string, description: string, action: () => void}>({
+    title: "", description: "", action: () => {}
+  });
 
   const handleStatusChange = (id: number, status: string, reason?: string) => {
     setSubmissions(submissions.map(item => 
@@ -134,11 +150,27 @@ export default function SubmissionManagement() {
     if (status === 'Rejected') toast.success(`Submission #${id} Rejected`);
   };
 
+  const handleApproveClick = (id: number) => {
+    setAlertConfig({
+      title: "Approve Submission",
+      description: "Are you sure you want to approve this submission? This action will make the resource publicly available.",
+      action: () => handleStatusChange(id, 'Approved')
+    });
+    setAlertOpen(true);
+  };
+
   const confirmReject = () => {
     if (rejectDialog.id && rejectReason) {
-      handleStatusChange(rejectDialog.id, 'Rejected', rejectReason);
-      setRejectDialog({ open: false, id: null });
-      setRejectReason("");
+      setAlertConfig({
+        title: "Reject Submission",
+        description: "Are you sure you want to reject this submission? The provider will be notified with the rejection reason.",
+        action: () => {
+          handleStatusChange(rejectDialog.id!, 'Rejected', rejectReason);
+          setRejectDialog({ open: false, id: null });
+          setRejectReason("");
+        }
+      });
+      setAlertOpen(true);
     } else {
       toast.error("Please provide a rejection reason");
     }
@@ -239,7 +271,7 @@ export default function SubmissionManagement() {
                           <Button 
                             size="sm" 
                             className="bg-green-600 hover:bg-green-700 h-8 w-8 p-0"
-                            onClick={() => handleStatusChange(item.id, 'Approved')}
+                            onClick={() => handleApproveClick(item.id)}
                             title="Approve"
                           >
                             <CheckCircle className="h-4 w-4" />
@@ -263,6 +295,27 @@ export default function SubmissionManagement() {
           </Table>
         </div>
       </div>
+
+      {/* Confirmation Alert Dialog */}
+      <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{alertConfig.title}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {alertConfig.description}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => {
+              alertConfig.action();
+              setAlertOpen(false);
+            }}>
+              Confirm
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Reject Dialog */}
       <Dialog open={rejectDialog.open} onOpenChange={(open) => !open && setRejectDialog({ open: false, id: null })}>
@@ -467,8 +520,8 @@ export default function SubmissionManagement() {
                   Reject Submission
                 </Button>
                 <Button className="bg-green-600 hover:bg-green-700" onClick={() => {
-                  handleStatusChange(viewDialog.item!.id, 'Approved');
-                  setViewDialog({ open: false, item: null });
+                   handleApproveClick(viewDialog.item!.id);
+                   setViewDialog({ open: false, item: null });
                 }}>
                   Approve Submission
                 </Button>
