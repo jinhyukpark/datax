@@ -9,18 +9,60 @@ import {
   LogOut, 
   LayoutDashboard,
   Settings,
-  Bell
+  Bell,
+  MessageSquare,
+  FileUp,
+  UserPlus,
+  Check
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useState } from "react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
   title: string;
 }
 
+// Mock Notifications Data
+const MOCK_NOTIFICATIONS = [
+  { id: 1, type: 'comment', message: 'New comment on "Smart Factory Report"', time: '2 min ago', read: false },
+  { id: 2, type: 'submission', message: 'New data submission: "Logistics API"', time: '1 hour ago', read: false },
+  { id: 3, type: 'user', message: 'New user registration: Choi Yu-jin', time: '3 hours ago', read: true },
+  { id: 4, type: 'submission', message: 'New data submission: "Energy Stats"', time: '5 hours ago', read: true },
+  { id: 5, type: 'comment', message: 'New comment on "AI Model Usage"', time: '1 day ago', read: true },
+];
+
 export default function AdminLayout({ children, title }: AdminLayoutProps) {
   const [location, setLocation] = useLocation();
+  const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  const markAsRead = (id: number) => {
+    setNotifications(notifications.map(n => 
+      n.id === id ? { ...n, read: true } : n
+    ));
+  };
+
+  const markAllAsRead = () => {
+    setNotifications(notifications.map(n => ({ ...n, read: true })));
+  };
+
+  const getNotificationIcon = (type: string) => {
+    switch(type) {
+      case 'comment': return <MessageSquare className="h-4 w-4 text-blue-500" />;
+      case 'submission': return <FileUp className="h-4 w-4 text-purple-500" />;
+      case 'user': return <UserPlus className="h-4 w-4 text-green-500" />;
+      default: return <Bell className="h-4 w-4 text-slate-500" />;
+    }
+  };
 
   const sidebarItems = [
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -92,9 +134,80 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
         <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 h-16 flex items-center justify-between px-6">
           <h1 className="text-xl font-bold text-slate-800 dark:text-slate-100">{title}</h1>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="text-slate-500">
-              <Bell className="h-5 w-5" />
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-slate-500 relative">
+                  <Bell className="h-5 w-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500 border-2 border-white dark:border-slate-900" />
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 p-0" align="end">
+                <div className="flex items-center justify-between px-4 py-3 border-b bg-slate-50/50">
+                  <div className="font-semibold text-sm">Notifications</div>
+                  {unreadCount > 0 && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-auto px-2 py-0.5 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                      onClick={markAllAsRead}
+                    >
+                      Mark all read
+                    </Button>
+                  )}
+                </div>
+                <ScrollArea className="h-[300px]">
+                  {notifications.length > 0 ? (
+                    <div className="divide-y">
+                      {notifications.map((notification) => (
+                        <div 
+                          key={notification.id} 
+                          className={cn(
+                            "flex gap-3 p-4 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50",
+                            !notification.read && "bg-blue-50/50 dark:bg-blue-900/10"
+                          )}
+                        >
+                          <div className={cn(
+                            "h-8 w-8 rounded-full flex items-center justify-center shrink-0",
+                            "bg-white border shadow-sm dark:bg-slate-900 dark:border-slate-700"
+                          )}>
+                            {getNotificationIcon(notification.type)}
+                          </div>
+                          <div className="flex-1 space-y-1">
+                            <p className={cn(
+                              "text-sm leading-none",
+                              !notification.read ? "font-semibold text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"
+                            )}>
+                              {notification.message}
+                            </p>
+                            <p className="text-xs text-muted-foreground">{notification.time}</p>
+                          </div>
+                          {!notification.read && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6 shrink-0 text-slate-400 hover:text-blue-600"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                markAsRead(notification.id);
+                              }}
+                              title="Mark as read"
+                            >
+                              <Check className="h-3 w-3" />
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-4 text-center text-sm text-muted-foreground">
+                      No notifications
+                    </div>
+                  )}
+                </ScrollArea>
+              </PopoverContent>
+            </Popover>
             <Button variant="ghost" size="icon" className="text-slate-500">
               <Settings className="h-5 w-5" />
             </Button>
