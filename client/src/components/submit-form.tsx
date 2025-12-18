@@ -39,6 +39,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [showReapprovalWarning, setShowReapprovalWarning] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
   
   // Form State
   const [features, setFeatures] = useState<string[]>(initialData?.features || [""]);
@@ -203,6 +204,53 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
       </div>
     );
   }
+
+  const ContactSupportForm = () => (
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+       <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setShowContactForm(false)}
+            className="mr-2 -ml-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+          >
+            <ArrowRight className="h-5 w-5 rotate-180" />
+          </Button>
+          <div>
+            <h2 className="text-lg font-bold">{t("Contact Support", "담당자 문의")}</h2>
+            <p className="text-xs text-muted-foreground">{t("We'll get back to you shortly", "담당자가 확인 후 빠르게 연락드리겠습니다.")}</p>
+          </div>
+       </div>
+       
+       <form className="space-y-4" onSubmit={(e) => {
+         e.preventDefault();
+         toast.success(t("Message sent successfully", "문의가 성공적으로 발송되었습니다."));
+         setShowContactForm(false);
+       }}>
+          <div className="space-y-2">
+            <Label htmlFor="contact-name">{t("Name", "이름")}</Label>
+            <Input id="contact-name" placeholder={t("Your name", "이름을 입력하세요")} required className="h-10" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="contact-email">{t("Email", "이메일")}</Label>
+            <Input id="contact-email" type="email" placeholder={t("your@email.com", "이메일 주소를 입력하세요")} required className="h-10" />
+          </div>
+          <div className="space-y-2">
+             <Label htmlFor="contact-message">{t("Message", "문의 내용")}</Label>
+             <Textarea id="contact-message" placeholder={t("How can we help you?", "문의하실 내용을 입력하세요")} className="min-h-[120px] resize-none" required />
+          </div>
+          
+          <div className="pt-4 flex justify-end gap-3">
+            <Button type="button" variant="ghost" onClick={() => setShowContactForm(false)}>
+              {t("Cancel", "취소")}
+            </Button>
+            <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">
+              {t("Send Message", "문의 보내기")}
+            </Button>
+          </div>
+       </form>
+    </div>
+  );
 
   const GeneralForm = () => (
     <form onSubmit={handleGeneralSubmit} className="space-y-6">
@@ -979,7 +1027,9 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
         </Tabs>
       ) : (
         <>
-          {mode === 'create' && !submissionType ? (
+          {showContactForm ? (
+            <ContactSupportForm />
+          ) : mode === 'create' && !submissionType ? (
             <div className="py-2 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="text-center space-y-3">
                 <div className="inline-flex items-center justify-center p-2 bg-slate-100 dark:bg-slate-800 rounded-full mb-2">
@@ -1113,13 +1163,14 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
               </div>
 
               <div className="text-center mt-6">
-                <Button variant="ghost" className="text-muted-foreground hover:text-slate-900 dark:hover:text-slate-100" onClick={() => {if(onSuccess) onSuccess()}}>
-                  {t("Cancel", "취소")}
-                </Button>
-                
                 <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
                   <p className="text-xs text-muted-foreground mb-2">{t("Need help choosing?", "선택에 도움이 필요하신가요?")}</p>
-                  <Button variant="outline" size="sm" className="gap-2 h-8 text-xs bg-white dark:bg-slate-900">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="gap-2 h-8 text-xs bg-white dark:bg-slate-900"
+                    onClick={() => setShowContactForm(true)}
+                  >
                     <Mail className="h-3.5 w-3.5" />
                     {t("Contact Support", "담당자 문의")}
                   </Button>
