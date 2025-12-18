@@ -927,6 +927,18 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
 
   return (
     <div className={className}>
+      {submissionType && (
+          <Button 
+            type="button" 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setSubmissionType(null)}
+            className="absolute top-0 left-0 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+          >
+            <ArrowRight className="h-5 w-5 rotate-180" />
+          </Button>
+      )}
+
       <div className="mb-8 text-center">
         {mode === 'create' && (
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-xs font-bold text-green-600 mb-4">
@@ -1146,13 +1158,6 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                         </p>
                       </div>
                     </div>
-                    <Button 
-                      size="sm" 
-                      className="bg-white text-blue-600 hover:bg-blue-50 font-bold border-0 shadow-sm w-full sm:w-auto text-xs whitespace-nowrap"
-                      onClick={() => setSubmissionType(null)}
-                    >
-                      {t("Change Type", "유형 변경")}
-                    </Button>
                   </div>
                 </div>
               )}
