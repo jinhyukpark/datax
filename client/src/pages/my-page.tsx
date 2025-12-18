@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { RESOURCES } from "@/lib/data";
-import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server } from "lucide-react";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
@@ -19,6 +19,18 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Resource } from "@/lib/data";
 import { SubmitForm } from "@/components/submit-form";
 import { AnalyticsView } from "@/components/analytics-view";
+import { HostedRequestDetails } from "@/components/hosted-request-details";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { format, differenceInDays } from "date-fns";
 
@@ -193,7 +205,7 @@ export default function MyPage() {
   ];
 
   // Mock Hosted Data Requests
-  const hostedDataRequests = [
+  const [hostedDataRequests, setHostedDataRequests] = useState([
     {
       id: "h1",
       title: "Global Weather Historical Data",
@@ -220,7 +232,12 @@ export default function MyPage() {
       status: "submitted",
       step: 1
     }
-  ];
+  ]);
+
+  const handleDeleteHostedRequest = (id: string) => {
+    setHostedDataRequests(hostedDataRequests.filter(item => item.id !== id));
+    toast.success("Hosting request cancelled successfully");
+  };
 
   const hostedDataApproved: any[] = [];
 
@@ -970,7 +987,7 @@ export default function MyPage() {
                                 </div>
                               </div>
                               
-                              <div className="flex flex-col justify-start min-w-[120px]">
+                              <div className="flex flex-col justify-start min-w-[140px] gap-2">
                                 <div className={`rounded-lg p-3 text-center ${item.status === 'rejected' ? 'bg-red-50 dark:bg-red-900/20' : 'bg-slate-50 dark:bg-slate-900'}`}>
                                   <div className="text-xs text-muted-foreground mb-1">Current Status</div>
                                   <div className={`font-bold ${
@@ -982,6 +999,42 @@ export default function MyPage() {
                                      item.step === 2 ? 'Under Review' : 'Approved'}
                                   </div>
                                 </div>
+
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <Button variant="outline" size="sm" className="w-full">
+                                      {t("View Details", "상세 보기")}
+                                    </Button>
+                                  </DialogTrigger>
+                                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                                     <HostedRequestDetails data={item} />
+                                  </DialogContent>
+                                </Dialog>
+
+                                {item.step === 1 && (
+                                  <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                      <Button variant="outline" size="sm" className="w-full text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200 dark:border-red-900/50 dark:hover:bg-red-900/20">
+                                        <Trash2 className="h-3 w-3 mr-2" />
+                                        {t("Cancel", "신청 취소")}
+                                      </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                      <AlertDialogHeader>
+                                        <AlertDialogTitle>{t("Cancel Request?", "신청을 취소하시겠습니까?")}</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                          {t("Are you sure you want to cancel this hosting request? This action cannot be undone.", "이 호스팅 요청을 취소하시겠습니까? 이 작업은 되돌릴 수 없습니다.")}
+                                        </AlertDialogDescription>
+                                      </AlertDialogHeader>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel>{t("Keep Request", "유지하기")}</AlertDialogCancel>
+                                        <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={() => handleDeleteHostedRequest(item.id)}>
+                                          {t("Yes, Cancel", "네, 취소합니다")}
+                                        </AlertDialogAction>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialog>
+                                )}
                               </div>
                             </div>
                           </CardContent>
