@@ -237,6 +237,24 @@ export default function MyPage() {
       },
       status: "submitted",
       step: 1
+    },
+    {
+      id: "h3",
+      title: "Blockchain Transaction Archive",
+      description: "Full archival node hosting for Ethereum and Solana chains.",
+      dates: {
+        submitted: "2025-12-05",
+        verifying: "2025-12-06",
+        verified: null,
+        rejected: "2025-12-08"
+      },
+      status: "rejected",
+      step: 3,
+      rejectionReason: "Storage requirements exceed current tier limits. Please upgrade to Enterprise plan.",
+      messages: [
+        { sender: "admin", text: "Your request requires 100TB+ storage which is only available on Enterprise plans.", date: "2025-12-08 09:30" },
+        { sender: "user", text: "I see, I will contact sales for an upgrade.", date: "2025-12-08 10:15" }
+      ]
     }
   ]);
 
@@ -1027,6 +1045,68 @@ export default function MyPage() {
                                     </div>
                                   </div>
                                 </div>
+
+                                {/* Rejection Details */}
+                                {item.status === 'rejected' && (
+                                  <div className="mt-6 animate-in fade-in slide-in-from-top-2">
+                                    <Alert variant="destructive" className="mb-4 bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900">
+                                      <AlertCircle className="h-4 w-4" />
+                                      <AlertTitle>Submission Rejected</AlertTitle>
+                                      <AlertDescription>
+                                        {item.rejectionReason}
+                                      </AlertDescription>
+                                    </Alert>
+                                    
+                                    <div className="flex gap-3">
+                                      <Dialog>
+                                        <DialogTrigger asChild>
+                                          <Button size="sm" className="bg-red-600 hover:bg-red-700 text-white">
+                                            Edit & Resubmit
+                                          </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="max-w-4xl h-[90vh] p-0">
+                                          <ScrollArea className="h-full max-h-[90vh]">
+                                            <div className="p-6 md:p-8">
+                                              <SubmitForm />
+                                            </div>
+                                          </ScrollArea>
+                                        </DialogContent>
+                                      </Dialog>
+                                      <Dialog>
+                                        <DialogTrigger asChild>
+                                          <Button variant="outline" size="sm" className="gap-2">
+                                            <MessageSquare className="h-4 w-4" /> Message Admin
+                                          </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="sm:max-w-[500px]">
+                                          <DialogHeader>
+                                            <DialogTitle>Messages</DialogTitle>
+                                          </DialogHeader>
+                                          <div className="flex flex-col h-[400px]">
+                                            <ScrollArea className="flex-1 p-4 border rounded-md mb-4 bg-slate-50 dark:bg-slate-900">
+                                              <div className="space-y-4">
+                                                {item.messages?.map((msg, idx) => (
+                                                  <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                                    <div className={`max-w-[80%] rounded-lg p-3 text-sm ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-white dark:bg-slate-800 border'}`}>
+                                                      <p>{msg.text}</p>
+                                                      <p className={`text-[10px] mt-1 ${msg.sender === 'user' ? 'text-blue-100' : 'text-muted-foreground'}`}>{msg.date}</p>
+                                                    </div>
+                                                  </div>
+                                                ))}
+                                              </div>
+                                            </ScrollArea>
+                                            <div className="flex gap-2">
+                                              <Input placeholder="Type your message..." />
+                                              <Button size="icon">
+                                                <Send className="h-4 w-4" />
+                                              </Button>
+                                            </div>
+                                          </div>
+                                        </DialogContent>
+                                      </Dialog>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                               
                               <div className="flex flex-col justify-start min-w-[140px] gap-2">
