@@ -289,7 +289,7 @@ export default function MyPage() {
             <h1 className="text-3xl font-bold mb-6">{t("My Page", "마이 페이지")}</h1>
             
             <Tabs defaultValue="profile" className="w-full">
-              <TabsList className="grid w-full grid-cols-4 mb-8">
+              <TabsList className="grid w-full grid-cols-5 mb-8">
                 <TabsTrigger value="profile" className="gap-2">
                   <User className="h-4 w-4 hidden sm:inline" />
                   {t("Profile", "프로필")}
