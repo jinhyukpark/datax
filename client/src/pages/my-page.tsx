@@ -562,6 +562,12 @@ export default function MyPage() {
                                   <Download className="h-4 w-4" />
                                   <span>{item.downloads} downloads</span>
                                 </div>
+                                {(item as any).unreadReviews > 0 && (
+                                  <div className="flex items-center gap-1 text-red-600 font-medium">
+                                    <MessageSquare className="h-4 w-4" />
+                                    <span>{(item as any).unreadReviews} new messages</span>
+                                  </div>
+                                )}
                               </div>
                             </div>
                             <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l min-w-[140px]">
