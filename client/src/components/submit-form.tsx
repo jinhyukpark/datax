@@ -28,9 +28,10 @@ interface SubmitFormProps {
   className?: string;
   initialData?: Resource;
   mode?: 'create' | 'edit-request' | 'edit-approved';
+  defaultTab?: string;
 }
 
-export function SubmitForm({ onSuccess, className, initialData, mode = 'create' }: SubmitFormProps) {
+export function SubmitForm({ onSuccess, className, initialData, mode = 'create', defaultTab = 'overview' }: SubmitFormProps) {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -852,7 +853,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create' 
       </div>
 
       {mode === 'edit-approved' ? (
-        <Tabs defaultValue="overview" className="w-full">
+        <Tabs defaultValue={defaultTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4 mb-8">
             <TabsTrigger value="overview">{t("Overview", "기본 정보")}</TabsTrigger>
             <TabsTrigger value="documentation">{t("Documentation", "문서")}</TabsTrigger>

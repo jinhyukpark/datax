@@ -103,7 +103,8 @@ export default function MyPage() {
       downloads: 340,
       status: "Active",
       date: "2025-09-15",
-      unreadReviews: 3
+      unreadReviews: 3,
+      totalReviews: 12
     },
     {
       id: "m2",
@@ -113,7 +114,8 @@ export default function MyPage() {
       downloads: 120,
       status: "Active",
       date: "2025-10-22",
-      unreadReviews: 0
+      unreadReviews: 0,
+      totalReviews: 5
     }
   ];
 
@@ -562,12 +564,29 @@ export default function MyPage() {
                                   <Download className="h-4 w-4" />
                                   <span>{item.downloads} downloads</span>
                                 </div>
-                                {(item as any).unreadReviews > 0 && (
-                                  <div className="flex items-center gap-1 text-red-600 font-medium">
-                                    <MessageSquare className="h-4 w-4" />
-                                    <span>{(item as any).unreadReviews} new messages</span>
-                                  </div>
-                                )}
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <div className={`flex items-center gap-1 font-medium cursor-pointer hover:underline transition-colors ${
+                                      (item as any).unreadReviews > 0 ? "text-red-600" : "text-muted-foreground hover:text-primary"
+                                    }`}>
+                                      <MessageSquare className="h-4 w-4" />
+                                      <span>
+                                        {(item as any).unreadReviews > 0 
+                                          ? `${(item as any).unreadReviews} unread of ${(item as any).totalReviews || 0} messages`
+                                          : `${(item as any).totalReviews || 0} messages`
+                                        }
+                                      </span>
+                                    </div>
+                                  </DialogTrigger>
+                                  <DialogContent className="sm:max-w-[900px] h-[90vh] overflow-y-auto">
+                                    <SubmitForm 
+                                      initialData={item as Resource} 
+                                      mode="edit-approved" 
+                                      defaultTab="reviews"
+                                      onSuccess={() => {}}
+                                    />
+                                  </DialogContent>
+                                </Dialog>
                               </div>
                             </div>
                             <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l min-w-[140px]">
