@@ -8,6 +8,7 @@ import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, Alert
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useLocation } from "wouter";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -314,16 +315,32 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
 
             {/* Contact Email */}
             <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
-            <div className="space-y-2">
-                <Label htmlFor="email" className="flex justify-between items-center font-semibold text-sm">
-                <span className="flex items-center gap-2">Contact Email <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full font-normal">Auto-filled</span> <span className="text-red-500">*</span></span>
-                <span className="text-[10px] text-muted-foreground">19/50</span>
-                </Label>
-                <Input id="email" defaultValue={initialData?.contactEmail || "jh.park@illunex.com"} disabled className="h-10 bg-white dark:bg-slate-900 text-slate-600 font-medium" />
-                <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-                <ShieldCheck className="h-3 w-3" /> Notifications sent here
-                </p>
-            </div>
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-sm flex items-center gap-2">
+                    <ShieldCheck className="h-4 w-4 text-blue-500" />
+                    Contact Information
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="contact-email" className="flex justify-between items-center font-semibold text-sm">
+                        <span className="flex items-center gap-2">Contact Email <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full font-normal">Auto-filled</span> <span className="text-red-500">*</span></span>
+                        </Label>
+                        <Input id="contact-email" defaultValue={initialData?.contactEmail || "jh.park@illunex.com"} disabled className="h-10 bg-white dark:bg-slate-900 text-slate-600 font-medium" />
+                    </div>
+                    
+                    <div className="space-y-2">
+                        <Label htmlFor="contact-phone" className="font-semibold text-sm">
+                            Contact Phone
+                        </Label>
+                        <Input id="contact-phone" type="tel" placeholder="+82 10-1234-5678" className="h-10 bg-white dark:bg-slate-900" />
+                    </div>
+                  </div>
+                  
+                  <p className="text-[10px] text-muted-foreground">
+                    Important notifications about your service will be sent to these contact details.
+                  </p>
+                </div>
             </div>
 
             {/* Social Links Header */}
