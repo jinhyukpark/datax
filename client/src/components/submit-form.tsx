@@ -984,33 +984,26 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Hosted Service Card */}
                 <div 
-                  className="group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-blue-500/50"
-                  onClick={() => setSubmissionType('hosted')}
+                  className="group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 hover:shadow-xl transition-all duration-300 flex flex-col h-full hover:border-blue-500/50"
                 >
-                  <div className="absolute top-0 left-0 p-4">
+                  <div className="flex justify-between items-start mb-6">
                      <span className="bg-blue-600/10 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider border border-blue-600/20">
                        Paid Service
                      </span>
-                  </div>
-
-                  <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="h-8 w-8 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-lg transform group-hover:scale-100 scale-75 transition-all">
-                      <ArrowRight className="h-4 w-4" />
-                    </div>
+                     
+                     <div className="h-10 w-10 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 flex items-center justify-center">
+                        <Zap className="h-5 w-5" />
+                     </div>
                   </div>
                   
-                  <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 group-hover:scale-110 transition-transform duration-300 shadow-sm group-hover:shadow-blue-200 dark:group-hover:shadow-blue-900/20">
-                    <Zap className="h-7 w-7" />
-                  </div>
-                  
-                  <div className="space-y-2 mb-6">
+                  <div className="space-y-2 mb-6 flex-1">
                     <h3 className="font-bold text-lg">{t("Hosted Service", "호스팅 서비스 구축")}</h3>
                     <p className="text-sm text-muted-foreground">
                       {t("Best for new agents needing infrastructure.", "인프라가 필요한 새로운 에이전트에 최적입니다.")}
                     </p>
                   </div>
 
-                  <ul className="space-y-3">
+                  <ul className="space-y-3 mb-6">
                     {[
                       t("Secure cloud storage included", "보안 클라우드 저장소 포함"),
                       t("Auto-generated API endpoints", "자동 생성 API 엔드포인트"),
@@ -1023,38 +1016,36 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                     ))}
                   </ul>
                   
-                  <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-500/10 rounded-2xl pointer-events-none" />
+                  <Button 
+                    className="w-full bg-slate-50 hover:bg-blue-50 text-slate-900 hover:text-blue-700 border border-slate-200 hover:border-blue-200 transition-colors"
+                    onClick={() => setSubmissionType('hosted')}
+                  >
+                    {t("Select Hosted", "Hosted 선택")}
+                  </Button>
                 </div>
 
                 {/* External Link Card */}
                 <div 
-                  className="group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-purple-500/50"
-                  onClick={() => setSubmissionType('external')}
+                  className="group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 hover:shadow-xl transition-all duration-300 flex flex-col h-full hover:border-purple-500/50"
                 >
-                  <div className="absolute top-0 left-0 p-4">
+                  <div className="flex justify-between items-start mb-6">
                      <span className="bg-green-600/10 text-green-600 dark:bg-green-900/40 dark:text-green-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider border border-green-600/20">
                        Free
                      </span>
-                  </div>
 
-                  <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                     <div className="h-8 w-8 rounded-full bg-purple-500 text-white flex items-center justify-center shadow-lg transform group-hover:scale-100 scale-75 transition-all">
-                      <ArrowRight className="h-4 w-4" />
-                    </div>
-                  </div>
-
-                  <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 group-hover:scale-110 transition-transform duration-300 shadow-sm group-hover:shadow-purple-200 dark:group-hover:shadow-purple-900/20">
-                    <LinkIcon className="h-7 w-7" />
+                     <div className="h-10 w-10 rounded-2xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 flex items-center justify-center">
+                        <LinkIcon className="h-5 w-5" />
+                     </div>
                   </div>
                   
-                  <div className="space-y-2 mb-6">
+                  <div className="space-y-2 mb-6 flex-1">
                     <h3 className="font-bold text-lg">{t("Link External Data", "외부 데이터 연동")}</h3>
                     <p className="text-sm text-muted-foreground">
                       {t("For existing agents running elsewhere.", "이미 다른 곳에서 운영 중인 에이전트용입니다.")}
                     </p>
                   </div>
 
-                  <ul className="space-y-3">
+                  <ul className="space-y-3 mb-6">
                     {[
                       t("Connect existing APIs", "기존 API 연결"),
                       t("Unified billing system", "통합 결제 시스템"),
@@ -1067,7 +1058,12 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                     ))}
                   </ul>
 
-                  <div className="absolute inset-0 border-2 border-transparent group-hover:border-purple-500/10 rounded-2xl pointer-events-none" />
+                  <Button 
+                    className="w-full bg-slate-50 hover:bg-purple-50 text-slate-900 hover:text-purple-700 border border-slate-200 hover:border-purple-200 transition-colors"
+                    onClick={() => setSubmissionType('external')}
+                  >
+                    {t("Select External", "External 선택")}
+                  </Button>
                 </div>
               </div>
 
