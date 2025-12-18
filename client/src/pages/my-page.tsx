@@ -192,6 +192,38 @@ export default function MyPage() {
     }
   ];
 
+  // Mock Hosted Data Requests
+  const hostedDataRequests = [
+    {
+      id: "h1",
+      title: "Global Weather Historical Data",
+      description: "Hosting request for 50TB of historical weather data from 1950-2024.",
+      dates: {
+        submitted: "2025-12-16",
+        verifying: "2025-12-17",
+        verified: null,
+        rejected: null
+      },
+      status: "verifying",
+      step: 2
+    },
+     {
+      id: "h2",
+      title: "Financial Market Tick Data",
+      description: "High-frequency trading data hosting for major global exchanges.",
+      dates: {
+        submitted: "2025-12-18",
+        verifying: null,
+        verified: null,
+        rejected: null
+      },
+      status: "submitted",
+      step: 1
+    }
+  ];
+
+  const hostedDataApproved: any[] = [];
+
   // Calculate statistics
   const pendingRequestsCount = requestedData.filter(r => r.status === 'submitted' || r.status === 'verifying').length;
   const approvedDataCount = myData.length;
@@ -273,6 +305,10 @@ export default function MyPage() {
                 <TabsTrigger value="my-data" className="gap-2">
                   <Share2 className="h-4 w-4 hidden sm:inline" />
                   {t("My Data", "공유 데이터")}
+                </TabsTrigger>
+                <TabsTrigger value="hosted-data" className="gap-2">
+                  <Server className="h-4 w-4 hidden sm:inline" />
+                  {t("Hosted Data", "호스팅 데이터")}
                 </TabsTrigger>
               </TabsList>
 
@@ -785,6 +821,153 @@ export default function MyPage() {
                                   </div>
                                 )}
 
+                              </div>
+                              
+                              <div className="flex flex-col justify-start min-w-[120px]">
+                                <div className={`rounded-lg p-3 text-center ${item.status === 'rejected' ? 'bg-red-50 dark:bg-red-900/20' : 'bg-slate-50 dark:bg-slate-900'}`}>
+                                  <div className="text-xs text-muted-foreground mb-1">Current Status</div>
+                                  <div className={`font-bold ${
+                                    item.status === 'rejected' ? 'text-red-600' : 
+                                    item.step === 2 ? 'text-blue-600' : 'text-green-600'
+                                  }`}>
+                                    {item.status === 'rejected' ? 'Rejected' : 
+                                     item.step === 1 ? 'Submitted' : 
+                                     item.step === 2 ? 'Under Review' : 'Approved'}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </TabsContent>
+
+              {/* Hosted Data Tab */}
+              <TabsContent value="hosted-data">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                  <div>
+                    <h2 className="text-xl font-semibold mb-1">{t("Hosted Data Services", "호스팅 데이터 서비스")}</h2>
+                    <p className="text-muted-foreground text-sm">{t("Manage your hosted data services and view request status.", "호스팅 데이터 서비스 및 요청 상태를 관리하세요.")}</p>
+                  </div>
+                  <Button className="gap-2 bg-blue-600 hover:bg-blue-700" onClick={() => setLocation('/submit')}>
+                    <Server className="h-4 w-4" />
+                    {t("New Hosting Request", "새 호스팅 요청")}
+                  </Button>
+                </div>
+
+                <Tabs defaultValue="request" className="w-full">
+                  <div className="border-b border-slate-200 dark:border-slate-800 mb-6">
+                    <TabsList className="w-full justify-start h-auto p-0 bg-transparent rounded-none">
+                      <TabsTrigger 
+                        value="approved" 
+                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 font-semibold text-muted-foreground data-[state=active]:text-primary"
+                      >
+                        {t("Approved", "승인됨")}
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="request" 
+                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 font-semibold text-muted-foreground data-[state=active]:text-primary"
+                      >
+                        {t("Request", "승인요청")}
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
+                  
+                  {/* Approved Tab Content */}
+                  <TabsContent value="approved" className="mt-0">
+                    {hostedDataApproved.length === 0 ? (
+                      <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
+                        <Server className="mx-auto h-12 w-12 mb-4 opacity-20" />
+                        <h3 className="text-lg font-medium text-muted-foreground">{t("No active hosted services", "활성 호스팅 서비스가 없습니다")}</h3>
+                        <p className="text-sm text-muted-foreground mt-1">{t("Your approved hosted services will appear here.", "승인된 호스팅 서비스가 여기에 표시됩니다.")}</p>
+                      </div>
+                    ) : (
+                       <div className="grid grid-cols-1 gap-4">
+                         {/* Render approved items here similarly to My Data */}
+                       </div>
+                    )}
+                  </TabsContent>
+
+                  {/* Request Tab Content */}
+                  <TabsContent value="request" className="mt-0">
+                    <div className="space-y-4">
+                      {hostedDataRequests.map((item) => (
+                        <Card key={item.id} className="overflow-hidden">
+                          <CardContent className="p-6">
+                            <div className="flex flex-col md:flex-row gap-6 justify-between">
+                              <div className="flex-grow">
+                                <div className="flex justify-between items-start mb-2">
+                                  <h3 className="text-lg font-bold">{item.title}</h3>
+                                  <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                    <Clock className="h-3 w-3" /> {item.dates.submitted}
+                                  </span>
+                                </div>
+                                <p className="text-muted-foreground text-sm mb-6">{item.description}</p>
+                                
+                                {/* Progress Bar */}
+                                <div className="relative pb-10">
+                                  {/* Line */}
+                                  <div className="absolute top-[14px] left-0 w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full" />
+                                  <div 
+                                    className={`absolute top-[14px] left-0 h-1 rounded-full transition-all duration-500 ${item.status === 'rejected' ? 'bg-red-500' : 'bg-green-500'}`}
+                                    style={{ width: item.status === 'rejected' ? '100%' : item.step === 1 ? '0%' : item.step === 2 ? '50%' : '100%' }}
+                                  />
+                                  
+                                  <div className="relative flex justify-between w-full">
+                                    {/* Step 1: Submitted */}
+                                    <div className="flex flex-col items-center gap-2">
+                                      <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 z-10 bg-white dark:bg-slate-950 ${item.step >= 1 || item.status === 'rejected' ? 'border-green-500 text-green-500' : 'border-slate-200 text-slate-300'}`}>
+                                        <CheckCircle2 className="h-4 w-4" />
+                                      </div>
+                                      <div className="flex flex-col items-center">
+                                        <span className={`text-xs font-medium ${item.step >= 1 || item.status === 'rejected' ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                          {t("Submitted", "제출완료")}
+                                        </span>
+                                        {item.dates.submitted && <span className="text-[10px] text-muted-foreground mt-0.5">{item.dates.submitted}</span>}
+                                      </div>
+                                    </div>
+
+                                    {/* Step 2: Verifying */}
+                                    <div className="flex flex-col items-center gap-2">
+                                      <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 z-10 bg-white dark:bg-slate-950 ${
+                                        item.status === 'rejected' ? 'border-green-500 text-green-500' :
+                                        item.step === 2 ? 'border-blue-500 text-blue-500 animate-pulse' : 
+                                        item.step > 2 ? 'border-green-500 text-green-500' : 
+                                        'border-slate-200 text-slate-300'
+                                      }`}>
+                                        {item.step === 2 && item.status !== 'rejected' ? <Loader2 className="h-4 w-4 animate-spin" /> : 
+                                         (item.step > 2 || item.status === 'rejected') ? <CheckCircle2 className="h-4 w-4" /> :
+                                         <Circle className="h-4 w-4" />}
+                                      </div>
+                                      <div className="flex flex-col items-center">
+                                        <span className={`text-xs font-medium ${item.step === 2 && item.status !== 'rejected' ? 'text-blue-600' : (item.step > 2 || item.status === 'rejected') ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                          {t("Verifying", "검증중")}
+                                        </span>
+                                        {item.dates.verifying && <span className="text-[10px] text-muted-foreground mt-0.5">{item.dates.verifying}</span>}
+                                      </div>
+                                    </div>
+
+                                    {/* Step 3: Verified / Rejected */}
+                                    <div className="flex flex-col items-center gap-2">
+                                      <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 z-10 bg-white dark:bg-slate-950 ${
+                                        item.status === 'rejected' ? 'border-red-500 text-red-500' :
+                                        item.step === 3 ? 'border-green-500 text-green-500' : 'border-slate-200 text-slate-300'
+                                      }`}>
+                                        {item.status === 'rejected' ? <XCircle className="h-4 w-4" /> : <Circle className="h-4 w-4" />}
+                                      </div>
+                                      <div className="flex flex-col items-center">
+                                        <span className={`text-xs font-medium ${item.status === 'rejected' ? 'text-red-600' : item.step === 3 ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                          {item.status === 'rejected' ? t("Rejected", "반려됨") : t("Verified", "검증완료")}
+                                        </span>
+                                        {item.status === 'rejected' && item.dates.rejected && <span className="text-[10px] text-red-400 mt-0.5">{item.dates.rejected}</span>}
+                                        {item.status !== 'rejected' && item.dates.verified && <span className="text-[10px] text-muted-foreground mt-0.5">{item.dates.verified}</span>}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                               
                               <div className="flex flex-col justify-start min-w-[120px]">
