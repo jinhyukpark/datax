@@ -104,7 +104,13 @@ export default function MyPage() {
       status: "Active",
       date: "2025-09-15",
       unreadReviews: 3,
-      totalReviews: 12
+      totalReviews: 12,
+      // Missing Resource fields
+      provider: "Seoul Metro Data",
+      type: "Dataset",
+      price: "Free",
+      tags: ["Transport", "Seoul", "Public"],
+      publishedDate: "2025-09-15"
     },
     {
       id: "m2",
@@ -115,7 +121,13 @@ export default function MyPage() {
       status: "Active",
       date: "2025-10-22",
       unreadReviews: 0,
-      totalReviews: 5
+      totalReviews: 5,
+      // Missing Resource fields
+      provider: "K-Market Research",
+      type: "Dataset",
+      price: "Paid",
+      tags: ["Coffee", "Consumption", "Market"],
+      publishedDate: "2025-10-22"
     }
   ];
 
