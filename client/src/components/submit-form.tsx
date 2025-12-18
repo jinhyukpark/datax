@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, AlertTriangle, Save, Star, MessageSquare, MessageCircle, ChevronDown, ChevronUp, X, Database, Link as LinkIcon, Server, ArrowRight, Zap, Globe, Mail } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
@@ -41,6 +42,17 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   const [submitted, setSubmitted] = useState(false);
   const [showReapprovalWarning, setShowReapprovalWarning] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
+  const [useAccountEmail, setUseAccountEmail] = useState(false);
+  const [contactEmail, setContactEmail] = useState("");
+  
+  // Mock account email
+  const ACCOUNT_EMAIL = "jh.park@illunex.com";
+
+  useEffect(() => {
+    if (useAccountEmail) {
+      setContactEmail(ACCOUNT_EMAIL);
+    }
+  }, [useAccountEmail]);
   
   // Form State
   const [features, setFeatures] = useState<string[]>(initialData?.features || [""]);
@@ -324,9 +336,31 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <Label htmlFor="contact-email" className="flex justify-between items-center font-semibold text-sm">
-                        <span className="flex items-center gap-2">Contact Email <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full font-normal">Auto-filled</span> <span className="text-red-500">*</span></span>
+                        <span className="flex items-center gap-2">Contact Email <span className="text-red-500">*</span></span>
                         </Label>
-                        <Input id="contact-email" defaultValue={initialData?.contactEmail || "jh.park@illunex.com"} disabled className="h-10 bg-white dark:bg-slate-900 text-slate-600 font-medium" />
+                        <div className="space-y-2">
+                          <Input 
+                            id="contact-email" 
+                            value={contactEmail}
+                            onChange={(e) => setContactEmail(e.target.value)}
+                            placeholder="email@company.com"
+                            disabled={useAccountEmail}
+                            className="h-10 bg-white dark:bg-slate-900" 
+                          />
+                          <div className="flex items-center space-x-2">
+                            <Checkbox 
+                              id="use-account-email" 
+                              checked={useAccountEmail}
+                              onCheckedChange={(checked) => setUseAccountEmail(checked as boolean)}
+                            />
+                            <label
+                              htmlFor="use-account-email"
+                              className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-muted-foreground"
+                            >
+                              Use account email ({ACCOUNT_EMAIL})
+                            </label>
+                          </div>
+                        </div>
                     </div>
                     
                     <div className="space-y-2">
