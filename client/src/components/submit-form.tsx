@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, AlertTriangle, Save, Star, MessageSquare, MessageCircle, ChevronDown, ChevronUp, X, Database, Link as LinkIcon, Server } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, AlertTriangle, Save, Star, MessageSquare, MessageCircle, ChevronDown, ChevronUp, X, Database, Link as LinkIcon, Server, ArrowRight, Zap, Globe } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useLocation } from "wouter";
@@ -890,58 +890,99 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
       ) : (
         <>
           {mode === 'create' && !submissionType ? (
-            <div className="py-1 space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="text-center space-y-2 mb-6">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">
+            <div className="py-2 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="text-center space-y-3">
+                <div className="inline-flex items-center justify-center p-2 bg-slate-100 dark:bg-slate-800 rounded-full mb-2">
+                   <Globe className="h-4 w-4 text-slate-500" />
+                </div>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
                   {t("How would you like to register?", "어떤 방식으로 등록하시겠습니까?")}
                 </h2>
-                <p className="text-muted-foreground text-sm max-w-md mx-auto">
+                <p className="text-muted-foreground text-sm max-w-md mx-auto leading-relaxed">
                   {t("Choose the option that best describes your resource.", "리소스에 가장 적합한 옵션을 선택해주세요.")}
                 </p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card 
-                  className="cursor-pointer hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all group border-2 hover:shadow-md"
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Hosted Service Card */}
+                <div 
+                  className="group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-blue-500/50"
                   onClick={() => setSubmissionType('hosted')}
                 >
-                  <CardContent className="p-6 flex flex-col items-center text-center gap-4 h-full justify-start">
-                    <div className="h-14 w-14 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform duration-300">
-                      <Server className="h-7 w-7" />
+                  <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="h-8 w-8 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-lg transform group-hover:scale-100 scale-75 transition-all">
+                      <ArrowRight className="h-4 w-4" />
                     </div>
-                    <div className="space-y-2 w-full">
-                      <h3 className="font-bold text-lg">{t("Hosted Service", "호스팅 서비스 구축")}</h3>
-                      <ul className="text-xs text-muted-foreground text-left list-disc pl-4 space-y-1.5 mt-2">
-                        <li>{t("Secure cloud storage for your datasets", "데이터셋을 위한 안전한 클라우드 저장소")}</li>
-                        <li>{t("Built-in API endpoint generation", "내장된 API 엔드포인트 생성")}</li>
-                        <li>{t("Scalable infrastructure management", "확장 가능한 인프라 관리")}</li>
-                      </ul>
-                    </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                  
+                  <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 group-hover:scale-110 transition-transform duration-300 shadow-sm group-hover:shadow-blue-200 dark:group-hover:shadow-blue-900/20">
+                    <Zap className="h-7 w-7" />
+                  </div>
+                  
+                  <div className="space-y-2 mb-6">
+                    <h3 className="font-bold text-lg">{t("Hosted Service", "호스팅 서비스 구축")}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {t("Best for new agents needing infrastructure.", "인프라가 필요한 새로운 에이전트에 최적입니다.")}
+                    </p>
+                  </div>
 
-                <Card 
-                  className="cursor-pointer hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-all group border-2 hover:shadow-md"
+                  <ul className="space-y-3">
+                    {[
+                      t("Secure cloud storage included", "보안 클라우드 저장소 포함"),
+                      t("Auto-generated API endpoints", "자동 생성 API 엔드포인트"),
+                      t("Managed infrastructure", "관리형 인프라")
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-2 text-xs font-medium text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors">
+                        <CheckCircle2 className="h-4 w-4 text-blue-500 shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-500/10 rounded-2xl pointer-events-none" />
+                </div>
+
+                {/* External Link Card */}
+                <div 
+                  className="group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-purple-500/50"
                   onClick={() => setSubmissionType('external')}
                 >
-                  <CardContent className="p-6 flex flex-col items-center text-center gap-4 h-full justify-start">
-                    <div className="h-14 w-14 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform duration-300">
-                      <LinkIcon className="h-7 w-7" />
+                  <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                     <div className="h-8 w-8 rounded-full bg-purple-500 text-white flex items-center justify-center shadow-lg transform group-hover:scale-100 scale-75 transition-all">
+                      <ArrowRight className="h-4 w-4" />
                     </div>
-                    <div className="space-y-2 w-full">
-                      <h3 className="font-bold text-lg">{t("Link External Data", "외부 데이터 연동")}</h3>
-                      <ul className="text-xs text-muted-foreground text-left list-disc pl-4 space-y-1.5 mt-2">
-                        <li>{t("Connect existing external APIs directly", "기존 외부 API 직접 연결")}</li>
-                        <li>{t("Unified billing & access management", "통합 과금 및 접근 관리")}</li>
-                        <li>{t("Real-time metadata synchronization", "실시간 메타데이터 동기화")}</li>
-                      </ul>
-                    </div>
-                  </CardContent>
-                </Card>
+                  </div>
+
+                  <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 group-hover:scale-110 transition-transform duration-300 shadow-sm group-hover:shadow-purple-200 dark:group-hover:shadow-purple-900/20">
+                    <LinkIcon className="h-7 w-7" />
+                  </div>
+                  
+                  <div className="space-y-2 mb-6">
+                    <h3 className="font-bold text-lg">{t("Link External Data", "외부 데이터 연동")}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {t("For existing agents running elsewhere.", "이미 다른 곳에서 운영 중인 에이전트용입니다.")}
+                    </p>
+                  </div>
+
+                  <ul className="space-y-3">
+                    {[
+                      t("Connect existing APIs", "기존 API 연결"),
+                      t("Unified billing system", "통합 결제 시스템"),
+                      t("Metadata sync", "메타데이터 동기화")
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-2 text-xs font-medium text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors">
+                        <CheckCircle2 className="h-4 w-4 text-purple-500 shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="absolute inset-0 border-2 border-transparent group-hover:border-purple-500/10 rounded-2xl pointer-events-none" />
+                </div>
               </div>
 
-              <div className="text-center mt-4">
-                <Button variant="ghost" size="sm" onClick={() => {if(onSuccess) onSuccess()}}>
+              <div className="text-center">
+                <Button variant="ghost" className="text-muted-foreground hover:text-slate-900 dark:hover:text-slate-100" onClick={() => {if(onSuccess) onSuccess()}}>
                   {t("Cancel", "취소")}
                 </Button>
               </div>
