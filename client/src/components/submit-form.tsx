@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, AlertTriangle, Save, Star, MessageSquare, MessageCircle, ChevronDown, ChevronUp, X, Database, Link as LinkIcon, Server, ArrowRight, Zap, Globe } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, AlertTriangle, Save, Star, MessageSquare, MessageCircle, ChevronDown, ChevronUp, X, Database, Link as LinkIcon, Server, ArrowRight, Zap, Globe, Mail } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useLocation } from "wouter";
@@ -1112,10 +1112,18 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                 </Accordion>
               </div>
 
-              <div className="text-center">
+              <div className="text-center mt-6">
                 <Button variant="ghost" className="text-muted-foreground hover:text-slate-900 dark:hover:text-slate-100" onClick={() => {if(onSuccess) onSuccess()}}>
                   {t("Cancel", "취소")}
                 </Button>
+                
+                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                  <p className="text-xs text-muted-foreground mb-2">{t("Need help choosing?", "선택에 도움이 필요하신가요?")}</p>
+                  <Button variant="outline" size="sm" className="gap-2 h-8 text-xs bg-white dark:bg-slate-900">
+                    <Mail className="h-3.5 w-3.5" />
+                    {t("Contact Support", "담당자 문의")}
+                  </Button>
+                </div>
               </div>
             </div>
           ) : (
