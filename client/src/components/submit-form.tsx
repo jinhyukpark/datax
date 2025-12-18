@@ -1011,15 +1011,15 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   <div className="space-y-2 mb-6 flex-1">
                     <h3 className="font-bold text-lg">{t("Hosted Service", "호스팅 서비스 구축")}</h3>
                     <p className="text-sm text-muted-foreground">
-                      {t("Best for new agents needing infrastructure.", "인프라가 필요한 새로운 에이전트에 최적입니다.")}
+                      {t("Build and host Data, MCP, and Agent services.", "데이터, MCP, 에이전트 서비스를 구축하고 호스팅합니다.")}
                     </p>
                   </div>
 
                   <ul className="space-y-3 mb-6">
                     {[
-                      t("Secure cloud storage included", "보안 클라우드 저장소 포함"),
-                      t("Auto-generated API endpoints", "자동 생성 API 엔드포인트"),
-                      t("Managed infrastructure", "관리형 인프라")
+                      t("Create MCP & Agent Services", "MCP 및 에이전트 서비스 구축 지원"),
+                      t("Secure Cloud & API Generation", "보안 클라우드 및 API 자동 생성"),
+                      t("Full Infrastructure Management", "인프라 완전 관리 및 운영")
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-xs font-medium text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors">
                         <CheckCircle2 className="h-4 w-4 text-blue-500 shrink-0" />
@@ -1053,15 +1053,15 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   <div className="space-y-2 mb-6 flex-1">
                     <h3 className="font-bold text-lg">{t("Link External Data", "외부 데이터 연동")}</h3>
                     <p className="text-sm text-muted-foreground">
-                      {t("For existing agents running elsewhere.", "이미 다른 곳에서 운영 중인 에이전트용입니다.")}
+                      {t("Register existing Data, MCP, and Agents for exposure.", "기존 데이터, MCP, 에이전트를 플랫폼에 등록하고 홍보하세요.")}
                     </p>
                   </div>
 
                   <ul className="space-y-3 mb-6">
                     {[
-                      t("Connect existing APIs", "기존 API 연결"),
-                      t("Unified billing system", "통합 결제 시스템"),
-                      t("Metadata sync", "메타데이터 동기화")
+                      t("Register Data, MCP & Agents", "데이터, MCP 및 에이전트 서비스 등록"),
+                      t("Product Exposure & Promotion", "상품 등록 및 플랫폼 노출/소개"),
+                      t("Admin Audit Required", "관리자 감사(Audit) 필수")
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-xs font-medium text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors">
                         <CheckCircle2 className="h-4 w-4 text-purple-500 shrink-0" />
