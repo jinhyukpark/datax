@@ -209,6 +209,15 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
         <div className="space-y-8">
             {/* Section Header */}
             <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+             <Button 
+                type="button" 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setSubmissionType(null)}
+                className="mr-2 -ml-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+              >
+                <ArrowRight className="h-5 w-5 rotate-180" />
+              </Button>
             <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
             <div>
                 <h2 className="text-lg font-bold">Basic Information</h2>
@@ -835,6 +844,15 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
       <div className="space-y-8">
         {/* Section Header */}
         <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+           <Button 
+                type="button" 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setSubmissionType(null)}
+                className="mr-2 -ml-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+              >
+                <ArrowRight className="h-5 w-5 rotate-180" />
+            </Button>
            <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
            <div>
              <h2 className="text-lg font-bold">Hosted Data Service Request</h2>
