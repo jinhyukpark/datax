@@ -829,6 +829,83 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   );
   };
 
+  const HostedForm = () => (
+    <form onSubmit={handleGeneralSubmit} className="space-y-6">
+      <div className="space-y-8">
+        {/* Section Header */}
+        <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+           <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
+           <div>
+             <h2 className="text-lg font-bold">Hosted Data Service Request</h2>
+             <p className="text-xs text-muted-foreground">Provide basic information about your dataset for hosting</p>
+           </div>
+        </div>
+
+        {/* Basic Info Fields */}
+        <div className="grid grid-cols-1 gap-6">
+          <div className="space-y-3">
+            <Label htmlFor="data-name" className="flex justify-between font-semibold text-sm">
+               <span>Data Name <span className="text-red-500">*</span></span>
+            </Label>
+            <Input id="data-name" placeholder="e.g. Global Climate Dataset 2024" required className="h-10" />
+          </div>
+
+          <div className="space-y-3">
+             <Label htmlFor="data-desc" className="flex justify-between font-semibold text-sm">
+               <span>Description <span className="text-red-500">*</span></span>
+             </Label>
+             <Textarea id="data-desc" placeholder="Briefly describe the dataset content, purpose, and origin..." required className="min-h-[100px] resize-y" />
+          </div>
+
+          <div className="space-y-3">
+            <Label htmlFor="organization" className="flex justify-between font-semibold text-sm">
+               <span>Organization / Institution <span className="text-red-500">*</span></span>
+            </Label>
+            <Input id="organization" placeholder="e.g. Climate Research Institute" required className="h-10" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+                <Label htmlFor="capacity" className="flex justify-between font-semibold text-sm">
+                   <span>Data Capacity (Volume)</span>
+                </Label>
+                <Input id="capacity" placeholder="e.g. 50GB, 1TB" className="h-10" />
+            </div>
+            <div className="space-y-3">
+                <Label htmlFor="frequency" className="flex justify-between font-semibold text-sm">
+                   <span>Update Frequency</span>
+                </Label>
+                <Input id="frequency" placeholder="e.g. Daily, Monthly, Static" className="h-10" />
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <Label htmlFor="contact-person" className="flex justify-between font-semibold text-sm">
+               <span>Contact Person <span className="text-red-500">*</span></span>
+            </Label>
+            <Input id="contact-person" placeholder="Name and Position" required className="h-10" />
+          </div>
+        </div>
+      </div>
+      
+      <div className="flex justify-end pt-4 border-t border-slate-100 dark:border-slate-800">
+        <Button type="submit" disabled={isSubmitting} className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
+          {isSubmitting ? (
+             <>
+               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+               Submitting Request...
+             </>
+          ) : (
+             <>
+               Submit Hosting Request
+               <ArrowRight className="ml-2 h-4 w-4" />
+             </>
+          )}
+        </Button>
+      </div>
+    </form>
+  );
+
   return (
     <div className={className}>
       <div className="mb-8 text-center">
@@ -909,6 +986,12 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   className="group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-blue-500/50"
                   onClick={() => setSubmissionType('hosted')}
                 >
+                  <div className="absolute top-0 left-0 p-4">
+                     <span className="bg-blue-600/10 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider border border-blue-600/20">
+                       Paid Service
+                     </span>
+                  </div>
+
                   <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                     <div className="h-8 w-8 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-lg transform group-hover:scale-100 scale-75 transition-all">
                       <ArrowRight className="h-4 w-4" />
@@ -947,6 +1030,12 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   className="group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-purple-500/50"
                   onClick={() => setSubmissionType('external')}
                 >
+                  <div className="absolute top-0 left-0 p-4">
+                     <span className="bg-green-600/10 text-green-600 dark:bg-green-900/40 dark:text-green-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider border border-green-600/20">
+                       Free
+                     </span>
+                  </div>
+
                   <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                      <div className="h-8 w-8 rounded-full bg-purple-500 text-white flex items-center justify-center shadow-lg transform group-hover:scale-100 scale-75 transition-all">
                       <ArrowRight className="h-4 w-4" />
@@ -1019,7 +1108,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   </div>
                 </div>
               )}
-              <GeneralForm />
+              {submissionType === 'hosted' ? <HostedForm /> : <GeneralForm />}
             </>
           )}
         </>
