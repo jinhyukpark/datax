@@ -932,6 +932,14 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   const HostedForm = () => {
     const [updateFreq, setUpdateFreq] = useState("daily");
     const [customFreq, setCustomFreq] = useState("");
+    const [useAccountEmail, setUseAccountEmail] = useState(false);
+    const [contactEmail, setContactEmail] = useState("");
+
+    useEffect(() => {
+      if (useAccountEmail) {
+        setContactEmail(ACCOUNT_EMAIL);
+      }
+    }, [useAccountEmail]);
 
     return (
     <form onSubmit={handleGeneralSubmit} className="space-y-6">
@@ -1015,7 +1023,29 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
               <Label htmlFor="contact-email" className="flex justify-between font-semibold text-sm">
                  <span>Contact Email <span className="text-red-500">*</span></span>
               </Label>
-              <Input id="contact-email" type="email" placeholder="email@company.com" required className="h-10" />
+              <div className="space-y-2">
+                <Input 
+                  id="contact-email" 
+                  value={contactEmail}
+                  onChange={(e) => setContactEmail(e.target.value)}
+                  placeholder="email@company.com"
+                  disabled={useAccountEmail}
+                  className="h-10 bg-white dark:bg-slate-900" 
+                />
+                <div className="flex items-center space-x-2">
+                  <Checkbox 
+                    id="use-account-email-hosted" 
+                    checked={useAccountEmail}
+                    onCheckedChange={(checked) => setUseAccountEmail(checked as boolean)}
+                  />
+                  <label
+                    htmlFor="use-account-email-hosted"
+                    className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-muted-foreground"
+                  >
+                    Use account email ({ACCOUNT_EMAIL})
+                  </label>
+                </div>
+              </div>
             </div>
             <div className="space-y-3">
               <Label htmlFor="contact-phone" className="flex justify-between font-semibold text-sm">
