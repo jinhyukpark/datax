@@ -8,7 +8,7 @@ import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, Alert
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useLocation } from "wouter";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -878,7 +878,11 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   );
   };
 
-  const HostedForm = () => (
+  const HostedForm = () => {
+    const [updateFreq, setUpdateFreq] = useState("daily");
+    const [customFreq, setCustomFreq] = useState("");
+
+    return (
     <form onSubmit={handleGeneralSubmit} className="space-y-6">
       <div className="space-y-8">
         {/* Section Header */}
@@ -924,7 +928,27 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                 <Label htmlFor="frequency" className="flex justify-between font-semibold text-sm">
                    <span>Update Frequency</span>
                 </Label>
-                <Input id="frequency" placeholder="e.g. Daily, Monthly, Static" className="h-10" />
+                <Select value={updateFreq} onValueChange={setUpdateFreq}>
+                  <SelectTrigger className="h-10">
+                    <SelectValue placeholder="Select frequency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="daily">{t("1 Day", "1일")}</SelectItem>
+                    <SelectItem value="weekly">{t("7 Days", "7일")}</SelectItem>
+                    <SelectItem value="monthly">{t("1 Month", "한달")}</SelectItem>
+                    <SelectItem value="6months">{t("6 Months", "6개월")}</SelectItem>
+                    <SelectItem value="yearly">{t("12 Months", "12개월")}</SelectItem>
+                    <SelectItem value="other">{t("Other", "기타")}</SelectItem>
+                  </SelectContent>
+                </Select>
+                {updateFreq === "other" && (
+                  <Input 
+                    placeholder={t("Enter custom frequency", "직접 입력")} 
+                    value={customFreq}
+                    onChange={(e) => setCustomFreq(e.target.value)}
+                    className="h-10 mt-2 animate-in fade-in slide-in-from-top-1" 
+                  />
+                )}
             </div>
           </div>
 
@@ -933,6 +957,21 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                <span>Contact Person <span className="text-red-500">*</span></span>
             </Label>
             <Input id="contact-person" placeholder="Name and Position" required className="h-10" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="contact-email" className="flex justify-between font-semibold text-sm">
+                 <span>Contact Email <span className="text-red-500">*</span></span>
+              </Label>
+              <Input id="contact-email" type="email" placeholder="email@company.com" required className="h-10" />
+            </div>
+            <div className="space-y-3">
+              <Label htmlFor="contact-phone" className="flex justify-between font-semibold text-sm">
+                 <span>Contact Phone</span>
+              </Label>
+              <Input id="contact-phone" type="tel" placeholder="+82 10-1234-5678" className="h-10" />
+            </div>
           </div>
         </div>
       </div>
@@ -954,6 +993,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
       </div>
     </form>
   );
+  };
 
   return (
     <div className={className}>
