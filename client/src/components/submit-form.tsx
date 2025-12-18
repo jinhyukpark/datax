@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useLocation } from "wouter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   AlertDialog,
@@ -1068,6 +1069,39 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
 
                   <div className="absolute inset-0 border-2 border-transparent group-hover:border-purple-500/10 rounded-2xl pointer-events-none" />
                 </div>
+              </div>
+
+              <div className="max-w-lg mx-auto mt-6 mb-2">
+                <h3 className="text-sm font-semibold text-center mb-3 text-slate-900 dark:text-slate-100">{t("Frequently Asked Questions", "자주 묻는 질문")}</h3>
+                <Accordion type="single" collapsible className="w-full bg-white dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-800 px-4">
+                  <AccordionItem value="item-1" className="border-b border-slate-100 dark:border-slate-800">
+                    <AccordionTrigger className="text-xs font-medium hover:no-underline py-3 text-left">{t("What is the difference between Hosted and Linked?", "Hosted와 Linked의 차이점은 무엇인가요?")}</AccordionTrigger>
+                    <AccordionContent className="text-xs text-muted-foreground pb-3">
+                      {t(
+                        "Hosted Service provides secure cloud infrastructure to store and serve your data, while Linked External Data connects directly to your existing API endpoints without data migration.",
+                        "Hosted 서비스는 데이터를 저장하고 제공할 안전한 클라우드 인프라를 제공하며, Linked External Data는 데이터 마이그레이션 없이 기존 API 엔드포인트에 직접 연결합니다."
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-2" className="border-b border-slate-100 dark:border-slate-800">
+                    <AccordionTrigger className="text-xs font-medium hover:no-underline py-3 text-left">{t("Can I switch between service types later?", "나중에 서비스 유형을 변경할 수 있나요?")}</AccordionTrigger>
+                    <AccordionContent className="text-xs text-muted-foreground pb-3">
+                      {t(
+                        "Yes, you can migrate from Hosted to Linked (or vice versa) by contacting our support team, though some configuration changes may be required.",
+                        "네, 지원팀에 문의하여 Hosted에서 Linked로 (또는 그 반대로) 변경할 수 있습니다. 단, 일부 구성 변경이 필요할 수 있습니다."
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-3" className="border-b-0">
+                    <AccordionTrigger className="text-xs font-medium hover:no-underline py-3 text-left">{t("Is the Hosted Service paid?", "Hosted 서비스는 유료인가요?")}</AccordionTrigger>
+                    <AccordionContent className="text-xs text-muted-foreground pb-3">
+                      {t(
+                        "Yes, Hosted Service incurs infrastructure costs. We offer various tiers based on storage and bandwidth needs, starting with a free trial tier.",
+                        "네, Hosted 서비스는 인프라 비용이 발생합니다. 무료 체험 등급부터 시작하여 저장 용량과 대역폭 요구 사항에 따른 다양한 요금제를 제공합니다."
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               </div>
 
               <div className="text-center">
