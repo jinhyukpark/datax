@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, AlertTriangle, Save, Star, MessageSquare, MessageCircle, ChevronDown, ChevronUp, X } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, AlertTriangle, Save, Star, MessageSquare, MessageCircle, ChevronDown, ChevronUp, X, Database, Link as LinkIcon, Server } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useLocation } from "wouter";
@@ -34,6 +34,7 @@ interface SubmitFormProps {
 export function SubmitForm({ onSuccess, className, initialData, mode = 'create', defaultTab = 'overview' }: SubmitFormProps) {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
+  const [submissionType, setSubmissionType] = useState<'hosted' | 'external' | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [showReapprovalWarning, setShowReapprovalWarning] = useState(false);
@@ -888,25 +889,94 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
         </Tabs>
       ) : (
         <>
-          {mode === 'create' && (
-            <div className="mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-0.5 shadow-md">
-              <div className="bg-white/10 backdrop-blur-sm rounded-[10px] p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md shrink-0">
-                    <Loader2 className="h-5 w-5 text-white animate-spin-slow" />
-                  </div>
-                  <div className="text-left">
-                    <h3 className="font-bold text-sm">Want to maximize visibility?</h3>
-                    <p className="text-blue-100 text-xs">Get featured on our homepage.</p>
-                  </div>
-                </div>
-                <Button size="sm" className="bg-white text-blue-600 hover:bg-blue-50 font-bold border-0 shadow-sm w-full sm:w-auto text-xs whitespace-nowrap">
-                  View Sponsorships →
+          {mode === 'create' && !submissionType ? (
+            <div className="py-4 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="text-center space-y-2 mb-8">
+                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">
+                  {t("How would you like to register?", "어떤 방식으로 등록하시겠습니까?")}
+                </h2>
+                <p className="text-muted-foreground text-sm max-w-md mx-auto">
+                  {t("Choose the option that best describes your resource.", "리소스에 가장 적합한 옵션을 선택해주세요.")}
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card 
+                  className="cursor-pointer hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all group border-2 hover:shadow-md"
+                  onClick={() => setSubmissionType('hosted')}
+                >
+                  <CardContent className="p-6 flex flex-col items-center text-center gap-4 h-full justify-center">
+                    <div className="h-16 w-16 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform duration-300">
+                      <Server className="h-8 w-8" />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="font-bold text-lg">{t("Hosted Service", "호스팅 서비스 구축")}</h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        {t("I need data storage and API agent service construction.", "데이터 저장소 및 API 에이전트 서비스 구축이 필요합니다.")}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card 
+                  className="cursor-pointer hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-all group border-2 hover:shadow-md"
+                  onClick={() => setSubmissionType('external')}
+                >
+                  <CardContent className="p-6 flex flex-col items-center text-center gap-4 h-full justify-center">
+                    <div className="h-16 w-16 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform duration-300">
+                      <LinkIcon className="h-8 w-8" />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="font-bold text-lg">{t("Link External Data", "외부 데이터 연동")}</h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        {t("I want to link an already built external dataset.", "이미 구축된 외부 데이터셋을 연동하고 싶습니다.")}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="text-center mt-8">
+                <Button variant="ghost" size="sm" onClick={() => {if(onSuccess) onSuccess()}}>
+                  {t("Cancel", "취소")}
                 </Button>
               </div>
             </div>
+          ) : (
+            <>
+              {mode === 'create' && (
+                <div className="mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-0.5 shadow-md animate-in fade-in slide-in-from-top-2 duration-500">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-[10px] p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md shrink-0">
+                        <Loader2 className="h-5 w-5 text-white animate-spin-slow" />
+                      </div>
+                      <div className="text-left">
+                        <h3 className="font-bold text-sm">
+                          {submissionType === 'hosted' 
+                            ? t("Building on our infrastructure?", "인프라 구축을 시작하시나요?") 
+                            : t("Connecting external resources?", "외부 리소스를 연결하시나요?")}
+                        </h3>
+                        <p className="text-blue-100 text-xs">
+                          {submissionType === 'hosted'
+                            ? t("Get verified faster with our hosted solutions.", "호스팅 솔루션으로 더 빠르게 검증받으세요.")
+                            : t("Expand your reach by linking existing data.", "기존 데이터를 연결하여 도달 범위를 넓히세요.")}
+                        </p>
+                      </div>
+                    </div>
+                    <Button 
+                      size="sm" 
+                      className="bg-white text-blue-600 hover:bg-blue-50 font-bold border-0 shadow-sm w-full sm:w-auto text-xs whitespace-nowrap"
+                      onClick={() => setSubmissionType(null)}
+                    >
+                      {t("Change Type", "유형 변경")}
+                    </Button>
+                  </div>
+                </div>
+              )}
+              <GeneralForm />
+            </>
           )}
-          <GeneralForm />
         </>
       )}
     </div>
