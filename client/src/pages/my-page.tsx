@@ -20,6 +20,7 @@ import { Resource } from "@/lib/data";
 import { SubmitForm } from "@/components/submit-form";
 import { AnalyticsView } from "@/components/analytics-view";
 import { HostedRequestDetails } from "@/components/hosted-request-details";
+import { GeneralRequestDetails } from "@/components/general-request-details";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -144,7 +145,7 @@ export default function MyPage() {
   ];
 
   // Mock Requested Data
-  const requestedData = [
+  const [requestedData, setRequestedData] = useState([
     {
       id: "r1",
       title: "Global EV Market Analysis AI Agent",
@@ -202,7 +203,12 @@ export default function MyPage() {
       status: "verified",
       step: 3
     }
-  ];
+  ]);
+
+  const handleDeleteRequest = (id: string) => {
+    setRequestedData(requestedData.filter(item => item.id !== id));
+    toast.success("Submission request cancelled successfully");
+  };
 
   // Mock Hosted Data Requests
   const [hostedDataRequests, setHostedDataRequests] = useState([
@@ -840,7 +846,7 @@ export default function MyPage() {
 
                               </div>
                               
-                              <div className="flex flex-col justify-start min-w-[120px]">
+                              <div className="flex flex-col justify-start min-w-[140px] gap-2">
                                 <div className={`rounded-lg p-3 text-center ${item.status === 'rejected' ? 'bg-red-50 dark:bg-red-900/20' : 'bg-slate-50 dark:bg-slate-900'}`}>
                                   <div className="text-xs text-muted-foreground mb-1">Current Status</div>
                                   <div className={`font-bold ${
@@ -852,6 +858,42 @@ export default function MyPage() {
                                      item.step === 2 ? 'Under Review' : 'Approved'}
                                   </div>
                                 </div>
+
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <Button variant="outline" size="sm" className="w-full">
+                                      {t("View Details", "상세 보기")}
+                                    </Button>
+                                  </DialogTrigger>
+                                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                                     <GeneralRequestDetails data={item} />
+                                  </DialogContent>
+                                </Dialog>
+
+                                {item.step === 1 && (
+                                  <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                      <Button variant="outline" size="sm" className="w-full text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200 dark:border-red-900/50 dark:hover:bg-red-900/20">
+                                        <Trash2 className="h-3 w-3 mr-2" />
+                                        {t("Cancel", "신청 취소")}
+                                      </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                      <AlertDialogHeader>
+                                        <AlertDialogTitle>{t("Cancel Request?", "신청을 취소하시겠습니까?")}</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                          {t("Are you sure you want to cancel this submission? This action cannot be undone.", "이 제출을 취소하시겠습니까? 이 작업은 되돌릴 수 없습니다.")}
+                                        </AlertDialogDescription>
+                                      </AlertDialogHeader>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel>{t("Keep Request", "유지하기")}</AlertDialogCancel>
+                                        <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={() => handleDeleteRequest(item.id)}>
+                                          {t("Yes, Cancel", "네, 취소합니다")}
+                                        </AlertDialogAction>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialog>
+                                )}
                               </div>
                             </div>
                           </CardContent>
