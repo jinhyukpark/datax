@@ -42,6 +42,7 @@ const MOCK_SUBMISSIONS = [
     submittedAt: "2025-12-15", 
     status: "Reviewing", 
     type: "Dataset",
+    serviceType: "Hosted",
     // Detailed fields
     founder: "Tech Manufacturing Inc.",
     website: "https://techmfg.example.com",
@@ -66,6 +67,7 @@ const MOCK_SUBMISSIONS = [
     submittedAt: "2025-12-14", 
     status: "Submitted", 
     type: "API",
+    serviceType: "Linked",
     founder: "LogiTech Team",
     website: "https://logitech.example.io",
     affiliate: "https://logitech.example.io/ref/data-x",
@@ -88,6 +90,7 @@ const MOCK_SUBMISSIONS = [
     submittedAt: "2025-12-10", 
     status: "Approved", 
     type: "Report",
+    serviceType: "Hosted",
     founder: "Green Energy Research",
     website: "https://greenenergy.example.org",
     affiliate: "",
@@ -111,6 +114,7 @@ const MOCK_SUBMISSIONS = [
     submittedAt: "2025-12-08", 
     status: "Rejected", 
     type: "AI Model", 
+    serviceType: "Linked",
     reason: "Insufficient documentation provided.",
     founder: "Vision AI Labs",
     website: "https://visionai.example.net",
@@ -127,6 +131,52 @@ const MOCK_SUBMISSIONS = [
       { title: "Quality Assurance", content: "Automate visual inspection on electronics assembly lines." }
     ]
   },
+  {
+    id: 105,
+    title: "Global Weather Historical Data",
+    provider: "Climate Data Org",
+    submittedAt: "2025-12-16",
+    status: "Reviewing",
+    type: "Dataset",
+    serviceType: "Hosted",
+    founder: "Climate Data Org",
+    website: "https://climate.example.org",
+    affiliate: "",
+    demoUrl: "",
+    docUrl: "",
+    email: "data@climate.example.org",
+    social: { linkedin: "", twitter: "", github: "", discord: "" },
+    classification: { access: "API", pricing: "Paid", industry: "Environmental" },
+    tagline: "50TB of historical weather data",
+    description: "Hosting request for 50TB of historical weather data from 1950-2024.",
+    features: ["Global coverage", "Hourly resolution", "Multiple variables", "Quality controlled"],
+    useCases: [
+      { title: "Climate Modeling", content: "Research long-term climate trends." }
+    ]
+  },
+  {
+    id: 106,
+    title: "Medical Image Diagnostic Helper",
+    provider: "MedAI Systems",
+    submittedAt: "2025-12-10",
+    status: "Submitted",
+    type: "AI Agent",
+    serviceType: "Linked",
+    founder: "MedAI Systems",
+    website: "https://medai.example.com",
+    affiliate: "",
+    demoUrl: "",
+    docUrl: "",
+    email: "contact@medai.example.com",
+    social: { linkedin: "", twitter: "", github: "", discord: "" },
+    classification: { access: "API", pricing: "Paid", industry: "Healthcare" },
+    tagline: "Assistant AI for preliminary analysis of X-ray images",
+    description: "AI agent that helps radiologists by pre-screening X-ray images for common abnormalities.",
+    features: ["High accuracy", "DICOM support", "HIPAA compliant", "Fast processing"],
+    useCases: [
+      { title: "Triage", content: "Prioritize urgent cases for radiologist review." }
+    ]
+  }
 ];
 
 export default function SubmissionManagement() {
@@ -185,16 +235,17 @@ export default function SubmissionManagement() {
     }
   };
 
-  // Metrics
-  const totalSubmissions = submissions.length;
-  const pendingReviews = submissions.filter(s => s.status === 'Submitted' || s.status === 'Reviewing').length;
-  const approved = submissions.filter(s => s.status === 'Approved').length;
-  const rejected = submissions.filter(s => s.status === 'Rejected').length;
+  const renderDashboard = (serviceType: string) => {
+    const filteredSubmissions = submissions.filter(s => s.serviceType === serviceType);
+    
+    // Metrics
+    const totalSubmissions = filteredSubmissions.length;
+    const pendingReviews = filteredSubmissions.filter(s => s.status === 'Submitted' || s.status === 'Reviewing').length;
+    const approved = filteredSubmissions.filter(s => s.status === 'Approved').length;
+    const rejected = filteredSubmissions.filter(s => s.status === 'Rejected').length;
 
-  return (
-    <AdminLayout title="Submission Management">
+    return (
       <div className="space-y-6">
-        
         {/* Metrics Section */}
         <div className="grid gap-4 md:grid-cols-4">
           <Card>
@@ -204,7 +255,7 @@ export default function SubmissionManagement() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalSubmissions}</div>
-              <p className="text-xs text-muted-foreground">+2 from last week</p>
+              <p className="text-xs text-muted-foreground">For {serviceType} Service</p>
             </CardContent>
           </Card>
           <Card>
@@ -253,48 +304,73 @@ export default function SubmissionManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {submissions.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell className="font-medium">{item.title}</TableCell>
-                  <TableCell>{item.provider}</TableCell>
-                  <TableCell>{item.type}</TableCell>
-                  <TableCell>{item.submittedAt}</TableCell>
-                  <TableCell>{getStatusBadge(item.status)}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item })}>
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      
-                      {item.status !== 'Approved' && item.status !== 'Rejected' && (
-                        <>
-                          <Button 
-                            size="sm" 
-                            className="bg-green-600 hover:bg-green-700 h-8 w-8 p-0"
-                            onClick={() => handleApproveClick(item.id)}
-                            title="Approve"
-                          >
-                            <CheckCircle className="h-4 w-4" />
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="destructive" 
-                            className="h-8 w-8 p-0"
-                            onClick={() => setRejectDialog({ open: true, id: item.id })}
-                            title="Reject"
-                          >
-                            <XCircle className="h-4 w-4" />
-                          </Button>
-                        </>
-                      )}
-                    </div>
+              {filteredSubmissions.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                    No submissions found for {serviceType} service.
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                filteredSubmissions.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="font-medium">{item.title}</TableCell>
+                    <TableCell>{item.provider}</TableCell>
+                    <TableCell>{item.type}</TableCell>
+                    <TableCell>{item.submittedAt}</TableCell>
+                    <TableCell>{getStatusBadge(item.status)}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item })}>
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        
+                        {item.status !== 'Approved' && item.status !== 'Rejected' && (
+                          <>
+                            <Button 
+                              size="sm" 
+                              className="bg-green-600 hover:bg-green-700 h-8 w-8 p-0"
+                              onClick={() => handleApproveClick(item.id)}
+                              title="Approve"
+                            >
+                              <CheckCircle className="h-4 w-4" />
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="destructive" 
+                              className="h-8 w-8 p-0"
+                              onClick={() => setRejectDialog({ open: true, id: item.id })}
+                              title="Reject"
+                            >
+                              <XCircle className="h-4 w-4" />
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </div>
       </div>
+    );
+  };
+
+  return (
+    <AdminLayout title="Submission Management">
+      <Tabs defaultValue="hosted" className="space-y-6">
+        <TabsList className="grid w-full md:w-[400px] grid-cols-2">
+          <TabsTrigger value="hosted">Hosted Service</TabsTrigger>
+          <TabsTrigger value="linked">Link External Service</TabsTrigger>
+        </TabsList>
+        <TabsContent value="hosted" className="mt-6">
+          {renderDashboard("Hosted")}
+        </TabsContent>
+        <TabsContent value="linked" className="mt-6">
+          {renderDashboard("Linked")}
+        </TabsContent>
+      </Tabs>
 
       {/* Confirmation Alert Dialog */}
       <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
@@ -491,9 +567,9 @@ export default function SubmissionManagement() {
                     <Label className="text-xs text-muted-foreground">Use Cases</Label>
                     <div className="grid gap-3">
                       {viewDialog.item.useCases.map((useCase, idx) => (
-                        <div key={idx} className="p-3 bg-slate-50 dark:bg-slate-900 rounded border">
-                          <div className="font-semibold text-sm mb-1">{useCase.title}</div>
-                          <div className="text-sm text-muted-foreground">{useCase.content}</div>
+                        <div key={idx} className="bg-slate-50 dark:bg-slate-900 p-3 rounded border">
+                          <h4 className="font-medium text-sm mb-1">{useCase.title}</h4>
+                          <p className="text-xs text-muted-foreground">{useCase.content}</p>
                         </div>
                       ))}
                     </div>
