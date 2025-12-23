@@ -275,7 +275,8 @@ export default function MyPage() {
       region: "US-East (N. Virginia)",
       tier: "Pro Plan",
       uptime: "99.99%",
-      nextBilling: "2026-01-20"
+      nextBilling: "2026-01-20",
+      type: "DATA"
     },
     {
       id: "ha2",
@@ -286,7 +287,20 @@ export default function MyPage() {
       region: "Asia-Pacific (Seoul)",
       tier: "Enterprise",
       uptime: "99.95%",
-      nextBilling: "2026-01-15"
+      nextBilling: "2026-01-15",
+      type: "AGENT"
+    },
+    {
+      id: "ha3",
+      title: "Stock Market Tick Stream",
+      description: "Real-time stock market data stream via WebSocket.",
+      status: "Active",
+      endpoint: "wss://api.platform.com/v1/stream",
+      region: "US-West (Oregon)",
+      tier: "Enterprise",
+      uptime: "99.99%",
+      nextBilling: "2026-01-25",
+      type: "MCP"
     }
   ];
 
@@ -1019,6 +1033,15 @@ export default function MyPage() {
                                 <div className="flex justify-between items-start mb-2">
                                   <div className="flex items-center gap-2">
                                     <h3 className="text-lg font-bold">{item.title}</h3>
+                                    {item.type && (
+                                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                                        item.type === 'MCP' ? 'bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800' :
+                                        item.type === 'DATA' ? 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800' :
+                                        'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800'
+                                      }`}>
+                                        {item.type}
+                                      </span>
+                                    )}
                                     <Dialog>
                                       <DialogTrigger asChild>
                                         <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-primary">
