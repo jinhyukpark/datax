@@ -634,7 +634,19 @@ export default function MyPage() {
                           <div className="flex flex-col md:flex-row">
                             <div className="p-6 flex-grow">
                               <div className="flex justify-between items-start mb-2">
-                                <h3 className="text-lg font-bold hover:text-primary cursor-pointer">{item.title}</h3>
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <h3 className="text-lg font-bold hover:text-primary cursor-pointer">{item.title}</h3>
+                                  </DialogTrigger>
+                                  <DialogContent className="sm:max-w-[900px] h-[90vh] overflow-y-auto">
+                                    <SubmitForm 
+                                      initialData={item as Resource} 
+                                      mode="edit-approved" 
+                                      defaultTab="overview"
+                                      onSuccess={() => {}}
+                                    />
+                                  </DialogContent>
+                                </Dialog>
                                 <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
                                   {item.status}
                                 </span>
@@ -696,6 +708,7 @@ export default function MyPage() {
                                   <SubmitForm 
                                     initialData={item as Resource} 
                                     mode="edit-approved" 
+                                    defaultTab="overview"
                                     onSuccess={() => {
                                       // In a real app, refresh data
                                       // For now, close dialog is handled inside SubmitForm or we could use state
