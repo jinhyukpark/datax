@@ -13,7 +13,8 @@ import {
   MessageSquare,
   FileUp,
   UserPlus,
-  Check
+  Check,
+  Server
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -69,6 +70,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     { name: "User Management", href: "/admin/users", icon: Users },
     { name: "Admin Management", href: "/admin/admins", icon: Shield },
     { name: "Submissions", href: "/admin/submissions", icon: FileText },
+    { name: "Hosted Services", href: "/admin/hosted-services", icon: Server },
     { name: "Payments", href: "/admin/payments", icon: CreditCard },
   ];
 
