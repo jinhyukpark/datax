@@ -386,7 +386,7 @@ export default function MyPage() {
                 </TabsTrigger>
                 <TabsTrigger value="my-data" className="gap-2">
                   <Share2 className="h-4 w-4 hidden sm:inline" />
-                  {t("My Data", "공유 데이터")}
+                  {t("Linked Service", "연동 서비스")}
                 </TabsTrigger>
                 <TabsTrigger value="hosted-data" className="gap-2">
                   <Server className="h-4 w-4 hidden sm:inline" />
@@ -640,8 +640,8 @@ export default function MyPage() {
               <TabsContent value="my-data">
                 <div className="flex justify-between items-center mb-6">
                   <div>
-                    <h2 className="text-xl font-semibold mb-1">{t("My Data", "나의 데이터")}</h2>
-                    <p className="text-muted-foreground text-sm">{t("Manage your shared data and view requests.", "공유한 데이터 및 요청 상태를 관리하세요.")}</p>
+                    <h2 className="text-xl font-semibold mb-1">{t("Linked Service", "연동 서비스")}</h2>
+                    <p className="text-muted-foreground text-sm">{t("Manage your linked data services and view request status.", "연동 데이터 서비스 및 요청 상태를 관리하세요.")}</p>
                   </div>
                   <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700" onClick={() => setLocation('/submit')}>
                     <Package className="h-4 w-4" />
