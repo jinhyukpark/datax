@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, ArrowRight, Sparkles, Database, Cpu, Activity, Shield, Key } from "lucide-react";
-import { RESOURCES } from "@/lib/data";
+import { RESOURCES, ResourceType } from "@/lib/data";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { Link } from "wouter";
 import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
@@ -12,9 +13,13 @@ import floatingHeroBg from "@assets/generated_images/abstract_3d_isometric_data_
 import { useLanguage } from "@/lib/language-context";
 
 export default function Home() {
-  // Get top 8 newest resources
-  const featuredResources = RESOURCES.slice(0, 8);
   const { t } = useLanguage();
+  const [activeFilter, setActiveFilter] = useState<'all' | ResourceType>('all');
+
+  // Filter resources based on active selection and get top 8
+  const filteredResources = RESOURCES
+    .filter(r => activeFilter === 'all' || r.type === activeFilter)
+    .slice(0, 8);
 
   return (
     <div className="min-h-screen bg-slate-50/50 font-sans dark:bg-slate-950">
@@ -72,19 +77,29 @@ export default function Home() {
 
           {/* Quick Categories */}
           <div className="mt-16 flex flex-wrap justify-center gap-4">
-            <Link href="/data-map?type=all">
-              <Button variant="secondary" className="rounded-full px-6 h-10 bg-white shadow-sm hover:bg-slate-50 border border-slate-200 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700">{t("All Resources", "모든 리소스")}</Button>
-            </Link>
-            <Link href="/data-map?type=api">
-              <Button variant="outline" className="rounded-full px-6 h-10 gap-2 border-slate-200 bg-white/50 hover:bg-white hover:border-blue-200 hover:text-blue-600 transition-all dark:bg-slate-900/50 dark:border-slate-700 dark:hover:bg-slate-800">
-                <Database className="h-4 w-4" /> {t("Data APIs", "데이터 API")}
-              </Button>
-            </Link>
-            <Link href="/data-map?type=agent">
-              <Button variant="outline" className="rounded-full px-6 h-10 gap-2 border-slate-200 bg-white/50 hover:bg-white hover:border-purple-200 hover:text-purple-600 transition-all dark:bg-slate-900/50 dark:border-slate-700 dark:hover:bg-slate-800">
-                <Cpu className="h-4 w-4" /> {t("AI Agents", "AI 에이전트")}
-              </Button>
-            </Link>
+            <Button 
+              variant={activeFilter === 'all' ? "secondary" : "ghost"}
+              onClick={() => setActiveFilter('all')}
+              className={`rounded-full px-6 h-10 transition-all ${activeFilter === 'all' ? "bg-white shadow-sm hover:bg-slate-50 border border-slate-200 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700" : "bg-transparent hover:bg-white/50 border border-transparent hover:border-slate-200"}`}
+            >
+              {t("All Resources", "모든 리소스")}
+            </Button>
+            
+            <Button 
+              variant={activeFilter === 'API' ? "secondary" : "ghost"}
+              onClick={() => setActiveFilter('API')}
+              className={`rounded-full px-6 h-10 gap-2 transition-all ${activeFilter === 'API' ? "bg-white shadow-sm hover:bg-slate-50 border border-slate-200 text-blue-600" : "bg-transparent hover:bg-white/50 border border-transparent hover:border-blue-200 hover:text-blue-600"}`}
+            >
+              <Database className="h-4 w-4" /> {t("Data APIs", "데이터 API")}
+            </Button>
+            
+            <Button 
+              variant={activeFilter === 'Agent' ? "secondary" : "ghost"}
+              onClick={() => setActiveFilter('Agent')}
+              className={`rounded-full px-6 h-10 gap-2 transition-all ${activeFilter === 'Agent' ? "bg-white shadow-sm hover:bg-slate-50 border border-slate-200 text-purple-600" : "bg-transparent hover:bg-white/50 border border-transparent hover:border-purple-200 hover:text-purple-600"}`}
+            >
+              <Cpu className="h-4 w-4" /> {t("AI Agents", "AI 에이전트")}
+            </Button>
           </div>
         </div>
       </section>
@@ -103,7 +118,7 @@ export default function Home() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {featuredResources.map((resource) => (
+          {filteredResources.map((resource) => (
             <ResourceCard key={resource.id} resource={resource} />
           ))}
         </div>
