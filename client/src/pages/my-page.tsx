@@ -263,6 +263,31 @@ export default function MyPage() {
     toast.success("Hosting request cancelled successfully");
   };
 
+  const hostedDataApprovedMock = [
+    {
+      id: "ha1",
+      title: "Global Weather Historical Data",
+      description: "Complete historical weather data from major global stations (1980-2024).",
+      status: "Active",
+      endpoint: "https://api.platform.com/v1/weather",
+      region: "US-East (N. Virginia)",
+      tier: "Pro Plan",
+      uptime: "99.99%",
+      nextBilling: "2026-01-20"
+    },
+    {
+      id: "ha2",
+      title: "Bio-Medical Research Corpus",
+      description: "Annotated corpus for biomedical NLP research and training.",
+      status: "Active",
+      endpoint: "https://api.platform.com/v1/biomed",
+      region: "Asia-Pacific (Seoul)",
+      tier: "Enterprise",
+      uptime: "99.95%",
+      nextBilling: "2026-01-15"
+    }
+  ];
+
   const hostedDataApproved: any[] = [];
 
   // Calculate statistics
@@ -968,17 +993,84 @@ export default function MyPage() {
                   
                   {/* Approved Tab Content */}
                   <TabsContent value="approved" className="mt-0">
-                    {hostedDataApproved.length === 0 ? (
-                      <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
-                        <Server className="mx-auto h-12 w-12 mb-4 opacity-20" />
-                        <h3 className="text-lg font-medium text-muted-foreground">{t("No active hosted services", "활성 호스팅 서비스가 없습니다")}</h3>
-                        <p className="text-sm text-muted-foreground mt-1">{t("Your approved hosted services will appear here.", "승인된 호스팅 서비스가 여기에 표시됩니다.")}</p>
+                    <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700 mb-8">
+                      <Server className="mx-auto h-12 w-12 mb-4 opacity-20" />
+                      <h3 className="text-lg font-medium text-muted-foreground">{t("No active hosted services", "활성 호스팅 서비스가 없습니다")}</h3>
+                      <p className="text-sm text-muted-foreground mt-1">{t("Your approved hosted services will appear here.", "승인된 호스팅 서비스가 여기에 표시됩니다.")}</p>
+                    </div>
+
+                    <div className="space-y-4 opacity-75">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs font-bold px-2 py-1 bg-amber-100 text-amber-700 rounded rounded-md border border-amber-200">
+                          DEV PREVIEW
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          These items are shown for design verification.
+                        </span>
                       </div>
-                    ) : (
-                       <div className="grid grid-cols-1 gap-4">
-                         {/* Render approved items here similarly to My Data */}
-                       </div>
-                    )}
+
+                      <div className="grid grid-cols-1 gap-4">
+                        {hostedDataApprovedMock.map((item) => (
+                          <Card key={item.id} className="overflow-hidden border-slate-200 dark:border-slate-800">
+                            <div className="flex flex-col md:flex-row">
+                              <div className="p-6 flex-grow">
+                                <div className="flex justify-between items-start mb-2">
+                                  <div className="flex items-center gap-2">
+                                    <h3 className="text-lg font-bold">{item.title}</h3>
+                                    <Dialog>
+                                      <DialogTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-primary">
+                                          <Eye className="h-3 w-3" />
+                                        </Button>
+                                      </DialogTrigger>
+                                      <DialogContent>
+                                        <HostedRequestDetails data={item} />
+                                      </DialogContent>
+                                    </Dialog>
+                                  </div>
+                                  <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                    {item.status}
+                                  </span>
+                                </div>
+                                <p className="text-muted-foreground text-sm mb-4">{item.description}</p>
+
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                                  <div className="space-y-1">
+                                    <p className="text-xs text-muted-foreground">Endpoint</p>
+                                    <div className="flex items-center gap-1 font-mono text-xs bg-slate-100 dark:bg-slate-900 px-2 py-1 rounded max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                                      {item.endpoint}
+                                    </div>
+                                  </div>
+                                  <div className="space-y-1">
+                                    <p className="text-xs text-muted-foreground">Region</p>
+                                    <p className="font-medium">{item.region}</p>
+                                  </div>
+                                  <div className="space-y-1">
+                                    <p className="text-xs text-muted-foreground">Plan Tier</p>
+                                    <p className="font-medium">{item.tier}</p>
+                                  </div>
+                                  <div className="space-y-1">
+                                    <p className="text-xs text-muted-foreground">Uptime (30d)</p>
+                                    <p className="font-medium text-green-600">{item.uptime}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l min-w-[160px]">
+                                <Button variant="outline" size="sm" className="w-full">
+                                  Manage
+                                </Button>
+                                <Button variant="outline" size="sm" className="w-full">
+                                  View Logs
+                                </Button>
+                                <p className="text-[10px] text-muted-foreground text-center mt-2">
+                                  Next bill: {item.nextBilling}
+                                </p>
+                              </div>
+                            </div>
+                          </Card>
+                        ))}
+                      </div>
+                    </div>
                   </TabsContent>
 
                   {/* Request Tab Content */}
