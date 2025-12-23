@@ -26,6 +26,38 @@ export function HostedRequestDetails({ data }: HostedRequestDetailsProps) {
 
   return (
     <div className="space-y-6">
+      <div className="mb-8 text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-xs font-bold text-green-600 mb-4">
+            <ShieldCheck className="h-3 w-3" /> 59 CERTIFIED DOMAIN RATING
+        </div>
+        
+        <h1 className="text-2xl md:text-3xl font-extrabold mb-4 text-slate-900 dark:text-slate-50 tracking-tight">
+          Submit Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">AI Agent</span>
+        </h1>
+        
+        <p className="text-muted-foreground text-sm max-w-lg mx-auto leading-relaxed">
+          Connect with global users and join thousands of innovative agentic solutions.
+        </p>
+      </div>
+
+      <div className="mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-0.5 shadow-md">
+        <div className="bg-white/10 backdrop-blur-sm rounded-[10px] p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md shrink-0">
+              <Loader2 className="h-5 w-5 text-white" />
+            </div>
+            <div className="text-left">
+              <h3 className="font-bold text-sm">
+                Building on our infrastructure?
+              </h3>
+              <p className="text-xs text-blue-100">
+                Get verified faster with our hosted solutions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="space-y-8">
         {/* Section Header */}
         <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
