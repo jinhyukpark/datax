@@ -65,7 +65,7 @@ export function HostedServiceManage({ data }: HostedServiceManageProps) {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="config">Configuration</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
-          <TabsTrigger value="database">Database</TabsTrigger>
+          <TabsTrigger value="system">System</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4 mt-4">
@@ -219,7 +219,34 @@ export function HostedServiceManage({ data }: HostedServiceManageProps) {
           </Card>
         </TabsContent>
         
-        <TabsContent value="database" className="space-y-4 mt-4">
+        <TabsContent value="system" className="space-y-4 mt-4">
+           <Card>
+            <CardHeader>
+              <CardTitle>Server Information</CardTitle>
+              <CardDescription>Details about the compute instance</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <div className="space-y-2">
+                   <Label>Hostname</Label>
+                   <Input value="srv-a1.hosted-service.com" readOnly />
+                 </div>
+                 <div className="space-y-2">
+                   <Label>IP Address</Label>
+                   <Input value="10.0.12.45" readOnly />
+                 </div>
+                 <div className="space-y-2">
+                   <Label>OS</Label>
+                   <Input value="Ubuntu 22.04 LTS" readOnly />
+                 </div>
+                 <div className="space-y-2">
+                   <Label>Kernel</Label>
+                   <Input value="5.15.0-91-generic" readOnly />
+                 </div>
+              </div>
+            </CardContent>
+           </Card>
+
            <Card>
             <CardHeader>
               <CardTitle>Database Connection</CardTitle>
