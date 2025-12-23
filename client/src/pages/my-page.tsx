@@ -20,6 +20,8 @@ import { Resource } from "@/lib/data";
 import { SubmitForm } from "@/components/submit-form";
 import { AnalyticsView } from "@/components/analytics-view";
 import { HostedRequestDetails } from "@/components/hosted-request-details";
+import { HostedServiceManage } from "@/components/hosted-service-manage";
+import { HostedServiceLogs } from "@/components/hosted-service-logs";
 import { GeneralRequestDetails } from "@/components/general-request-details";
 import {
   AlertDialog,
@@ -1056,12 +1058,28 @@ export default function MyPage() {
                                 </div>
                               </div>
                               <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l min-w-[160px]">
-                                <Button variant="outline" size="sm" className="w-full">
-                                  Manage
-                                </Button>
-                                <Button variant="outline" size="sm" className="w-full">
-                                  View Logs
-                                </Button>
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <Button variant="outline" size="sm" className="w-full">
+                                      Manage
+                                    </Button>
+                                  </DialogTrigger>
+                                  <DialogContent className="max-w-5xl h-[90vh] p-6">
+                                    <HostedServiceManage data={item} />
+                                  </DialogContent>
+                                </Dialog>
+
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <Button variant="outline" size="sm" className="w-full">
+                                      View Logs
+                                    </Button>
+                                  </DialogTrigger>
+                                  <DialogContent className="max-w-5xl p-0 border-none bg-transparent shadow-none">
+                                    <HostedServiceLogs serviceName={item.title} />
+                                  </DialogContent>
+                                </Dialog>
+                                
                                 <p className="text-[10px] text-muted-foreground text-center mt-2">
                                   Next bill: {item.nextBilling}
                                 </p>
