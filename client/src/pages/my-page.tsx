@@ -938,7 +938,7 @@ export default function MyPage() {
                                     </Button>
                                   </DialogTrigger>
                                   <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                                    <HostedRequestDetails data={item} isEditable={item.status === 'submitted'} />
+                                    <GeneralRequestDetails data={item} />
                                   </DialogContent>
                                 </Dialog>
 
@@ -1275,7 +1275,7 @@ export default function MyPage() {
                                     </Button>
                                   </DialogTrigger>
                                   <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                                     <HostedRequestDetails data={item} />
+                                     <HostedRequestDetails data={item} isEditable={item.status === 'submitted'} />
                                   </DialogContent>
                                 </Dialog>
 
