@@ -390,7 +390,7 @@ export default function MyPage() {
                 </TabsTrigger>
                 <TabsTrigger value="hosted-data" className="gap-2">
                   <Server className="h-4 w-4 hidden sm:inline" />
-                  {t("Hosted Data", "호스팅 데이터")}
+                  {t("Hosted Service", "호스팅 서비스")}
                 </TabsTrigger>
               </TabsList>
 
