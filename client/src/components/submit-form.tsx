@@ -1182,7 +1182,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   <div className="space-y-2 mb-6 flex-1">
                     <h3 className="font-bold text-lg">{t("Hosted Service", "호스팅 서비스 구축")}</h3>
                     <p className="text-sm text-muted-foreground">
-                      {t("Build and host Data, MCP, and Agent services.", "데이터, MCP, 에이전트 서비스를 구축하고 호스팅합니다.")}
+                      {t("Build and manage individual Data API, MCP, and Agent services.", "개별적인 DATA API, MCP, Agent 서비스를 구축하고 관리까지 지원합니다.")}
                     </p>
                   </div>
 
