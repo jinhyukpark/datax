@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { RESOURCES } from "@/lib/data";
-import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2 } from "lucide-react";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
@@ -545,38 +545,76 @@ export default function MyPage() {
                                 {/* Mock Item 1 */}
                                 <div className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
                                   <div className="col-span-6 md:col-span-5">
-                                    <div className="font-medium truncate">Main Banner Ad Package</div>
+                                    <div className="font-medium truncate">Banner Ad</div>
                                     <div className="text-xs text-muted-foreground mt-0.5">Oct 01 - Oct 31</div>
                                   </div>
                                   <div className="col-span-3 md:col-span-2 text-muted-foreground">30 days</div>
-                                  <div className="col-span-3 md:col-span-2 font-medium">₩1,500,000</div>
+                                  <div className="col-span-3 md:col-span-2 font-medium">₩316,000</div>
                                   <div className="hidden md:col-span-2 md:block">
                                     <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 shadow">
                                       Active
                                     </span>
                                   </div>
                                   <div className="hidden md:col-span-1 md:block text-center">
-                                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                                      <BarChart2 className="h-4 w-4" />
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-green-500 bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-900/50">
+                                      <Megaphone className="h-4 w-4" />
                                     </Button>
                                   </div>
                                 </div>
                                 {/* Mock Item 2 */}
                                 <div className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
                                   <div className="col-span-6 md:col-span-5">
-                                    <div className="font-medium truncate">Category Top Listing</div>
+                                    <div className="font-medium truncate">Listing Ad</div>
                                     <div className="text-xs text-muted-foreground mt-0.5">Sep 15 - Sep 22</div>
                                   </div>
                                   <div className="col-span-3 md:col-span-2 text-muted-foreground">7 days</div>
-                                  <div className="col-span-3 md:col-span-2 font-medium">₩300,000</div>
+                                  <div className="col-span-3 md:col-span-2 font-medium">₩69,000</div>
                                   <div className="hidden md:col-span-2 md:block">
                                     <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-400 shadow">
                                       Completed
                                     </span>
                                   </div>
                                   <div className="hidden md:col-span-1 md:block text-center">
-                                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                                      <History className="h-4 w-4" />
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-500 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50">
+                                      <Layout className="h-4 w-4" />
+                                    </Button>
+                                  </div>
+                                </div>
+                                {/* Mock Item 3 */}
+                                <div className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+                                  <div className="col-span-6 md:col-span-5">
+                                    <div className="font-medium truncate">Agent Sidebar Ad</div>
+                                    <div className="text-xs text-muted-foreground mt-0.5">Nov 01 - Nov 07</div>
+                                  </div>
+                                  <div className="col-span-3 md:col-span-2 text-muted-foreground">7 days</div>
+                                  <div className="col-span-3 md:col-span-2 font-medium">₩59,000</div>
+                                  <div className="hidden md:col-span-2 md:block">
+                                    <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 shadow">
+                                      Scheduled
+                                    </span>
+                                  </div>
+                                  <div className="hidden md:col-span-1 md:block text-center">
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-pink-500 bg-pink-100 dark:bg-pink-900/30 hover:bg-pink-200 dark:hover:bg-pink-900/50">
+                                      <PanelRight className="h-4 w-4" />
+                                    </Button>
+                                  </div>
+                                </div>
+                                {/* Mock Item 4 */}
+                                <div className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+                                  <div className="col-span-6 md:col-span-5">
+                                    <div className="font-medium truncate">Sponsor Logo</div>
+                                    <div className="text-xs text-muted-foreground mt-0.5">Dec 01 - Dec 31</div>
+                                  </div>
+                                  <div className="col-span-3 md:col-span-2 text-muted-foreground">30 days</div>
+                                  <div className="col-span-3 md:col-span-2 font-medium">₩116,000</div>
+                                  <div className="hidden md:col-span-2 md:block">
+                                    <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 shadow">
+                                      Active
+                                    </span>
+                                  </div>
+                                  <div className="hidden md:col-span-1 md:block text-center">
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-amber-500 bg-amber-100 dark:bg-amber-900/30 hover:bg-amber-200 dark:hover:bg-amber-900/50">
+                                      <Star className="h-4 w-4" />
                                     </Button>
                                   </div>
                                 </div>
