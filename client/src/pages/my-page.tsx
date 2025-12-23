@@ -520,57 +520,70 @@ export default function MyPage() {
                       </TabsContent>
 
                       <TabsContent value="advertising">
-                        {myPurchases.length === 0 ? (
-                          <div className="text-center py-12 text-muted-foreground">
+                        <div className="space-y-8">
+                          {/* Empty State (Always visible as requested) */}
+                          <div className="text-center py-12 text-muted-foreground border-b border-dashed border-slate-200 dark:border-slate-800">
                             <ShoppingCart className="mx-auto h-12 w-12 mb-4 opacity-20" />
                             <p>{t("No advertising history found.", "광고 구매 내역이 없습니다.")}</p>
                             <Button variant="link" onClick={() => setLocation('/advertise')}>
                               {t("Browse Ad Products", "광고 상품 둘러보기")}
                             </Button>
                           </div>
-                        ) : (
-                          <div className="rounded-md border">
-                            <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 font-medium text-sm">
-                              <div className="col-span-6 md:col-span-5">{t("Product", "상품명")}</div>
-                              <div className="col-span-3 md:col-span-2">{t("Duration", "기간")}</div>
-                              <div className="col-span-3 md:col-span-2">{t("Amount", "금액")}</div>
-                              <div className="hidden md:col-span-2 md:block">{t("Status", "상태")}</div>
-                              <div className="hidden md:col-span-1 md:block text-center">{t("Action", "관리")}</div>
-                            </div>
-                            <div className="divide-y">
-                              {myPurchases.map((item) => (
-                                <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+
+                          {/* Purchase List (Visible for demo) */}
+                          <div>
+                            <h3 className="text-sm font-semibold mb-4 text-muted-foreground">Publisher Preview: Purchased Items</h3>
+                            <div className="rounded-md border">
+                              <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 font-medium text-sm">
+                                <div className="col-span-6 md:col-span-5">{t("Product", "상품명")}</div>
+                                <div className="col-span-3 md:col-span-2">{t("Duration", "기간")}</div>
+                                <div className="col-span-3 md:col-span-2">{t("Amount", "금액")}</div>
+                                <div className="hidden md:col-span-2 md:block">{t("Status", "상태")}</div>
+                                <div className="hidden md:col-span-1 md:block text-center">{t("Action", "관리")}</div>
+                              </div>
+                              <div className="divide-y">
+                                {/* Mock Item 1 */}
+                                <div className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
                                   <div className="col-span-6 md:col-span-5">
-                                    <div className="font-medium truncate">{item.title}</div>
-                                    <div className="text-xs text-muted-foreground mt-0.5">
-                                      {format(new Date(item.dateRange.from), 'MMM dd')} - {format(new Date(item.dateRange.to), 'MMM dd')}
-                                    </div>
+                                    <div className="font-medium truncate">Main Banner Ad Package</div>
+                                    <div className="text-xs text-muted-foreground mt-0.5">Oct 01 - Oct 31</div>
                                   </div>
-                                  <div className="col-span-3 md:col-span-2 text-muted-foreground">
-                                    {differenceInDays(new Date(item.dateRange.to), new Date(item.dateRange.from)) + 1} days
-                                  </div>
-                                  <div className="col-span-3 md:col-span-2 font-medium">{item.price}</div>
+                                  <div className="col-span-3 md:col-span-2 text-muted-foreground">30 days</div>
+                                  <div className="col-span-3 md:col-span-2 font-medium">₩1,500,000</div>
                                   <div className="hidden md:col-span-2 md:block">
-                                    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent shadow ${
-                                      item.status === 'Completed' 
-                                        ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-100/80'
-                                        : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 hover:bg-yellow-100/80'
-                                    }`}>
-                                      {item.status}
+                                    <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 shadow">
+                                      Active
                                     </span>
                                   </div>
                                   <div className="hidden md:col-span-1 md:block text-center">
-                                    {item.status === 'Pending Payment' && (
-                                      <Button size="sm" className="h-8 text-xs" onClick={() => openPaymentDialog(item.id)}>
-                                        Pay
-                                      </Button>
-                                    )}
+                                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                                      <BarChart2 className="h-4 w-4" />
+                                    </Button>
                                   </div>
                                 </div>
-                              ))}
+                                {/* Mock Item 2 */}
+                                <div className="grid grid-cols-12 gap-4 p-4 items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+                                  <div className="col-span-6 md:col-span-5">
+                                    <div className="font-medium truncate">Category Top Listing</div>
+                                    <div className="text-xs text-muted-foreground mt-0.5">Sep 15 - Sep 22</div>
+                                  </div>
+                                  <div className="col-span-3 md:col-span-2 text-muted-foreground">7 days</div>
+                                  <div className="col-span-3 md:col-span-2 font-medium">₩300,000</div>
+                                  <div className="hidden md:col-span-2 md:block">
+                                    <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-400 shadow">
+                                      Completed
+                                    </span>
+                                  </div>
+                                  <div className="hidden md:col-span-1 md:block text-center">
+                                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                                      <History className="h-4 w-4" />
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        )}
+                        </div>
                       </TabsContent>
                     </Tabs>
                   </CardContent>
