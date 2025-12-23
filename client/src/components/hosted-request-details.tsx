@@ -4,8 +4,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/lib/language-context";
-import { ShieldCheck, ArrowRight, Loader2, Save } from "lucide-react";
+import { ShieldCheck, ArrowRight, Loader2, Save, Info, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -55,6 +56,39 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
              <p className="text-xs text-muted-foreground">Submitted information about your dataset</p>
            </div>
         </div>
+
+        {/* Status Banners for Non-Editable States */}
+        {!isEditable && data.status && data.status !== 'submitted' && (
+          <div className="animate-in fade-in slide-in-from-top-2">
+            {data.status === 'verifying' && (
+              <Alert className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-900">
+                <Info className="h-4 w-4 text-blue-600" />
+                <AlertTitle className="text-blue-800 dark:text-blue-300">Under Review</AlertTitle>
+                <AlertDescription className="text-blue-700 dark:text-blue-400">
+                  This request is currently being verified by our team. You cannot make changes at this time.
+                </AlertDescription>
+              </Alert>
+            )}
+            {data.status === 'rejected' && (
+              <Alert variant="destructive" className="bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Submission Rejected</AlertTitle>
+                <AlertDescription>
+                  {data.rejectionReason || "This request was rejected. Please check your notifications for details."}
+                </AlertDescription>
+              </Alert>
+            )}
+            {data.status === 'verified' && (
+              <Alert className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-900">
+                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <AlertTitle className="text-green-800 dark:text-green-300">Approved</AlertTitle>
+                <AlertDescription className="text-green-700 dark:text-green-400">
+                  This request has been approved and published.
+                </AlertDescription>
+              </Alert>
+            )}
+          </div>
+        )}
 
         {/* Basic Info Fields */}
         <div className="grid grid-cols-1 gap-6">
