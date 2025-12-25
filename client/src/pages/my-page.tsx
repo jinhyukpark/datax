@@ -353,6 +353,16 @@ export default function MyPage() {
       apiKey: "sk-mcp-9a...2b4c",
       transactions: 850,
       lastActive: "2025-12-26 10:20"
+    },
+    {
+      id: "u5",
+      resourceId: "8",
+      title: "Quarterly Financial Reports (2024 Q1)",
+      type: "Dataset",
+      status: "Expired",
+      lastUpdate: "2024-04-01",
+      lastDownload: "2024-04-10 11:20",
+      downloadCount: 3
     }
   ]);
 
