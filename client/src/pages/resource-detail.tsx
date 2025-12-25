@@ -164,10 +164,10 @@ export default function ResourceDetail() {
                   </a>
                 </Button>
               )}
-              <Button variant="outline" className="border-slate-200 dark:border-slate-800">
-                <ShieldCheck className="mr-2 h-4 w-4 text-green-600" />
+              <div className="flex items-center justify-center gap-2 rounded-md border border-green-200 bg-green-50 py-2.5 text-sm font-medium text-green-700 dark:border-green-900/30 dark:bg-green-900/20 dark:text-green-400">
+                <ShieldCheck className="h-4 w-4" />
                 {t("Verified Provider", "인증된 제공자")}
-              </Button>
+              </div>
             </div>
           </div>
         </div>
