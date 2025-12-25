@@ -698,7 +698,7 @@ export default function MyPage() {
                             </div>
                             <div className="space-y-4">
                               <h4 className="text-sm font-medium text-muted-foreground">{t("Authentication", "인증 관리")}</h4>
-                              <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 space-y-3">
+                              <div className="px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 space-y-2">
                                 <div className="flex justify-between items-center">
                                   <span className="text-sm font-medium">Agent Key</span>
                                   <Button variant="ghost" size="sm" className="h-6 text-xs text-purple-600 hover:text-purple-700">Regenerate</Button>
