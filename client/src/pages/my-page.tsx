@@ -661,10 +661,20 @@ export default function MyPage() {
                                 <span className="font-medium text-sm text-muted-foreground">{t("Total Downloads", "총 다운로드")}</span>
                                 <span className="font-bold">{item.downloadCount}</span>
                               </div>
-                              <Button className="w-full gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
-                                <Download className="h-4 w-4" />
-                                {t("Download Latest", "최신 버전 다운로드")}
-                              </Button>
+                              {item.status === 'Expired' ? (
+                                <Button 
+                                  className="w-full gap-2 bg-blue-600 hover:bg-blue-700 text-white"
+                                  onClick={() => setLocation(`/resource/${item.resourceId}`)}
+                                >
+                                  <CreditCard className="h-4 w-4" />
+                                  {t("Repurchase", "재구매하기")}
+                                </Button>
+                              ) : (
+                                <Button className="w-full gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
+                                  <Download className="h-4 w-4" />
+                                  {t("Download Latest", "최신 버전 다운로드")}
+                                </Button>
+                              )}
                             </div>
                           </div>
                         )}
