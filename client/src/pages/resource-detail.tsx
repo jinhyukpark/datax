@@ -35,7 +35,9 @@ import {
   Github,
   Link as LinkIcon,
   Briefcase,
-  Check
+  Check,
+  ShoppingCart,
+  CreditCard
 } from "lucide-react";
 import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
 import { useLanguage } from "@/lib/language-context";
@@ -50,6 +52,13 @@ const imageMap: Record<string, string> = {
   "iot_data_icon_abstract": iotDataIcon,
   "financial_data_icon_abstract": financialDataIcon
 };
+
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export default function ResourceDetail() {
   const [, params] = useRoute("/resource/:id");
@@ -93,7 +102,16 @@ export default function ResourceDetail() {
             
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-3 mb-3">
-                <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800">
+                <Badge variant="outline" className={cn(
+                  "border-blue-200 dark:border-blue-800",
+                  resource.price === 'Paid' ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300" : 
+                  resource.price === 'Free' ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300" :
+                  "bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300"
+                )}>
+                  {resource.price === 'Paid' ? <CreditCard className="mr-1 h-3 w-3" /> : null}
+                  {resource.price}
+                </Badge>
+                <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-300 dark:border-slate-700">
                   {resource.type.toUpperCase()}
                 </Badge>
                 <div className="flex items-center gap-1 text-sm font-medium text-muted-foreground">
@@ -123,12 +141,21 @@ export default function ResourceDetail() {
             </div>
 
             <div className="flex flex-col gap-3 shrink-0 md:min-w-[200px]">
-              <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
-                <a href={resource.websiteUrl || resource.demoUrl || "#"} target="_blank" rel="noopener noreferrer">
-                  <ExternalLink className="mr-2 h-4 w-4" />
-                  {t("Access Resource", "리소스 접근")}
-                </a>
-              </Button>
+              {resource.price === 'Paid' ? (
+                <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
+                  <a href={resource.websiteUrl || "#"} target="_blank" rel="noopener noreferrer">
+                    <ShoppingCart className="mr-2 h-4 w-4" />
+                    {t("Purchase", "구매하기")}
+                  </a>
+                </Button>
+              ) : (
+                <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
+                  <a href={resource.websiteUrl || resource.demoUrl || "#"} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    {t("Access Resource", "리소스 접근")}
+                  </a>
+                </Button>
+              )}
               {resource.demoUrl && (
                 <Button variant="outline" className="border-slate-200 dark:border-slate-800" asChild>
                   <a href={resource.demoUrl} target="_blank" rel="noopener noreferrer">
