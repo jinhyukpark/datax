@@ -406,32 +406,34 @@ export default function MyPage() {
             <h1 className="text-3xl font-bold mb-6">{t("My Page", "마이 페이지")}</h1>
             
             <Tabs defaultValue="profile" className="w-full">
-              <TabsList className="grid w-full grid-cols-5 mb-8">
-                <TabsTrigger value="profile" className="gap-2">
-                  <User className="h-4 w-4 hidden sm:inline" />
-                  {t("Profile", "프로필")}
-                </TabsTrigger>
-                <TabsTrigger value="favorites" className="gap-2">
-                  <Heart className="h-4 w-4 hidden sm:inline" />
-                  {t("Favorites", "즐겨찾기")}
-                </TabsTrigger>
-                <TabsTrigger value="purchases" className="gap-2">
-                  <CreditCard className="h-4 w-4 hidden sm:inline" />
-                  {t("Purchases", "구매 내역")}
-                </TabsTrigger>
-                <TabsTrigger value="usage-status" className="gap-2">
-                  <Activity className="h-4 w-4 hidden sm:inline" />
-                  {t("Usage Status", "이용 현황")}
-                </TabsTrigger>
-                <TabsTrigger value="my-data" className="gap-2">
-                  <Share2 className="h-4 w-4 hidden sm:inline" />
-                  {t("Linked Service", "연동 서비스")}
-                </TabsTrigger>
-                <TabsTrigger value="hosted-data" className="gap-2">
-                  <Server className="h-4 w-4 hidden sm:inline" />
-                  {t("Hosted Service", "호스팅 서비스")}
-                </TabsTrigger>
-              </TabsList>
+              <ScrollArea className="w-full whitespace-nowrap rounded-md border mb-8">
+                <TabsList className="flex w-full min-w-max justify-start p-1">
+                  <TabsTrigger value="profile" className="gap-2 px-6">
+                    <User className="h-4 w-4 hidden sm:inline" />
+                    {t("Profile", "프로필")}
+                  </TabsTrigger>
+                  <TabsTrigger value="favorites" className="gap-2 px-6">
+                    <Heart className="h-4 w-4 hidden sm:inline" />
+                    {t("Favorites", "즐겨찾기")}
+                  </TabsTrigger>
+                  <TabsTrigger value="purchases" className="gap-2 px-6">
+                    <CreditCard className="h-4 w-4 hidden sm:inline" />
+                    {t("Purchases", "구매 내역")}
+                  </TabsTrigger>
+                  <TabsTrigger value="usage-status" className="gap-2 px-6">
+                    <Activity className="h-4 w-4 hidden sm:inline" />
+                    {t("Usage Status", "이용 현황")}
+                  </TabsTrigger>
+                  <TabsTrigger value="my-data" className="gap-2 px-6">
+                    <Share2 className="h-4 w-4 hidden sm:inline" />
+                    {t("Linked Service", "연동 서비스")}
+                  </TabsTrigger>
+                  <TabsTrigger value="hosted-data" className="gap-2 px-6">
+                    <Server className="h-4 w-4 hidden sm:inline" />
+                    {t("Hosted Service", "호스팅 서비스")}
+                  </TabsTrigger>
+                </TabsList>
+              </ScrollArea>
 
               {/* Profile Tab */}
               <TabsContent value="profile" className="space-y-6">
