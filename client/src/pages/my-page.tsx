@@ -306,6 +306,11 @@ export default function MyPage() {
 
   const hostedDataApproved: any[] = [];
 
+  // Calculate statistics
+  const pendingRequestsCount = requestedData.filter(r => r.status === 'submitted' || r.status === 'verifying').length;
+  const approvedDataCount = myData.length;
+  const totalUnreadReviews = myData.reduce((acc, curr) => acc + curr.unreadReviews, 0);
+
   // Mock Usage Statistics
   const [usageStats] = useState([
     {
