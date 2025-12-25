@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { RESOURCES } from "@/lib/data";
-import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star } from "lucide-react";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star, Activity, FileText, Database, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
@@ -306,10 +306,40 @@ export default function MyPage() {
 
   const hostedDataApproved: any[] = [];
 
-  // Calculate statistics
-  const pendingRequestsCount = requestedData.filter(r => r.status === 'submitted' || r.status === 'verifying').length;
-  const approvedDataCount = myData.length;
-  const totalUnreadReviews = myData.reduce((acc, curr) => acc + curr.unreadReviews, 0);
+  // Mock Usage Statistics
+  const [usageStats] = useState([
+    {
+      id: "u1",
+      resourceId: "1",
+      title: "Social Trend Analysis",
+      type: "API",
+      status: "Active",
+      apiKey: "sk-live-5f...9a2b",
+      usage: 45210,
+      limit: 50000,
+      resetDate: "2026-01-01"
+    },
+    {
+      id: "u2",
+      resourceId: "10",
+      title: "K-tools Smart Equipment Management Platform",
+      type: "Dataset",
+      status: "Active",
+      lastUpdate: "2025-12-20",
+      lastDownload: "2025-12-24 14:30",
+      downloadCount: 12
+    },
+    {
+      id: "u3",
+      resourceId: "3",
+      title: "Wemeet Science Agent",
+      type: "Agent",
+      status: "Active",
+      apiKey: "sk-agent-7c...3d1f",
+      transactions: 1240,
+      lastActive: "2025-12-25 09:15"
+    }
+  ]);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
@@ -383,6 +413,10 @@ export default function MyPage() {
                 <TabsTrigger value="purchases" className="gap-2">
                   <CreditCard className="h-4 w-4 hidden sm:inline" />
                   {t("Purchases", "구매 내역")}
+                </TabsTrigger>
+                <TabsTrigger value="usage-status" className="gap-2">
+                  <Activity className="h-4 w-4 hidden sm:inline" />
+                  {t("Usage Status", "이용 현황")}
                 </TabsTrigger>
                 <TabsTrigger value="my-data" className="gap-2">
                   <Share2 className="h-4 w-4 hidden sm:inline" />
@@ -468,6 +502,165 @@ export default function MyPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {favorites.map((resource) => (
                     <ResourceCard key={resource.id} resource={resource} />
+                  ))}
+                </div>
+              </TabsContent>
+
+              {/* Usage Status Tab */}
+              <TabsContent value="usage-status">
+                <div className="mb-6">
+                  <h2 className="text-xl font-semibold mb-2">{t("Resource Usage Status", "리소스 이용 현황")}</h2>
+                  <p className="text-muted-foreground">{t("Monitor your usage, manage API keys, and download updates.", "사용량을 모니터링하고 API 키를 관리하며 업데이트를 다운로드하세요.")}</p>
+                </div>
+
+                <div className="space-y-6">
+                  {usageStats.map((item) => (
+                    <Card key={item.id} className="overflow-hidden">
+                      <div className="border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2 rounded-lg ${
+                            item.type === 'API' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' :
+                            item.type === 'Dataset' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' :
+                            'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400'
+                          }`}>
+                            {item.type === 'API' ? <Server className="h-5 w-5" /> :
+                             item.type === 'Dataset' ? <Database className="h-5 w-5" /> :
+                             <Zap className="h-5 w-5" />}
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-base">{item.title}</h3>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <span className="font-medium">{item.type}</span>
+                              <span>•</span>
+                              <span className="flex items-center gap-1">
+                                <span className={`inline-block h-2 w-2 rounded-full ${item.status === 'Active' ? 'bg-green-500' : 'bg-slate-400'}`}></span>
+                                {item.status}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button variant="outline" size="sm" className="gap-2">
+                            <FileText className="h-4 w-4" />
+                            {t("Docs", "문서")}
+                          </Button>
+                          <Button variant="outline" size="sm" className="gap-2">
+                            <MessageSquare className="h-4 w-4" />
+                            {t("Support", "지원")}
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <CardContent className="p-6">
+                        {item.type === 'API' && (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="space-y-6">
+                              <div>
+                                <h4 className="text-sm font-medium text-muted-foreground mb-4">{t("Usage Overview", "사용량 개요")}</h4>
+                                <div className="space-y-2">
+                                  <div className="flex justify-between text-sm">
+                                    <span className="font-medium">{item.usage?.toLocaleString()} / {item.limit?.toLocaleString()} calls</span>
+                                    <span className="text-muted-foreground">{Math.round((item.usage! / item.limit!) * 100)}%</span>
+                                  </div>
+                                  <div className="h-2.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                    <div 
+                                      className="h-full bg-blue-600 rounded-full transition-all" 
+                                      style={{ width: `${(item.usage! / item.limit!) * 100}%` }}
+                                    ></div>
+                                  </div>
+                                  <p className="text-xs text-muted-foreground text-right pt-1">
+                                    Resets on {item.resetDate}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="space-y-4">
+                              <h4 className="text-sm font-medium text-muted-foreground">{t("API Configuration", "API 설정")}</h4>
+                              <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 space-y-3">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm font-medium">API Key</span>
+                                  <Button variant="ghost" size="sm" className="h-6 text-xs text-blue-600 hover:text-blue-700">Roll Key</Button>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <code className="flex-1 bg-white dark:bg-slate-950 px-3 py-2 rounded border border-slate-200 dark:border-slate-800 font-mono text-sm">
+                                    {item.apiKey}
+                                  </code>
+                                  <Button size="icon" variant="outline" className="h-9 w-9">
+                                    <Share2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {item.type === 'Dataset' && (
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                              <div className="flex items-center gap-3 mb-2">
+                                <Clock className="h-5 w-5 text-emerald-500" />
+                                <span className="font-medium text-sm text-muted-foreground">{t("Last Update", "최근 업데이트")}</span>
+                              </div>
+                              <p className="text-lg font-bold">{item.lastUpdate}</p>
+                            </div>
+                            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                              <div className="flex items-center gap-3 mb-2">
+                                <History className="h-5 w-5 text-blue-500" />
+                                <span className="font-medium text-sm text-muted-foreground">{t("Last Download", "최근 다운로드")}</span>
+                              </div>
+                              <p className="text-lg font-bold">{item.lastDownload}</p>
+                            </div>
+                            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="font-medium text-sm text-muted-foreground">{t("Total Downloads", "총 다운로드")}</span>
+                                <span className="font-bold">{item.downloadCount}</span>
+                              </div>
+                              <Button className="w-full gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
+                                <Download className="h-4 w-4" />
+                                {t("Download Latest", "최신 버전 다운로드")}
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+
+                        {(item.type === 'Agent' || item.type === 'MCP') && (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="space-y-6">
+                              <div>
+                                <h4 className="text-sm font-medium text-muted-foreground mb-4">{t("Activity", "활동")}</h4>
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div className="p-4 rounded-lg bg-purple-50 dark:bg-purple-900/10 border border-purple-100 dark:border-purple-800/30">
+                                    <div className="text-sm text-muted-foreground mb-1">Total Transactions</div>
+                                    <div className="text-2xl font-bold text-purple-700 dark:text-purple-400">{item.transactions?.toLocaleString()}</div>
+                                  </div>
+                                  <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                                    <div className="text-sm text-muted-foreground mb-1">Last Active</div>
+                                    <div className="text-lg font-semibold">{item.lastActive}</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="space-y-4">
+                              <h4 className="text-sm font-medium text-muted-foreground">{t("Authentication", "인증 관리")}</h4>
+                              <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 space-y-3">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm font-medium">Agent Key</span>
+                                  <Button variant="ghost" size="sm" className="h-6 text-xs text-purple-600 hover:text-purple-700">Regenerate</Button>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <code className="flex-1 bg-white dark:bg-slate-950 px-3 py-2 rounded border border-slate-200 dark:border-slate-800 font-mono text-sm">
+                                    {item.apiKey}
+                                  </code>
+                                  <Button size="icon" variant="outline" className="h-9 w-9">
+                                    <Share2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
                   ))}
                 </div>
               </TabsContent>
