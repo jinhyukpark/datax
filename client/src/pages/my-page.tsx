@@ -343,8 +343,25 @@ export default function MyPage() {
       apiKey: "sk-agent-7c...3d1f",
       transactions: 1240,
       lastActive: "2025-12-25 09:15"
+    },
+    {
+      id: "u4",
+      resourceId: "5",
+      title: "Smart Contract Auditor",
+      type: "MCP",
+      status: "Active",
+      apiKey: "sk-mcp-9a...2b4c",
+      transactions: 850,
+      lastActive: "2025-12-26 10:20"
     }
   ]);
+
+  const [usageFilter, setUsageFilter] = useState("ALL");
+
+  const filteredUsageStats = usageStats.filter(item => {
+    if (usageFilter === "ALL") return true;
+    return item.type.toUpperCase() === usageFilter;
+  });
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
@@ -520,8 +537,25 @@ export default function MyPage() {
                   <p className="text-muted-foreground">{t("Monitor your usage, manage API keys, and download updates.", "사용량을 모니터링하고 API 키를 관리하며 업데이트를 다운로드하세요.")}</p>
                 </div>
 
+                <div className="flex space-x-2 mb-6 border-b border-slate-200 dark:border-slate-800 pb-1 overflow-x-auto">
+                  {["ALL", "DATA", "API", "MCP", "AGENT"].map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => setUsageFilter(type)}
+                      className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors relative whitespace-nowrap ${
+                        usageFilter === type
+                          ? "text-blue-600 dark:text-blue-400 bg-white dark:bg-slate-900 border-x border-t border-slate-200 dark:border-slate-800 -mb-1.5 pb-2.5 z-10"
+                          : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      }`}
+                    >
+                      {type === "DATA" ? "Dataset" : type === "AGENT" ? "Agent" : type}
+                    </button>
+                  ))}
+                </div>
+
                 <div className="space-y-6">
-                  {usageStats.map((item) => (
+                  {filteredUsageStats.length > 0 ? (
+                    filteredUsageStats.map((item) => (
                     <Card key={item.id} className="overflow-hidden">
                       <div className="border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
@@ -668,7 +702,12 @@ export default function MyPage() {
                         )}
                       </CardContent>
                     </Card>
-                  ))}
+                    ))
+                  ) : (
+                    <div className="text-center py-12 text-muted-foreground bg-slate-50/50 rounded-lg border border-dashed border-slate-200">
+                      <p>{t("No resources found for this category.", "해당 카테고리의 리소스가 없습니다.")}</p>
+                    </div>
+                  )}
                 </div>
               </TabsContent>
 
