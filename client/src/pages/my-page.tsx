@@ -605,7 +605,7 @@ export default function MyPage() {
                                 <h4 className="text-sm font-medium text-muted-foreground mb-4">{t("Usage Overview", "사용량 개요")}</h4>
                                 <div className="space-y-2">
                                   <div className="flex justify-between text-sm">
-                                    <span className="font-medium">{item.usage?.toLocaleString()} / {item.limit?.toLocaleString()} calls / month</span>
+                                    <span className="font-medium">{item.usage?.toLocaleString()} / {item.limit?.toLocaleString()} calls (month)</span>
                                     <span className="text-muted-foreground">{Math.round((item.usage! / item.limit!) * 100)}%</span>
                                   </div>
                                   <div className="h-2.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
