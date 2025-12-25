@@ -37,10 +37,13 @@ import {
   Briefcase,
   Check,
   ShoppingCart,
-  CreditCard
+  CreditCard,
+  Heart
 } from "lucide-react";
 import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
 import { useLanguage } from "@/lib/language-context";
+import { useState } from "react";
+import { toast } from "sonner";
 
 // Import generated images
 import aiAgentIcon from "@assets/generated_images/ai_agent_icon_abstract.png";
@@ -64,6 +67,12 @@ export default function ResourceDetail() {
   const [, params] = useRoute("/resource/:id");
   const resource = RESOURCES.find(r => r.id === params?.id);
   const { language, t } = useLanguage();
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+    toast.success(isFavorite ? t("Removed from favorites", "즐겨찾기에서 제거되었습니다") : t("Added to favorites", "즐겨찾기에 추가되었습니다"));
+  };
 
   if (!resource) return <div>Resource not found</div>;
 
@@ -164,6 +173,19 @@ export default function ResourceDetail() {
                   </a>
                 </Button>
               )}
+              
+              <Button 
+                variant="outline" 
+                className={cn(
+                  "border-slate-200 dark:border-slate-800 transition-colors",
+                  isFavorite && "border-pink-200 bg-pink-50 text-pink-600 hover:bg-pink-100 hover:text-pink-700 dark:bg-pink-900/20 dark:border-pink-800 dark:text-pink-400"
+                )}
+                onClick={toggleFavorite}
+              >
+                <Heart className={cn("mr-2 h-4 w-4", isFavorite && "fill-current")} />
+                {isFavorite ? t("Saved", "저장됨") : t("Favorite", "즐겨찾기")}
+              </Button>
+
               <div className="flex items-center justify-center gap-2 rounded-md border border-green-200 bg-green-50 py-2.5 text-sm font-medium text-green-700 dark:border-green-900/30 dark:bg-green-900/20 dark:text-green-400">
                 <ShieldCheck className="h-4 w-4" />
                 {t("Verified Provider", "인증된 제공자")}
