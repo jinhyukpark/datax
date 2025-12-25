@@ -572,23 +572,18 @@ export default function MyPage() {
                             <h3 className="font-semibold text-base">{item.title}</h3>
                             <div className="flex items-center gap-2 text-xs text-muted-foreground">
                               <span className="font-medium">{item.type}</span>
-                              <span>•</span>
-                              <span className="flex items-center gap-1">
-                                <span className={`inline-block h-2 w-2 rounded-full ${item.status === 'Active' ? 'bg-green-500' : 'bg-slate-400'}`}></span>
-                                {item.status}
-                              </span>
                             </div>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Button variant="outline" size="sm" className="gap-2">
-                            <FileText className="h-4 w-4" />
-                            {t("Docs", "문서")}
-                          </Button>
-                          <Button variant="outline" size="sm" className="gap-2">
-                            <MessageSquare className="h-4 w-4" />
-                            {t("Support", "지원")}
-                          </Button>
+                          <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent ${
+                            item.status === 'Active' 
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' 
+                            : 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-400'
+                          }`}>
+                            <span className={`mr-1.5 h-2 w-2 rounded-full ${item.status === 'Active' ? 'bg-green-500' : 'bg-slate-500'}`}></span>
+                            {item.status}
+                          </span>
                         </div>
                       </div>
                       
