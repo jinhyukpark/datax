@@ -656,35 +656,36 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
             {/* Tags */}
             <div className="space-y-3">
                 <Label className="font-semibold text-sm">Tags</Label>
-                <div className="flex flex-wrap gap-2 p-3 bg-slate-50 dark:bg-slate-900/30 rounded-lg border border-slate-200 dark:border-slate-800 min-h-[44px]">
+                <div className="flex flex-wrap items-center gap-2">
                   {tags.map((tag, index) => (
-                    <span key={index} className="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium animate-in fade-in zoom-in duration-200">
-                      #{tag}
+                    <span 
+                      key={index} 
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-sm border border-slate-200 dark:border-slate-700"
+                    >
+                      {tag}
                       <button 
                         type="button" 
                         onClick={() => setTags(tags.filter((_, i) => i !== index))}
-                        className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-0.5 transition-colors"
+                        className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
                       >
-                        <X className="h-3 w-3" />
+                        <X className="h-3.5 w-3.5" />
                       </button>
                     </span>
                   ))}
-                  <Input 
-                    placeholder={tags.length === 0 ? "Type a tag and press Enter" : "Add more..."}
-                    className="flex-1 min-w-[120px] h-7 border-0 bg-transparent p-0 focus-visible:ring-0 text-sm"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        const value = (e.target as HTMLInputElement).value.trim();
-                        if (value && !tags.includes(value)) {
-                          setTags([...tags, value]);
-                          (e.target as HTMLInputElement).value = '';
-                        }
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newTag = prompt("Enter a new tag:");
+                      if (newTag && newTag.trim() && !tags.includes(newTag.trim())) {
+                        setTags([...tags, newTag.trim()]);
                       }
                     }}
-                  />
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm border border-dashed border-slate-300 dark:border-slate-600 rounded-lg hover:border-slate-400 dark:hover:border-slate-500 transition-colors"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    New Tag
+                  </button>
                 </div>
-                <p className="text-xs text-muted-foreground">Press Enter to add tags. Tags help users discover your agent.</p>
             </div>
 
             <div className="space-y-3">
