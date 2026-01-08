@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useRoute } from "wouter";
 import AdminLayout from "./admin-layout";
 import { Button } from "@/components/ui/button";
@@ -205,6 +205,77 @@ export default function BlogEdit() {
     }
   };
 
+  const formatInline = (text: string) => {
+    return text
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/`(.+?)`/g, '<code>$1</code>')
+      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-blue-600 hover:underline">$1</a>');
+  };
+
+  const renderMarkdown = (content: string): React.ReactNode => {
+    if (!content) return <p className="text-muted-foreground italic">Start typing to see preview...</p>;
+    
+    const lines = content.split('\n');
+    const elements: React.ReactNode[] = [];
+    let inCodeBlock = false;
+    let codeContent: string[] = [];
+    let codeLanguage = '';
+
+    lines.forEach((line, index) => {
+      if (line.startsWith('```')) {
+        if (!inCodeBlock) {
+          inCodeBlock = true;
+          codeLanguage = line.slice(3);
+          codeContent = [];
+        } else {
+          inCodeBlock = false;
+          elements.push(
+            <pre key={index} className="bg-slate-900 text-slate-100 rounded-lg p-3 overflow-x-auto my-3 text-xs">
+              <code>{codeContent.join('\n')}</code>
+            </pre>
+          );
+        }
+        return;
+      }
+
+      if (inCodeBlock) {
+        codeContent.push(line);
+        return;
+      }
+
+      if (line.startsWith('### ')) {
+        elements.push(<h3 key={index} className="text-base font-bold mt-4 mb-2">{line.slice(4)}</h3>);
+      } else if (line.startsWith('## ')) {
+        elements.push(<h2 key={index} className="text-lg font-bold mt-6 mb-3">{line.slice(3)}</h2>);
+      } else if (line.startsWith('# ')) {
+        elements.push(<h1 key={index} className="text-xl font-bold mt-4 mb-3">{line.slice(2)}</h1>);
+      } else if (line.startsWith('> ')) {
+        elements.push(
+          <blockquote key={index} className="border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 pl-3 py-2 my-3 rounded-r text-sm">
+            <span dangerouslySetInnerHTML={{ __html: formatInline(line.slice(2)) }} />
+          </blockquote>
+        );
+      } else if (line.startsWith('- ')) {
+        elements.push(
+          <li key={index} className="ml-4 mb-1 text-sm" dangerouslySetInnerHTML={{ __html: formatInline(line.slice(2)) }} />
+        );
+      } else if (/^\d+\.\s/.test(line)) {
+        elements.push(
+          <li key={index} className="ml-4 mb-1 list-decimal text-sm" dangerouslySetInnerHTML={{ __html: formatInline(line.replace(/^\d+\.\s/, '')) }} />
+        );
+      } else if (line.trim() === '') {
+        elements.push(<div key={index} className="h-2" />);
+      } else {
+        elements.push(
+          <p key={index} className="mb-2 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: formatInline(line) }} />
+        );
+      }
+    });
+
+    return elements;
+  };
+
   return (
     <AdminLayout title={isNew ? "Create Blog Post" : "Edit Blog Post"}>
       <div className="space-y-6">
@@ -302,13 +373,41 @@ export default function BlogEdit() {
                     </Button>
                   </div>
                 </div>
-                <Textarea 
-                  id="content"
-                  value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  placeholder="Write your blog post content here... (Markdown supported)"
-                  className="min-h-[500px] resize-y font-mono text-sm leading-relaxed"
-                />
+                
+                {/* Split view: Editor + Preview */}
+                <div className="grid grid-cols-2 gap-4 min-h-[500px]">
+                  {/* Left: Markdown Editor */}
+                  <div className="relative">
+                    <div className="absolute top-2 left-3 text-xs font-medium text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+                      Editor
+                    </div>
+                    <Textarea 
+                      id="content"
+                      value={formData.content}
+                      onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                      placeholder="Write your blog post content here... (Markdown supported)"
+                      className="h-full min-h-[500px] resize-none font-mono text-sm leading-relaxed pt-8"
+                    />
+                  </div>
+                  
+                  {/* Right: Live Preview */}
+                  <div className="relative border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+                    <div className="absolute top-2 left-3 z-10 text-xs font-medium text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+                      Preview
+                    </div>
+                    <div className="h-full min-h-[500px] overflow-y-auto p-4 pt-8 bg-white dark:bg-slate-950 prose prose-sm prose-slate dark:prose-invert max-w-none
+                      prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg
+                      prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-p:leading-relaxed
+                      prose-a:text-blue-600 prose-code:text-blue-600 prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
+                      prose-pre:bg-slate-900 prose-pre:text-slate-100
+                      prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 dark:prose-blockquote:bg-blue-900/20 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic
+                      prose-li:text-slate-600 dark:prose-li:text-slate-300
+                      prose-strong:text-slate-900 dark:prose-strong:text-white">
+                      {renderMarkdown(formData.content)}
+                    </div>
+                  </div>
+                </div>
+                
                 <p className="text-xs text-muted-foreground">
                   Use Markdown syntax: # for headings, **bold**, *italic*, ```code```, etc.
                 </p>
