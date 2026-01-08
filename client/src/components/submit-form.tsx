@@ -83,7 +83,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   ]);
 
   const [replyText, setReplyText] = useState<{[key: string]: string}>({});
-  const [featuredImages, setFeaturedImages] = useState<string[]>([]);
+  const [featuredImages, setFeaturedImages] = useState<string[]>(["image01.png", "image02.png", "image03.png", "image04.png"]);
   const [agentLogo, setAgentLogo] = useState<string>("");
 
   useEffect(() => {
