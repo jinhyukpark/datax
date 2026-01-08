@@ -421,54 +421,69 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
             </div>
             </div>
 
-            {/* Categorization */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Category Selection */}
+            <div className="space-y-3 bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Category <span className="text-red-500">*</span></Label>
+                <RadioGroup defaultValue="analysis" className="gap-0">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+                    {[
+                      "Analysis", "News", "Finance", "Space", "Patent",
+                      "Science", "Equipment", "Energy", "Waste", "Growth",
+                      "Startup", "Transaction", "Oil", "Consulting", "Investment",
+                      "Power", "Network", "Innovation", "Materials", "Enterprise",
+                      "Ecosystem", "E-commerce", "Robot", "M&A", "R&D"
+                    ].map((category) => (
+                      <div key={category} className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
+                        <RadioGroupItem value={category.toLowerCase()} id={`cat-${category.toLowerCase()}`} />
+                        <Label htmlFor={`cat-${category.toLowerCase()}`} className="cursor-pointer font-medium text-sm">{category}</Label>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center space-x-2 pt-2 border-t border-slate-200 dark:border-slate-700 mt-2">
+                    <RadioGroupItem value="custom" id="cat-custom" />
+                    <Input placeholder="Enter custom category" className="flex-1 h-8 text-sm" />
+                  </div>
+                </RadioGroup>
+            </div>
+
+            {/* Delivery Type & Pricing */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
-                <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Access Model <span className="text-red-500">*</span></Label>
-                <RadioGroup defaultValue={initialData?.accessModel?.toLowerCase() || "open"} className="gap-2">
+                <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Delivery Type <span className="text-red-500">*</span></Label>
+                <RadioGroup defaultValue={initialData?.accessModel?.toLowerCase() || "file"} className="gap-2">
                 <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
-                    <RadioGroupItem value="open" id="open" />
-                    <Label htmlFor="open" className="cursor-pointer font-medium text-sm">Open Source</Label>
+                    <RadioGroupItem value="file" id="delivery-file" />
+                    <Label htmlFor="delivery-file" className="cursor-pointer font-medium text-sm">File</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
-                    <RadioGroupItem value="closed" id="closed" />
-                    <Label htmlFor="closed" className="cursor-pointer font-medium text-sm">Closed Source</Label>
+                    <RadioGroupItem value="api" id="delivery-api" />
+                    <Label htmlFor="delivery-api" className="cursor-pointer font-medium text-sm">API</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
-                    <RadioGroupItem value="api" id="api" />
-                    <Label htmlFor="api" className="cursor-pointer font-medium text-sm">API</Label>
+                    <RadioGroupItem value="mcp" id="delivery-mcp" />
+                    <Label htmlFor="delivery-mcp" className="cursor-pointer font-medium text-sm">MCP</Label>
+                </div>
+                <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
+                    <RadioGroupItem value="ai-agent" id="delivery-ai-agent" />
+                    <Label htmlFor="delivery-ai-agent" className="cursor-pointer font-medium text-sm">AI Agent</Label>
                 </div>
                 </RadioGroup>
             </div>
 
             <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
-                <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Pricing Model <span className="text-red-500">*</span></Label>
+                <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Pricing <span className="text-red-500">*</span></Label>
                 <RadioGroup defaultValue={initialData?.price?.toLowerCase() || "free"} className="gap-2">
                 <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
-                    <RadioGroupItem value="free" id="free" />
-                    <Label htmlFor="free" className="cursor-pointer font-medium text-sm">Free</Label>
+                    <RadioGroupItem value="free" id="pricing-free" />
+                    <Label htmlFor="pricing-free" className="cursor-pointer font-medium text-sm">Free</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
-                    <RadioGroupItem value="freemium" id="freemium" />
-                    <Label htmlFor="freemium" className="cursor-pointer font-medium text-sm">Freemium</Label>
+                    <RadioGroupItem value="freemium" id="pricing-freemium" />
+                    <Label htmlFor="pricing-freemium" className="cursor-pointer font-medium text-sm">Freemium</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
-                    <RadioGroupItem value="paid" id="paid" />
-                    <Label htmlFor="paid" className="cursor-pointer font-medium text-sm">Paid</Label>
-                </div>
-                </RadioGroup>
-            </div>
-
-            <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
-                <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Industry <span className="text-red-500">*</span></Label>
-                <RadioGroup defaultValue={initialData?.industry?.toLowerCase() || "horizontal"} className="gap-2">
-                <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
-                    <RadioGroupItem value="horizontal" id="horizontal" />
-                    <Label htmlFor="horizontal" className="cursor-pointer font-medium text-sm">Horizontal</Label>
-                </div>
-                <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
-                    <RadioGroupItem value="vertical" id="vertical" />
-                    <Label htmlFor="vertical" className="cursor-pointer font-medium text-sm">Vertical</Label>
+                    <RadioGroupItem value="paid" id="pricing-paid" />
+                    <Label htmlFor="pricing-paid" className="cursor-pointer font-medium text-sm">Paid</Label>
                 </div>
                 </RadioGroup>
             </div>
