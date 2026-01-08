@@ -667,7 +667,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
             </div>
         </div>
 
-        <div className="sticky bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-white/95 dark:from-slate-950 dark:via-slate-950 dark:to-slate-950/95 px-4 py-4 flex justify-end gap-3 -mx-6 md:-mx-8 mt-8 border-t border-slate-100 dark:border-slate-800">
+        <div className="mt-8 pt-4 pb-2 flex justify-end gap-3 border-t border-slate-100 dark:border-slate-800">
             <Button type="button" variant="outline" onClick={() => {}}>Cancel</Button>
             <Button type="submit" disabled={isSubmitting} className="min-w-[120px] bg-blue-600 hover:bg-blue-700">
             {isSubmitting ? (
