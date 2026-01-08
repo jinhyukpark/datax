@@ -207,7 +207,60 @@ export default function PublisherProfile() {
             </div>
           </div>
 
-          {providerResources.length > 0 ? (
+          {/* Special resources for first platform (Social Trend Analysis) */}
+          {providerName === "Social Trend Analysis" || providerName === "Social Trend Co." ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { id: 1, title: "Social Trend Analysis", desc: "Big data analysis service collected online to quickly respond to the constantly changing web environment.", tags: ["Analysis", "Social"], type: "API", views: 297, price: "Paid" },
+                { id: 2, title: "Web Monitoring API", desc: "Real-time monitoring of web mentions and brand sentiment across social platforms.", tags: ["Monitoring", "Web"], type: "API", views: 185, price: "Paid" },
+                { id: 3, title: "Trend Prediction Model", desc: "AI-powered trend prediction model for identifying emerging patterns in social data.", tags: ["AI", "Prediction"], type: "MCP", views: 142, price: "Free" },
+                { id: 4, title: "Sentiment Dataset", desc: "Pre-labeled sentiment analysis dataset for training custom NLP models.", tags: ["Dataset", "NLP"], type: "File", views: 98, price: "Paid" },
+              ].map((resource) => (
+                <Link key={resource.id} href={`/resource/${resource.id}`}>
+                  <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5 hover:shadow-md transition-all hover:-translate-y-0.5 cursor-pointer h-full">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="h-14 w-14 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center">
+                        <svg className="h-7 w-7 text-indigo-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                        </svg>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
+                          <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                          {resource.views}
+                        </span>
+                        <Badge className={resource.price === "Paid" ? "bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400 text-xs" : "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400 text-xs"}>
+                          {resource.price}
+                        </Badge>
+                      </div>
+                    </div>
+                    
+                    <h3 className="font-bold text-foreground mb-2 line-clamp-1">{resource.title}</h3>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">{resource.desc}</p>
+                    
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {resource.tags.map((tag) => (
+                        <span key={tag} className="text-xs text-slate-600 dark:text-slate-400">#{tag}</span>
+                      ))}
+                    </div>
+                    
+                    <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
+                      <Badge variant="outline" className="text-xs text-indigo-600 border-indigo-200 dark:text-indigo-400 dark:border-indigo-800">
+                        {resource.type}
+                      </Badge>
+                      <svg className="h-4 w-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                        <polyline points="15 3 21 3 21 9"/>
+                        <line x1="10" y1="14" x2="21" y2="3"/>
+                      </svg>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : providerResources.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {providerResources.map(resource => (
                 <div key={resource.id} className="h-full">
