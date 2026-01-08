@@ -313,13 +313,31 @@ export default function ResourceDetail() {
                       <h3 className="text-xl font-bold mb-4 text-foreground">
                         {t("Use Cases", "활용 사례")}
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {displayUseCases.map((useCase, idx) => (
-                          <div key={idx} className="flex items-center gap-3 p-3.5 rounded-lg bg-blue-50/80 dark:bg-blue-900/20 border border-blue-100/50 dark:border-blue-800/30">
-                            <Check className="h-4 w-4 text-blue-500 shrink-0" />
-                            <span className="text-sm font-medium text-slate-700 dark:text-slate-200">{useCase}</span>
-                          </div>
-                        ))}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {displayUseCases.map((useCase, idx) => {
+                          const useCaseDescriptions: Record<string, { en: string; ko: string }> = {
+                            "Brand monitoring": { en: "Track brand mentions, sentiment, and reputation across social platforms in real-time.", ko: "소셜 플랫폼에서 브랜드 언급, 감정, 평판을 실시간으로 추적합니다." },
+                            "Campaign performance tracking": { en: "Measure and analyze marketing campaign effectiveness with detailed metrics and ROI insights.", ko: "상세한 지표와 ROI 인사이트로 마케팅 캠페인 효과를 측정하고 분석합니다." },
+                            "Market research": { en: "Gain comprehensive market insights through trend analysis and consumer behavior data.", ko: "트렌드 분석과 소비자 행동 데이터를 통해 종합적인 시장 인사이트를 얻습니다." },
+                            "Competitor analysis": { en: "Monitor competitor activities, strategies, and market positioning to stay ahead.", ko: "경쟁사 활동, 전략, 시장 포지셔닝을 모니터링하여 앞서 나갑니다." },
+                            "Crisis management": { en: "Detect and respond to potential PR crises early with real-time alert systems.", ko: "실시간 알림 시스템으로 잠재적 PR 위기를 조기에 감지하고 대응합니다." },
+                            "특허 검색": { en: "Search patents using visual similarity matching and AI-powered analysis.", ko: "시각적 유사성 매칭과 AI 기반 분석을 사용하여 특허를 검색합니다." },
+                            "디자인 침해 분석": { en: "Identify potential design infringements through comprehensive image comparison.", ko: "포괄적인 이미지 비교를 통해 잠재적 디자인 침해를 식별합니다." },
+                            "기술 트렌드 분석": { en: "Analyze technology trends and innovation patterns across industries.", ko: "산업 전반의 기술 트렌드와 혁신 패턴을 분석합니다." },
+                          };
+                          const desc = useCaseDescriptions[useCase];
+                          const description = desc ? (language === '한국어' ? desc.ko : desc.en) : t("Leverage this capability to enhance your business operations and decision-making.", "이 기능을 활용하여 비즈니스 운영과 의사결정을 개선하세요.");
+                          
+                          return (
+                            <div key={idx} className="p-4 rounded-lg bg-blue-50/80 dark:bg-blue-900/20 border border-blue-100/50 dark:border-blue-800/30">
+                              <div className="flex items-center gap-3 mb-2">
+                                <Check className="h-4 w-4 text-blue-500 shrink-0" />
+                                <span className="text-sm font-semibold text-slate-800 dark:text-slate-100">{useCase}</span>
+                              </div>
+                              <p className="text-xs text-slate-600 dark:text-slate-400 ml-7 leading-relaxed">{description}</p>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
