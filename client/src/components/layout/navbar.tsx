@@ -45,7 +45,8 @@ export function Navbar() {
               // Check if the link is active, handling sub-routes
               const isActive = location === link.href || 
                                (location.startsWith(link.href) && link.href !== '/') ||
-                               (link.href === '/data-map' && location.startsWith('/resource/'));
+                               (link.href === '/data-map' && location.startsWith('/resource/')) ||
+                               (link.href === '/platforms' && location.startsWith('/publisher/'));
                                
               return (
                 <Link 
