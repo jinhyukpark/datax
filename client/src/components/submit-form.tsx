@@ -84,6 +84,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
 
   const [replyText, setReplyText] = useState<{[key: string]: string}>({});
   const [featuredImage, setFeaturedImage] = useState<string>("");
+  const [agentLogo, setAgentLogo] = useState<string>("");
 
   useEffect(() => {
     if (initialData) {
@@ -480,6 +481,38 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                 <h2 className="text-lg font-bold">Details & Assets</h2>
                 <p className="text-xs text-muted-foreground">Make your listing stand out</p>
             </div>
+            </div>
+
+            {/* Agent Logo Upload */}
+            <div className="space-y-3">
+                <Label className="font-semibold text-sm">Agent Logo <span className="text-red-500">*</span></Label>
+                {!agentLogo ? (
+                  <div 
+                    className="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl p-6 flex items-center gap-6 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors"
+                    onClick={() => setAgentLogo('agent_logo.png')}
+                  >
+                    <div className="h-20 w-20 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center shrink-0">
+                      <Upload className="h-8 w-8 text-slate-400" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium mb-1">Click to upload agent logo</p>
+                      <p className="text-xs text-muted-foreground">Recommended: 512x512px (Square)</p>
+                      <p className="text-xs text-slate-400 mt-1">SVG, PNG, JPG, WEBP</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-900">
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center">
+                        <span className="text-xl font-bold text-indigo-600">A</span>
+                      </div>
+                      <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">{agentLogo}</span>
+                    </div>
+                    <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50" onClick={() => setAgentLogo('')}>
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
             </div>
 
             {/* Tagline & Description Section (Merged) */}
