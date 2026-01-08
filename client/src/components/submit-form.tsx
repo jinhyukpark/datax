@@ -55,6 +55,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   }, [useAccountEmail]);
   
   // Form State
+  const [tags, setTags] = useState<string[]>(initialData?.tags || []);
   const [features, setFeatures] = useState<string[]>(initialData?.features || [""]);
   const [useCases, setUseCases] = useState<{ title: string; content: string }[]>(
     initialData?.useCases?.map(u => ({ title: u, content: "" })) || [{ title: "", content: "" }]
@@ -546,6 +547,40 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                 <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/750</span>
                 </Label>
                 <Textarea id="description" defaultValue={initialData?.description} placeholder="Describe your AI Agent in detail. What problem does it solve? Who is it for?" required maxLength={750} className="min-h-[120px] resize-y" />
+            </div>
+
+            {/* Tags */}
+            <div className="space-y-3">
+                <Label className="font-semibold text-sm">Tags</Label>
+                <div className="flex flex-wrap gap-2 p-3 bg-slate-50 dark:bg-slate-900/30 rounded-lg border border-slate-200 dark:border-slate-800 min-h-[44px]">
+                  {tags.map((tag, index) => (
+                    <span key={index} className="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium animate-in fade-in zoom-in duration-200">
+                      #{tag}
+                      <button 
+                        type="button" 
+                        onClick={() => setTags(tags.filter((_, i) => i !== index))}
+                        className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-0.5 transition-colors"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+                  <Input 
+                    placeholder={tags.length === 0 ? "Type a tag and press Enter" : "Add more..."}
+                    className="flex-1 min-w-[120px] h-7 border-0 bg-transparent p-0 focus-visible:ring-0 text-sm"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const value = (e.target as HTMLInputElement).value.trim();
+                        if (value && !tags.includes(value)) {
+                          setTags([...tags, value]);
+                          (e.target as HTMLInputElement).value = '';
+                        }
+                      }
+                    }}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">Press Enter to add tags. Tags help users discover your agent.</p>
             </div>
 
             <div className="space-y-3">
