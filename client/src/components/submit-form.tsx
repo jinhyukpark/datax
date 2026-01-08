@@ -479,10 +479,6 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                     <Label htmlFor="pricing-free" className="cursor-pointer font-medium text-sm">Free</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
-                    <RadioGroupItem value="freemium" id="pricing-freemium" />
-                    <Label htmlFor="pricing-freemium" className="cursor-pointer font-medium text-sm">Freemium</Label>
-                </div>
-                <div className="flex items-center space-x-2 p-1.5 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
                     <RadioGroupItem value="paid" id="pricing-paid" />
                     <Label htmlFor="pricing-paid" className="cursor-pointer font-medium text-sm">Paid</Label>
                 </div>
