@@ -14,7 +14,8 @@ import {
   FileUp,
   UserPlus,
   Check,
-  Server
+  Server,
+  Layers
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -71,6 +72,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     { name: "Admin Management", href: "/admin/admins", icon: Shield },
     { name: "Submissions", href: "/admin/submissions", icon: FileText },
     { name: "Hosted Services", href: "/admin/hosted-services", icon: Server },
+    { name: "Platform Management", href: "/admin/platforms", icon: Layers },
     { name: "Payments", href: "/admin/payments", icon: CreditCard },
   ];
 

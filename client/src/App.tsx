@@ -22,6 +22,7 @@ import UserManagement from "@/pages/admin/users";
 import AdminManagement from "@/pages/admin/admins";
 import SubmissionManagement from "@/pages/admin/submissions";
 import HostedServicesManagement from "@/pages/admin/hosted-services";
+import PlatformManagement from "@/pages/admin/platforms";
 import PaymentManagement from "@/pages/admin/payments";
 import Dashboard from "@/pages/admin/dashboard";
 import Notifications from "@/pages/admin/notifications";
@@ -54,6 +55,7 @@ function Router() {
         <Route path="/admin/admins" component={AdminManagement} />
         <Route path="/admin/submissions" component={SubmissionManagement} />
         <Route path="/admin/hosted-services" component={HostedServicesManagement} />
+        <Route path="/admin/platforms" component={PlatformManagement} />
         <Route path="/admin/payments" component={PaymentManagement} />
         <Route path="/admin/notifications" component={Notifications} />
 
