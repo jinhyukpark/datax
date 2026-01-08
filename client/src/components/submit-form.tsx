@@ -500,8 +500,8 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
             </div>
 
             {/* Agent Logo Upload */}
-            <div className="space-y-3">
-                <Label className="font-semibold text-sm">Agent Logo <span className="text-red-500">*</span></Label>
+            <div className="space-y-4">
+                <Label className="font-semibold text-sm block mb-2">Agent Logo <span className="text-red-500">*</span></Label>
                 {!agentLogo ? (
                   <div 
                     className="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl p-6 flex items-center gap-6 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors"
