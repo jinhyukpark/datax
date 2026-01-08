@@ -311,7 +311,7 @@ export default function DataMap() {
                 <span>$</span> {t("PRICING", "가격")}
               </div>
               <div className="flex flex-wrap gap-2">
-                {['Free', 'Paid', 'Freemium'].map(price => (
+                {['Free', 'Paid'].map(price => (
                   <button
                     key={price}
                     onClick={() => togglePrice(price)}

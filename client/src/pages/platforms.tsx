@@ -19,21 +19,21 @@ const gradients = [
   "bg-gradient-to-br from-rose-500 to-pink-600",
 ];
 
-interface ProviderStats {
+interface ResourceDisplay {
+  id: string;
+  title: string;
   provider: string;
-  totalViews: number;
-  resourceCount: number;
+  description: string;
+  views: number;
   categories: string[];
 }
 
-function PlatformCard({ stats, index }: { stats: ProviderStats; index: number }) {
+function PlatformCard({ resource, index }: { resource: ResourceDisplay; index: number }) {
   const gradient = gradients[index % gradients.length];
   const { t } = useLanguage();
   
-  const description = PROVIDER_DESCRIPTIONS[stats.provider] || 
-    `A trusted provider of high-quality data resources. ${stats.provider} is committed to delivering reliable, scalable solutions.`;
-  
-  const tagline = PROVIDER_TAGLINES[stats.provider] || "Enterprise Data Solutions";
+  const description = PROVIDER_DESCRIPTIONS[resource.title] || resource.description;
+  const companyName = PROVIDER_TAGLINES[resource.title] || resource.provider;
 
   return (
     <div className="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
@@ -41,11 +41,11 @@ function PlatformCard({ stats, index }: { stats: ProviderStats; index: number })
       <div className={cn("relative h-32 p-6 text-white", gradient)}>
         <div className="flex items-start justify-between">
           <Badge className="bg-white/20 text-white border-0 hover:bg-white/30 backdrop-blur-sm">
-            {stats.categories[0] || "Technology"}
+            {resource.categories[0] || "Technology"}
           </Badge>
           <div className="flex items-center gap-1 rounded-full bg-black/20 px-3 py-1 text-xs backdrop-blur-sm font-medium">
             <Eye className="h-3 w-3" />
-            {stats.totalViews > 1000 ? `${(stats.totalViews / 1000).toFixed(1)}k` : stats.totalViews}
+            {resource.views > 1000 ? `${(resource.views / 1000).toFixed(1)}k` : resource.views}
           </div>
         </div>
       </div>
@@ -56,22 +56,22 @@ function PlatformCard({ stats, index }: { stats: ProviderStats; index: number })
         <div className="absolute -top-10 left-6 h-20 w-20 rounded-xl bg-white shadow-md p-1 flex items-center justify-center border border-slate-100 dark:bg-slate-800 dark:border-slate-700">
            <div className="h-full w-full rounded-lg bg-slate-50 flex items-center justify-center dark:bg-slate-900">
              <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 font-heading">
-               {stats.provider.charAt(0)}
+               {resource.title.charAt(0)}
              </span>
            </div>
         </div>
 
         <div className="pt-12">
-          <Link href={`/publisher/${encodeURIComponent(stats.provider)}`}>
+          <Link href={`/resource/${resource.id}`}>
             <a className="block mb-1">
               <h3 className="font-heading text-xl font-bold text-foreground group-hover:text-indigo-600 transition-colors">
-                {stats.provider}
+                {resource.title}
               </h3>
             </a>
           </Link>
           
           <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-3">
-            {tagline}
+            {companyName}
           </p>
           
           <p className="mb-6 line-clamp-3 text-sm text-muted-foreground leading-relaxed">
@@ -79,7 +79,7 @@ function PlatformCard({ stats, index }: { stats: ProviderStats; index: number })
           </p>
           
           <div className="flex flex-wrap gap-2 mb-6">
-            {stats.categories.slice(0, 3).map(cat => (
+            {resource.categories.slice(0, 3).map(cat => (
               <Badge key={cat} variant="secondary" className="text-xs font-normal bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                 {cat}
               </Badge>
@@ -90,7 +90,7 @@ function PlatformCard({ stats, index }: { stats: ProviderStats; index: number })
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1.5">
                 <Building2 className="h-3.5 w-3.5" />
-                {stats.resourceCount} Resources
+                1 Resources
               </div>
               <div className="flex items-center gap-1.5">
                 <MapPin className="h-3.5 w-3.5" />
@@ -98,7 +98,7 @@ function PlatformCard({ stats, index }: { stats: ProviderStats; index: number })
               </div>
             </div>
             
-            <Link href={`/publisher/${encodeURIComponent(stats.provider)}`}>
+            <Link href={`/resource/${resource.id}`}>
               <Button variant="ghost" size="sm" className="h-8 px-2 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:bg-indigo-900/20">
                 View Profile <ExternalLink className="ml-1 h-3 w-3" />
               </Button>
@@ -117,36 +117,20 @@ export default function Platforms() {
   // Get unique categories from resources
   const categories = Array.from(new Set(RESOURCES.map(r => r.tags[0])));
   
-  // Group resources by provider to calculate stats
-  const providerStatsMap = new Map<string, ProviderStats>();
-  
-  RESOURCES.forEach(resource => {
-    if (!providerStatsMap.has(resource.provider)) {
-      providerStatsMap.set(resource.provider, {
-        provider: resource.provider,
-        totalViews: 0,
-        resourceCount: 0,
-        categories: []
-      });
-    }
-    
-    const stats = providerStatsMap.get(resource.provider)!;
-    stats.totalViews += resource.views;
-    stats.resourceCount += 1;
-    // Add tags as categories if not present
-    resource.tags.forEach(tag => {
-      if (!stats.categories.includes(tag)) {
-        stats.categories.push(tag);
-      }
-    });
-  });
+  // Transform resources to display format
+  const allResources: ResourceDisplay[] = RESOURCES.map(resource => ({
+    id: resource.id,
+    title: resource.title,
+    provider: resource.provider,
+    description: resource.description || `A trusted provider of high-quality data resources.`,
+    views: resource.views,
+    categories: resource.tags
+  }));
 
-  const allProviders = Array.from(providerStatsMap.values());
-
-  // Filter providers based on selection
-  const filteredProviders = selectedCategory 
-    ? allProviders.filter(p => p.categories.includes(selectedCategory))
-    : allProviders;
+  // Filter resources based on selection
+  const filteredResources = selectedCategory 
+    ? allResources.filter(r => r.categories.includes(selectedCategory))
+    : allResources;
 
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950">
@@ -191,12 +175,12 @@ export default function Platforms() {
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filteredProviders.map((stats, index) => (
-            <PlatformCard key={stats.provider} stats={stats} index={index} />
+          {filteredResources.map((resource, index) => (
+            <PlatformCard key={resource.id} resource={resource} index={index} />
           ))}
         </div>
 
-        {filteredProviders.length === 0 && (
+        {filteredResources.length === 0 && (
           <div className="py-20 text-center">
             <p className="text-muted-foreground">{t("No platforms found for this category.", "이 카테고리에 대한 플랫폼을 찾을 수 없습니다.")}</p>
             <Button variant="link" onClick={() => setSelectedCategory(null)}>{t("Clear filter", "필터 지우기")}</Button>
