@@ -116,10 +116,21 @@ export default function BlogEdit() {
     status: "Draft" as "Published" | "Draft",
     publishedAt: "",
     readTime: "",
-    thumbnail: "",
+    featuredImages: [] as string[],
     tags: [] as string[],
   });
   const [tagInput, setTagInput] = useState("");
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Auto-rotate images
+  useEffect(() => {
+    if (formData.featuredImages.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % formData.featuredImages.length);
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [formData.featuredImages.length]);
 
   useEffect(() => {
     if (!isNew && params?.id) {
@@ -132,7 +143,7 @@ export default function BlogEdit() {
         status: "Published",
         publishedAt: "2025-12-20",
         readTime: "8 min",
-        thumbnail: "blog1.jpg",
+        featuredImages: ["blog1.jpg", "blog2.jpg", "blog3.jpg"],
         tags: ["AI", "Enterprise", "Tutorial"],
       });
     }
@@ -443,31 +454,54 @@ export default function BlogEdit() {
                 </div>
               </div>
 
-              {/* Featured Image */}
+              {/* Featured Images */}
               <div className="space-y-2">
-                <Label className="text-sm font-semibold flex items-center gap-2">
-                  <ImageIcon className="h-4 w-4" /> Featured Image
+                <Label className="text-sm font-semibold flex items-center justify-between">
+                  <span className="flex items-center gap-2"><ImageIcon className="h-4 w-4" /> Featured Images</span>
+                  <span className="text-xs text-muted-foreground font-normal">{formData.featuredImages.length}/5</span>
                 </Label>
-                <div 
-                  className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-4 flex items-center gap-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
-                  onClick={() => setFormData({ ...formData, thumbnail: 'blog-hero.jpg' })}
-                >
-                  {formData.thumbnail ? (
-                    <>
-                      <div className="h-16 w-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-lg" />
+                <div className="space-y-2">
+                  {/* Image list */}
+                  {formData.featuredImages.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {formData.featuredImages.map((img, index) => (
+                        <div key={index} className="relative group">
+                          <div className="h-16 w-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-lg" style={{
+                            opacity: 0.6 + (index * 0.15)
+                          }} />
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ 
+                              ...formData, 
+                              featuredImages: formData.featuredImages.filter((_, i) => i !== index) 
+                            })}
+                            className="absolute -top-1.5 -right-1.5 h-5 w-5 bg-red-500 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                          >
+                            ×
+                          </button>
+                          <span className="absolute bottom-1 left-1 text-[10px] text-white bg-black/50 px-1 rounded">{img}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {/* Add button */}
+                  {formData.featuredImages.length < 5 && (
+                    <div 
+                      className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-4 flex items-center gap-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                      onClick={() => setFormData({ 
+                        ...formData, 
+                        featuredImages: [...formData.featuredImages, `image${formData.featuredImages.length + 1}.jpg`] 
+                      })}
+                    >
+                      <ImageIcon className="h-6 w-6 text-slate-400" />
                       <div>
-                        <p className="text-sm font-medium">{formData.thumbnail}</p>
-                        <p className="text-xs text-muted-foreground">Click to change</p>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <ImageIcon className="h-8 w-8 text-slate-400" />
-                      <div>
-                        <p className="text-sm font-medium">Click to upload</p>
+                        <p className="text-sm font-medium">Click to add image</p>
                         <p className="text-xs text-muted-foreground">1200x630px recommended</p>
                       </div>
-                    </>
+                    </div>
+                  )}
+                  {formData.featuredImages.length > 1 && (
+                    <p className="text-xs text-muted-foreground">Images will auto-rotate every 3 seconds</p>
                   )}
                 </div>
               </div>
@@ -563,9 +597,41 @@ export default function BlogEdit() {
                     </div>
                   </header>
                   
-                  {/* Hero Image */}
+                  {/* Hero Image Carousel */}
                   <div className="px-6 mb-8">
-                    <div className="aspect-[21/9] w-full rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 overflow-hidden" />
+                    <div className="relative aspect-[21/9] w-full rounded-xl overflow-hidden">
+                      {formData.featuredImages.length > 0 ? (
+                        <>
+                          {formData.featuredImages.map((img, index) => (
+                            <div 
+                              key={index}
+                              className={`absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 transition-opacity duration-700 ${
+                                index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                              }`}
+                              style={{ opacity: index === currentImageIndex ? (0.6 + (index * 0.15)) : 0 }}
+                            />
+                          ))}
+                          {/* Carousel Indicators */}
+                          {formData.featuredImages.length > 1 && (
+                            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+                              {formData.featuredImages.map((_, index) => (
+                                <button
+                                  key={index}
+                                  onClick={() => setCurrentImageIndex(index)}
+                                  className={`h-2 rounded-full transition-all ${
+                                    index === currentImageIndex 
+                                      ? 'w-6 bg-white' 
+                                      : 'w-2 bg-white/50 hover:bg-white/75'
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500" />
+                      )}
+                    </div>
                   </div>
                   
                   {/* Content with TOC */}
