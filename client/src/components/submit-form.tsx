@@ -645,16 +645,16 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                 {featuredImages.length > 0 && (
                   <div className="space-y-2">
                     {featuredImages.map((image, index) => (
-                      <div key={index} className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
+                      <div key={index} className="flex items-center justify-between py-1">
                         <div className="flex items-center gap-2">
-                          <span className="text-slate-400">📎</span>
-                          <span className="text-sm text-slate-700 dark:text-slate-300 font-medium">{image}</span>
+                          <span className="text-red-500">📎</span>
+                          <span className="text-sm text-red-500 font-medium">{image}</span>
                         </div>
                         <Button 
                           type="button" 
                           variant="ghost" 
                           size="icon" 
-                          className="h-7 w-7 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 opacity-0 group-hover:opacity-100 transition-opacity" 
+                          className="h-7 w-7 text-red-500 hover:text-red-600 hover:bg-red-50" 
                           onClick={() => setFeaturedImages(featuredImages.filter((_, i) => i !== index))}
                         >
                           <Trash2 className="h-4 w-4" />
