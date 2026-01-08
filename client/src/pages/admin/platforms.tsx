@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RESOURCES } from "@/lib/data";
 import { 
   Plus, 
   Search, 
@@ -20,7 +22,9 @@ import {
   Calendar,
   MapPin,
   Building2,
-  ExternalLink
+  ExternalLink,
+  Database,
+  Link2
 } from "lucide-react";
 import {
   Table,
@@ -159,8 +163,10 @@ export default function AdminPlatforms() {
     contactEmail: "",
     contactPhone: "",
     keywords: [] as string[],
+    linkedResources: [] as string[],
   });
   const [keywordInput, setKeywordInput] = useState("");
+  const [resourceSearchQuery, setResourceSearchQuery] = useState("");
 
   const openAddDialog = () => {
     setEditingPlatform(null);
@@ -178,7 +184,9 @@ export default function AdminPlatforms() {
       contactEmail: "",
       contactPhone: "",
       keywords: [],
+      linkedResources: [],
     });
+    setResourceSearchQuery("");
     setIsDialogOpen(true);
   };
 
@@ -198,9 +206,24 @@ export default function AdminPlatforms() {
       contactEmail: platform.contactEmail,
       contactPhone: platform.contactPhone,
       keywords: platform.keywords,
+      linkedResources: [],
     });
+    setResourceSearchQuery("");
     setIsDialogOpen(true);
   };
+
+  const toggleResource = (resourceId: string) => {
+    if (formData.linkedResources.includes(resourceId)) {
+      setFormData({ ...formData, linkedResources: formData.linkedResources.filter(id => id !== resourceId) });
+    } else {
+      setFormData({ ...formData, linkedResources: [...formData.linkedResources, resourceId] });
+    }
+  };
+
+  const filteredAvailableResources = RESOURCES.filter(r => 
+    r.title.toLowerCase().includes(resourceSearchQuery.toLowerCase()) ||
+    r.provider.toLowerCase().includes(resourceSearchQuery.toLowerCase())
+  );
 
   const handleSave = () => {
     if (editingPlatform) {
@@ -595,6 +618,83 @@ export default function AdminPlatforms() {
                     />
                   )}
                 </div>
+              </div>
+
+              <div className="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-indigo-700 dark:text-indigo-300">
+                    <Link2 className="h-4 w-4" />
+                    Linked Resources
+                  </div>
+                  <Badge variant="secondary" className="text-xs">
+                    {formData.linkedResources.length} selected
+                  </Badge>
+                </div>
+                
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search resources..." 
+                    className="pl-9 bg-white dark:bg-slate-900"
+                    value={resourceSearchQuery}
+                    onChange={(e) => setResourceSearchQuery(e.target.value)}
+                  />
+                </div>
+
+                <div className="max-h-[200px] overflow-y-auto space-y-2 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-2">
+                  {filteredAvailableResources.slice(0, 10).map((resource) => (
+                    <div 
+                      key={resource.id}
+                      className={`flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-colors ${
+                        formData.linkedResources.includes(resource.id)
+                          ? 'bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700'
+                          : 'hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent'
+                      }`}
+                      onClick={() => toggleResource(resource.id)}
+                    >
+                      <Checkbox 
+                        checked={formData.linkedResources.includes(resource.id)}
+                        className="pointer-events-none"
+                      />
+                      <div className="h-8 w-8 rounded bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0">
+                        <Database className="h-4 w-4 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{resource.title}</p>
+                        <p className="text-xs text-muted-foreground">{resource.provider} • {resource.type}</p>
+                      </div>
+                      <Badge variant="secondary" className="text-xs shrink-0">
+                        {resource.price}
+                      </Badge>
+                    </div>
+                  ))}
+                  {filteredAvailableResources.length === 0 && (
+                    <p className="text-sm text-muted-foreground text-center py-4">No resources found</p>
+                  )}
+                </div>
+
+                {formData.linkedResources.length > 0 && (
+                  <div className="pt-2 border-t border-indigo-200 dark:border-indigo-700">
+                    <p className="text-xs text-muted-foreground mb-2">Selected resources:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {formData.linkedResources.map((resourceId) => {
+                        const resource = RESOURCES.find(r => r.id === resourceId);
+                        return resource ? (
+                          <Badge key={resourceId} variant="secondary" className="gap-1 pr-1">
+                            {resource.title}
+                            <button 
+                              type="button" 
+                              onClick={() => toggleResource(resourceId)}
+                              className="hover:bg-slate-300 dark:hover:bg-slate-600 rounded-full p-0.5 ml-1"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </Badge>
+                        ) : null;
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </ScrollArea>
