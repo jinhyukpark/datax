@@ -86,6 +86,18 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   const [replyText, setReplyText] = useState<{[key: string]: string}>({});
   const [featuredImages, setFeaturedImages] = useState<string[]>(["image01.png", "image02.png", "image03.png", "image04.png"]);
   const [agentLogo, setAgentLogo] = useState<string>("");
+  
+  // Form field values
+  const [formValues, setFormValues] = useState({
+    name: initialData?.title || "",
+    website: initialData?.websiteUrl || "",
+    tagline: initialData?.tagline || "",
+    description: initialData?.longDescription || "",
+  });
+  
+  // Validation errors
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [showErrors, setShowErrors] = useState(false);
 
   useEffect(() => {
     if (initialData) {
@@ -127,8 +139,40 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
     setUseCases(newUseCases);
   };
 
+  const validateForm = () => {
+    const newErrors: {[key: string]: string} = {};
+    
+    if (!formValues.name.trim()) {
+      newErrors.name = "AI Agent Name is required";
+    }
+    if (!formValues.website.trim()) {
+      newErrors.website = "Website URL is required";
+    }
+    if (!contactEmail.trim()) {
+      newErrors.contactEmail = "Contact Email is required";
+    }
+    if (!formValues.tagline.trim()) {
+      newErrors.tagline = "Tagline is required";
+    }
+    if (!formValues.description.trim()) {
+      newErrors.description = "Long Description is required";
+    }
+    if (!agentLogo) {
+      newErrors.agentLogo = "Agent Logo is required";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleGeneralSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setShowErrors(true);
+    
+    if (!validateForm()) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
     
     if (mode === 'edit-approved') {
       setShowReapprovalWarning(true);
@@ -285,9 +329,22 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
             <div className="space-y-3">
                 <Label htmlFor="name" className="flex justify-between font-semibold text-sm">
                 <span>AI Agent Name <span className="text-red-500">*</span></span>
-                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/35</span>
+                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{formValues.name.length}/35</span>
                 </Label>
-                <Input id="name" defaultValue={initialData?.title} placeholder="e.g. AutoGPT" required maxLength={35} className="h-10" />
+                <Input 
+                  id="name" 
+                  value={formValues.name}
+                  onChange={(e) => setFormValues({...formValues, name: e.target.value})}
+                  placeholder="e.g. AutoGPT" 
+                  maxLength={35} 
+                  className={`h-10 ${showErrors && errors.name ? 'border-red-500 focus-visible:ring-red-500' : ''}`} 
+                />
+                {showErrors && errors.name && (
+                  <p className="text-xs text-red-500 flex items-center gap-1">
+                    <AlertTriangle className="h-3 w-3" />
+                    {errors.name}
+                  </p>
+                )}
             </div>
             <div className="space-y-3">
                 <Label htmlFor="founder" className="flex justify-between font-semibold text-sm">
@@ -300,9 +357,22 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
             <div className="space-y-3">
                 <Label htmlFor="website" className="flex justify-between font-semibold text-sm">
                 <span>Website URL <span className="text-red-500">*</span></span>
-                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/100</span>
+                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{formValues.website.length}/100</span>
                 </Label>
-                <Input id="website" defaultValue={initialData?.websiteUrl} placeholder="https://" required maxLength={100} className="h-10" />
+                <Input 
+                  id="website" 
+                  value={formValues.website}
+                  onChange={(e) => setFormValues({...formValues, website: e.target.value})}
+                  placeholder="https://" 
+                  maxLength={100} 
+                  className={`h-10 ${showErrors && errors.website ? 'border-red-500 focus-visible:ring-red-500' : ''}`} 
+                />
+                {showErrors && errors.website && (
+                  <p className="text-xs text-red-500 flex items-center gap-1">
+                    <AlertTriangle className="h-3 w-3" />
+                    {errors.website}
+                  </p>
+                )}
             </div>
             <div className="space-y-3">
                 <Label htmlFor="affiliate" className="flex justify-between font-semibold text-sm">
@@ -348,8 +418,14 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                             onChange={(e) => setContactEmail(e.target.value)}
                             placeholder="email@company.com"
                             disabled={useAccountEmail}
-                            className="h-10 bg-white dark:bg-slate-900" 
+                            className={`h-10 bg-white dark:bg-slate-900 ${showErrors && errors.contactEmail ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
                           />
+                          {showErrors && errors.contactEmail && (
+                            <p className="text-xs text-red-500 flex items-center gap-1">
+                              <AlertTriangle className="h-3 w-3" />
+                              {errors.contactEmail}
+                            </p>
+                          )}
                           <div className="flex items-center space-x-2">
                             <Checkbox 
                               id="use-account-email" 
@@ -500,7 +576,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                 <Label className="font-semibold text-sm block mb-2">Agent Logo <span className="text-red-500">*</span></Label>
                 {!agentLogo ? (
                   <div 
-                    className="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl p-6 flex items-center gap-6 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors"
+                    className={`border-2 border-dashed rounded-xl p-6 flex items-center gap-6 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors ${showErrors && errors.agentLogo ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'}`}
                     onClick={() => setAgentLogo('agent_logo.png')}
                   >
                     <div className="h-20 w-20 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center shrink-0">
@@ -510,6 +586,12 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                       <p className="text-sm font-medium mb-1">Click to upload agent logo</p>
                       <p className="text-xs text-muted-foreground">Recommended: 512x512px (Square)</p>
                       <p className="text-xs text-slate-400 mt-1">SVG, PNG, JPG, WEBP</p>
+                      {showErrors && errors.agentLogo && (
+                        <p className="text-xs text-red-500 flex items-center gap-1 mt-2">
+                          <AlertTriangle className="h-3 w-3" />
+                          {errors.agentLogo}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ) : (
@@ -532,17 +614,43 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
             <div className="space-y-3">
                 <Label htmlFor="tagline" className="flex justify-between font-semibold text-sm">
                 <span>Tagline <span className="text-red-500">*</span></span>
-                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/100</span>
+                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{formValues.tagline.length}/100</span>
                 </Label>
-                <Input id="tagline" defaultValue={initialData?.tagline} placeholder="A catchy one-liner for your AI Agent card" required maxLength={100} className="h-10 font-medium" />
+                <Input 
+                  id="tagline" 
+                  value={formValues.tagline}
+                  onChange={(e) => setFormValues({...formValues, tagline: e.target.value})}
+                  placeholder="A catchy one-liner for your AI Agent card" 
+                  maxLength={100} 
+                  className={`h-10 font-medium ${showErrors && errors.tagline ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                />
+                {showErrors && errors.tagline && (
+                  <p className="text-xs text-red-500 flex items-center gap-1">
+                    <AlertTriangle className="h-3 w-3" />
+                    {errors.tagline}
+                  </p>
+                )}
             </div>
 
             <div className="space-y-3">
                 <Label htmlFor="description" className="flex justify-between font-semibold text-sm">
                 <span>Description <span className="text-red-500">*</span></span>
-                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/750</span>
+                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{formValues.description.length}/750</span>
                 </Label>
-                <Textarea id="description" defaultValue={initialData?.description} placeholder="Describe your AI Agent in detail. What problem does it solve? Who is it for?" required maxLength={750} className="min-h-[120px] resize-y" />
+                <Textarea 
+                  id="description" 
+                  value={formValues.description}
+                  onChange={(e) => setFormValues({...formValues, description: e.target.value})}
+                  placeholder="Describe your AI Agent in detail. What problem does it solve? Who is it for?" 
+                  maxLength={750} 
+                  className={`min-h-[120px] resize-y ${showErrors && errors.description ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                />
+                {showErrors && errors.description && (
+                  <p className="text-xs text-red-500 flex items-center gap-1">
+                    <AlertTriangle className="h-3 w-3" />
+                    {errors.description}
+                  </p>
+                )}
             </div>
 
             {/* Tags */}
