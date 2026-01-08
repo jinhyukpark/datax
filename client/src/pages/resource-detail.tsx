@@ -334,7 +334,7 @@ export default function ResourceDetail() {
                                 <Check className="h-4 w-4 text-blue-500 shrink-0" />
                                 <span className="text-sm font-semibold text-slate-800 dark:text-slate-100">{useCase}</span>
                               </div>
-                              <p className="text-xs text-slate-600 dark:text-slate-400 ml-7 leading-relaxed">{description}</p>
+                              <p className="text-sm text-slate-600 dark:text-slate-400 ml-7 leading-relaxed">{description}</p>
                             </div>
                           );
                         })}
