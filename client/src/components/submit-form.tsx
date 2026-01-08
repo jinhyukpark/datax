@@ -672,19 +672,24 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                       </button>
                     </span>
                   ))}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const newTag = prompt("Enter a new tag:");
-                      if (newTag && newTag.trim() && !tags.includes(newTag.trim())) {
-                        setTags([...tags, newTag.trim()]);
-                      }
-                    }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm border border-dashed border-slate-300 dark:border-slate-600 rounded-lg hover:border-slate-400 dark:hover:border-slate-500 transition-colors"
-                  >
-                    <Plus className="h-3.5 w-3.5" />
-                    New Tag
-                  </button>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 text-slate-500 text-sm border border-dashed border-slate-300 dark:border-slate-600 rounded-lg focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
+                    <Plus className="h-3.5 w-3.5 shrink-0" />
+                    <input
+                      type="text"
+                      placeholder="New Tag"
+                      className="bg-transparent outline-none w-20 placeholder:text-slate-400"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          const value = (e.target as HTMLInputElement).value.trim();
+                          if (value && !tags.includes(value)) {
+                            setTags([...tags, value]);
+                            (e.target as HTMLInputElement).value = '';
+                          }
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
             </div>
 
