@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   ArrowLeft,
   Save,
@@ -24,7 +25,10 @@ import {
   ListOrdered,
   Link as LinkIcon,
   Code,
-  Quote
+  Quote,
+  Twitter,
+  Linkedin,
+  Bookmark
 } from "lucide-react";
 import {
   Select,
@@ -81,42 +85,11 @@ const server = new McpServer({
   name: "my-mcp-server",
   version: "1.0.0"
 });
-
-// Define a simple tool
-server.tool("get_weather", {
-  description: "Get current weather for a city",
-  parameters: {
-    city: { type: "string", required: true }
-  }
-}, async ({ city }) => {
-  // Your implementation here
-  return { temperature: 22, condition: "sunny" };
-});
 \`\`\`
 
 ## Step 3: Server Instance
 
-Now let's set up the server with proper error handling:
-
-\`\`\`typescript
-import express from "express";
-
-const app = express();
-app.use(express.json());
-
-app.post("/mcp", async (req, res) => {
-  try {
-    const result = await server.handleRequest(req.body);
-    res.json(result);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.listen(3000, () => {
-  console.log("MCP Server running on port 3000");
-});
-\`\`\`
+Now let's set up the server with proper error handling.
 
 ## Wrapping Up
 
@@ -126,15 +99,7 @@ You now have a working MCP server! Here's what we covered:
 2. **Tool definitions** - How to create tools that AI can use
 3. **Server configuration** - Express-based HTTP transport
 
-### Next Steps
-
-- Add authentication middleware
-- Implement more complex tools
-- Connect to a real LLM provider
-
 > **Pro Tip:** Always validate your tool inputs to prevent unexpected behavior in production.
-
-For more information, check out the [official MCP documentation](https://modelcontextprotocol.io).
 `;
 
 export default function BlogEdit() {
@@ -158,7 +123,6 @@ export default function BlogEdit() {
 
   useEffect(() => {
     if (!isNew && params?.id) {
-      // Load existing blog data (mock)
       setFormData({
         title: "Getting Started with AI Agents in Enterprise",
         excerpt: "A comprehensive guide to implementing AI agents in your organization's workflow.",
@@ -207,10 +171,10 @@ export default function BlogEdit() {
 
   const formatInline = (text: string) => {
     return text
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-slate-900 dark:text-white">$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      .replace(/`(.+?)`/g, '<code>$1</code>')
-      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-blue-600 hover:underline">$1</a>');
+      .replace(/`(.+?)`/g, '<code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono text-indigo-600">$1</code>')
+      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-indigo-600 hover:underline">$1</a>');
   };
 
   const renderMarkdown = (content: string): React.ReactNode => {
@@ -220,18 +184,16 @@ export default function BlogEdit() {
     const elements: React.ReactNode[] = [];
     let inCodeBlock = false;
     let codeContent: string[] = [];
-    let codeLanguage = '';
 
     lines.forEach((line, index) => {
       if (line.startsWith('```')) {
         if (!inCodeBlock) {
           inCodeBlock = true;
-          codeLanguage = line.slice(3);
           codeContent = [];
         } else {
           inCodeBlock = false;
           elements.push(
-            <pre key={index} className="bg-slate-900 text-slate-100 rounded-lg p-3 overflow-x-auto my-3 text-xs">
+            <pre key={index} className="bg-slate-900 text-slate-100 rounded-lg p-4 overflow-x-auto my-4 text-sm">
               <code>{codeContent.join('\n')}</code>
             </pre>
           );
@@ -245,30 +207,30 @@ export default function BlogEdit() {
       }
 
       if (line.startsWith('### ')) {
-        elements.push(<h3 key={index} className="text-base font-bold mt-4 mb-2">{line.slice(4)}</h3>);
+        elements.push(<h3 key={index} className="text-lg font-bold mt-6 mb-3 text-slate-900 dark:text-white">{line.slice(4)}</h3>);
       } else if (line.startsWith('## ')) {
-        elements.push(<h2 key={index} className="text-lg font-bold mt-6 mb-3">{line.slice(3)}</h2>);
+        elements.push(<h2 key={index} className="text-xl font-bold mt-8 mb-4 text-slate-900 dark:text-white">{line.slice(3)}</h2>);
       } else if (line.startsWith('# ')) {
-        elements.push(<h1 key={index} className="text-xl font-bold mt-4 mb-3">{line.slice(2)}</h1>);
+        // Skip main title as it's shown in header
       } else if (line.startsWith('> ')) {
         elements.push(
-          <blockquote key={index} className="border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 pl-3 py-2 my-3 rounded-r text-sm">
-            <span dangerouslySetInnerHTML={{ __html: formatInline(line.slice(2)) }} />
+          <blockquote key={index} className="border-l-4 border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 pl-4 py-3 pr-4 my-4 rounded-r-lg">
+            <span className="text-slate-700 dark:text-slate-300" dangerouslySetInnerHTML={{ __html: formatInline(line.slice(2)) }} />
           </blockquote>
         );
       } else if (line.startsWith('- ')) {
         elements.push(
-          <li key={index} className="ml-4 mb-1 text-sm" dangerouslySetInnerHTML={{ __html: formatInline(line.slice(2)) }} />
+          <li key={index} className="ml-6 mb-1 text-slate-600 dark:text-slate-300" dangerouslySetInnerHTML={{ __html: formatInline(line.slice(2)) }} />
         );
       } else if (/^\d+\.\s/.test(line)) {
         elements.push(
-          <li key={index} className="ml-4 mb-1 list-decimal text-sm" dangerouslySetInnerHTML={{ __html: formatInline(line.replace(/^\d+\.\s/, '')) }} />
+          <li key={index} className="ml-6 mb-1 list-decimal text-slate-600 dark:text-slate-300" dangerouslySetInnerHTML={{ __html: formatInline(line.replace(/^\d+\.\s/, '')) }} />
         );
       } else if (line.trim() === '') {
-        elements.push(<div key={index} className="h-2" />);
+        elements.push(<div key={index} className="h-3" />);
       } else {
         elements.push(
-          <p key={index} className="mb-2 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: formatInline(line) }} />
+          <p key={index} className="mb-4 text-slate-600 dark:text-slate-300 leading-relaxed" dangerouslySetInnerHTML={{ __html: formatInline(line) }} />
         );
       }
     });
@@ -276,39 +238,64 @@ export default function BlogEdit() {
     return elements;
   };
 
+  // Extract TOC from content
+  const extractToc = (content: string) => {
+    const lines = content.split('\n');
+    const toc: { id: string; text: string; level: number }[] = [];
+    
+    lines.forEach((line) => {
+      if (line.startsWith('## ')) {
+        const text = line.slice(3);
+        const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        toc.push({ id, text, level: 2 });
+      } else if (line.startsWith('### ')) {
+        const text = line.slice(4);
+        const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        toc.push({ id, text, level: 3 });
+      }
+    });
+    
+    return toc;
+  };
+
+  const toc = extractToc(formData.content);
+
   return (
     <AdminLayout title={isNew ? "Create Blog Post" : "Edit Blog Post"}>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
+      <div className="flex flex-col h-[calc(100vh-80px)]">
+        {/* Header */}
+        <div className="flex items-center justify-between px-2 py-4 border-b border-slate-200 dark:border-slate-800 shrink-0">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" onClick={() => setLocation("/admin/blog")}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+              <h1 className="text-xl font-bold text-slate-900 dark:text-white">
                 {isNew ? "Create New Blog Post" : "Edit Blog Post"}
               </h1>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-xs text-muted-foreground">
                 {isNew ? "Write a new article for the platform" : "Update your blog post content"}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="gap-2" onClick={() => setLocation(`/blog/${params?.id || 'preview'}`)}>
+            <Button variant="outline" className="gap-2" onClick={() => window.open(`/#/blog/${params?.id || '1'}`, '_blank')}>
               <Eye className="h-4 w-4" />
               Preview
             </Button>
             <Button onClick={handleSave} className="gap-2 bg-blue-600 hover:bg-blue-700">
               <Save className="h-4 w-4" />
-              {isNew ? "Publish" : "Save Changes"}
+              Save Changes
             </Button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 space-y-6">
+        {/* Main Content - Split View */}
+        <div className="flex-1 grid grid-cols-2 gap-0 overflow-hidden">
+          {/* Left: Editor Panel */}
+          <ScrollArea className="h-full border-r border-slate-200 dark:border-slate-800">
+            <div className="p-6 space-y-6">
+              {/* Title */}
               <div className="space-y-2">
                 <Label className="flex justify-between text-sm font-semibold">
                   <span>Title <span className="text-red-500">*</span></span>
@@ -319,10 +306,11 @@ export default function BlogEdit() {
                   onChange={(e) => setFormData({ ...formData, title: e.target.value.slice(0, 100) })}
                   placeholder="Enter blog post title"
                   maxLength={100}
-                  className="text-lg font-medium h-12"
+                  className="text-base font-medium"
                 />
               </div>
 
+              {/* Excerpt */}
               <div className="space-y-2">
                 <Label className="flex justify-between text-sm font-semibold">
                   <span>Excerpt <span className="text-red-500">*</span></span>
@@ -333,220 +321,317 @@ export default function BlogEdit() {
                   onChange={(e) => setFormData({ ...formData, excerpt: e.target.value.slice(0, 200) })}
                   placeholder="Brief summary that appears in blog listings"
                   maxLength={200}
-                  className="min-h-[80px] resize-none"
+                  className="min-h-[70px] resize-none"
                 />
               </div>
 
+              {/* Content (Markdown) */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label className="text-sm font-semibold flex items-center gap-2">
                     <FileText className="h-4 w-4" />
                     Content (Markdown) <span className="text-red-500">*</span>
                   </Label>
-                  <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
-                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => insertMarkdown("# ")}>
-                      <Heading1 className="h-4 w-4" />
+                  <div className="flex items-center gap-0.5 bg-slate-100 dark:bg-slate-800 rounded-lg p-0.5">
+                    <Button type="button" variant="ghost" size="icon" className="h-6 w-6" onClick={() => insertMarkdown("# ")}>
+                      <Heading1 className="h-3.5 w-3.5" />
                     </Button>
-                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => insertMarkdown("## ")}>
-                      <Heading2 className="h-4 w-4" />
+                    <Button type="button" variant="ghost" size="icon" className="h-6 w-6" onClick={() => insertMarkdown("## ")}>
+                      <Heading2 className="h-3.5 w-3.5" />
                     </Button>
-                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => insertMarkdown("**text**")}>
-                      <Bold className="h-4 w-4" />
+                    <Button type="button" variant="ghost" size="icon" className="h-6 w-6" onClick={() => insertMarkdown("**text**")}>
+                      <Bold className="h-3.5 w-3.5" />
                     </Button>
-                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => insertMarkdown("*text*")}>
-                      <Italic className="h-4 w-4" />
+                    <Button type="button" variant="ghost" size="icon" className="h-6 w-6" onClick={() => insertMarkdown("*text*")}>
+                      <Italic className="h-3.5 w-3.5" />
                     </Button>
-                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => insertMarkdown("- ")}>
-                      <List className="h-4 w-4" />
+                    <Button type="button" variant="ghost" size="icon" className="h-6 w-6" onClick={() => insertMarkdown("- ")}>
+                      <List className="h-3.5 w-3.5" />
                     </Button>
-                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => insertMarkdown("1. ")}>
-                      <ListOrdered className="h-4 w-4" />
+                    <Button type="button" variant="ghost" size="icon" className="h-6 w-6" onClick={() => insertMarkdown("1. ")}>
+                      <ListOrdered className="h-3.5 w-3.5" />
                     </Button>
-                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => insertMarkdown("[text](url)")}>
-                      <LinkIcon className="h-4 w-4" />
+                    <Button type="button" variant="ghost" size="icon" className="h-6 w-6" onClick={() => insertMarkdown("[text](url)")}>
+                      <LinkIcon className="h-3.5 w-3.5" />
                     </Button>
-                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => insertMarkdown("```\ncode\n```")}>
-                      <Code className="h-4 w-4" />
+                    <Button type="button" variant="ghost" size="icon" className="h-6 w-6" onClick={() => insertMarkdown("```\ncode\n```")}>
+                      <Code className="h-3.5 w-3.5" />
                     </Button>
-                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => insertMarkdown("> ")}>
-                      <Quote className="h-4 w-4" />
+                    <Button type="button" variant="ghost" size="icon" className="h-6 w-6" onClick={() => insertMarkdown("> ")}>
+                      <Quote className="h-3.5 w-3.5" />
                     </Button>
                   </div>
                 </div>
+                <Textarea 
+                  id="content"
+                  value={formData.content}
+                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                  placeholder="Write your blog post content here... (Markdown supported)"
+                  className="min-h-[300px] resize-y font-mono text-sm leading-relaxed"
+                />
+              </div>
+
+              {/* Post Settings */}
+              <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4 space-y-4 border border-slate-200 dark:border-slate-800">
+                <h3 className="font-semibold text-sm">Post Settings</h3>
                 
-                {/* Split view: Editor + Preview */}
-                <div className="grid grid-cols-2 gap-4 min-h-[500px]">
-                  {/* Left: Markdown Editor */}
-                  <div className="relative">
-                    <div className="absolute top-2 left-3 text-xs font-medium text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
-                      Editor
-                    </div>
-                    <Textarea 
-                      id="content"
-                      value={formData.content}
-                      onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                      placeholder="Write your blog post content here... (Markdown supported)"
-                      className="h-full min-h-[500px] resize-none font-mono text-sm leading-relaxed pt-8"
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-sm">Category <span className="text-red-500">*</span></Label>
+                    <Select value={formData.category} onValueChange={(v) => setFormData({ ...formData, category: v })}>
+                      <SelectTrigger className="h-9">
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CATEGORIES.map(cat => (
+                          <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm flex items-center gap-1">
+                      <User className="h-3.5 w-3.5" /> Author
+                    </Label>
+                    <Input 
+                      value={formData.author}
+                      onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                      placeholder="Author name"
+                      className="h-9"
                     />
                   </div>
-                  
-                  {/* Right: Live Preview */}
-                  <div className="relative border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
-                    <div className="absolute top-2 left-3 z-10 text-xs font-medium text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
-                      Preview
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-sm">Status</Label>
+                    <Select value={formData.status} onValueChange={(v) => setFormData({ ...formData, status: v as "Published" | "Draft" })}>
+                      <SelectTrigger className="h-9">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Draft">Draft</SelectItem>
+                        <SelectItem value="Published">Published</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm flex items-center gap-1">
+                      <Calendar className="h-3.5 w-3.5" /> Publish Date
+                    </Label>
+                    <Input 
+                      type="date"
+                      value={formData.publishedAt}
+                      onChange={(e) => setFormData({ ...formData, publishedAt: e.target.value })}
+                      className="h-9"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm flex items-center gap-1">
+                      <Clock className="h-3.5 w-3.5" /> Read Time
+                    </Label>
+                    <Input 
+                      value={formData.readTime}
+                      onChange={(e) => setFormData({ ...formData, readTime: e.target.value })}
+                      placeholder="8 min"
+                      className="h-9"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Featured Image */}
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold flex items-center gap-2">
+                  <ImageIcon className="h-4 w-4" /> Featured Image
+                </Label>
+                <div 
+                  className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-4 flex items-center gap-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                  onClick={() => setFormData({ ...formData, thumbnail: 'blog-hero.jpg' })}
+                >
+                  {formData.thumbnail ? (
+                    <>
+                      <div className="h-16 w-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-lg" />
+                      <div>
+                        <p className="text-sm font-medium">{formData.thumbnail}</p>
+                        <p className="text-xs text-muted-foreground">Click to change</p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <ImageIcon className="h-8 w-8 text-slate-400" />
+                      <div>
+                        <p className="text-sm font-medium">Click to upload</p>
+                        <p className="text-xs text-muted-foreground">1200x630px recommended</p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Tags */}
+              <div className="space-y-2">
+                <Label className="flex justify-between text-sm font-semibold">
+                  <span className="flex items-center gap-2"><Tag className="h-4 w-4" /> Tags</span>
+                  <span className="text-xs text-muted-foreground font-normal">{formData.tags.length}/5</span>
+                </Label>
+                <div className="flex flex-wrap gap-2 p-3 bg-slate-50 dark:bg-slate-900/30 rounded-lg border border-slate-200 dark:border-slate-700 min-h-[40px]">
+                  {formData.tags.map((tag, index) => (
+                    <Badge key={index} variant="secondary" className="gap-1 pr-1">
+                      {tag}
+                      <button 
+                        type="button" 
+                        onClick={() => removeTag(tag)}
+                        className="hover:bg-slate-300 dark:hover:bg-slate-600 rounded-full p-0.5 ml-1"
+                      >
+                        ×
+                      </button>
+                    </Badge>
+                  ))}
+                  {formData.tags.length < 5 && (
+                    <Input 
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      placeholder="Add more..."
+                      className="flex-1 min-w-[80px] h-6 border-0 bg-transparent p-0 focus-visible:ring-0 text-sm"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          addTag();
+                        }
+                      }}
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+          </ScrollArea>
+
+          {/* Right: Full Blog Preview */}
+          <div className="h-full overflow-hidden bg-white dark:bg-slate-950">
+            <div className="h-full flex flex-col">
+              <div className="px-4 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 shrink-0">
+                <span className="text-xs font-medium text-muted-foreground">Preview</span>
+              </div>
+              <ScrollArea className="flex-1">
+                <div className="max-w-4xl mx-auto">
+                  {/* Blog Header */}
+                  <header className="px-6 pt-8 pb-6">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
+                      <span>Home</span>
+                      <span>/</span>
+                      <span>Blog</span>
+                      <span>/</span>
+                      <span className="text-indigo-600">{formData.category || "Category"}</span>
                     </div>
-                    <div className="h-full min-h-[500px] overflow-y-auto p-4 pt-8 bg-white dark:bg-slate-950 prose prose-sm prose-slate dark:prose-invert max-w-none
-                      prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg
-                      prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-p:leading-relaxed
-                      prose-a:text-blue-600 prose-code:text-blue-600 prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-                      prose-pre:bg-slate-900 prose-pre:text-slate-100
-                      prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 dark:prose-blockquote:bg-blue-900/20 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic
-                      prose-li:text-slate-600 dark:prose-li:text-slate-300
-                      prose-strong:text-slate-900 dark:prose-strong:text-white">
-                      {renderMarkdown(formData.content)}
+                    
+                    <Badge className="mb-4 bg-indigo-100 text-indigo-700 hover:bg-indigo-100">
+                      {formData.category || "Category"}
+                    </Badge>
+                    
+                    <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
+                      {formData.title || "Your Blog Title"}
+                    </h1>
+                    
+                    <p className="text-lg text-slate-600 dark:text-slate-300 mb-6">
+                      {formData.excerpt || "Your blog excerpt will appear here..."}
+                    </p>
+                    
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                          {formData.author ? formData.author.charAt(0) : "A"}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">{formData.author || "Author"}</p>
+                          <p className="text-xs text-muted-foreground">Editor</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-3.5 w-3.5" />
+                          {formData.publishedAt || "Date"}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-3.5 w-3.5" />
+                          {formData.readTime || "5 min read"}
+                        </span>
+                      </div>
+                    </div>
+                  </header>
+                  
+                  {/* Hero Image */}
+                  <div className="px-6 mb-8">
+                    <div className="aspect-[21/9] w-full rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 overflow-hidden" />
+                  </div>
+                  
+                  {/* Content with TOC */}
+                  <div className="px-6 pb-12 grid grid-cols-12 gap-8">
+                    {/* Share Sidebar */}
+                    <div className="col-span-1 hidden lg:block">
+                      <div className="sticky top-4 flex flex-col gap-2 items-center">
+                        <span className="text-[10px] font-bold uppercase text-muted-foreground mb-1">Share</span>
+                        <Button variant="outline" size="icon" className="h-8 w-8 rounded-full">
+                          <Twitter className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button variant="outline" size="icon" className="h-8 w-8 rounded-full">
+                          <Linkedin className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button variant="outline" size="icon" className="h-8 w-8 rounded-full">
+                          <LinkIcon className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button variant="outline" size="icon" className="h-8 w-8 rounded-full">
+                          <Bookmark className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    {/* Main Content */}
+                    <div className="col-span-12 lg:col-span-8">
+                      <div className="prose prose-slate dark:prose-invert max-w-none">
+                        {renderMarkdown(formData.content)}
+                      </div>
+                      
+                      {/* Tags */}
+                      {formData.tags.length > 0 && (
+                        <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
+                          <div className="flex flex-wrap gap-2">
+                            {formData.tags.map(tag => (
+                              <Badge key={tag} variant="secondary">#{tag}</Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* TOC Sidebar */}
+                    <div className="col-span-3 hidden lg:block">
+                      <div className="sticky top-4 pl-4 border-l border-slate-200 dark:border-slate-800">
+                        <h4 className="text-xs font-bold text-slate-900 dark:text-white mb-3">On this page</h4>
+                        <nav className="space-y-1.5 text-xs">
+                          {toc.map((item, i) => (
+                            <button
+                              key={i}
+                              className={`block w-full text-left py-1 transition-colors ${
+                                item.level === 3 ? 'pl-3' : ''
+                              } ${
+                                i === 0
+                                  ? 'text-indigo-600 font-medium border-l-2 border-indigo-600 -ml-[17px] pl-4'
+                                  : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                              }`}
+                            >
+                              {item.text}
+                            </button>
+                          ))}
+                        </nav>
+                      </div>
                     </div>
                   </div>
                 </div>
-                
-                <p className="text-xs text-muted-foreground">
-                  Use Markdown syntax: # for headings, **bold**, *italic*, ```code```, etc.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 space-y-5">
-              <h3 className="font-semibold text-sm text-slate-900 dark:text-white">Post Settings</h3>
-              
-              <div className="space-y-2">
-                <Label className="text-sm">Category <span className="text-red-500">*</span></Label>
-                <Select 
-                  value={formData.category} 
-                  onValueChange={(v) => setFormData({ ...formData, category: v })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CATEGORIES.map(cat => (
-                      <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-sm flex items-center gap-2">
-                  <User className="h-4 w-4" />
-                  Author
-                </Label>
-                <Input 
-                  value={formData.author}
-                  onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                  placeholder="Author name"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-sm">Status</Label>
-                <Select 
-                  value={formData.status} 
-                  onValueChange={(v) => setFormData({ ...formData, status: v as "Published" | "Draft" })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Draft">Draft</SelectItem>
-                    <SelectItem value="Published">Published</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-sm flex items-center gap-2">
-                  <Calendar className="h-4 w-4" />
-                  Publish Date
-                </Label>
-                <Input 
-                  type="date"
-                  value={formData.publishedAt}
-                  onChange={(e) => setFormData({ ...formData, publishedAt: e.target.value })}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-sm flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  Read Time
-                </Label>
-                <Input 
-                  value={formData.readTime}
-                  onChange={(e) => setFormData({ ...formData, readTime: e.target.value })}
-                  placeholder="e.g., 5 min"
-                />
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
-              <Label className="text-sm font-semibold flex items-center gap-2">
-                <ImageIcon className="h-4 w-4" />
-                Featured Image
-              </Label>
-              <div 
-                className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
-                onClick={() => setFormData({ ...formData, thumbnail: 'thumbnail.jpg' })}
-              >
-                {formData.thumbnail ? (
-                  <div className="text-center">
-                    <div className="h-24 w-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-2" />
-                    <p className="text-sm text-muted-foreground">{formData.thumbnail}</p>
-                  </div>
-                ) : (
-                  <>
-                    <ImageIcon className="h-10 w-10 text-slate-400 mb-2" />
-                    <p className="text-sm font-medium">Click to upload</p>
-                    <p className="text-xs text-muted-foreground">1200x630px recommended</p>
-                  </>
-                )}
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
-              <Label className="flex justify-between text-sm font-semibold">
-                <span className="flex items-center gap-2"><Tag className="h-4 w-4" /> Tags</span>
-                <span className="text-xs text-muted-foreground font-normal">{formData.tags.length}/5</span>
-              </Label>
-              <div className="flex flex-wrap gap-2 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700 min-h-[44px]">
-                {formData.tags.map((tag, index) => (
-                  <Badge key={index} variant="secondary" className="gap-1 pr-1">
-                    {tag}
-                    <button 
-                      type="button" 
-                      onClick={() => removeTag(tag)}
-                      className="hover:bg-slate-300 dark:hover:bg-slate-600 rounded-full p-0.5 ml-1"
-                    >
-                      ×
-                    </button>
-                  </Badge>
-                ))}
-                {formData.tags.length < 5 && (
-                  <Input 
-                    value={tagInput}
-                    onChange={(e) => setTagInput(e.target.value)}
-                    placeholder={formData.tags.length === 0 ? "Type tag + Enter" : "Add more..."}
-                    className="flex-1 min-w-[100px] h-7 border-0 bg-transparent p-0 focus-visible:ring-0 text-sm"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        addTag();
-                      }
-                    }}
-                  />
-                )}
-              </div>
+              </ScrollArea>
             </div>
           </div>
         </div>
