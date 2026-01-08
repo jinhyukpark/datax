@@ -15,7 +15,8 @@ import {
   UserPlus,
   Check,
   Server,
-  Layers
+  Layers,
+  Newspaper
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -73,6 +74,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     { name: "Submissions", href: "/admin/submissions", icon: FileText },
     { name: "Hosted Services", href: "/admin/hosted-services", icon: Server },
     { name: "Platform Management", href: "/admin/platforms", icon: Layers },
+    { name: "News Management", href: "/admin/news", icon: Newspaper },
     { name: "Payments", href: "/admin/payments", icon: CreditCard },
   ];
 
