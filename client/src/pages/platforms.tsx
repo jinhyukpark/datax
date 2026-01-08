@@ -62,7 +62,7 @@ function PlatformCard({ resource, index }: { resource: ResourceDisplay; index: n
         </div>
 
         <div className="pt-12">
-          <Link href={`/resource/${resource.id}`}>
+          <Link href={`/publisher/${resource.id}`}>
             <a className="block mb-1">
               <h3 className="font-heading text-xl font-bold text-foreground group-hover:text-indigo-600 transition-colors">
                 {resource.title}
@@ -98,7 +98,7 @@ function PlatformCard({ resource, index }: { resource: ResourceDisplay; index: n
               </div>
             </div>
             
-            <Link href={`/resource/${resource.id}`}>
+            <Link href={`/publisher/${resource.id}`}>
               <Button variant="ghost" size="sm" className="h-8 px-2 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:bg-indigo-900/20">
                 View Profile <ExternalLink className="ml-1 h-3 w-3" />
               </Button>
