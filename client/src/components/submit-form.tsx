@@ -83,6 +83,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   ]);
 
   const [replyText, setReplyText] = useState<{[key: string]: string}>({});
+  const [featuredImage, setFeaturedImage] = useState<string>("");
 
   useEffect(() => {
     if (initialData) {
@@ -597,14 +598,29 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
             </div>
 
             <div className="space-y-3">
-                <Label className="font-semibold text-sm">Hero Image</Label>
-                <div className="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                <div className="h-10 w-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 mb-2">
-                    <Upload className="h-5 w-5" />
-                </div>
-                <p className="text-sm font-medium">Click to upload or drag and drop</p>
-                <p className="text-xs text-muted-foreground mt-1">SVG, PNG, JPG (max. 800x400px)</p>
-                </div>
+                <Label className="font-semibold text-sm">Featured Image</Label>
+                {!featuredImage ? (
+                  <div 
+                    className="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors"
+                    onClick={() => setFeaturedImage('featured_image.png')}
+                  >
+                    <div className="h-10 w-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 mb-2">
+                        <Upload className="h-5 w-5" />
+                    </div>
+                    <p className="text-sm font-medium">Click to upload or drag and drop</p>
+                    <p className="text-xs text-muted-foreground mt-1">SVG, PNG, JPG (max. 800x400px)</p>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-900">
+                    <div className="flex items-center gap-2">
+                      <span className="text-red-500">📎</span>
+                      <span className="text-sm text-red-500 font-medium">{featuredImage}</span>
+                    </div>
+                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7 text-red-500 hover:text-red-600 hover:bg-red-50" onClick={() => setFeaturedImage('')}>
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
             </div>
             </div>
         </div>
