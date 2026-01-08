@@ -208,7 +208,7 @@ export default function PublisherProfile() {
           </div>
 
           {/* Special resources for first platform (Social Trend Analysis) */}
-          {providerName === "Social Trend Analysis" || providerName === "Social Trend Co." ? (
+          {params?.id === "1" || providerName === "Social Trend Analysis" || providerName === "Social Trend Co." ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 { id: 1, title: "Social Trend Analysis", desc: "Big data analysis service collected online to quickly respond to the constantly changing web environment.", tags: ["Analysis", "Social"], type: "API", views: 297, price: "Paid" },
