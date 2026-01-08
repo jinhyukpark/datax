@@ -44,6 +44,8 @@ import heroBg from "@assets/generated_images/hero_background_with_connecting_dat
 import { useLanguage } from "@/lib/language-context";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Textarea } from "@/components/ui/textarea";
+import { Send, Reply, User } from "lucide-react";
 
 // Import generated images
 import aiAgentIcon from "@assets/generated_images/ai_agent_icon_abstract.png";
@@ -423,25 +425,98 @@ export default function ResourceDetail() {
                     <div className="text-sm text-muted-foreground">124 ratings</div>
                   </div>
 
-                  {[1, 2, 3].map((review) => (
-                    <div key={review} className="border-b border-slate-100 pb-6 last:border-0 dark:border-slate-800">
+                  {/* Review Writing Form - Visible for logged-in users */}
+                  <div className="p-5 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100/50 dark:from-slate-900 dark:to-slate-800/50 border border-slate-200 dark:border-slate-700 mb-8">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+                        <User className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm">{t("Write a Review", "리뷰 작성")}</p>
+                        <p className="text-xs text-muted-foreground">{t("Share your experience with this resource", "이 리소스에 대한 경험을 공유해주세요")}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-1 mb-3">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button key={star} className="p-1 hover:scale-110 transition-transform" data-testid={`rating-star-${star}`}>
+                          <Star className="h-5 w-5 text-slate-300 hover:text-amber-400 dark:text-slate-600" />
+                        </button>
+                      ))}
+                      <span className="text-xs text-muted-foreground ml-2 self-center">{t("Click to rate", "클릭하여 평가")}</span>
+                    </div>
+                    <Textarea 
+                      placeholder={t("Write your review here...", "리뷰 내용을 입력해주세요...")}
+                      className="mb-3 resize-none bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700"
+                      rows={3}
+                      data-testid="input-review"
+                    />
+                    <div className="flex justify-end">
+                      <Button 
+                        className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white"
+                        data-testid="button-submit-review"
+                        onClick={() => toast.success(t("Review submitted successfully!", "리뷰가 성공적으로 등록되었습니다!"))}
+                      >
+                        <Send className="h-4 w-4" />
+                        {t("Submit Review", "리뷰 등록")}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Reviews List with Reply functionality */}
+                  {[
+                    { id: 1, user: "John Kim", date: "2 days ago", rating: 5, content: "This resource has significantly improved our workflow. The integration was straightforward and the documentation is excellent. Highly recommended for teams looking to scale.", hasReply: true, reply: { author: resource?.provider || "Publisher", content: "Thank you for your kind review! We're thrilled to hear that the integration was smooth. Let us know if you need any further assistance.", date: "1 day ago" } },
+                    { id: 2, user: "Sarah Lee", date: "1 week ago", rating: 4, content: "Great product overall. The API is well-designed and the response times are impressive. Would love to see more documentation on advanced use cases.", hasReply: false },
+                    { id: 3, user: "Mike Park", date: "2 weeks ago", rating: 5, content: "Excellent support and reliable service. We've been using it for 3 months now with zero downtime.", hasReply: false }
+                  ].map((review) => (
+                    <div key={review.id} className="border-b border-slate-100 pb-6 last:border-0 dark:border-slate-800">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <div className="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700" />
+                          <div className="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-300">
+                            {review.user.charAt(0)}
+                          </div>
                           <div>
-                            <p className="text-sm font-medium">User {review}</p>
-                            <p className="text-xs text-muted-foreground">2 days ago</p>
+                            <p className="text-sm font-medium">{review.user}</p>
+                            <p className="text-xs text-muted-foreground">{review.date}</p>
                           </div>
                         </div>
                         <div className="flex text-amber-400">
                           {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="h-3 w-3 fill-current" />
+                            <Star key={i} className={`h-3 w-3 ${i < review.rating ? 'fill-current' : 'text-slate-200 dark:text-slate-700'}`} />
                           ))}
                         </div>
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        This resource has significantly improved our workflow. The integration was straightforward and the documentation is excellent. Highly recommended for teams looking to scale.
+                      <p className="text-sm text-muted-foreground mb-3">
+                        {review.content}
                       </p>
+                      
+                      {/* Publisher Reply */}
+                      {review.hasReply && review.reply && (
+                        <div className="ml-6 mt-3 p-3 rounded-lg bg-indigo-50/50 dark:bg-indigo-900/20 border-l-2 border-indigo-500">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="h-6 w-6 rounded-full bg-indigo-100 dark:bg-indigo-800 flex items-center justify-center">
+                              <Reply className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />
+                            </div>
+                            <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">{review.reply.author}</span>
+                            <Badge variant="secondary" className="text-[10px] px-1.5 py-0 bg-indigo-100 text-indigo-700 dark:bg-indigo-800/50 dark:text-indigo-300">Publisher</Badge>
+                            <span className="text-xs text-muted-foreground">{review.reply.date}</span>
+                          </div>
+                          <p className="text-xs text-slate-600 dark:text-slate-400">{review.reply.content}</p>
+                        </div>
+                      )}
+                      
+                      {/* Reply Button for Owner (demo) */}
+                      {!review.hasReply && (
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-xs text-muted-foreground hover:text-indigo-600 gap-1 mt-2"
+                          data-testid={`button-reply-${review.id}`}
+                          onClick={() => toast.info(t("Reply feature available for resource owners", "리소스 소유자만 답변을 남길 수 있습니다"))}
+                        >
+                          <Reply className="h-3 w-3" />
+                          {t("Reply", "답변하기")}
+                        </Button>
+                      )}
                     </div>
                   ))}
                 </div>
