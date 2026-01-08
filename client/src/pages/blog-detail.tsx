@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Link, useRoute } from "wouter";
@@ -22,6 +23,12 @@ import {
 import { BLOG_POSTS } from "@/lib/data";
 import { useLanguage } from "@/lib/language-context";
 
+interface TocItem {
+  id: string;
+  text: string;
+  level: number;
+}
+
 // Import hero images (mapped for demo purposes)
 import blogHero from "@assets/generated_images/modern_laptop_on_desk_with_code_on_screen.png";
 import serverRoom from "@assets/generated_images/server_room_with_glowing_lights.png";
@@ -37,6 +44,45 @@ const imageMap: Record<string, string> = {
 export default function BlogDetail() {
   const [, params] = useRoute("/blog/:id");
   const { language } = useLanguage();
+  const [activeSection, setActiveSection] = useState("introduction");
+  
+  // Table of contents items
+  const tocItems: TocItem[] = [
+    { id: "introduction", text: "Introduction", level: 1 },
+    { id: "prerequisites", text: "Prerequisites", level: 2 },
+    { id: "step-1-scaffolding", text: "Step 1: Scaffolding", level: 1 },
+    { id: "step-2-defining-tools", text: "Step 2: Defining Tools", level: 1 },
+    { id: "step-3-server-instance", text: "Step 3: Server Instance", level: 1 },
+    { id: "wrapping-up", text: "Wrapping Up", level: 1 },
+  ];
+
+  // Scroll spy effect
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-100px 0px -66%" }
+    );
+
+    tocItems.forEach(({ id }) => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   
   // Default to the second post (MCP Server) if no ID or specific ID matches
   const postId = params?.id || "2";
@@ -163,7 +209,7 @@ export default function BlogDetail() {
                 {displayExcerpt} This guide shows a minimal setup that still supports real endpoints and auth.
               </p>
 
-              <h2>Introduction</h2>
+              <h2 id="introduction" className="scroll-mt-24">Introduction</h2>
               <p>
                 The <strong>Model Context Protocol (MCP)</strong> is rapidly becoming the standard for connecting AI models to external tools and data. While the official documentation covers a lot of ground, many developers get stuck on the initial setup.
               </p>
@@ -171,7 +217,7 @@ export default function BlogDetail() {
                 In this tutorial, we'll strip away the complexity and build a production-ready MCP server in just 15 minutes. We'll focus on the core components: the server instance, tool definitions, and the transport layer.
               </p>
 
-              <div className="my-8 p-6 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800 rounded-xl">
+              <div id="prerequisites" className="my-8 p-6 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800 rounded-xl scroll-mt-24">
                 <h4 className="text-indigo-900 dark:text-indigo-100 font-bold text-lg m-0 mb-2 flex items-center gap-2">
                   <Clock className="h-5 w-5" />
                   Prerequisites
@@ -183,7 +229,7 @@ export default function BlogDetail() {
                 </ul>
               </div>
 
-              <h2>Step 1: Scaffolding the Project</h2>
+              <h2 id="step-1-scaffolding" className="scroll-mt-24">Step 1: Scaffolding the Project</h2>
               <p>
                 First, let's create a new directory and initialize a TypeScript project. We'll use <code>ts-node</code> for development to keep things fast.
               </p>
@@ -196,7 +242,7 @@ npm install @modelcontextprotocol/sdk zod
 npm install -D typescript @types/node ts-node`}</code>
               </pre>
 
-              <h2>Step 2: Defining Your Tools</h2>
+              <h2 id="step-2-defining-tools" className="scroll-mt-24">Step 2: Defining Your Tools</h2>
               <p>
                 The core of an MCP server is its tools. Tools are functions that the AI model can call. Let's define a simple weather tool using Zod for schema validation.
               </p>
@@ -206,12 +252,12 @@ npm install -D typescript @types/node ts-node`}</code>
                 <footer className="text-sm mt-2 text-slate-500">— Sarah Chen, AI Research Lead</footer>
               </blockquote>
 
-              <h2>Step 3: The Server Instance</h2>
+              <h2 id="step-3-server-instance" className="scroll-mt-24">Step 3: The Server Instance</h2>
               <p>
                 Now, let's wire everything up. We'll create an <code>McpServer</code> instance and register our tool.
               </p>
 
-              <h2>Wrapping Up</h2>
+              <h2 id="wrapping-up" className="scroll-mt-24">Wrapping Up</h2>
               <p>
                 You now have a fully functional MCP server running locally. From here, you can add more complex tools, implement authentication middleware, or deploy it to a serverless function.
               </p>
@@ -281,26 +327,23 @@ npm install -D typescript @types/node ts-node`}</code>
           <div className="hidden lg:block lg:col-span-2 relative">
             <div className="sticky top-32 pl-4 border-l border-slate-100 dark:border-slate-800">
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-4">On this page</h4>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <a href="#" className="text-indigo-600 font-medium block border-l-2 border-indigo-600 -ml-[17px] pl-4">Introduction</a>
-                </li>
-                <li>
-                  <a href="#" className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Prerequisites</a>
-                </li>
-                <li>
-                  <a href="#" className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Step 1: Scaffolding</a>
-                </li>
-                <li>
-                  <a href="#" className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Step 2: Defining Tools</a>
-                </li>
-                <li>
-                  <a href="#" className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Step 3: Server Instance</a>
-                </li>
-                <li>
-                  <a href="#" className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Wrapping Up</a>
-                </li>
-              </ul>
+              <nav className="space-y-1 text-sm">
+                {tocItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`block w-full text-left py-1.5 transition-colors ${
+                      item.level === 2 ? 'pl-4' : 'pl-0'
+                    } ${
+                      activeSection === item.id
+                        ? 'text-indigo-600 dark:text-indigo-400 font-medium border-l-2 border-indigo-600 -ml-[17px] pl-4'
+                        : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+                    }`}
+                  >
+                    {item.text}
+                  </button>
+                ))}
+              </nav>
             </div>
           </div>
         </div>

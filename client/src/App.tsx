@@ -25,6 +25,7 @@ import HostedServicesManagement from "@/pages/admin/hosted-services";
 import PlatformManagement from "@/pages/admin/platforms";
 import NewsManagement from "@/pages/admin/news";
 import BlogManagement from "@/pages/admin/blog";
+import BlogEdit from "@/pages/admin/blog-edit";
 import PaymentManagement from "@/pages/admin/payments";
 import Dashboard from "@/pages/admin/dashboard";
 import Notifications from "@/pages/admin/notifications";
@@ -60,6 +61,7 @@ function Router() {
         <Route path="/admin/platforms" component={PlatformManagement} />
         <Route path="/admin/news" component={NewsManagement} />
         <Route path="/admin/blog" component={BlogManagement} />
+        <Route path="/admin/blog/:id" component={BlogEdit} />
         <Route path="/admin/payments" component={PaymentManagement} />
         <Route path="/admin/notifications" component={Notifications} />
 
