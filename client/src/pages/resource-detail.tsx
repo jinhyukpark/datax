@@ -573,24 +573,16 @@ export default function ResourceDetail() {
                     <div>
                       <p className="font-bold text-sm">{resource.provider}</p>
                       <p className="text-xs text-muted-foreground">Verified Publisher</p>
-                      {resource.founder && (
-                         <p className="text-xs text-muted-foreground mt-0.5">Founder: {resource.founder}</p>
+                      {resource.contactEmail && (
+                         <p className="text-xs text-muted-foreground mt-0.5">{resource.contactEmail}</p>
                       )}
                     </div>
                   </div>
                   <Button variant="outline" size="sm" className="w-full text-xs h-8" asChild>
-                    <Link href={`/publisher/${encodeURIComponent(resource.provider)}`}>
-                      View Publisher Profile
-                    </Link>
+                    <a href={resource.websiteUrl || `https://${resource.provider.toLowerCase().replace(/\s+/g, '')}.com`} target="_blank" rel="noopener noreferrer">
+                      {t("Visit Website", "웹사이트 방문")}
+                    </a>
                   </Button>
-                  
-                  {resource.contactEmail && (
-                    <Button variant="ghost" size="sm" className="w-full text-xs h-8 mt-2" asChild>
-                      <a href={`mailto:${resource.contactEmail}`}>
-                        Contact Publisher
-                      </a>
-                    </Button>
-                  )}
                 </div>
               </CardContent>
             </Card>
