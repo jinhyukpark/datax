@@ -164,6 +164,7 @@ export default function AdminPlatforms() {
     contactPhone: "",
     keywords: [] as string[],
     linkedResources: [] as string[],
+    activityHistory: [] as { date: string; title: string; description: string }[],
   });
   const [keywordInput, setKeywordInput] = useState("");
   const [resourceSearchQuery, setResourceSearchQuery] = useState("");
@@ -185,6 +186,7 @@ export default function AdminPlatforms() {
       contactPhone: "",
       keywords: [],
       linkedResources: [],
+      activityHistory: [],
     });
     setResourceSearchQuery("");
     setIsDialogOpen(true);
@@ -207,6 +209,7 @@ export default function AdminPlatforms() {
       contactPhone: platform.contactPhone,
       keywords: platform.keywords,
       linkedResources: [],
+      activityHistory: (platform as any).activityHistory || [],
     });
     setResourceSearchQuery("");
     setIsDialogOpen(true);
@@ -481,7 +484,7 @@ export default function AdminPlatforms() {
                 <div className="space-y-2">
                   <Label className="text-sm flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    Established Date
+                    작성일
                   </Label>
                   <Input 
                     type="date"
@@ -490,6 +493,98 @@ export default function AdminPlatforms() {
                     className="max-w-[200px]"
                   />
                 </div>
+              </div>
+
+              {/* Activity History Section */}
+              <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    <Calendar className="h-4 w-4 text-indigo-500" />
+                    Activity History
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setFormData({
+                      ...formData,
+                      activityHistory: [...formData.activityHistory, { date: "", title: "", description: "" }]
+                    })}
+                    className="gap-1"
+                  >
+                    <Plus className="h-3 w-3" />
+                    Add Activity
+                  </Button>
+                </div>
+                
+                {formData.activityHistory.length === 0 ? (
+                  <div className="text-center py-6 text-muted-foreground text-sm">
+                    No activity history yet. Click "Add Activity" to add milestones.
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {formData.activityHistory.map((activity, index) => (
+                      <div key={index} className="p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-medium text-muted-foreground">Activity #{index + 1}</span>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setFormData({
+                              ...formData,
+                              activityHistory: formData.activityHistory.filter((_, i) => i !== index)
+                            })}
+                            className="h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                        </div>
+                        <div className="grid grid-cols-3 gap-3">
+                          <div className="space-y-1">
+                            <Label className="text-xs">Date</Label>
+                            <Input
+                              type="month"
+                              value={activity.date}
+                              onChange={(e) => {
+                                const updated = [...formData.activityHistory];
+                                updated[index] = { ...updated[index], date: e.target.value };
+                                setFormData({ ...formData, activityHistory: updated });
+                              }}
+                              className="h-8 text-sm"
+                            />
+                          </div>
+                          <div className="col-span-2 space-y-1">
+                            <Label className="text-xs">Title</Label>
+                            <Input
+                              value={activity.title}
+                              onChange={(e) => {
+                                const updated = [...formData.activityHistory];
+                                updated[index] = { ...updated[index], title: e.target.value };
+                                setFormData({ ...formData, activityHistory: updated });
+                              }}
+                              placeholder="e.g., Released API v2.0"
+                              className="h-8 text-sm"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs">Description</Label>
+                          <Input
+                            value={activity.description}
+                            onChange={(e) => {
+                              const updated = [...formData.activityHistory];
+                              updated[index] = { ...updated[index], description: e.target.value };
+                              setFormData({ ...formData, activityHistory: updated });
+                            }}
+                            placeholder="Brief description of the milestone..."
+                            className="h-8 text-sm"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-4">
