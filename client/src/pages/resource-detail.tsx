@@ -358,46 +358,327 @@ export default function ResourceDetail() {
                 </div>
               </TabsContent>
 
-              <TabsContent value="documentation" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-bold flex items-center gap-2">
+              <TabsContent value="documentation" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                {/* Quick Start Section */}
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-bold flex items-center gap-2">
                       <Terminal className="h-5 w-5" />
-                      Quick Start
+                      Quick Start Guide
                     </h3>
                     <Badge variant="outline">v2.1.0</Badge>
                   </div>
-                  <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50">
-                    <div className="absolute right-4 top-4 text-xs text-slate-400">BASH</div>
-                    <p className="mb-2 text-slate-400"># Install the SDK</p>
-                    <p className="mb-4">npm install @em-data/sdk</p>
-                    <p className="mb-2 text-slate-400"># Initialize client</p>
-                    <p>
-                      <span className="text-purple-400">const</span> client = <span className="text-blue-400">new</span> EMDataClient({"{"}
-                      <br/>&nbsp;&nbsp;apiKey: <span className="text-green-400">'YOUR_API_KEY'</span>
-                      <br/>{"}"});
-                    </p>
+
+                  {/* Step 1: Installation */}
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-sm">1</div>
+                      <h4 className="font-bold">Installation</h4>
+                    </div>
+                    <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50">
+                      <div className="absolute right-4 top-4 text-xs text-slate-400">BASH</div>
+                      <p className="text-slate-400"># Using npm</p>
+                      <p className="mb-3">npm install @em-data/sdk</p>
+                      <p className="text-slate-400"># Using pip (Python)</p>
+                      <p className="mb-3">pip install em-data-sdk</p>
+                      <p className="text-slate-400"># Using Maven (Java)</p>
+                      <p>&lt;dependency&gt;</p>
+                      <p>&nbsp;&nbsp;&lt;groupId&gt;com.emdata&lt;/groupId&gt;</p>
+                      <p>&nbsp;&nbsp;&lt;artifactId&gt;em-data-sdk&lt;/artifactId&gt;</p>
+                      <p>&nbsp;&nbsp;&lt;version&gt;2.1.0&lt;/version&gt;</p>
+                      <p>&lt;/dependency&gt;</p>
+                    </div>
+                  </div>
+
+                  {/* Step 2: JavaScript Integration */}
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="h-8 w-8 rounded-full bg-yellow-100 dark:bg-yellow-900/50 flex items-center justify-center text-yellow-600 dark:text-yellow-400 font-bold text-sm">2</div>
+                      <h4 className="font-bold">JavaScript / Node.js Integration</h4>
+                    </div>
+                    <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
+                      <div className="absolute right-4 top-4 text-xs text-slate-400">JAVASCRIPT</div>
+                      <p><span className="text-purple-400">import</span> {"{"} EMDataClient {"}"} <span className="text-purple-400">from</span> <span className="text-green-400">'@em-data/sdk'</span>;</p>
+                      <br/>
+                      <p className="text-slate-400">// Initialize the client</p>
+                      <p><span className="text-purple-400">const</span> client = <span className="text-blue-400">new</span> EMDataClient({"{"}</p>
+                      <p>&nbsp;&nbsp;apiKey: process.env.<span className="text-orange-400">EM_API_KEY</span>,</p>
+                      <p>&nbsp;&nbsp;baseUrl: <span className="text-green-400">'https://api.emdata.io'</span></p>
+                      <p>{"}"});</p>
+                      <br/>
+                      <p className="text-slate-400">// Fetch resources</p>
+                      <p><span className="text-purple-400">const</span> resources = <span className="text-purple-400">await</span> client.resources.list({"{"}</p>
+                      <p>&nbsp;&nbsp;category: <span className="text-green-400">'analysis'</span>,</p>
+                      <p>&nbsp;&nbsp;limit: <span className="text-orange-400">10</span></p>
+                      <p>{"}"});</p>
+                      <br/>
+                      <p>console.log(resources.data);</p>
+                    </div>
+                  </div>
+
+                  {/* Step 3: Python Integration */}
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">3</div>
+                      <h4 className="font-bold">Python Integration</h4>
+                    </div>
+                    <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
+                      <div className="absolute right-4 top-4 text-xs text-slate-400">PYTHON</div>
+                      <p><span className="text-purple-400">from</span> em_data <span className="text-purple-400">import</span> EMDataClient</p>
+                      <p><span className="text-purple-400">import</span> os</p>
+                      <br/>
+                      <p className="text-slate-400"># Initialize the client</p>
+                      <p>client = EMDataClient(</p>
+                      <p>&nbsp;&nbsp;api_key=os.environ[<span className="text-green-400">"EM_API_KEY"</span>],</p>
+                      <p>&nbsp;&nbsp;base_url=<span className="text-green-400">"https://api.emdata.io"</span></p>
+                      <p>)</p>
+                      <br/>
+                      <p className="text-slate-400"># Fetch resources</p>
+                      <p>resources = client.resources.list(</p>
+                      <p>&nbsp;&nbsp;category=<span className="text-green-400">"analysis"</span>,</p>
+                      <p>&nbsp;&nbsp;limit=<span className="text-orange-400">10</span></p>
+                      <p>)</p>
+                      <br/>
+                      <p><span className="text-purple-400">for</span> resource <span className="text-purple-400">in</span> resources.data:</p>
+                      <p>&nbsp;&nbsp;print(resource.name, resource.category)</p>
+                    </div>
+                  </div>
+
+                  {/* Step 4: Java Integration */}
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="h-8 w-8 rounded-full bg-red-100 dark:bg-red-900/50 flex items-center justify-center text-red-600 dark:text-red-400 font-bold text-sm">4</div>
+                      <h4 className="font-bold">Java Integration</h4>
+                    </div>
+                    <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
+                      <div className="absolute right-4 top-4 text-xs text-slate-400">JAVA</div>
+                      <p><span className="text-purple-400">import</span> com.emdata.EMDataClient;</p>
+                      <p><span className="text-purple-400">import</span> com.emdata.models.Resource;</p>
+                      <p><span className="text-purple-400">import</span> com.emdata.models.ResourceListResponse;</p>
+                      <br/>
+                      <p><span className="text-purple-400">public class</span> <span className="text-blue-400">Example</span> {"{"}</p>
+                      <p>&nbsp;&nbsp;<span className="text-purple-400">public static void</span> main(String[] args) {"{"}</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-400">// Initialize client</span></p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;EMDataClient client = <span className="text-blue-400">new</span> EMDataClient.Builder()</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.apiKey(System.getenv(<span className="text-green-400">"EM_API_KEY"</span>))</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.baseUrl(<span className="text-green-400">"https://api.emdata.io"</span>)</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.build();</p>
+                      <br/>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-400">// Fetch resources</span></p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;ResourceListResponse response = client.resources()</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.list(<span className="text-green-400">"analysis"</span>, <span className="text-orange-400">10</span>);</p>
+                      <br/>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-purple-400">for</span> (Resource r : response.getData()) {"{"}</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(r.getName());</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;{"}"}</p>
+                      <p>&nbsp;&nbsp;{"}"}</p>
+                      <p>{"}"}</p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="grid gap-4">
-                  <h3 className="font-bold">Endpoints</h3>
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Badge className="bg-blue-500 hover:bg-blue-600">GET</Badge>
-                        <code className="text-sm font-mono bg-slate-100 px-2 py-0.5 rounded dark:bg-slate-800">/v1/resources/list</code>
+                {/* Endpoints Section */}
+                <div className="space-y-6">
+                  <h3 className="text-xl font-bold">API Endpoints</h3>
+                  
+                  {/* GET /v1/resources/list */}
+                  <Card className="overflow-hidden">
+                    <CardContent className="p-0">
+                      <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+                        <div className="flex items-center gap-3 mb-2">
+                          <Badge className="bg-blue-500 hover:bg-blue-600">GET</Badge>
+                          <code className="text-sm font-mono font-bold">/v1/resources/list</code>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Retrieve a paginated list of available resources matching the filter criteria.</p>
                       </div>
-                      <p className="text-sm text-muted-foreground">Retrieve a paginated list of available resources matching the filter criteria.</p>
+                      
+                      <div className="p-4 space-y-4">
+                        <div>
+                          <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                            <span className="h-5 w-5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs">Q</span>
+                            Query Parameters
+                          </h5>
+                          <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+                            <table className="w-full text-sm">
+                              <thead className="bg-slate-50 dark:bg-slate-800">
+                                <tr>
+                                  <th className="text-left px-4 py-2 font-medium">Parameter</th>
+                                  <th className="text-left px-4 py-2 font-medium">Type</th>
+                                  <th className="text-left px-4 py-2 font-medium">Required</th>
+                                  <th className="text-left px-4 py-2 font-medium">Description</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                                <tr><td className="px-4 py-2 font-mono text-xs">category</td><td className="px-4 py-2">string</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Filter by resource category</td></tr>
+                                <tr><td className="px-4 py-2 font-mono text-xs">limit</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Max results (default: 20, max: 100)</td></tr>
+                                <tr><td className="px-4 py-2 font-mono text-xs">offset</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Pagination offset</td></tr>
+                                <tr><td className="px-4 py-2 font-mono text-xs">sort</td><td className="px-4 py-2">string</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Sort field (created_at, name, rating)</td></tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                            <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
+                            Response
+                          </h5>
+                          <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
+                            <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
+                            <pre>{`{
+  "success": true,
+  "data": [
+    {
+      "id": "res_abc123",
+      "name": "Market Analysis Agent",
+      "category": "analysis",
+      "description": "AI-powered market analysis",
+      "rating": 4.8,
+      "created_at": "2024-01-15T10:30:00Z"
+    }
+  ],
+  "pagination": {
+    "total": 150,
+    "limit": 20,
+    "offset": 0,
+    "has_more": true
+  }
+}`}</pre>
+                          </div>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Badge className="bg-green-500 hover:bg-green-600">POST</Badge>
-                        <code className="text-sm font-mono bg-slate-100 px-2 py-0.5 rounded dark:bg-slate-800">/v1/agents/interact</code>
+
+                  {/* POST /v1/agents/interact */}
+                  <Card className="overflow-hidden">
+                    <CardContent className="p-0">
+                      <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+                        <div className="flex items-center gap-3 mb-2">
+                          <Badge className="bg-green-500 hover:bg-green-600">POST</Badge>
+                          <code className="text-sm font-mono font-bold">/v1/agents/interact</code>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Send a prompt to the AI agent and receive a streamed response.</p>
                       </div>
-                      <p className="text-sm text-muted-foreground">Send a prompt to the AI agent and receive a streamed response.</p>
+                      
+                      <div className="p-4 space-y-4">
+                        <div>
+                          <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                            <span className="h-5 w-5 rounded bg-orange-100 dark:bg-orange-900/50 text-orange-600 dark:text-orange-400 flex items-center justify-center text-xs">B</span>
+                            Request Body
+                          </h5>
+                          <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+                            <table className="w-full text-sm">
+                              <thead className="bg-slate-50 dark:bg-slate-800">
+                                <tr>
+                                  <th className="text-left px-4 py-2 font-medium">Field</th>
+                                  <th className="text-left px-4 py-2 font-medium">Type</th>
+                                  <th className="text-left px-4 py-2 font-medium">Required</th>
+                                  <th className="text-left px-4 py-2 font-medium">Description</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                                <tr><td className="px-4 py-2 font-mono text-xs">agent_id</td><td className="px-4 py-2">string</td><td className="px-4 py-2">Yes</td><td className="px-4 py-2 text-muted-foreground">Target agent identifier</td></tr>
+                                <tr><td className="px-4 py-2 font-mono text-xs">prompt</td><td className="px-4 py-2">string</td><td className="px-4 py-2">Yes</td><td className="px-4 py-2 text-muted-foreground">User input message</td></tr>
+                                <tr><td className="px-4 py-2 font-mono text-xs">stream</td><td className="px-4 py-2">boolean</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Enable streaming (default: true)</td></tr>
+                                <tr><td className="px-4 py-2 font-mono text-xs">context</td><td className="px-4 py-2">object</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Additional context data</td></tr>
+                                <tr><td className="px-4 py-2 font-mono text-xs">max_tokens</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Max response tokens (default: 1024)</td></tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                            <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
+                            Response
+                          </h5>
+                          <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
+                            <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
+                            <pre>{`{
+  "success": true,
+  "data": {
+    "id": "msg_xyz789",
+    "agent_id": "agent_abc123",
+    "content": "Based on the market analysis...",
+    "tokens_used": 256,
+    "model": "gpt-4-turbo",
+    "created_at": "2024-01-15T10:35:00Z"
+  },
+  "usage": {
+    "prompt_tokens": 45,
+    "completion_tokens": 256,
+    "total_tokens": 301
+  }
+}`}</pre>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* GET /v1/agents/:id */}
+                  <Card className="overflow-hidden">
+                    <CardContent className="p-0">
+                      <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+                        <div className="flex items-center gap-3 mb-2">
+                          <Badge className="bg-blue-500 hover:bg-blue-600">GET</Badge>
+                          <code className="text-sm font-mono font-bold">/v1/agents/:id</code>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Retrieve detailed information about a specific agent.</p>
+                      </div>
+                      
+                      <div className="p-4 space-y-4">
+                        <div>
+                          <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                            <span className="h-5 w-5 rounded bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xs">P</span>
+                            Path Parameters
+                          </h5>
+                          <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+                            <table className="w-full text-sm">
+                              <thead className="bg-slate-50 dark:bg-slate-800">
+                                <tr>
+                                  <th className="text-left px-4 py-2 font-medium">Parameter</th>
+                                  <th className="text-left px-4 py-2 font-medium">Type</th>
+                                  <th className="text-left px-4 py-2 font-medium">Description</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr><td className="px-4 py-2 font-mono text-xs">id</td><td className="px-4 py-2">string</td><td className="px-4 py-2 text-muted-foreground">Unique agent identifier (e.g., agent_abc123)</td></tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                            <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
+                            Response
+                          </h5>
+                          <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
+                            <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
+                            <pre>{`{
+  "success": true,
+  "data": {
+    "id": "agent_abc123",
+    "name": "Market Analysis Agent",
+    "description": "AI-powered market analysis tool",
+    "version": "2.1.0",
+    "capabilities": ["analysis", "prediction", "reporting"],
+    "pricing": {
+      "model": "per_request",
+      "base_cost": 0.002
+    },
+    "stats": {
+      "total_requests": 15420,
+      "avg_response_time": 1.2,
+      "uptime": 99.9
+    }
+  }
+}`}</pre>
+                          </div>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
