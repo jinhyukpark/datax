@@ -1383,7 +1383,7 @@ export default function MyPage() {
                                     </Button>
                                   </DialogTrigger>
                                   <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                                    <GeneralRequestDetails data={item} />
+                                    <GeneralRequestDetails data={item} status={item.step === 1 ? "submitted" : undefined} />
                                   </DialogContent>
                                 </Dialog>
 

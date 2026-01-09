@@ -3,15 +3,18 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useLanguage } from "@/lib/language-context";
-import { ShieldCheck, Upload, Paperclip } from "lucide-react";
+import { ShieldCheck, Upload, Paperclip, Save } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 interface GeneralRequestDetailsProps {
   data: any;
+  status?: string;
 }
 
-export function GeneralRequestDetails({ data }: GeneralRequestDetailsProps) {
+export function GeneralRequestDetails({ data, status }: GeneralRequestDetailsProps) {
   const { t } = useLanguage();
+  const isEditable = status === "submitted";
   
   const title = data.title || "";
   const founder = data.founder || data.provider || "";
@@ -358,6 +361,16 @@ export function GeneralRequestDetails({ data }: GeneralRequestDetailsProps) {
           </div>
         )}
       </div>
+
+      {/* Update Request Button - only shown when status is submitted */}
+      {isEditable && (
+        <div className="flex justify-end pt-6 border-t border-slate-200 dark:border-slate-700">
+          <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
+            <Save className="h-4 w-4" />
+            {t("Update Request", "요청 수정")}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
