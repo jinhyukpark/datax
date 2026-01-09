@@ -108,41 +108,79 @@ export default function MyPage() {
     }
   ];
 
-  // Mock My Shared Data (Approved)
+  // Mock My Shared Data (Approved) - matches submit form fields
   const myData = [
     {
       id: "m1",
       title: "Seoul Public Transport Usage 2024",
       description: "Comprehensive analysis of public transport usage patterns in Seoul.",
+      longDescription: "Comprehensive analysis of public transport usage patterns in Seoul, including bus, subway, and taxi data across all districts.",
       views: 1250,
       downloads: 340,
       status: "Active",
       date: "2025-09-15",
       unreadReviews: 3,
       totalReviews: 12,
-      // Missing Resource fields
       provider: "Seoul Metro Data",
+      founder: "Seoul Metropolitan Government",
       type: "Dataset",
       price: "Free",
       tags: ["Transport", "Seoul", "Public"],
-      publishedDate: "2025-09-15"
+      publishedDate: "2025-09-15",
+      tagline: "Real-time public transport analytics for Seoul",
+      websiteUrl: "https://data.seoul.go.kr",
+      affiliateLink: "",
+      demoUrl: "https://youtube.com/demo123",
+      docsUrl: "https://docs.seoul.go.kr/transport",
+      contactEmail: "data@seoul.go.kr",
+      contactPhone: "+82 2-1234-5678",
+      linkedinUrl: "https://linkedin.com/company/seoul-metro",
+      twitterUrl: "https://twitter.com/seoulmetro",
+      githubUrl: "https://github.com/seoul-data",
+      discordUrl: "",
+      telegramUrl: "",
+      category: "Analysis",
+      accessModel: "API",
+      license: "open-source",
+      version: "v1.2.0",
+      features: ["Real-time tracking", "Historical data", "API access"],
+      useCases: ["Urban planning", "Traffic analysis", "Research"]
     },
     {
       id: "m2",
       title: "Korean Coffee Consumption Trends",
       description: "Market research data on coffee consumption habits across age groups.",
+      longDescription: "Market research data on coffee consumption habits across age groups in South Korea, covering major brands and regional preferences.",
       views: 890,
       downloads: 120,
       status: "Active",
       date: "2025-10-22",
       unreadReviews: 0,
       totalReviews: 5,
-      // Missing Resource fields
       provider: "K-Market Research",
+      founder: "K-Market Research Inc.",
       type: "Dataset",
       price: "Paid",
       tags: ["Coffee", "Consumption", "Market"],
-      publishedDate: "2025-10-22"
+      publishedDate: "2025-10-22",
+      tagline: "Comprehensive coffee market insights for Korea",
+      websiteUrl: "https://kmarketresearch.com",
+      affiliateLink: "https://partner.kmarketresearch.com/ref123",
+      demoUrl: "",
+      docsUrl: "https://docs.kmarketresearch.com",
+      contactEmail: "info@kmarketresearch.com",
+      contactPhone: "+82 10-9876-5432",
+      linkedinUrl: "https://linkedin.com/company/kmarket",
+      twitterUrl: "",
+      githubUrl: "",
+      discordUrl: "https://discord.gg/kmarket",
+      telegramUrl: "https://t.me/kmarket",
+      category: "Finance",
+      accessModel: "File",
+      license: "commercial",
+      version: "v2.4.1",
+      features: ["Quarterly reports", "Regional breakdown", "Trend analysis"],
+      useCases: ["Market research", "Business planning", "Investment analysis"]
     }
   ];
 
