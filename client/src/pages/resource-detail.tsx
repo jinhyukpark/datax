@@ -483,26 +483,27 @@ export default function ResourceDetail() {
                   <h3 className="text-xl font-bold">API Endpoints</h3>
                   
                   {/* GET /v1/resources/list */}
-                  <Card className="overflow-hidden">
-                    <CardContent className="p-0">
-                      <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Badge className="bg-blue-500 hover:bg-blue-600">GET</Badge>
-                          <code className="text-sm font-mono font-bold">/v1/resources/list</code>
+                  <Collapsible defaultOpen={false}>
+                    <Card className="overflow-hidden">
+                      <CollapsibleTrigger className="w-full text-left">
+                        <div className="p-4 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors group">
+                          <div>
+                            <div className="flex items-center gap-3 mb-2">
+                              <Badge className="bg-blue-500 hover:bg-blue-600">GET</Badge>
+                              <code className="text-sm font-mono font-bold">/v1/resources/list</code>
+                            </div>
+                            <p className="text-sm text-muted-foreground">Retrieve a paginated list of available resources matching the filter criteria.</p>
+                          </div>
+                          <ChevronDown className="h-5 w-5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
                         </div>
-                        <p className="text-sm text-muted-foreground">Retrieve a paginated list of available resources matching the filter criteria.</p>
-                      </div>
-                      
-                      <div className="p-4 space-y-4">
-                        <Collapsible defaultOpen={false}>
-                          <CollapsibleTrigger className="flex items-center justify-between w-full group">
-                            <h5 className="font-semibold text-sm flex items-center gap-2">
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <CardContent className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-6">
+                          <div>
+                            <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
                               <span className="h-5 w-5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs">Q</span>
                               Query Parameters
                             </h5>
-                            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-                          </CollapsibleTrigger>
-                          <CollapsibleContent className="mt-2">
                             <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
                               <table className="w-full text-sm">
                                 <thead className="bg-slate-50 dark:bg-slate-800">
@@ -521,18 +522,13 @@ export default function ResourceDetail() {
                                 </tbody>
                               </table>
                             </div>
-                          </CollapsibleContent>
-                        </Collapsible>
+                          </div>
 
-                        <Collapsible defaultOpen={false}>
-                          <CollapsibleTrigger className="flex items-center justify-between w-full group">
-                            <h5 className="font-semibold text-sm flex items-center gap-2">
+                          <div>
+                            <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
                               <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
                               Response
                             </h5>
-                            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-                          </CollapsibleTrigger>
-                          <CollapsibleContent className="mt-2">
                             <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
                               <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
                               <pre>{`{
@@ -555,33 +551,34 @@ export default function ResourceDetail() {
   }
 }`}</pre>
                             </div>
-                          </CollapsibleContent>
-                        </Collapsible>
-                      </div>
-                    </CardContent>
-                  </Card>
+                          </div>
+                        </CardContent>
+                      </CollapsibleContent>
+                    </Card>
+                  </Collapsible>
 
                   {/* POST /v1/agents/interact */}
-                  <Card className="overflow-hidden">
-                    <CardContent className="p-0">
-                      <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Badge className="bg-green-500 hover:bg-green-600">POST</Badge>
-                          <code className="text-sm font-mono font-bold">/v1/agents/interact</code>
+                  <Collapsible defaultOpen={false}>
+                    <Card className="overflow-hidden">
+                      <CollapsibleTrigger className="w-full text-left">
+                        <div className="p-4 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors group">
+                          <div>
+                            <div className="flex items-center gap-3 mb-2">
+                              <Badge className="bg-green-500 hover:bg-green-600">POST</Badge>
+                              <code className="text-sm font-mono font-bold">/v1/agents/interact</code>
+                            </div>
+                            <p className="text-sm text-muted-foreground">Send a prompt to the AI agent and receive a streamed response.</p>
+                          </div>
+                          <ChevronDown className="h-5 w-5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
                         </div>
-                        <p className="text-sm text-muted-foreground">Send a prompt to the AI agent and receive a streamed response.</p>
-                      </div>
-                      
-                      <div className="p-4 space-y-4">
-                        <Collapsible defaultOpen={false}>
-                          <CollapsibleTrigger className="flex items-center justify-between w-full group">
-                            <h5 className="font-semibold text-sm flex items-center gap-2">
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <CardContent className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-6">
+                          <div>
+                            <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
                               <span className="h-5 w-5 rounded bg-orange-100 dark:bg-orange-900/50 text-orange-600 dark:text-orange-400 flex items-center justify-center text-xs">B</span>
                               Request Body
                             </h5>
-                            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-                          </CollapsibleTrigger>
-                          <CollapsibleContent className="mt-2">
                             <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
                               <table className="w-full text-sm">
                                 <thead className="bg-slate-50 dark:bg-slate-800">
@@ -601,18 +598,13 @@ export default function ResourceDetail() {
                                 </tbody>
                               </table>
                             </div>
-                          </CollapsibleContent>
-                        </Collapsible>
+                          </div>
 
-                        <Collapsible defaultOpen={false}>
-                          <CollapsibleTrigger className="flex items-center justify-between w-full group">
-                            <h5 className="font-semibold text-sm flex items-center gap-2">
+                          <div>
+                            <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
                               <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
                               Response
                             </h5>
-                            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-                          </CollapsibleTrigger>
-                          <CollapsibleContent className="mt-2">
                             <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
                               <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
                               <pre>{`{
@@ -632,33 +624,34 @@ export default function ResourceDetail() {
   }
 }`}</pre>
                             </div>
-                          </CollapsibleContent>
-                        </Collapsible>
-                      </div>
-                    </CardContent>
-                  </Card>
+                          </div>
+                        </CardContent>
+                      </CollapsibleContent>
+                    </Card>
+                  </Collapsible>
 
                   {/* GET /v1/agents/:id */}
-                  <Card className="overflow-hidden">
-                    <CardContent className="p-0">
-                      <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Badge className="bg-blue-500 hover:bg-blue-600">GET</Badge>
-                          <code className="text-sm font-mono font-bold">/v1/agents/:id</code>
+                  <Collapsible defaultOpen={false}>
+                    <Card className="overflow-hidden">
+                      <CollapsibleTrigger className="w-full text-left">
+                        <div className="p-4 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors group">
+                          <div>
+                            <div className="flex items-center gap-3 mb-2">
+                              <Badge className="bg-blue-500 hover:bg-blue-600">GET</Badge>
+                              <code className="text-sm font-mono font-bold">/v1/agents/:id</code>
+                            </div>
+                            <p className="text-sm text-muted-foreground">Retrieve detailed information about a specific agent.</p>
+                          </div>
+                          <ChevronDown className="h-5 w-5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
                         </div>
-                        <p className="text-sm text-muted-foreground">Retrieve detailed information about a specific agent.</p>
-                      </div>
-                      
-                      <div className="p-4 space-y-4">
-                        <Collapsible defaultOpen={false}>
-                          <CollapsibleTrigger className="flex items-center justify-between w-full group">
-                            <h5 className="font-semibold text-sm flex items-center gap-2">
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <CardContent className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-6">
+                          <div>
+                            <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
                               <span className="h-5 w-5 rounded bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xs">P</span>
                               Path Parameters
                             </h5>
-                            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-                          </CollapsibleTrigger>
-                          <CollapsibleContent className="mt-2">
                             <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
                               <table className="w-full text-sm">
                                 <thead className="bg-slate-50 dark:bg-slate-800">
@@ -673,18 +666,13 @@ export default function ResourceDetail() {
                                 </tbody>
                               </table>
                             </div>
-                          </CollapsibleContent>
-                        </Collapsible>
+                          </div>
 
-                        <Collapsible defaultOpen={false}>
-                          <CollapsibleTrigger className="flex items-center justify-between w-full group">
-                            <h5 className="font-semibold text-sm flex items-center gap-2">
+                          <div>
+                            <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
                               <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
                               Response
                             </h5>
-                            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-                          </CollapsibleTrigger>
-                          <CollapsibleContent className="mt-2">
                             <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
                               <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
                               <pre>{`{
@@ -707,11 +695,11 @@ export default function ResourceDetail() {
   }
 }`}</pre>
                             </div>
-                          </CollapsibleContent>
-                        </Collapsible>
-                      </div>
-                    </CardContent>
-                  </Card>
+                          </div>
+                        </CardContent>
+                      </CollapsibleContent>
+                    </Card>
+                  </Collapsible>
                 </div>
               </TabsContent>
 
