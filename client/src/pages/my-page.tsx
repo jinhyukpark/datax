@@ -184,25 +184,51 @@ export default function MyPage() {
     }
   ];
 
-  // Mock Requested Data
+  // Mock Requested Data - includes all submit form fields
   const [requestedData, setRequestedData] = useState([
     {
       id: "r1",
       title: "Global EV Market Analysis AI Agent",
       description: "AI Agent that aggregates and analyzes global electric vehicle market trends.",
+      longDescription: "Comprehensive AI agent for analyzing global EV market trends, including sales data, charging infrastructure, and policy impacts across major markets.",
       dates: {
         submitted: "2025-12-14",
         verifying: "2025-12-15",
         verified: null,
         rejected: null
       },
-      status: "verifying", // submitted, verifying, verified, rejected
-      step: 2
+      status: "verifying",
+      step: 2,
+      provider: "EV Analytics Corp",
+      founder: "EV Analytics Inc.",
+      type: "AI Agent",
+      price: "Paid",
+      tags: ["EV", "Market Analysis", "Automotive"],
+      publishedDate: "2025-12-14",
+      tagline: "AI-powered electric vehicle market intelligence",
+      websiteUrl: "https://evanalytics.ai",
+      affiliateLink: "",
+      demoUrl: "https://youtube.com/evdemo",
+      docsUrl: "https://docs.evanalytics.ai",
+      contactEmail: "contact@evanalytics.ai",
+      contactPhone: "+1 555-123-4567",
+      linkedinUrl: "https://linkedin.com/company/evanalytics",
+      twitterUrl: "https://twitter.com/evanalytics",
+      githubUrl: "https://github.com/evanalytics",
+      discordUrl: "",
+      telegramUrl: "",
+      category: "Analysis",
+      accessModel: "AI Agent",
+      license: "commercial",
+      version: "v1.0.0",
+      features: ["Real-time market tracking", "Predictive analytics", "Custom reports"],
+      useCases: ["Investment research", "Market entry strategy", "Competitive analysis"]
     },
     {
       id: "r2",
       title: "Medical Image Diagnostic Helper",
       description: "Assistant AI for preliminary analysis of X-ray images.",
+      longDescription: "AI-powered diagnostic assistant that helps healthcare professionals with preliminary analysis of X-ray images, supporting faster and more accurate diagnoses.",
       dates: {
         submitted: "2025-12-10",
         verifying: null,
@@ -210,12 +236,37 @@ export default function MyPage() {
         rejected: null
       },
       status: "submitted",
-      step: 1
+      step: 1,
+      provider: "MedTech AI",
+      founder: "MedTech AI Solutions",
+      type: "AI Agent",
+      price: "Paid",
+      tags: ["Medical", "Imaging", "Diagnostics"],
+      publishedDate: "2025-12-10",
+      tagline: "AI-assisted medical imaging analysis",
+      websiteUrl: "https://medtechai.com",
+      affiliateLink: "",
+      demoUrl: "",
+      docsUrl: "https://docs.medtechai.com",
+      contactEmail: "support@medtechai.com",
+      contactPhone: "+1 555-987-6543",
+      linkedinUrl: "https://linkedin.com/company/medtechai",
+      twitterUrl: "",
+      githubUrl: "",
+      discordUrl: "",
+      telegramUrl: "",
+      category: "Analysis",
+      accessModel: "API",
+      license: "proprietary",
+      version: "v0.9.0",
+      features: ["X-ray analysis", "Anomaly detection", "Report generation"],
+      useCases: ["Hospital diagnostics", "Clinic support", "Research"]
     },
     {
       id: "r3",
       title: "Crypto Trading Bot V2",
       description: "Automated trading bot for cryptocurrency markets with risk management.",
+      longDescription: "Advanced cryptocurrency trading bot with built-in risk management, supporting multiple exchanges and trading strategies.",
       dates: {
         submitted: "2025-12-01",
         verifying: "2025-12-03",
@@ -228,12 +279,37 @@ export default function MyPage() {
       messages: [
         { sender: "admin", text: "We found a critical vulnerability in the 'crypto-js' version you are using.", date: "2025-12-05 14:30" },
         { sender: "user", text: "I will update the package and resubmit.", date: "2025-12-05 15:45" }
-      ]
+      ],
+      provider: "CryptoBot Labs",
+      founder: "CryptoBot Labs LLC",
+      type: "AI Agent",
+      price: "Paid",
+      tags: ["Crypto", "Trading", "Bot"],
+      publishedDate: "2025-12-01",
+      tagline: "Automated crypto trading with smart risk management",
+      websiteUrl: "https://cryptobotlabs.io",
+      affiliateLink: "https://ref.cryptobotlabs.io/partner",
+      demoUrl: "https://youtube.com/cryptobot",
+      docsUrl: "https://docs.cryptobotlabs.io",
+      contactEmail: "dev@cryptobotlabs.io",
+      contactPhone: "",
+      linkedinUrl: "",
+      twitterUrl: "https://twitter.com/cryptobotlabs",
+      githubUrl: "https://github.com/cryptobotlabs",
+      discordUrl: "https://discord.gg/cryptobot",
+      telegramUrl: "https://t.me/cryptobotlabs",
+      category: "Finance",
+      accessModel: "API",
+      license: "mit",
+      version: "v2.0.0",
+      features: ["Multi-exchange support", "Risk management", "Backtesting"],
+      useCases: ["Algorithmic trading", "Portfolio management", "Market making"]
     },
     {
       id: "r4",
       title: "Real-time Traffic Optimization AI",
       description: "AI system for optimizing traffic signal timings based on real-time flow data.",
+      longDescription: "Intelligent traffic management system that uses AI to optimize signal timings in real-time, reducing congestion and improving traffic flow.",
       dates: {
         submitted: "2025-11-15",
         verifying: "2025-11-16",
@@ -241,7 +317,31 @@ export default function MyPage() {
         rejected: null
       },
       status: "verified",
-      step: 3
+      step: 3,
+      provider: "Smart City AI",
+      founder: "Smart City Solutions Inc.",
+      type: "AI Agent",
+      price: "Free",
+      tags: ["Traffic", "Smart City", "Optimization"],
+      publishedDate: "2025-11-15",
+      tagline: "AI-driven traffic flow optimization",
+      websiteUrl: "https://smartcityai.com",
+      affiliateLink: "",
+      demoUrl: "https://youtube.com/smartcityai",
+      docsUrl: "https://docs.smartcityai.com",
+      contactEmail: "hello@smartcityai.com",
+      contactPhone: "+82 2-5555-1234",
+      linkedinUrl: "https://linkedin.com/company/smartcityai",
+      twitterUrl: "https://twitter.com/smartcityai",
+      githubUrl: "https://github.com/smartcityai",
+      discordUrl: "",
+      telegramUrl: "",
+      category: "Analysis",
+      accessModel: "MCP",
+      license: "open-source",
+      version: "v1.5.2",
+      features: ["Real-time optimization", "Predictive modeling", "Dashboard"],
+      useCases: ["City planning", "Traffic management", "Emergency routing"]
     }
   ]);
 
