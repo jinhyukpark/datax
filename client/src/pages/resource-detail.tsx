@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { 
   Carousel, 
   CarouselContent, 
@@ -45,7 +46,7 @@ import { useLanguage } from "@/lib/language-context";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Reply, User } from "lucide-react";
+import { Send, Reply, User, ChevronDown } from "lucide-react";
 
 // Import generated images
 import aiAgentIcon from "@assets/generated_images/ai_agent_icon_abstract.png";
@@ -493,39 +494,48 @@ export default function ResourceDetail() {
                       </div>
                       
                       <div className="p-4 space-y-4">
-                        <div>
-                          <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                            <span className="h-5 w-5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs">Q</span>
-                            Query Parameters
-                          </h5>
-                          <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-                            <table className="w-full text-sm">
-                              <thead className="bg-slate-50 dark:bg-slate-800">
-                                <tr>
-                                  <th className="text-left px-4 py-2 font-medium">Parameter</th>
-                                  <th className="text-left px-4 py-2 font-medium">Type</th>
-                                  <th className="text-left px-4 py-2 font-medium">Required</th>
-                                  <th className="text-left px-4 py-2 font-medium">Description</th>
-                                </tr>
-                              </thead>
-                              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                                <tr><td className="px-4 py-2 font-mono text-xs">category</td><td className="px-4 py-2">string</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Filter by resource category</td></tr>
-                                <tr><td className="px-4 py-2 font-mono text-xs">limit</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Max results (default: 20, max: 100)</td></tr>
-                                <tr><td className="px-4 py-2 font-mono text-xs">offset</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Pagination offset</td></tr>
-                                <tr><td className="px-4 py-2 font-mono text-xs">sort</td><td className="px-4 py-2">string</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Sort field (created_at, name, rating)</td></tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
+                        <Collapsible defaultOpen={false}>
+                          <CollapsibleTrigger className="flex items-center justify-between w-full group">
+                            <h5 className="font-semibold text-sm flex items-center gap-2">
+                              <span className="h-5 w-5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs">Q</span>
+                              Query Parameters
+                            </h5>
+                            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="mt-2">
+                            <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+                              <table className="w-full text-sm">
+                                <thead className="bg-slate-50 dark:bg-slate-800">
+                                  <tr>
+                                    <th className="text-left px-4 py-2 font-medium">Parameter</th>
+                                    <th className="text-left px-4 py-2 font-medium">Type</th>
+                                    <th className="text-left px-4 py-2 font-medium">Required</th>
+                                    <th className="text-left px-4 py-2 font-medium">Description</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                                  <tr><td className="px-4 py-2 font-mono text-xs">category</td><td className="px-4 py-2">string</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Filter by resource category</td></tr>
+                                  <tr><td className="px-4 py-2 font-mono text-xs">limit</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Max results (default: 20, max: 100)</td></tr>
+                                  <tr><td className="px-4 py-2 font-mono text-xs">offset</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Pagination offset</td></tr>
+                                  <tr><td className="px-4 py-2 font-mono text-xs">sort</td><td className="px-4 py-2">string</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Sort field (created_at, name, rating)</td></tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
 
-                        <div>
-                          <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                            <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
-                            Response
-                          </h5>
-                          <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
-                            <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
-                            <pre>{`{
+                        <Collapsible defaultOpen={false}>
+                          <CollapsibleTrigger className="flex items-center justify-between w-full group">
+                            <h5 className="font-semibold text-sm flex items-center gap-2">
+                              <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
+                              Response
+                            </h5>
+                            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="mt-2">
+                            <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
+                              <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
+                              <pre>{`{
   "success": true,
   "data": [
     {
@@ -544,8 +554,9 @@ export default function ResourceDetail() {
     "has_more": true
   }
 }`}</pre>
-                          </div>
-                        </div>
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
                       </div>
                     </CardContent>
                   </Card>
@@ -562,40 +573,49 @@ export default function ResourceDetail() {
                       </div>
                       
                       <div className="p-4 space-y-4">
-                        <div>
-                          <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                            <span className="h-5 w-5 rounded bg-orange-100 dark:bg-orange-900/50 text-orange-600 dark:text-orange-400 flex items-center justify-center text-xs">B</span>
-                            Request Body
-                          </h5>
-                          <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-                            <table className="w-full text-sm">
-                              <thead className="bg-slate-50 dark:bg-slate-800">
-                                <tr>
-                                  <th className="text-left px-4 py-2 font-medium">Field</th>
-                                  <th className="text-left px-4 py-2 font-medium">Type</th>
-                                  <th className="text-left px-4 py-2 font-medium">Required</th>
-                                  <th className="text-left px-4 py-2 font-medium">Description</th>
-                                </tr>
-                              </thead>
-                              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                                <tr><td className="px-4 py-2 font-mono text-xs">agent_id</td><td className="px-4 py-2">string</td><td className="px-4 py-2">Yes</td><td className="px-4 py-2 text-muted-foreground">Target agent identifier</td></tr>
-                                <tr><td className="px-4 py-2 font-mono text-xs">prompt</td><td className="px-4 py-2">string</td><td className="px-4 py-2">Yes</td><td className="px-4 py-2 text-muted-foreground">User input message</td></tr>
-                                <tr><td className="px-4 py-2 font-mono text-xs">stream</td><td className="px-4 py-2">boolean</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Enable streaming (default: true)</td></tr>
-                                <tr><td className="px-4 py-2 font-mono text-xs">context</td><td className="px-4 py-2">object</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Additional context data</td></tr>
-                                <tr><td className="px-4 py-2 font-mono text-xs">max_tokens</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Max response tokens (default: 1024)</td></tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
+                        <Collapsible defaultOpen={false}>
+                          <CollapsibleTrigger className="flex items-center justify-between w-full group">
+                            <h5 className="font-semibold text-sm flex items-center gap-2">
+                              <span className="h-5 w-5 rounded bg-orange-100 dark:bg-orange-900/50 text-orange-600 dark:text-orange-400 flex items-center justify-center text-xs">B</span>
+                              Request Body
+                            </h5>
+                            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="mt-2">
+                            <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+                              <table className="w-full text-sm">
+                                <thead className="bg-slate-50 dark:bg-slate-800">
+                                  <tr>
+                                    <th className="text-left px-4 py-2 font-medium">Field</th>
+                                    <th className="text-left px-4 py-2 font-medium">Type</th>
+                                    <th className="text-left px-4 py-2 font-medium">Required</th>
+                                    <th className="text-left px-4 py-2 font-medium">Description</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                                  <tr><td className="px-4 py-2 font-mono text-xs">agent_id</td><td className="px-4 py-2">string</td><td className="px-4 py-2">Yes</td><td className="px-4 py-2 text-muted-foreground">Target agent identifier</td></tr>
+                                  <tr><td className="px-4 py-2 font-mono text-xs">prompt</td><td className="px-4 py-2">string</td><td className="px-4 py-2">Yes</td><td className="px-4 py-2 text-muted-foreground">User input message</td></tr>
+                                  <tr><td className="px-4 py-2 font-mono text-xs">stream</td><td className="px-4 py-2">boolean</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Enable streaming (default: true)</td></tr>
+                                  <tr><td className="px-4 py-2 font-mono text-xs">context</td><td className="px-4 py-2">object</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Additional context data</td></tr>
+                                  <tr><td className="px-4 py-2 font-mono text-xs">max_tokens</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Max response tokens (default: 1024)</td></tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
 
-                        <div>
-                          <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                            <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
-                            Response
-                          </h5>
-                          <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
-                            <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
-                            <pre>{`{
+                        <Collapsible defaultOpen={false}>
+                          <CollapsibleTrigger className="flex items-center justify-between w-full group">
+                            <h5 className="font-semibold text-sm flex items-center gap-2">
+                              <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
+                              Response
+                            </h5>
+                            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="mt-2">
+                            <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
+                              <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
+                              <pre>{`{
   "success": true,
   "data": {
     "id": "msg_xyz789",
@@ -611,8 +631,9 @@ export default function ResourceDetail() {
     "total_tokens": 301
   }
 }`}</pre>
-                          </div>
-                        </div>
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
                       </div>
                     </CardContent>
                   </Card>
@@ -629,35 +650,44 @@ export default function ResourceDetail() {
                       </div>
                       
                       <div className="p-4 space-y-4">
-                        <div>
-                          <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                            <span className="h-5 w-5 rounded bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xs">P</span>
-                            Path Parameters
-                          </h5>
-                          <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-                            <table className="w-full text-sm">
-                              <thead className="bg-slate-50 dark:bg-slate-800">
-                                <tr>
-                                  <th className="text-left px-4 py-2 font-medium">Parameter</th>
-                                  <th className="text-left px-4 py-2 font-medium">Type</th>
-                                  <th className="text-left px-4 py-2 font-medium">Description</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr><td className="px-4 py-2 font-mono text-xs">id</td><td className="px-4 py-2">string</td><td className="px-4 py-2 text-muted-foreground">Unique agent identifier (e.g., agent_abc123)</td></tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
+                        <Collapsible defaultOpen={false}>
+                          <CollapsibleTrigger className="flex items-center justify-between w-full group">
+                            <h5 className="font-semibold text-sm flex items-center gap-2">
+                              <span className="h-5 w-5 rounded bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xs">P</span>
+                              Path Parameters
+                            </h5>
+                            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="mt-2">
+                            <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+                              <table className="w-full text-sm">
+                                <thead className="bg-slate-50 dark:bg-slate-800">
+                                  <tr>
+                                    <th className="text-left px-4 py-2 font-medium">Parameter</th>
+                                    <th className="text-left px-4 py-2 font-medium">Type</th>
+                                    <th className="text-left px-4 py-2 font-medium">Description</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr><td className="px-4 py-2 font-mono text-xs">id</td><td className="px-4 py-2">string</td><td className="px-4 py-2 text-muted-foreground">Unique agent identifier (e.g., agent_abc123)</td></tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
 
-                        <div>
-                          <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                            <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
-                            Response
-                          </h5>
-                          <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
-                            <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
-                            <pre>{`{
+                        <Collapsible defaultOpen={false}>
+                          <CollapsibleTrigger className="flex items-center justify-between w-full group">
+                            <h5 className="font-semibold text-sm flex items-center gap-2">
+                              <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
+                              Response
+                            </h5>
+                            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="mt-2">
+                            <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
+                              <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
+                              <pre>{`{
   "success": true,
   "data": {
     "id": "agent_abc123",
@@ -676,8 +706,9 @@ export default function ResourceDetail() {
     }
   }
 }`}</pre>
-                          </div>
-                        </div>
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
                       </div>
                     </CardContent>
                   </Card>
