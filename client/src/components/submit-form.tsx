@@ -898,31 +898,123 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   );
 
   const DocumentationForm = () => (
-    <div className="space-y-6 py-4">
+    <div className="space-y-8 py-4">
+      {/* Quick Start Guide Section */}
       <div className="space-y-4">
-        <div className="space-y-2">
-          <Label>{t("Documentation Title", "문서 제목")}</Label>
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-bold flex items-center gap-2">
+              <Code className="h-5 w-5 text-indigo-500" />
+              {t("Quick Start Guide", "빠른 시작 가이드")}
+            </h3>
+            <p className="text-sm text-muted-foreground">{t("Add code examples for different languages/frameworks", "다양한 언어/프레임워크에 대한 코드 예제를 추가하세요")}</p>
+          </div>
           <Input 
-            value={documentation.title} 
-            onChange={(e) => setDocumentation({...documentation, title: e.target.value})}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label>{t("Content (Markdown)", "내용 (Markdown)")}</Label>
-          <Textarea 
-            className="min-h-[300px] font-mono text-sm" 
-            value={documentation.content}
-            onChange={(e) => setDocumentation({...documentation, content: e.target.value})}
+            className="w-24"
+            placeholder="v1.0.0"
+            value={documentation.version || ""}
+            onChange={(e) => setDocumentation({...documentation, version: e.target.value})}
           />
         </div>
         
-        <div className="space-y-2">
-          <Label>{t("API Endpoints", "API 엔드포인트")}</Label>
-          {documentation.endpoints?.map((endpoint, idx) => (
-            <Card key={idx} className="p-4">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-2">
+        {(documentation.quickStartSteps || []).map((step: any, idx: number) => (
+          <Card key={idx} className="p-4 relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="absolute top-2 right-2 h-7 w-7 text-red-500 hover:text-red-600 hover:bg-red-50"
+              onClick={() => {
+                const newSteps = [...(documentation.quickStartSteps || [])];
+                newSteps.splice(idx, 1);
+                setDocumentation({...documentation, quickStartSteps: newSteps});
+              }}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-sm">{idx + 1}</div>
+              <Input 
+                className="flex-1 font-semibold"
+                placeholder={t("Step Title (e.g., Installation, Python Integration)", "단계 제목 (예: 설치, Python 통합)")}
+                value={step.title || ""}
+                onChange={(e) => {
+                  const newSteps = [...(documentation.quickStartSteps || [])];
+                  newSteps[idx] = {...newSteps[idx], title: e.target.value};
+                  setDocumentation({...documentation, quickStartSteps: newSteps});
+                }}
+              />
+              <select 
+                className="flex h-10 w-32 rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={step.language || "BASH"}
+                onChange={(e) => {
+                  const newSteps = [...(documentation.quickStartSteps || [])];
+                  newSteps[idx] = {...newSteps[idx], language: e.target.value};
+                  setDocumentation({...documentation, quickStartSteps: newSteps});
+                }}
+              >
+                <option>BASH</option>
+                <option>JAVASCRIPT</option>
+                <option>PYTHON</option>
+                <option>JAVA</option>
+                <option>TYPESCRIPT</option>
+                <option>GO</option>
+                <option>RUST</option>
+                <option>CURL</option>
+              </select>
+            </div>
+            <Textarea 
+              className="min-h-[150px] font-mono text-sm bg-slate-900 text-slate-50 p-4 rounded-lg" 
+              placeholder={t("Enter code example...", "코드 예제를 입력하세요...")}
+              value={step.code || ""}
+              onChange={(e) => {
+                const newSteps = [...(documentation.quickStartSteps || [])];
+                newSteps[idx] = {...newSteps[idx], code: e.target.value};
+                setDocumentation({...documentation, quickStartSteps: newSteps});
+              }}
+            />
+          </Card>
+        ))}
+        
+        <Button variant="outline" size="sm" onClick={() => {
+          setDocumentation({
+            ...documentation,
+            quickStartSteps: [...(documentation.quickStartSteps || []), { title: "", language: "BASH", code: "" }]
+          });
+        }}>
+          <Plus className="h-4 w-4 mr-2" /> {t("Add Quick Start Step", "빠른 시작 단계 추가")}
+        </Button>
+      </div>
+
+      {/* API Endpoints Section */}
+      <div className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+        <div>
+          <h3 className="text-lg font-bold flex items-center gap-2">
+            <Server className="h-5 w-5 text-green-500" />
+            {t("API Endpoints", "API 엔드포인트")}
+          </h3>
+          <p className="text-sm text-muted-foreground">{t("Define your API endpoints with parameters and response examples", "파라미터와 응답 예시와 함께 API 엔드포인트를 정의하세요")}</p>
+        </div>
+        
+        {(documentation.endpoints || []).map((endpoint: any, idx: number) => (
+          <Card key={idx} className="p-4 relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="absolute top-2 right-2 h-7 w-7 text-red-500 hover:text-red-600 hover:bg-red-50"
+              onClick={() => {
+                const newEndpoints = [...(documentation.endpoints || [])];
+                newEndpoints.splice(idx, 1);
+                setDocumentation({...documentation, endpoints: newEndpoints});
+              }}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+            
+            <div className="space-y-4">
+              {/* Method & Path */}
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <select 
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-semibold"
                   value={endpoint.method}
                   onChange={(e) => {
                     const newEndpoints = [...(documentation.endpoints || [])];
@@ -933,10 +1025,12 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   <option>GET</option>
                   <option>POST</option>
                   <option>PUT</option>
+                  <option>PATCH</option>
                   <option>DELETE</option>
                 </select>
                 <Input 
-                  className="md:col-span-3"
+                  className="md:col-span-4 font-mono"
+                  placeholder="/v1/endpoint/path"
                   value={endpoint.path} 
                   onChange={(e) => {
                     const newEndpoints = [...(documentation.endpoints || [])];
@@ -945,8 +1039,10 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   }}
                 />
               </div>
+              
+              {/* Description */}
               <Input 
-                placeholder="Description"
+                placeholder={t("Endpoint description", "엔드포인트 설명")}
                 value={endpoint.description}
                 onChange={(e) => {
                   const newEndpoints = [...(documentation.endpoints || [])];
@@ -954,20 +1050,52 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   setDocumentation({...documentation, endpoints: newEndpoints});
                 }}
               />
-            </Card>
-          ))}
-          <Button variant="outline" size="sm" onClick={() => {
-            setDocumentation({
-              ...documentation,
-              endpoints: [...(documentation.endpoints || []), { method: "GET", path: "/new/endpoint", description: "" }]
-            });
-          }}>
-            <Plus className="h-4 w-4 mr-2" /> {t("Add Endpoint", "엔드포인트 추가")}
-          </Button>
-        </div>
+
+              {/* Parameters */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">{t("Parameters", "파라미터")}</Label>
+                <Textarea 
+                  className="min-h-[80px] font-mono text-xs" 
+                  placeholder={`name: string (required) - User name\npage: integer - Page number\nlimit: integer - Results per page`}
+                  value={endpoint.parameters || ""}
+                  onChange={(e) => {
+                    const newEndpoints = [...(documentation.endpoints || [])];
+                    newEndpoints[idx].parameters = e.target.value;
+                    setDocumentation({...documentation, endpoints: newEndpoints});
+                  }}
+                />
+              </div>
+
+              {/* Response Example */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">{t("Response Example (JSON)", "응답 예시 (JSON)")}</Label>
+                <Textarea 
+                  className="min-h-[120px] font-mono text-xs bg-slate-900 text-slate-50 p-3 rounded-lg" 
+                  placeholder={`{\n  "success": true,\n  "data": [...]\n}`}
+                  value={endpoint.responseExample || ""}
+                  onChange={(e) => {
+                    const newEndpoints = [...(documentation.endpoints || [])];
+                    newEndpoints[idx].responseExample = e.target.value;
+                    setDocumentation({...documentation, endpoints: newEndpoints});
+                  }}
+                />
+              </div>
+            </div>
+          </Card>
+        ))}
+        
+        <Button variant="outline" size="sm" onClick={() => {
+          setDocumentation({
+            ...documentation,
+            endpoints: [...(documentation.endpoints || []), { method: "GET", path: "/v1/new/endpoint", description: "", parameters: "", responseExample: "" }]
+          });
+        }}>
+          <Plus className="h-4 w-4 mr-2" /> {t("Add Endpoint", "엔드포인트 추가")}
+        </Button>
       </div>
-      <div className="flex justify-end">
-        <Button onClick={() => handleSaveAdditional('documentation')} className="gap-2">
+
+      <div className="flex justify-end pt-4 border-t border-slate-200 dark:border-slate-700">
+        <Button onClick={() => handleSaveAdditional('documentation')} className="gap-2 bg-blue-600 hover:bg-blue-700">
           <Save className="h-4 w-4" /> {t("Save Documentation", "문서 저장")}
         </Button>
       </div>
