@@ -62,6 +62,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   );
   
   // Additional Tabs State
+  const [docTab, setDocTab] = useState("quickstart");
   const [documentation, setDocumentation] = useState(initialData?.documentation || {
     title: "Quick Start",
     content: "# Install the SDK\nnpm install @em-data/sdk\n\n# Initialize client\nconst client = new EMDataClient({\n  apiKey: 'YOUR_API_KEY'\n});",
@@ -899,7 +900,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
 
   const DocumentationForm = () => (
     <div className="py-4">
-      <Tabs defaultValue="quickstart" className="w-full">
+      <Tabs value={docTab} onValueChange={setDocTab} className="w-full">
         <TabsList className="w-full grid grid-cols-2 mb-6">
           <TabsTrigger value="quickstart" className="gap-2">
             <Code className="h-4 w-4" />
@@ -927,21 +928,9 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
           </div>
           
           {(documentation.quickStartSteps || []).map((step: any, idx: number) => (
-            <Card key={idx} className="p-4 relative">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="absolute top-2 right-2 h-7 w-7 text-red-500 hover:text-red-600 hover:bg-red-50"
-                onClick={() => {
-                  const newSteps = [...(documentation.quickStartSteps || [])];
-                  newSteps.splice(idx, 1);
-                  setDocumentation({...documentation, quickStartSteps: newSteps});
-                }}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+            <Card key={idx} className="p-4">
               <div className="flex items-center gap-3 mb-4">
-                <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-sm">{idx + 1}</div>
+                <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-sm shrink-0">{idx + 1}</div>
                 <Input 
                   className="flex-1 font-semibold"
                   placeholder={t("Step Title (e.g., Installation, Python Integration)", "단계 제목 (예: 설치, Python 통합)")}
@@ -953,7 +942,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   }}
                 />
                 <select 
-                  className="flex h-10 w-32 rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  className="flex h-10 w-32 rounded-md border border-input bg-background px-3 py-2 text-sm shrink-0"
                   value={step.language || "BASH"}
                   onChange={(e) => {
                     const newSteps = [...(documentation.quickStartSteps || [])];
@@ -970,6 +959,18 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   <option>RUST</option>
                   <option>CURL</option>
                 </select>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50 shrink-0"
+                  onClick={() => {
+                    const newSteps = [...(documentation.quickStartSteps || [])];
+                    newSteps.splice(idx, 1);
+                    setDocumentation({...documentation, quickStartSteps: newSteps});
+                  }}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
               <Textarea 
                 className="min-h-[150px] font-mono text-sm bg-slate-900 text-slate-50 p-4 rounded-lg" 
@@ -999,25 +1000,12 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
           <p className="text-sm text-muted-foreground mb-4">{t("Define your API endpoints with parameters and response examples", "파라미터와 응답 예시와 함께 API 엔드포인트를 정의하세요")}</p>
           
           {(documentation.endpoints || []).map((endpoint: any, idx: number) => (
-            <Card key={idx} className="p-4 relative">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="absolute top-2 right-2 h-7 w-7 text-red-500 hover:text-red-600 hover:bg-red-50"
-                onClick={() => {
-                  const newEndpoints = [...(documentation.endpoints || [])];
-                  newEndpoints.splice(idx, 1);
-                  setDocumentation({...documentation, endpoints: newEndpoints});
-                }}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-              
+            <Card key={idx} className="p-4">
               <div className="space-y-4">
                 {/* Method & Path */}
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div className="flex items-center gap-3">
                   <select 
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-semibold"
+                    className="flex h-10 w-28 rounded-md border border-input bg-background px-3 py-2 text-sm font-semibold shrink-0"
                     value={endpoint.method}
                     onChange={(e) => {
                       const newEndpoints = [...(documentation.endpoints || [])];
@@ -1032,7 +1020,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                     <option>DELETE</option>
                   </select>
                   <Input 
-                    className="md:col-span-4 font-mono"
+                    className="flex-1 font-mono"
                     placeholder="/v1/endpoint/path"
                     value={endpoint.path} 
                     onChange={(e) => {
@@ -1041,6 +1029,18 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                       setDocumentation({...documentation, endpoints: newEndpoints});
                     }}
                   />
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50 shrink-0"
+                    onClick={() => {
+                      const newEndpoints = [...(documentation.endpoints || [])];
+                      newEndpoints.splice(idx, 1);
+                      setDocumentation({...documentation, endpoints: newEndpoints});
+                    }}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
                 
                 {/* Description */}
