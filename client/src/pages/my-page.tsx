@@ -1423,15 +1423,9 @@ export default function MyPage() {
 
               {/* Hosted Data Tab */}
               <TabsContent value="hosted-data">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                  <div>
-                    <h2 className="text-xl font-semibold mb-1">{t("Hosted Data Services", "호스팅 데이터 서비스")}</h2>
-                    <p className="text-muted-foreground text-sm">{t("Manage your hosted data services and view request status.", "호스팅 데이터 서비스 및 요청 상태를 관리하세요.")}</p>
-                  </div>
-                  <Button className="gap-2 bg-blue-600 hover:bg-blue-700" onClick={() => setLocation('/submit')}>
-                    <Server className="h-4 w-4" />
-                    {t("New Hosting Request", "새 호스팅 요청")}
-                  </Button>
+                <div className="mb-6">
+                  <h2 className="text-xl font-semibold mb-1">{t("Hosted Data Services", "호스팅 데이터 서비스")}</h2>
+                  <p className="text-muted-foreground text-sm">{t("Manage your hosted data services and view request status.", "호스팅 데이터 서비스 및 요청 상태를 관리하세요.")}</p>
                 </div>
 
                 <Tabs defaultValue="request" className="w-full">
