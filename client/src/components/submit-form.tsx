@@ -1108,7 +1108,15 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
 
   const PricingForm = () => (
     <div className="space-y-6 py-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-sm text-muted-foreground">{t("Define your pricing plans. You can add or remove plans as needed.", "가격 플랜을 정의하세요. 필요에 따라 플랜을 추가하거나 제거할 수 있습니다.")}</p>
+        <Button variant="outline" size="sm" onClick={() => {
+          setPricingPlans([...pricingPlans, { name: "New Plan", price: "$0", features: ["Feature 1"], recommended: false }]);
+        }}>
+          <Plus className="h-4 w-4 mr-2" /> {t("Add Plan", "플랜 추가")}
+        </Button>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {pricingPlans.map((plan, idx) => (
           <Card key={idx} className={`relative ${plan.recommended ? 'border-primary shadow-md' : ''}`}>
             {plan.recommended && (
@@ -1116,7 +1124,19 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                 MOST POPULAR
               </div>
             )}
-            <CardHeader>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="absolute top-2 right-2 h-7 w-7 text-red-500 hover:text-red-600 hover:bg-red-50"
+              onClick={() => {
+                const newPlans = [...pricingPlans];
+                newPlans.splice(idx, 1);
+                setPricingPlans(newPlans);
+              }}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+            <CardHeader className="pt-8">
               <Input 
                 value={plan.name}
                 className="font-bold text-lg mb-2"
@@ -1142,17 +1162,29 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
             <CardContent>
               <div className="space-y-2">
                 {plan.features.map((feature, fIdx) => (
-                  <div key={fIdx} className="flex gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 mt-1" />
+                  <div key={fIdx} className="flex gap-2 items-center">
+                    <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
                     <Input 
                       value={feature}
-                      className="h-7 text-sm"
+                      className="h-7 text-sm flex-1"
                       onChange={(e) => {
                         const newPlans = [...pricingPlans];
                         newPlans[idx].features[fIdx] = e.target.value;
                         setPricingPlans(newPlans);
                       }}
                     />
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-6 w-6 text-red-400 hover:text-red-500"
+                      onClick={() => {
+                        const newPlans = [...pricingPlans];
+                        newPlans[idx].features.splice(fIdx, 1);
+                        setPricingPlans(newPlans);
+                      }}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
                   </div>
                 ))}
                 <Button variant="ghost" size="sm" className="w-full text-xs" onClick={() => {
@@ -1170,7 +1202,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
                   onChange={(e) => {
                     const newPlans = pricingPlans.map((p, i) => ({
                       ...p,
-                      recommended: i === idx ? e.target.checked : false // Only one recommended
+                      recommended: i === idx ? e.target.checked : false
                     }));
                     setPricingPlans(newPlans);
                   }}
