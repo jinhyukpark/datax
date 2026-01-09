@@ -222,7 +222,9 @@ export default function MyPage() {
       license: "commercial",
       version: "v1.0.0",
       features: ["Real-time market tracking", "Predictive analytics", "Custom reports"],
-      useCases: ["Investment research", "Market entry strategy", "Competitive analysis"]
+      useCases: ["Investment research", "Market entry strategy", "Competitive analysis"],
+      agentLogo: "ev-agent-logo.png",
+      featuredImages: ["ev-featured-01.png", "ev-featured-02.png"]
     },
     {
       id: "r2",
@@ -260,7 +262,9 @@ export default function MyPage() {
       license: "proprietary",
       version: "v0.9.0",
       features: ["X-ray analysis", "Anomaly detection", "Report generation"],
-      useCases: ["Hospital diagnostics", "Clinic support", "Research"]
+      useCases: ["Hospital diagnostics", "Clinic support", "Research"],
+      agentLogo: "medtech-logo.png",
+      featuredImages: ["medtech-screen-01.png"]
     },
     {
       id: "r3",
@@ -303,7 +307,9 @@ export default function MyPage() {
       license: "mit",
       version: "v2.0.0",
       features: ["Multi-exchange support", "Risk management", "Backtesting"],
-      useCases: ["Algorithmic trading", "Portfolio management", "Market making"]
+      useCases: ["Algorithmic trading", "Portfolio management", "Market making"],
+      agentLogo: "crypto-bot-logo.png",
+      featuredImages: ["crypto-dashboard.png", "crypto-trades.png", "crypto-analytics.png"]
     },
     {
       id: "r4",
@@ -341,7 +347,9 @@ export default function MyPage() {
       license: "open-source",
       version: "v1.5.2",
       features: ["Real-time optimization", "Predictive modeling", "Dashboard"],
-      useCases: ["City planning", "Traffic management", "Emergency routing"]
+      useCases: ["City planning", "Traffic management", "Emergency routing"],
+      agentLogo: "traffic-ai-logo.png",
+      featuredImages: ["traffic-map.png", "traffic-dashboard.png"]
     }
   ]);
 
