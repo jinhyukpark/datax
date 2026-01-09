@@ -1089,15 +1089,9 @@ export default function MyPage() {
 
               {/* My Shared Data Tab */}
               <TabsContent value="my-data">
-                <div className="flex justify-between items-center mb-6">
-                  <div>
-                    <h2 className="text-xl font-semibold mb-1">{t("Linked Service", "연동 서비스")}</h2>
-                    <p className="text-muted-foreground text-sm">{t("Manage your linked data services and view request status.", "연동 데이터 서비스 및 요청 상태를 관리하세요.")}</p>
-                  </div>
-                  <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700" onClick={() => setLocation('/submit')}>
-                    <Package className="h-4 w-4" />
-                    {t("Upload New Data", "새 데이터 업로드")}
-                  </Button>
+                <div className="mb-6">
+                  <h2 className="text-xl font-semibold mb-1">{t("Linked Service", "연동 서비스")}</h2>
+                  <p className="text-muted-foreground text-sm">{t("Manage your linked data services and view request status.", "연동 데이터 서비스 및 요청 상태를 관리하세요.")}</p>
                 </div>
 
                 <Tabs defaultValue="approved" className="w-full">
