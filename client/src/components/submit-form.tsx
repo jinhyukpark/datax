@@ -562,6 +562,36 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
             </div>
             </div>
 
+            {/* License & Version */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="font-semibold text-sm">License</Label>
+                <Select defaultValue={initialData?.license || "commercial"}>
+                  <SelectTrigger className="h-10">
+                    <SelectValue placeholder="Select license type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="commercial">Commercial</SelectItem>
+                    <SelectItem value="open-source">Open Source</SelectItem>
+                    <SelectItem value="mit">MIT</SelectItem>
+                    <SelectItem value="apache-2.0">Apache 2.0</SelectItem>
+                    <SelectItem value="gpl-3.0">GPL 3.0</SelectItem>
+                    <SelectItem value="proprietary">Proprietary</SelectItem>
+                    <SelectItem value="custom">Custom</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="font-semibold text-sm">Version</Label>
+                <Input 
+                  placeholder="e.g., v2.4.1" 
+                  defaultValue={initialData?.version || ""} 
+                  className="h-10"
+                />
+              </div>
+            </div>
+
             {/* Details Header */}
             <div className="flex items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-800">
             <div className="h-8 w-8 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 flex items-center justify-center font-bold text-sm">4</div>
