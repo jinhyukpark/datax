@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, AlertTriangle, Save, Star, MessageSquare, MessageCircle, ChevronDown, ChevronUp, X, Database, Link as LinkIcon, Server, ArrowRight, Zap, Globe, Mail } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, ShieldCheck, Upload, Plus, Trash2, AlertTriangle, Save, Star, MessageSquare, MessageCircle, ChevronDown, ChevronUp, X, Database, Link as LinkIcon, Server, ArrowRight, Zap, Globe, Mail, Code } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useLocation } from "wouter";
