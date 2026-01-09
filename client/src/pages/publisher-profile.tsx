@@ -112,6 +112,12 @@ export default function PublisherProfile() {
                   <Calendar className="h-4 w-4" />
                   Joined July 2024
                 </div>
+                <div className="flex items-center gap-2">
+                  <Mail className="h-4 w-4" />
+                  <a href={`mailto:contact@${providerName.toLowerCase().replace(/\s/g, '')}.com`} className="hover:text-primary hover:underline">
+                    contact@{providerName.toLowerCase().replace(/\s/g, '')}.com
+                  </a>
+                </div>
               </div>
 
               {/* Data Types & Capabilities */}
