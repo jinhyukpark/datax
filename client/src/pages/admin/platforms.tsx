@@ -153,7 +153,8 @@ export default function AdminPlatforms() {
     name: "",
     description: "",
     location: "",
-    district: "",
+    websiteUrl: "",
+    representativeEmail: "",
     establishedDate: "",
     linkedinUrl: "",
     twitterUrl: "",
@@ -175,7 +176,8 @@ export default function AdminPlatforms() {
       name: "",
       description: "",
       location: "",
-      district: "",
+      websiteUrl: "",
+      representativeEmail: "",
       establishedDate: "",
       linkedinUrl: "",
       twitterUrl: "",
@@ -198,7 +200,8 @@ export default function AdminPlatforms() {
       name: platform.name,
       description: platform.description,
       location: platform.location,
-      district: platform.district,
+      websiteUrl: (platform as any).websiteUrl || "",
+      representativeEmail: (platform as any).representativeEmail || "",
       establishedDate: platform.establishedDate,
       linkedinUrl: platform.linkedinUrl,
       twitterUrl: platform.twitterUrl,
@@ -448,37 +451,30 @@ export default function AdminPlatforms() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label className="text-sm">Company Location</Label>
-                    <Select 
+                    <Input 
                       value={formData.location} 
-                      onValueChange={(v) => setFormData({ ...formData, location: v, district: "" })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select city" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {CITIES.map(city => (
-                          <SelectItem key={city} value={city}>{city}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                      placeholder="e.g., Seoul, Korea"
+                    />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-sm">District</Label>
-                    <Select 
-                      value={formData.district} 
-                      onValueChange={(v) => setFormData({ ...formData, district: v })}
-                      disabled={!formData.location}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select district" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {(DISTRICTS[formData.location] || []).map(d => (
-                          <SelectItem key={d} value={d}>{d}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Label className="text-sm">Website URL</Label>
+                    <Input 
+                      value={formData.websiteUrl} 
+                      onChange={(e) => setFormData({ ...formData, websiteUrl: e.target.value })}
+                      placeholder="https://..."
+                    />
                   </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-sm">Representative Email (대표 이메일)</Label>
+                  <Input 
+                    type="email"
+                    value={formData.representativeEmail} 
+                    onChange={(e) => setFormData({ ...formData, representativeEmail: e.target.value })}
+                    placeholder="contact@company.com"
+                  />
                 </div>
 
                 <div className="space-y-2">
