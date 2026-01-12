@@ -842,47 +842,39 @@ export default function MyPage() {
                                 </div>
                               </div>
                             </div>
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                               <h4 className="text-sm font-medium text-muted-foreground">{t("Authentication", "인증 관리")}</h4>
-                              <div className="px-4 py-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 space-y-4">
+                              <div className="px-3 py-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 space-y-2">
                                 {/* URL */}
-                                <div className="space-y-2">
-                                  <span className="text-sm font-medium text-muted-foreground">URL</span>
-                                  <div className="flex items-center gap-2">
-                                    <code className="flex-1 bg-white dark:bg-slate-950 px-3 py-2 rounded border border-slate-200 dark:border-slate-800 font-mono text-sm truncate">
-                                      {item.type === 'MCP' ? 'https://mcp.em-data.io/v1/smart-contract-auditor' : 'https://agent.em-data.io/v1/wemeet-science'}
-                                    </code>
-                                    <Button size="icon" variant="outline" className="h-9 w-9 shrink-0">
-                                      <Share2 className="h-4 w-4" />
-                                    </Button>
-                                  </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs font-medium text-muted-foreground w-16 shrink-0">URL</span>
+                                  <code className="flex-1 bg-white dark:bg-slate-950 px-2 py-1.5 rounded border border-slate-200 dark:border-slate-800 font-mono text-xs truncate">
+                                    {item.type === 'MCP' ? 'https://mcp.em-data.io/v1/smart-contract-auditor' : 'https://agent.em-data.io/v1/wemeet-science'}
+                                  </code>
+                                  <Button size="icon" variant="ghost" className="h-7 w-7 shrink-0">
+                                    <Share2 className="h-3.5 w-3.5" />
+                                  </Button>
                                 </div>
                                 {/* Client ID */}
-                                <div className="space-y-2">
-                                  <span className="text-sm font-medium text-muted-foreground">Client ID</span>
-                                  <div className="flex items-center gap-2">
-                                    <code className="flex-1 bg-white dark:bg-slate-950 px-3 py-2 rounded border border-slate-200 dark:border-slate-800 font-mono text-sm">
-                                      {item.type === 'MCP' ? 'mcp-client-9a2b4c8d' : 'agent-client-7c3d1f9e'}
-                                    </code>
-                                    <Button size="icon" variant="outline" className="h-9 w-9 shrink-0">
-                                      <Share2 className="h-4 w-4" />
-                                    </Button>
-                                  </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs font-medium text-muted-foreground w-16 shrink-0">Client ID</span>
+                                  <code className="flex-1 bg-white dark:bg-slate-950 px-2 py-1.5 rounded border border-slate-200 dark:border-slate-800 font-mono text-xs">
+                                    {item.type === 'MCP' ? 'mcp-client-9a2b4c8d' : 'agent-client-7c3d1f9e'}
+                                  </code>
+                                  <Button size="icon" variant="ghost" className="h-7 w-7 shrink-0">
+                                    <Share2 className="h-3.5 w-3.5" />
+                                  </Button>
                                 </div>
                                 {/* Agent Key */}
-                                <div className="space-y-2">
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-sm font-medium text-muted-foreground">Agent Key</span>
-                                    <Button variant="ghost" size="sm" className="h-6 text-xs text-purple-600 hover:text-purple-700">Regenerate</Button>
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    <code className="flex-1 bg-white dark:bg-slate-950 px-3 py-2 rounded border border-slate-200 dark:border-slate-800 font-mono text-sm">
-                                      {item.apiKey}
-                                    </code>
-                                    <Button size="icon" variant="outline" className="h-9 w-9 shrink-0">
-                                      <Share2 className="h-4 w-4" />
-                                    </Button>
-                                  </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs font-medium text-muted-foreground w-16 shrink-0">Key</span>
+                                  <code className="flex-1 bg-white dark:bg-slate-950 px-2 py-1.5 rounded border border-slate-200 dark:border-slate-800 font-mono text-xs">
+                                    {item.apiKey}
+                                  </code>
+                                  <Button size="icon" variant="ghost" className="h-7 w-7 shrink-0">
+                                    <Share2 className="h-3.5 w-3.5" />
+                                  </Button>
+                                  <Button variant="ghost" size="sm" className="h-7 text-xs text-purple-600 hover:text-purple-700 px-2">Regenerate</Button>
                                 </div>
                               </div>
                             </div>
