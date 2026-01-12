@@ -152,6 +152,7 @@ export default function AdminPlatforms() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    logo: "",
     location: "",
     websiteUrl: "",
     representativeEmail: "",
@@ -175,6 +176,7 @@ export default function AdminPlatforms() {
     setFormData({
       name: "",
       description: "",
+      logo: "",
       location: "",
       websiteUrl: "",
       representativeEmail: "",
@@ -199,6 +201,7 @@ export default function AdminPlatforms() {
     setFormData({
       name: platform.name,
       description: platform.description,
+      logo: (platform as any).logo || "",
       location: platform.location,
       websiteUrl: (platform as any).websiteUrl || "",
       representativeEmail: (platform as any).representativeEmail || "",
@@ -419,6 +422,38 @@ export default function AdminPlatforms() {
                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                   <Building2 className="h-4 w-4 text-blue-500" />
                   Company Information
+                </div>
+
+                {/* Logo Upload */}
+                <div className="space-y-2">
+                  <Label className="text-sm">Company Logo</Label>
+                  <div className="flex items-start gap-4">
+                    <div className="w-20 h-20 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center bg-slate-50 dark:bg-slate-900 overflow-hidden">
+                      {formData.logo ? (
+                        <img src={formData.logo} alt="Logo preview" className="w-full h-full object-cover" />
+                      ) : (
+                        <Building2 className="h-8 w-8 text-slate-400" />
+                      )}
+                    </div>
+                    <div className="flex-1 space-y-2">
+                      <Input 
+                        type="file"
+                        accept="image/*"
+                        className="text-sm"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              setFormData({ ...formData, logo: reader.result as string });
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                      <p className="text-xs text-muted-foreground">PNG, JPG, SVG. Max 2MB. Recommended: 200x200px</p>
+                    </div>
+                  </div>
                 </div>
                 
                 <div className="space-y-2">
