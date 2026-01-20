@@ -45,6 +45,7 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
     tagline: "",
     contactEmail: "minsu.kim@example.com",
     contactPhone: "+82 10-1234-5678",
+    useAccountEmail: true,
     linkedinUrl: "",
     twitterUrl: "",
     githubUrl: "",
@@ -59,7 +60,7 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
     features: [""] as string[],
     useCases: [{ title: "", content: "" }],
     longDescription: data.description || "",
-    featuredImages: [] as string[],
+    featuredImages: ["image01.png", "image02.png", "image03.png", "image04.png"] as string[],
     agentLogo: ""
   });
 
@@ -122,6 +123,13 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
     const newUseCases = [...detailsData.useCases];
     newUseCases[index] = { ...newUseCases[index], [field]: value };
     setDetailsData(prev => ({ ...prev, useCases: newUseCases }));
+  };
+
+  const removeImage = (index: number) => {
+    setDetailsData(prev => ({ 
+      ...prev, 
+      featuredImages: prev.featuredImages.filter((_, i) => i !== index) 
+    }));
   };
 
   return (
@@ -327,17 +335,17 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
               <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
               <div>
                 <h2 className="text-lg font-bold">Basic Information</h2>
-                <p className="text-xs text-muted-foreground">General information about the service</p>
+                <p className="text-xs text-muted-foreground">Tell us about your AI Agent</p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 gap-6">
               <div className="space-y-3">
                 <Label className="flex justify-between font-semibold text-sm">
-                  <span>Service Name <span className="text-red-500">*</span></span>
+                  <span>AI Agent Name <span className="text-red-500">*</span></span>
                   <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{detailsData.title.length}/35</span>
                 </Label>
-                <Input value={detailsData.title} onChange={(e) => handleDetailsChange('title', e.target.value)} className="h-10" />
+                <Input value={detailsData.title} onChange={(e) => handleDetailsChange('title', e.target.value)} placeholder="e.g. AutoGPT" className="h-10" />
               </div>
 
               <div className="space-y-3">
@@ -345,7 +353,7 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
                   <span>Founders / Company Name</span>
                   <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{detailsData.founder.length}/50</span>
                 </Label>
-                <Input value={detailsData.founder} onChange={(e) => handleDetailsChange('founder', e.target.value)} className="h-10" />
+                <Input value={detailsData.founder} onChange={(e) => handleDetailsChange('founder', e.target.value)} placeholder="e.g. OpenAI" className="h-10" />
               </div>
 
               <div className="space-y-3">
@@ -378,6 +386,56 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
                   <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{detailsData.docsUrl.length}/200</span>
                 </Label>
                 <Input value={detailsData.docsUrl} onChange={(e) => handleDetailsChange('docsUrl', e.target.value)} placeholder="https://docs..." className="h-10" />
+              </div>
+
+              {/* Contact Information Subsection */}
+              <div className="mt-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+                <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div className="flex items-center gap-2 mb-4">
+                        <ShieldCheck className="h-4 w-4 text-blue-500" />
+                        <h3 className="font-semibold text-sm">Contact Information</h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label className="flex justify-between items-center font-semibold text-sm">
+                                <span>Contact Email <span className="text-red-500">*</span></span>
+                            </Label>
+                            <Input 
+                                value={detailsData.contactEmail} 
+                                onChange={(e) => handleDetailsChange('contactEmail', e.target.value)} 
+                                placeholder="email@company.com"
+                                className="h-10 bg-white dark:bg-slate-900" 
+                                disabled={detailsData.useAccountEmail}
+                            />
+                            <div className="flex items-center space-x-2 mt-2">
+                                <Checkbox 
+                                    id="use-account-email-details" 
+                                    checked={detailsData.useAccountEmail}
+                                    onCheckedChange={(checked) => handleDetailsChange('useAccountEmail', checked)}
+                                />
+                                <label
+                                    htmlFor="use-account-email-details"
+                                    className="text-xs text-muted-foreground"
+                                >
+                                    Use account email (jh.park@illunex.com)
+                                </label>
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="font-semibold text-sm">Contact Phone</Label>
+                            <Input 
+                                value={detailsData.contactPhone} 
+                                onChange={(e) => handleDetailsChange('contactPhone', e.target.value)} 
+                                placeholder="+82 10-1234-5678"
+                                className="h-10 bg-white dark:bg-slate-900" 
+                            />
+                        </div>
+                    </div>
+                    <p className="text-[10px] text-muted-foreground mt-4">
+                        Important notifications about your service will be sent to these contact details.
+                    </p>
+                </div>
               </div>
             </div>
           </div>
@@ -438,6 +496,9 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
                   ))}
                 </div>
               </RadioGroup>
+              <div className="mt-2">
+                 <Input placeholder="Enter custom category" className="h-10 bg-white dark:bg-slate-900" />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -464,6 +525,26 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
                   ))}
                 </RadioGroup>
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <Label className="font-semibold text-sm">License</Label>
+                    <Select value={detailsData.license} onValueChange={(val) => handleDetailsChange('license', val)}>
+                        <SelectTrigger className="h-10">
+                            <SelectValue placeholder="Select license" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="commercial">Commercial</SelectItem>
+                            <SelectItem value="open-source">Open Source</SelectItem>
+                            <SelectItem value="mit">MIT</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="space-y-2">
+                    <Label className="font-semibold text-sm">Version</Label>
+                    <Input value={detailsData.version} onChange={(e) => handleDetailsChange('version', e.target.value)} placeholder="e.g., v2.4.1" className="h-10" />
+                </div>
             </div>
           </div>
 
@@ -510,6 +591,15 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
             </div>
 
             <div className="space-y-3">
+                <Label className="font-semibold text-sm">Tags</Label>
+                <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" className="h-8 rounded-full border-dashed border-slate-300 text-slate-500 hover:text-slate-700 hover:border-slate-400">
+                        <Plus className="h-3 w-3 mr-1" /> New Tag
+                    </Button>
+                </div>
+            </div>
+
+            <div className="space-y-3">
               <Label className="flex justify-between font-semibold text-sm">
                 <span>Key Features</span>
                 <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{detailsData.features.length}/5</span>
@@ -518,19 +608,15 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
                 {detailsData.features.map((feature, i) => (
                   <div key={i} className="flex gap-2">
                     <Input value={feature} onChange={(e) => updateFeature(i, e.target.value)} placeholder={`Feature ${i + 1}`} className="h-10" />
-                    {detailsData.features.length > 1 && (
-                      <Button type="button" variant="ghost" size="icon" onClick={() => removeFeature(i)} className="text-muted-foreground hover:text-red-500">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    )}
                   </div>
                 ))}
               </div>
               {detailsData.features.length < 5 && (
-                <Button type="button" variant="outline" size="sm" onClick={addFeature} className="w-full mt-2">
+                <div onClick={addFeature} className="mt-2 w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg h-10 flex items-center justify-center text-sm text-muted-foreground cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all">
                   <Plus className="h-4 w-4 mr-2" /> Add Feature
-                </Button>
+                </div>
               )}
+              <p className="text-[10px] text-muted-foreground">Add up to 5 key features of your AI Agent.</p>
             </div>
 
             <div className="space-y-3">
@@ -540,32 +626,51 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
               </Label>
               <div className="space-y-3">
                 {detailsData.useCases.map((useCase, i) => (
-                  <div key={i} className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 space-y-2 relative group">
-                    <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      {detailsData.useCases.length > 1 && (
-                         <Button type="button" variant="ghost" size="icon" onClick={() => removeUseCase(i)} className="h-6 w-6 text-muted-foreground hover:text-red-500">
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      )}
-                    </div>
+                  <div key={i} className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 space-y-2 bg-slate-50/50 dark:bg-slate-900/50">
                     <Input value={useCase.title} onChange={(e) => updateUseCase(i, 'title', e.target.value)} placeholder={`Use Case Title ${i + 1}`} className="h-10 font-medium" />
                     <Textarea value={useCase.content} onChange={(e) => updateUseCase(i, 'content', e.target.value)} placeholder="Describe this use case..." className="min-h-[60px]" />
                   </div>
                 ))}
               </div>
               {detailsData.useCases.length < 5 && (
-                <Button type="button" variant="outline" size="sm" onClick={addUseCase} className="w-full mt-2">
+                <div onClick={addUseCase} className="mt-2 w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg h-10 flex items-center justify-center text-sm text-muted-foreground cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all">
                   <Plus className="h-4 w-4 mr-2" /> Add Use Case
-                </Button>
+                </div>
               )}
+            </div>
+
+            <div className="space-y-3">
+                <Label className="font-semibold text-sm">Featured Image</Label>
+                <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-8 text-center bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900/80 transition-colors cursor-pointer mb-4">
+                    <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                    <p className="text-sm font-medium">Click to upload or drag and drop</p>
+                    <p className="text-xs text-muted-foreground">SVG, PNG, JPG (max. 800×400px)</p>
+                </div>
+                
+                <div className="space-y-2">
+                    {detailsData.featuredImages.map((img, i) => (
+                        <div key={i} className="flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
+                            <div className="flex items-center gap-2 overflow-hidden">
+                                <Paperclip className="h-4 w-4 text-slate-400 flex-shrink-0" />
+                                <span className="text-sm text-slate-600 dark:text-slate-300 truncate">{img}</span>
+                            </div>
+                            <Button variant="ghost" size="icon" onClick={() => removeImage(i)} className="h-8 w-8 text-muted-foreground hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Trash2 className="h-4 w-4" />
+                            </Button>
+                        </div>
+                    ))}
+                </div>
             </div>
           </div>
         </TabsContent>
       </Tabs>
       
       {isEditable && (
-        <div className="flex justify-end pt-4 border-t border-slate-100 dark:border-slate-800">
-          <Button onClick={handleUpdate} disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700">
+        <div className="flex justify-end pt-4 border-t border-slate-100 dark:border-slate-800 gap-3">
+          <Button variant="outline" onClick={() => {}}>
+            Cancel
+          </Button>
+          <Button onClick={handleUpdate} disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white">
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -573,8 +678,7 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
               </>
             ) : (
               <>
-                <Save className="mr-2 h-4 w-4" />
-                Update Request
+                Submit Agent
               </>
             )}
           </Button>
