@@ -496,10 +496,10 @@ export default function AgentChat() {
                   </a>
                   <a href="#" className="flex items-center justify-between p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-lg transition-colors group">
                     <div className="flex items-center gap-3">
-                      <div className="h-6 w-6 rounded-full bg-slate-800 flex items-center justify-center text-white border border-slate-600 shadow-sm">
-                        <span className="text-[10px] font-bold">P</span>
+                      <div className="h-6 w-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 border border-blue-200 shadow-sm">
+                        <Sparkles className="h-3.5 w-3.5" />
                       </div>
-                      <span className="text-xs font-medium">PlayMCP 연결 방법</span>
+                      <span className="text-xs font-medium">Gemini 연결 방법</span>
                     </div>
                     <ExternalLink className="h-3 w-3 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
                   </a>
