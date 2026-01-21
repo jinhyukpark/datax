@@ -21,7 +21,12 @@ export default function SearchResultsPage() {
   const [isLoading, setIsLoading] = useState(false);
   
   // Parse query from URL
-  const searchParams = new URLSearchParams(window.location.search);
+  // Handle hash routing query params
+  const queryString = window.location.hash.includes('?') 
+    ? window.location.hash.split('?')[1] 
+    : window.location.search.replace('?', '');
+  
+  const searchParams = new URLSearchParams(queryString);
   const query = searchParams.get("q") || "";
   
   const [followUpQuery, setFollowUpQuery] = useState(query);
