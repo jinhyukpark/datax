@@ -27,6 +27,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 // Mock Data Types
 interface MCPService {
@@ -56,6 +66,8 @@ export default function AgentChat() {
   const [usedCount, setUsedCount] = useState(5); // Mock usage
   const [selectedModel, setSelectedModel] = useState("GPT-4o");
   const [showNotice, setShowNotice] = useState(true);
+  const [modeSwitchOpen, setModeSwitchOpen] = useState(false);
+  const [pendingMode, setPendingMode] = useState<'test' | 'production' | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // AI Models
@@ -237,9 +249,58 @@ export default function AgentChat() {
 
   const activeService = [...bookmarkedMCPs, ...purchasedMCPs].find(s => s.id === selectedServiceId);
 
+  const handleModeSwitch = (mode: 'test' | 'production') => {
+    if (selectedMode === mode) return;
+    
+    setPendingMode(mode);
+    setModeSwitchOpen(true);
+  };
+
+  const confirmModeSwitch = () => {
+    if (!pendingMode) return;
+    
+    setSelectedMode(pendingMode);
+    
+    // Default service selection logic
+    if (pendingMode === 'test') {
+      setSelectedServiceId(bookmarkedMCPs[0]?.id || null);
+    } else {
+      setSelectedServiceId(purchasedMCPs[0]?.id || null);
+    }
+    
+    // Clear messages
+    setMessages([]);
+    setInputMessage("");
+    setModeSwitchOpen(false);
+    setPendingMode(null);
+    
+    toast.success(t(`Switched to ${pendingMode === 'test' ? 'Test' : 'Production'} Mode`, `${pendingMode === 'test' ? '테스트' : '실서비스'} 모드로 전환되었습니다`));
+  };
+
   return (
     <div className="flex flex-col h-screen bg-slate-50 dark:bg-slate-950 overflow-hidden">
       <Navbar />
+      
+      {/* Mode Switch Confirmation Dialog */}
+      <AlertDialog open={modeSwitchOpen} onOpenChange={setModeSwitchOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("Switch Mode", "모드 전환 확인")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t(
+                "Switching modes will clear your current conversation history. Are you sure you want to continue?", 
+                "모드를 전환하면 현재 대화 내용이 모두 사라집니다. 계속하시겠습니까?"
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("Cancel", "취소")}</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmModeSwitch} className="bg-blue-600 hover:bg-blue-700 text-white">
+              {t("Continue", "확인")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       
       <div className="flex-1 flex flex-col container mx-auto px-4 py-6 max-w-7xl min-h-0">
         {/* Notice Alert */}
@@ -278,10 +339,7 @@ export default function AgentChat() {
                 {/* Mode Toggle */}
                 <div className="flex items-center justify-between p-1 bg-slate-100 dark:bg-slate-800 rounded-lg mb-4">
                   <button
-                    onClick={() => {
-                      setSelectedMode('test');
-                      setSelectedServiceId(bookmarkedMCPs[0]?.id || null);
-                    }}
+                    onClick={() => handleModeSwitch('test')}
                     className={cn(
                       "flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-md transition-all",
                       selectedMode === 'test' 
@@ -293,10 +351,7 @@ export default function AgentChat() {
                     {t("Test Mode", "테스트 모드")}
                   </button>
                   <button
-                    onClick={() => {
-                      setSelectedMode('production');
-                      setSelectedServiceId(purchasedMCPs[0]?.id || null);
-                    }}
+                    onClick={() => handleModeSwitch('production')}
                     className={cn(
                       "flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-md transition-all",
                       selectedMode === 'production' 
