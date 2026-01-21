@@ -599,17 +599,17 @@ export default function AgentChat() {
                                 ),
                                 table: ({node, ...props}) => (
                                   <div className="overflow-x-auto my-4 border rounded-lg">
-                                    <table {...props} className="w-full text-sm text-left" />
+                                    <table {...props} className="w-full text-sm text-left [&_tr:last-child_td]:border-b-0" />
                                   </div>
                                 ),
                                 thead: ({node, ...props}) => (
                                   <thead {...props} className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold" />
                                 ),
                                 th: ({node, ...props}) => (
-                                  <th {...props} className="px-4 py-2 border-b dark:border-slate-700" />
+                                  <th {...props} className="px-4 py-3 border-b dark:border-slate-700 whitespace-nowrap" />
                                 ),
                                 td: ({node, ...props}) => (
-                                  <td {...props} className="px-4 py-2 border-b dark:border-slate-800 last:border-0" />
+                                  <td {...props} className="px-4 py-3 border-b dark:border-slate-800 align-top" />
                                 ),
                                 h3: ({node, ...props}) => (
                                   <h3 {...props} className="text-lg font-bold mt-6 mb-3 text-blue-800 dark:text-blue-400 border-b pb-2 border-slate-200 dark:border-slate-800" />
