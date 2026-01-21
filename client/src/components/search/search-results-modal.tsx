@@ -12,6 +12,7 @@ import { useLanguage } from "@/lib/language-context";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Textarea } from "@/components/ui/textarea";
+import TextareaAutosize from "react-textarea-autosize";
 
 interface SearchResultsModalProps {
   open: boolean;
@@ -162,15 +163,17 @@ The current results are estimated to match your intent by **approximately 95%**.
         {/* Search Query Input - Sticky at Top */}
         <div className="bg-white dark:bg-slate-900 px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex-shrink-0 z-10 shadow-sm">
             <div className="relative">
-                <Textarea 
+                <TextareaAutosize 
                     placeholder={t("Ask a follow-up question...", "추가 질문을 입력하세요...")}
-                    className="min-h-[60px] pr-12 resize-none bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus-visible:ring-indigo-500 text-base"
+                    className="w-full flex rounded-md border border-input px-4 py-3 shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 pr-12 resize-none bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus-visible:ring-indigo-500 text-base min-h-[44px]"
+                    minRows={1}
+                    maxRows={4}
                     value={followUpQuery}
                     onChange={(e) => setFollowUpQuery(e.target.value)}
                 />
                 <Button 
                     size="icon" 
-                    className="absolute right-3 top-3 h-8 w-8 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all"
+                    className="absolute right-3 top-2 h-8 w-8 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all"
                     disabled={!followUpQuery.trim() || followUpQuery === query}
                 >
                     <Send className="h-4 w-4" />
