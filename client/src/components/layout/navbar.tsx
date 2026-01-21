@@ -108,17 +108,18 @@ export function Navbar() {
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-1.5 h-9 px-3 rounded-full text-muted-foreground border border-slate-200 dark:border-slate-800">
-                  <Globe className="h-3.5 w-3.5" />
-                  <span className="text-xs font-medium">{language === "English" ? "ENG" : "KOR"}</span>
+                <Button variant="ghost" size="sm" className="w-9 h-9 p-0 rounded-full border border-slate-200 dark:border-slate-800 overflow-hidden">
+                  <span className="text-lg leading-none flex items-center justify-center w-full h-full">
+                    {language === "English" ? "🇺🇸" : "🇰🇷"}
+                  </span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setLanguage("English")}>
-                  English (ENG)
+                <DropdownMenuItem onClick={() => setLanguage("English")} className="gap-2">
+                  <span className="text-base">🇺🇸</span> English
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLanguage("한국어")}>
-                  한국어 (KOR)
+                <DropdownMenuItem onClick={() => setLanguage("한국어")} className="gap-2">
+                  <span className="text-base">🇰🇷</span> 한국어
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
