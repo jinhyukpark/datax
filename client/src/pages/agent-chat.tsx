@@ -472,43 +472,40 @@ export default function AgentChat() {
                   )}
                 </div>
               </ScrollArea>
-            </Card>
 
-            {/* Connection Methods Links */}
-            <div className="bg-slate-950 dark:bg-black rounded-xl p-1 overflow-hidden shadow-lg border border-slate-800">
-              <div className="flex flex-col">
-                <a href="#" className="flex items-center justify-between p-3.5 text-slate-200 hover:bg-slate-800/50 rounded-lg transition-colors group">
-                  <div className="flex items-center gap-3">
-                    <div className="h-6 w-6 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
-                      <Sparkles className="h-3.5 w-3.5" />
+              {/* Connection Methods Links */}
+              <div className="p-2 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+                <div className="flex flex-col gap-1">
+                  <a href="#" className="flex items-center justify-between p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-lg transition-colors group">
+                    <div className="flex items-center gap-3">
+                      <div className="h-6 w-6 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 shadow-sm border border-orange-200/50">
+                        <Sparkles className="h-3.5 w-3.5" />
+                      </div>
+                      <span className="text-xs font-medium">Claude 연결 방법</span>
                     </div>
-                    <span className="text-sm font-medium">Claude 연결 방법</span>
-                  </div>
-                  <ExternalLink className="h-3.5 w-3.5 text-slate-500 group-hover:text-slate-300 transition-colors" />
-                </a>
-                <div className="h-px bg-slate-800/50 mx-3" />
-                <a href="#" className="flex items-center justify-between p-3.5 text-slate-200 hover:bg-slate-800/50 rounded-lg transition-colors group">
-                  <div className="flex items-center gap-3">
-                    <div className="h-6 w-6 rounded-full bg-white flex items-center justify-center text-black">
-                      <Zap className="h-3.5 w-3.5" />
+                    <ExternalLink className="h-3 w-3 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
+                  </a>
+                  <a href="#" className="flex items-center justify-between p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-lg transition-colors group">
+                    <div className="flex items-center gap-3">
+                      <div className="h-6 w-6 rounded-full bg-white flex items-center justify-center text-black shadow-sm border border-slate-200">
+                        <Zap className="h-3.5 w-3.5" />
+                      </div>
+                      <span className="text-xs font-medium">ChatGPT 연결 방법</span>
                     </div>
-                    <span className="text-sm font-medium">ChatGPT 연결 방법</span>
-                  </div>
-                  <ExternalLink className="h-3.5 w-3.5 text-slate-500 group-hover:text-slate-300 transition-colors" />
-                </a>
-                <div className="h-px bg-slate-800/50 mx-3" />
-                <a href="#" className="flex items-center justify-between p-3.5 text-slate-200 hover:bg-slate-800/50 rounded-lg transition-colors group">
-                  <div className="flex items-center gap-3">
-                    <div className="h-6 w-6 rounded-full bg-slate-800 flex items-center justify-center text-white border border-slate-600">
-                      <span className="text-[10px] font-bold">P</span>
+                    <ExternalLink className="h-3 w-3 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
+                  </a>
+                  <a href="#" className="flex items-center justify-between p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-lg transition-colors group">
+                    <div className="flex items-center gap-3">
+                      <div className="h-6 w-6 rounded-full bg-slate-800 flex items-center justify-center text-white border border-slate-600 shadow-sm">
+                        <span className="text-[10px] font-bold">P</span>
+                      </div>
+                      <span className="text-xs font-medium">PlayMCP 연결 방법</span>
                     </div>
-                    <span className="text-sm font-medium">PlayMCP 연결 방법</span>
-                  </div>
-                  <ExternalLink className="h-3.5 w-3.5 text-slate-500 group-hover:text-slate-300 transition-colors" />
-                </a>
+                    <ExternalLink className="h-3 w-3 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
+                  </a>
+                </div>
               </div>
-            </div>
-          </div>
+            </Card>
 
           {/* Chat Interface */}
           <div className="lg:col-span-3 flex flex-col h-full gap-4 min-h-0">
