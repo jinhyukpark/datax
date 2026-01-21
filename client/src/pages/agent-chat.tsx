@@ -12,7 +12,7 @@ import { useLanguage } from "@/lib/language-context";
 import { 
   MessageSquare, Send, Zap, Lock, Unlock, Bot, User, 
   MoreVertical, Search, Star, Box, Sparkles, AlertCircle,
-  ShoppingBag, CheckCircle2, Crown, Infinity, ChevronDown, Info
+  ShoppingBag, CheckCircle2, Crown, Infinity, ChevronDown, Info, X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
@@ -53,6 +53,7 @@ export default function AgentChat() {
   const [dailyLimit, setDailyLimit] = useState(30);
   const [usedCount, setUsedCount] = useState(5); // Mock usage
   const [selectedModel, setSelectedModel] = useState("GPT-4o");
+  const [showNotice, setShowNotice] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // AI Models
@@ -240,18 +241,26 @@ export default function AgentChat() {
       
       <div className="flex-1 flex flex-col container mx-auto px-4 py-6 max-w-7xl min-h-0">
         {/* Notice Alert */}
-        <div className="flex-none mb-6">
-          <Alert className="bg-blue-50/50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800">
-            <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            <AlertTitle className="text-blue-800 dark:text-blue-300 font-semibold mb-1">
-              MCP Testing Environment
-            </AlertTitle>
-            <AlertDescription className="text-blue-700 dark:text-blue-400 text-sm">
-              This screen is for testing MCPs and simulates the interaction. It is not the actual service environment. 
-              However, for <strong>Purchased Services</strong>, you can test with unlimited usage to fully evaluate the agent's capabilities.
-            </AlertDescription>
-          </Alert>
-        </div>
+        {showNotice && (
+          <div className="flex-none mb-6">
+            <Alert className="bg-blue-50/50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800 relative">
+              <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <button 
+                onClick={() => setShowNotice(false)}
+                className="absolute right-4 top-4 text-blue-400 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-300 transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+              <AlertTitle className="text-blue-800 dark:text-blue-300 font-semibold mb-1 pr-8">
+                MCP Testing Environment
+              </AlertTitle>
+              <AlertDescription className="text-blue-700 dark:text-blue-400 text-sm pr-8">
+                This screen is for testing MCPs and simulates the interaction. It is not the actual service environment. 
+                However, for <strong>Purchased Services</strong>, you can test with unlimited usage to fully evaluate the agent's capabilities.
+              </AlertDescription>
+            </Alert>
+          </div>
+        )}
 
         <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-4 gap-6">
           
