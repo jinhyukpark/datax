@@ -38,43 +38,30 @@ export function SearchResultsModal({ open, onOpenChange, query }: SearchResultsM
   }, [open, query]);
 
   // Mock Data for Results - Enhanced and Expanded
-  const aiSummary = `
-## **${t("Analysis Result", "분석 결과 보고서")}**
+  const aiSummary = t(
+    `**"${query}"**에 대한 분석 결과를 바탕으로, 아래에 추천해 드린 리소스들을 어떻게 활용하면 좋은지 정리해 드립니다.
 
-**"${query}"** ${t(
-    "related to your inquiry, here is a summarized insight based on recent industrial data trends.",
-    "에 대한 귀하의 질의와 관련하여, 최신 산업 데이터 트렌드와 심층 분석을 바탕으로 도출된 핵심 인사이트를 제공합니다."
-  )}
+먼저, 하단에 추천된 **Financial Data Analyzer** MCP를 활용하시면 실시간 시장 데이터를 빠르게 수집하고 분석 모델을 돌려보실 수 있습니다. 특히, **Global Market Trends** 에이전트와 함께 사용하면 거시적인 시장 흐름과 미시적인 금융 데이터를 교차 검증하여 더욱 정교한 예측이 가능해집니다.
 
-### **1. ${t("Market Overview", "시장 현황 및 개요")}**
-${t(
-    "The sector is experiencing rapid growth driven by AI integration and data democratization.",
-    "현재 해당 산업 분야는 **인공지능(AI) 기술의 전면적인 통합**과 **데이터 민주화(Data Democratization)** 흐름에 힘입어 폭발적인 성장세를 기록하고 있습니다. 특히, 기존의 전통적인 데이터 처리 방식에서 벗어나 실시간 스트리밍 데이터 분석과 엣지 컴퓨팅 기술이 결합되면서 시장의 패러다임이 급격히 변화하고 있습니다."
-  )}
+또한, **관련 데이터** 섹션에 있는 'Global EV Sales 2024' 데이터셋은 현재 전기차 시장의 수요 예측에 핵심적인 지표가 될 수 있으며, 'Consumer Sentiment Index' API를 연동하여 소비자들의 심리 지수까지 반영한다면 분석의 정확도를 약 **40% 이상 향상**시킬 수 있을 것으로 예상됩니다.
 
-> **핵심 포인트:** 2025년 4분기 기준, 전년 대비 데이터 처리 효율성이 약 **40% 향상**되었으며, 기업들의 관련 솔루션 도입률은 **2.5배 증가**했습니다.
+**뉴스 및 인사이트**에 추천된 테크 데일리(TechDaily)의 기사와 DevLog의 블로그 포스트는 최신 산업 표준과 MCP 통합 가이드를 다루고 있어, 초기 시스템 구축 시 참고하시면 시행착오를 크게 줄일 수 있습니다.
 
-### **2. ${t("Key Drivers", "주요 성장 동인")}**
-*   **실시간 분석 수요 급증:** 의사결정 속도를 높이기 위해 실시간 데이터 파이프라인 구축이 필수가 되었습니다.
-*   **자율 의사결정 시스템(Autonomous Decision Systems):** 인간의 개입을 최소화하고 AI 에이전트가 주도적으로 판단하는 시스템이 도입되고 있습니다.
-*   **규제 완화 및 표준화:** 국가 간 데이터 교환 표준(Data Exchange Standards)이 정립되면서 글로벌 시장 진출 장벽이 낮아졌습니다.
+💡 **추가 제언:** 현재 결과도 유의미하지만, 경쟁사 분석을 위해 **'Global Competitor Analysis'** 관련 데이터나, 원자재 가격 변동성을 추적할 수 있는 **'Commodity Price Index'** 데이터를 추가로 확보하신다면, 공급망 리스크 관리 측면에서도 훨씬 더 완성도 높은 산업 분석 리포트를 작성하실 수 있을 것입니다.
 
-### **3. ${t("Opportunities", "전략적 기회 요소")}**
-${t(
-    "Leveraging cross-domain data for predictive maintenance and personalized customer experiences.",
-    "**교차 도메인 데이터(Cross-domain Data)의 활용**이 새로운 비즈니스 기회를 창출하고 있습니다. 특히 제조, 물류, 금융 데이터가 결합된 융합 서비스 모델이 주목받고 있으며, 이를 통해 예측 유지 보수(Predictive Maintenance) 및 초개인화된 고객 경험(Hyper-personalized CX) 제공이 가능해졌습니다."
-  )}
+현재 제공된 결과는 귀하의 의도와 **약 95% 일치**하는 것으로 판단됩니다. 추가적인 데이터 소싱이 필요하시다면 언제든 말씀해 주세요.`,
+    `Based on the analysis results for **"${query}"**, here is a summary of how to utilize the recommended resources below.
 
-### **4. ${t("Future Outlook", "향후 전망")}**
-향후 12~24개월 내에 생성형 AI 모델이 산업 데이터 분석의 표준 인터페이스로 자리 잡을 것으로 예상됩니다. 특히, **멀티 에이전트 시스템(Multi-Agent Systems)**의 발전으로 복잡한 공급망 관리와 리스크 분석이 완전 자동화될 전망입니다.
+First, you can use the **Financial Data Analyzer** MCP recommended at the bottom to quickly collect real-time market data and run analysis models. In particular, using it with the **Global Market Trends** agent allows you to cross-validate macroscopic market trends with microscopic financial data for more precise predictions.
 
----
+In addition, the 'Global EV Sales 2024' dataset in the **Related Data** section can be a key indicator for demand forecasting in the EV market. Integrating the 'Consumer Sentiment Index' API to reflect consumer sentiment could improve analysis accuracy by over **40%**.
 
-${t(
-  "Below are the recommended MCPs, datasets, and resources that can help you explore this topic further.",
-  "위 분석 내용을 바탕으로, 귀하의 프로젝트에 즉시 적용 가능한 **추천 MCP(Model Context Protocol)**, **고품질 데이터셋**, 그리고 **최신 레퍼런스**를 아래와 같이 선별하였습니다."
-)}
-`;
+The articles from TechDaily and blog posts from DevLog recommended in **News & Insights** cover the latest industry standards and MCP integration guides, which can significantly reduce trial and error during initial system setup.
+
+💡 **Additional Suggestion:** While the current results are significant, acquiring **'Global Competitor Analysis'** data or **'Commodity Price Index'** data to track raw material price volatility would allow you to create a much more complete industrial analysis report, especially in terms of supply chain risk management.
+
+The current results are estimated to match your intent by **approximately 95%**. Please let me know if you need additional data sourcing.`
+  );
 
   const relatedMCPs = [
     {
@@ -192,34 +179,29 @@ ${t(
             </div>
           ) : (
             <ScrollArea className="h-full">
-              <div className="p-6 space-y-8 pb-20">
-                {/* 1. AI Answer Section */}
-                <section className="bg-white dark:bg-slate-900 rounded-xl p-8 shadow-sm border border-slate-200 dark:border-slate-800 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-bl-full -mr-16 -mt-16 pointer-events-none" />
-                  
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
-                        <Bot className="h-6 w-6 text-indigo-600" />
+              <div className="p-6 pb-20">
+                {/* 1. AI Answer Section - Conversational Style */}
+                <div className="flex gap-4 mb-8 max-w-4xl">
+                  <div className="flex-shrink-0 mt-1">
+                    <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center border border-indigo-200 dark:border-indigo-800">
+                      <Sparkles className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                     </div>
-                    <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">
-                      {t("AI Insight", "AI 인사이트")}
-                    </h3>
                   </div>
                   
-                  <div className="prose prose-slate dark:prose-invert max-w-none 
-                    prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-slate-900 dark:prose-headings:text-slate-100
-                    prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:border-b prose-h2:border-slate-200 dark:prose-h2:border-slate-800 prose-h2:pb-2
-                    prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
-                    prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-p:leading-8 prose-p:tracking-wide
-                    prose-li:text-slate-600 dark:prose-li:text-slate-300 prose-li:leading-7
-                    prose-strong:text-slate-900 dark:prose-strong:text-slate-100 prose-strong:font-bold
-                    prose-blockquote:border-l-4 prose-blockquote:border-indigo-500 prose-blockquote:bg-indigo-50/50 dark:prose-blockquote:bg-indigo-900/20 prose-blockquote:pl-4 prose-blockquote:py-1 prose-blockquote:italic
+                  <div className="flex-1 space-y-2">
+                    <div className="prose prose-slate dark:prose-invert max-w-none 
+                      prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-p:leading-relaxed prose-p:my-2
+                      prose-strong:text-indigo-700 dark:prose-strong:text-indigo-400 prose-strong:font-semibold
+                      prose-ul:my-2 prose-li:my-0.5
                     ">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        {aiSummary}
-                    </ReactMarkdown>
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {aiSummary}
+                      </ReactMarkdown>
+                    </div>
                   </div>
-                </section>
+                </div>
+
+                <Separator className="mb-8" />
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {/* 2. Related MCPs */}
