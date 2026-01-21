@@ -506,6 +506,7 @@ export default function AgentChat() {
                 </div>
               </div>
             </Card>
+          </div>
 
           {/* Chat Interface */}
           <div className="lg:col-span-3 flex flex-col h-full gap-4 min-h-0">
