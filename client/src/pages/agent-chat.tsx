@@ -14,7 +14,8 @@ import { useLanguage } from "@/lib/language-context";
 import { 
   MessageSquare, Send, Zap, Lock, Unlock, Bot, User, 
   MoreVertical, Search, Star, Box, Sparkles, AlertCircle,
-  ShoppingBag, CheckCircle2, Crown, Infinity, ChevronDown, Info, X, ExternalLink
+  ShoppingBag, CheckCircle2, Crown, Infinity, ChevronDown, Info, X, ExternalLink,
+  RotateCcw
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
@@ -566,8 +567,19 @@ export default function AgentChat() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="icon" className="text-muted-foreground">
-                    <MoreVertical className="h-5 w-5" />
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                    onClick={() => {
+                      if (window.confirm(t("Are you sure you want to clear the conversation?", "대화 내용을 초기화하시겠습니까?"))) {
+                        setMessages([]);
+                        toast.success(t("Conversation cleared", "대화 내용이 초기화되었습니다"));
+                      }
+                    }}
+                    title={t("Clear Conversation", "대화 초기화")}
+                  >
+                    <RotateCcw className="h-5 w-5" />
                   </Button>
                 </div>
               </div>
