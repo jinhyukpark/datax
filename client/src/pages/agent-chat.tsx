@@ -12,7 +12,7 @@ import { useLanguage } from "@/lib/language-context";
 import { 
   MessageSquare, Send, Zap, Lock, Unlock, Bot, User, 
   MoreVertical, Search, Star, Box, Sparkles, AlertCircle,
-  ShoppingBag, CheckCircle2, Crown, Infinity, ChevronDown
+  ShoppingBag, CheckCircle2, Crown, Infinity, ChevronDown, Info
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
@@ -24,6 +24,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 // Mock Data Types
 interface MCPService {
@@ -238,7 +239,21 @@ Here is a structured analysis based on your request:
       <Navbar />
       
       <div className="flex-1 container mx-auto px-4 py-6 max-w-7xl h-[calc(100vh-64px)]">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-full">
+        {/* Notice Alert */}
+        <div className="mb-6">
+          <Alert className="bg-blue-50/50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800">
+            <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <AlertTitle className="text-blue-800 dark:text-blue-300 font-semibold mb-1">
+              MCP Testing Environment
+            </AlertTitle>
+            <AlertDescription className="text-blue-700 dark:text-blue-400 text-sm">
+              This screen is for testing MCPs and simulates the interaction. It is not the actual service environment. 
+              However, for <strong>Purchased Services</strong>, you can test with unlimited usage to fully evaluate the agent's capabilities.
+            </AlertDescription>
+          </Alert>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100%-80px)]">
           
           {/* Sidebar - MCP Selection */}
           <div className="lg:col-span-1 flex flex-col gap-4 h-full">
