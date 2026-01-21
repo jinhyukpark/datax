@@ -116,7 +116,6 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          </div>
 
           {/* Mobile Menu Toggle */}
           <button
