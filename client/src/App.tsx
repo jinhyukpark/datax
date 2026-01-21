@@ -33,11 +33,14 @@ import Notifications from "@/pages/admin/notifications";
 import { LanguageProvider } from "./lib/language-context";
 import { useHashLocation } from "./lib/hash-location";
 
+import SearchResultsPage from "@/pages/search-results";
+
 function Router() {
   return (
     <WouterRouter hook={useHashLocation}>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/search" component={SearchResultsPage} />
         <Route path="/data-map" component={DataMap} />
         <Route path="/platforms" component={Platforms} />
         <Route path="/resource/:id" component={ResourceDetail} />

@@ -6,10 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Search, ArrowRight, Sparkles, Database, Cpu, Activity, Shield, Key } from "lucide-react";
 import { RESOURCES, ResourceType } from "@/lib/data";
 import { ResourceCard } from "@/components/ui/resource-card";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
 import floatingHeroBg from "@assets/generated_images/abstract_3d_isometric_data_flow_visualization_with_floating_cubes_and_connecting_lines_in_blue_and_purple_gradients_on_white.png";
-import { SearchResultsModal } from "@/components/search/search-results-modal";
 
 import { useLanguage } from "@/lib/language-context";
 
@@ -17,7 +16,7 @@ export default function Home() {
   const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<'all' | ResourceType>('all');
   const [searchQuery, setSearchQuery] = useState("");
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [, setLocation] = useLocation();
 
   // Filter resources based on active selection and get top 8
   const filteredResources = RESOURCES
@@ -27,19 +26,13 @@ export default function Home() {
   const handleSearch = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (searchQuery.trim()) {
-      setIsSearchModalOpen(true);
+      setLocation(`/search?q=${encodeURIComponent(searchQuery)}`);
     }
   };
 
   return (
     <div className="min-h-screen bg-slate-50/50 font-sans dark:bg-slate-950">
       <Navbar />
-      
-      <SearchResultsModal 
-        open={isSearchModalOpen} 
-        onOpenChange={setIsSearchModalOpen} 
-        query={searchQuery}
-      />
       
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-10 pb-16 lg:pt-20 lg:pb-24">
