@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Bot, Database, Newspaper, BookOpen, Sparkles, ExternalLink, ArrowRight, X, Search, Loader2 } from "lucide-react";
+import { Bot, Database, Newspaper, BookOpen, Sparkles, ExternalLink, ArrowRight, X, Search, Loader2, Cpu } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/lib/language-context";
 
