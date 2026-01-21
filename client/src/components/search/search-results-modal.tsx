@@ -97,6 +97,46 @@ The current results are estimated to match your intent by **approximately 95%**.
       description: "Comprehensive report generation agent for global markets.",
       icon: "https://api.dicebear.com/7.x/shapes/svg?seed=Biz",
       matchScore: 92
+    },
+    {
+      id: "mcp-3",
+      name: "Supply Chain Optimizer",
+      provider: "LogiTech",
+      description: "AI-driven logistics and supply chain optimization tool.",
+      icon: "https://api.dicebear.com/7.x/shapes/svg?seed=Logi",
+      matchScore: 88
+    },
+    {
+      id: "mcp-4",
+      name: "Risk Assessment Bot",
+      provider: "SecureCorp",
+      description: "Automated risk evaluation for investment portfolios.",
+      icon: "https://api.dicebear.com/7.x/shapes/svg?seed=Secure",
+      matchScore: 85
+    },
+    {
+      id: "mcp-5",
+      name: "Competitor Intel Scout",
+      provider: "MarketWatch",
+      description: "Tracks and analyzes competitor activities and strategies.",
+      icon: "https://api.dicebear.com/7.x/shapes/svg?seed=Market",
+      matchScore: 82
+    },
+    {
+      id: "mcp-6",
+      name: "Regulatory Compliance",
+      provider: "LegalAI",
+      description: "Monitors and alerts on relevant regulatory changes.",
+      icon: "https://api.dicebear.com/7.x/shapes/svg?seed=Legal",
+      matchScore: 79
+    },
+    {
+      id: "mcp-7",
+      name: "ESG Impact Tracker",
+      provider: "GreenData",
+      description: "Analyzes environmental, social, and governance metrics.",
+      icon: "https://api.dicebear.com/7.x/shapes/svg?seed=Green",
+      matchScore: 75
     }
   ];
 
@@ -256,7 +296,7 @@ The current results are estimated to match your intent by **approximately 95%**.
                       {t("Recommended Agents (MCP)", "추천 에이전트 (MCP)")}
                     </h3>
                     <div className="space-y-3">
-                      {relatedMCPs.map((mcp) => (
+                      {relatedMCPs.slice(0, 5).map((mcp) => (
                         <Card key={mcp.id} className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer group border-slate-200 dark:border-slate-800">
                           <div className="p-4 flex items-start gap-3">
                             <Avatar className="h-10 w-10 border border-slate-100">
@@ -277,9 +317,11 @@ The current results are estimated to match your intent by **approximately 95%**.
                           </div>
                         </Card>
                       ))}
-                      <Button variant="ghost" size="sm" className="w-full text-xs text-muted-foreground hover:text-foreground">
-                        {t("View more agents", "에이전트 더 보기")} <ArrowRight className="h-3 w-3 ml-1" />
-                      </Button>
+                      {relatedMCPs.length > 5 && (
+                        <Button variant="ghost" size="sm" className="w-full text-xs text-muted-foreground hover:text-foreground">
+                          {t("View more agents", "에이전트 더 보기")} <ArrowRight className="h-3 w-3 ml-1" />
+                        </Button>
+                      )}
                     </div>
                   </div>
 
