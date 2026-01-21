@@ -23,10 +23,11 @@ export function SearchResultsModal({ open, onOpenChange, query }: SearchResultsM
   const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
-  const [followUpQuery, setFollowUpQuery] = useState("");
+  const [followUpQuery, setFollowUpQuery] = useState(query);
 
   useEffect(() => {
     if (open && query) {
+      setFollowUpQuery(query);
       setIsLoading(true);
       // Simulate AI processing time
       const timer = setTimeout(() => {
@@ -138,8 +139,8 @@ ${t(
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl h-[90vh] flex flex-col p-0 overflow-hidden bg-slate-50 dark:bg-slate-950">
-        <DialogHeader className="p-6 pb-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex-shrink-0 z-20">
-          <div className="flex items-center gap-3 mb-2">
+        <DialogHeader className="p-6 pb-0 bg-white dark:bg-slate-900 flex-shrink-0 z-20 border-none">
+          <div className="flex items-center gap-3">
             <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
               <Sparkles className="h-5 w-5" />
             </div>
@@ -150,26 +151,23 @@ ${t(
                    Beta
                 </Badge>
               </DialogTitle>
-              <DialogDescription className="text-slate-500 dark:text-slate-400">
-                {t("Searching for", "검색어")}: <span className="font-semibold text-foreground">"{query}"</span>
-              </DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
-        {/* Follow-up Question Input - Sticky at Top */}
-        <div className="bg-white dark:bg-slate-900 px-6 pb-4 border-b border-slate-200 dark:border-slate-800 flex-shrink-0 z-10">
+        {/* Search Query Input - Sticky at Top */}
+        <div className="bg-white dark:bg-slate-900 px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex-shrink-0 z-10 shadow-sm">
             <div className="relative">
                 <Textarea 
-                    placeholder={t("Ask a follow-up question based on the search results...", "검색 결과를 바탕으로 추가 질문을 입력하세요...")}
-                    className="min-h-[50px] pr-12 resize-none bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus-visible:ring-indigo-500"
+                    placeholder={t("Ask a follow-up question...", "추가 질문을 입력하세요...")}
+                    className="min-h-[60px] pr-12 resize-none bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus-visible:ring-indigo-500 text-base"
                     value={followUpQuery}
                     onChange={(e) => setFollowUpQuery(e.target.value)}
                 />
                 <Button 
                     size="icon" 
-                    className="absolute right-2 top-2 h-8 w-8 bg-indigo-600 hover:bg-indigo-700 text-white"
-                    disabled={!followUpQuery.trim()}
+                    className="absolute right-3 top-3 h-8 w-8 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all"
+                    disabled={!followUpQuery.trim() || followUpQuery === query}
                 >
                     <Send className="h-4 w-4" />
                 </Button>
