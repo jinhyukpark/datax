@@ -14,7 +14,7 @@ import { useLanguage } from "@/lib/language-context";
 import { 
   MessageSquare, Send, Zap, Lock, Unlock, Bot, User, 
   MoreVertical, Search, Star, Box, Sparkles, AlertCircle,
-  ShoppingBag, CheckCircle2, Crown, Infinity, ChevronDown, Info, X
+  ShoppingBag, CheckCircle2, Crown, Infinity, ChevronDown, Info, X, ExternalLink
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
@@ -473,6 +473,41 @@ export default function AgentChat() {
                 </div>
               </ScrollArea>
             </Card>
+
+            {/* Connection Methods Links */}
+            <div className="bg-slate-950 dark:bg-black rounded-xl p-1 overflow-hidden shadow-lg border border-slate-800">
+              <div className="flex flex-col">
+                <a href="#" className="flex items-center justify-between p-3.5 text-slate-200 hover:bg-slate-800/50 rounded-lg transition-colors group">
+                  <div className="flex items-center gap-3">
+                    <div className="h-6 w-6 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
+                      <Sparkles className="h-3.5 w-3.5" />
+                    </div>
+                    <span className="text-sm font-medium">Claude 연결 방법</span>
+                  </div>
+                  <ExternalLink className="h-3.5 w-3.5 text-slate-500 group-hover:text-slate-300 transition-colors" />
+                </a>
+                <div className="h-px bg-slate-800/50 mx-3" />
+                <a href="#" className="flex items-center justify-between p-3.5 text-slate-200 hover:bg-slate-800/50 rounded-lg transition-colors group">
+                  <div className="flex items-center gap-3">
+                    <div className="h-6 w-6 rounded-full bg-white flex items-center justify-center text-black">
+                      <Zap className="h-3.5 w-3.5" />
+                    </div>
+                    <span className="text-sm font-medium">ChatGPT 연결 방법</span>
+                  </div>
+                  <ExternalLink className="h-3.5 w-3.5 text-slate-500 group-hover:text-slate-300 transition-colors" />
+                </a>
+                <div className="h-px bg-slate-800/50 mx-3" />
+                <a href="#" className="flex items-center justify-between p-3.5 text-slate-200 hover:bg-slate-800/50 rounded-lg transition-colors group">
+                  <div className="flex items-center gap-3">
+                    <div className="h-6 w-6 rounded-full bg-slate-800 flex items-center justify-center text-white border border-slate-600">
+                      <span className="text-[10px] font-bold">P</span>
+                    </div>
+                    <span className="text-sm font-medium">PlayMCP 연결 방법</span>
+                  </div>
+                  <ExternalLink className="h-3.5 w-3.5 text-slate-500 group-hover:text-slate-300 transition-colors" />
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Chat Interface */}
