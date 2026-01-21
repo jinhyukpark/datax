@@ -438,43 +438,45 @@ export default function AgentChat() {
               <ScrollArea className="flex-1 bg-white dark:bg-slate-950 p-4 md:p-6">
                 <div className="space-y-8 max-w-4xl mx-auto">
                   {messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={cn(
-                        "flex gap-4 w-full",
-                        message.role === 'user' ? "flex-row-reverse" : "flex-row"
-                      )}
-                    >
-                      <Avatar className={cn(
-                        "h-8 w-8 shrink-0 mt-1",
-                        message.role === 'user' ? "bg-indigo-100 text-indigo-700" : "bg-white border border-slate-200"
-                      )}>
-                        {message.role === 'user' ? (
-                          <User className="h-5 w-5" />
-                        ) : (
-                          <AvatarImage src={activeService?.icon} />
+                      <div
+                        key={message.id}
+                        className={cn(
+                          "flex w-full",
+                          message.role === 'user' ? "flex-row-reverse gap-2" : "flex-row gap-4"
                         )}
-                        <AvatarFallback>
-                          {message.role === 'user' ? "Me" : "AI"}
-                        </AvatarFallback>
-                      </Avatar>
-                      
-                      <div className={cn(
-                        "flex flex-col gap-1 max-w-[90%]",
-                        message.role === 'user' ? "items-end" : "items-start"
-                      )}>
-                        <div className="flex items-center gap-2 px-1">
-                          <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                            {message.role === 'user' ? "You" : activeService?.name}
-                          </span>
-                          {message.role === 'assistant' && message.model && (
-                            <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">
-                              {message.model}
-                            </span>
+                      >
+                        <Avatar className={cn(
+                          "h-8 w-8 shrink-0 mt-1",
+                          message.role === 'user' ? "bg-indigo-100 text-indigo-700" : "bg-white border border-slate-200"
+                        )}>
+                          {message.role === 'user' ? (
+                            <User className="h-5 w-5" />
+                          ) : (
+                            <AvatarImage src={activeService?.icon} />
                           )}
-                        </div>
+                          <AvatarFallback>
+                            {message.role === 'user' ? "Me" : "AI"}
+                          </AvatarFallback>
+                        </Avatar>
                         
-                        {/* Message Content Style */}
+                        <div className={cn(
+                          "flex flex-col gap-1 max-w-[90%]",
+                          message.role === 'user' ? "items-end" : "items-start"
+                        )}>
+                          {message.role !== 'user' && (
+                            <div className="flex items-center gap-2 px-1">
+                              <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                                {activeService?.name}
+                              </span>
+                              {message.role === 'assistant' && message.model && (
+                                <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">
+                                  {message.model}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                          
+                          {/* Message Content Style */}
                         {message.role === 'user' ? (
                           <div className="rounded-2xl px-5 py-3 text-sm shadow-sm bg-blue-50 text-slate-900 border border-blue-100 dark:bg-blue-900/20 dark:text-blue-100 dark:border-blue-900 rounded-br-none">
                             {message.content}
