@@ -62,18 +62,25 @@ export function Navbar() {
                 </Link>
               );
             })}
+            
+            {/* Divider */}
+            <div className="h-4 w-px bg-slate-300 dark:bg-slate-700" />
+            
+            {/* Playground Link */}
+            <Link href="/agents">
+              <a className={`flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary cursor-pointer ${
+                location === '/agents'
+                  ? "text-primary font-semibold"
+                  : "text-muted-foreground"
+              }`}>
+                <Bot className="h-4 w-4" />
+                {t("Playground", "플레이그라운드")}
+              </a>
+            </Link>
           </div>
 
           {/* Actions */}
           <div className="hidden items-center gap-4 md:flex">
-            {/* Playground Button */}
-            <Link href="/agents">
-              <Button size="sm" variant="outline" className="h-9 gap-2 border-slate-200 dark:border-slate-800 text-muted-foreground hover:text-foreground">
-                <Bot className="h-4 w-4" />
-                {t("Playground", "플레이그라운드")}
-              </Button>
-            </Link>
-
             <Dialog>
               <DialogTrigger asChild>
                 <Button size="sm" className="bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-50 dark:text-slate-900 h-9 px-4">
