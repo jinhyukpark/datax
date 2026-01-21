@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Bot, Database, Newspaper, BookOpen, Sparkles, ExternalLink, ArrowRight, X, Search, Loader2, Cpu, Send, CornerDownLeft, Target } from "lucide-react";
+import { Bot, Database, Newspaper, BookOpen, Sparkles, ExternalLink, ArrowRight, X, Search, Loader2, Cpu, Send, CornerDownLeft, Target, Lightbulb } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/lib/language-context";
 import ReactMarkdown from "react-markdown";
@@ -55,7 +55,7 @@ export function SearchResultsModal({ open, onOpenChange, query }: SearchResultsM
 
 **뉴스 및 인사이트**에 추천된 테크 데일리(TechDaily)의 기사와 DevLog의 블로그 포스트는 최신 산업 표준과 MCP 통합 가이드를 다루고 있어, 초기 시스템 구축 시 참고하시면 시행착오를 크게 줄일 수 있습니다.
 
-> 💡 **추가 제언:** 현재 결과도 유의미하지만, 경쟁사 분석을 위해 **'Global Competitor Analysis'** 관련 데이터나, 원자재 가격 변동성을 추적할 수 있는 **'Commodity Price Index'** 데이터를 추가로 확보하신다면, 공급망 리스크 관리 측면에서도 훨씬 더 완성도 높은 산업 분석 리포트를 작성하실 수 있을 것입니다.`,
+현재 제공된 결과는 귀하의 의도와 **약 95% 일치**하는 것으로 판단됩니다. 추가적인 데이터 소싱이 필요하시다면 언제든 말씀해 주세요.`,
     `### **1. AI Insights & Usage Guide**
 
 Based on the analysis results for **"${query}"**, here is a summary of how to utilize the recommended resources below.
@@ -72,7 +72,12 @@ Integrating the 'Consumer Sentiment Index' API to reflect consumer sentiment cou
 
 The articles from TechDaily and blog posts from DevLog recommended in **News & Insights** cover the latest industry standards and MCP integration guides, which can significantly reduce trial and error during initial system setup.
 
-> 💡 **Additional Suggestion:** While the current results are significant, acquiring **'Global Competitor Analysis'** data or **'Commodity Price Index'** data to track raw material price volatility would allow you to create a much more complete industrial analysis report, especially in terms of supply chain risk management.`
+The current results are estimated to match your intent by **approximately 95%**. Please let me know if you need additional data sourcing.`
+  );
+
+  const aiSuggestion = t(
+    `**추가 제언:** 현재 결과도 유의미하지만, 경쟁사 분석을 위해 **'Global Competitor Analysis'** 관련 데이터나, 원자재 가격 변동성을 추적할 수 있는 **'Commodity Price Index'** 데이터를 추가로 확보하신다면, 공급망 리스크 관리 측면에서도 훨씬 더 완성도 높은 산업 분석 리포트를 작성하실 수 있을 것입니다.`,
+    `**Additional Suggestion:** While the current results are significant, acquiring **'Global Competitor Analysis'** data or **'Commodity Price Index'** data to track raw material price volatility would allow you to create a much more complete industrial analysis report, especially in terms of supply chain risk management.`
   );
 
   const relatedMCPs = [
@@ -211,6 +216,19 @@ The articles from TechDaily and blog posts from DevLog recommended in **News & I
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
                           {aiSummary}
                       </ReactMarkdown>
+                    </div>
+
+                    <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/30 rounded-lg">
+                      <div className="flex gap-3">
+                         <div className="flex-shrink-0 mt-0.5">
+                            <Lightbulb className="h-5 w-5 text-amber-600 dark:text-amber-400 fill-amber-100 dark:fill-amber-900/50" />
+                         </div>
+                         <div className="prose prose-sm prose-amber dark:prose-invert max-w-none prose-p:my-0 prose-p:leading-relaxed">
+                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                {aiSuggestion}
+                            </ReactMarkdown>
+                         </div>
+                      </div>
                     </div>
 
                     <div className="flex items-center gap-3 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
