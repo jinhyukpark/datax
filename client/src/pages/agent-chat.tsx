@@ -6,6 +6,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import userAvatar from '@assets/stock_images/professional_user_av_69c3a7ea.jpg';
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/lib/language-context";
@@ -450,7 +451,7 @@ export default function AgentChat() {
                           message.role === 'user' ? "bg-indigo-100 text-indigo-700" : "bg-white border border-slate-200"
                         )}>
                           {message.role === 'user' ? (
-                            <User className="h-5 w-5" />
+                            <AvatarImage src={userAvatar} className="object-cover" />
                           ) : (
                             <AvatarImage src={activeService?.icon} />
                           )}
