@@ -68,12 +68,28 @@ export function Navbar() {
             
             {/* Playground Link */}
             <Link href="/agents">
-              <a className={`flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary cursor-pointer ${
+              <a className={`group flex items-center gap-2 text-sm font-medium transition-colors cursor-pointer ${
                 location === '/agents'
                   ? "bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent font-bold"
                   : "text-muted-foreground hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-600 hover:bg-clip-text hover:text-transparent"
               }`}>
-                <FlaskConical className={`h-4 w-4 ${location === '/agents' ? "text-indigo-600" : "text-muted-foreground group-hover:text-indigo-600"}`} />
+                {/* 
+                  Since we can't easily gradient the stroke of an SVG without defs,
+                  we'll use a strong text color that matches the gradient end for now
+                  or we could use a mask. For simplicity and visibility:
+                */}
+                <svg width="0" height="0" className="absolute">
+                  <linearGradient id="playground-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#6366f1" /> {/* indigo-500 */}
+                    <stop offset="100%" stopColor="#9333ea" /> {/* purple-600 */}
+                  </linearGradient>
+                </svg>
+                <FlaskConical 
+                  className="h-4 w-4" 
+                  style={{ 
+                    stroke: location === '/agents' || "group-hover" ? "url(#playground-gradient)" : "currentColor" 
+                  }} 
+                />
                 {t("Playground", "플레이그라운드")}
               </a>
             </Link>
