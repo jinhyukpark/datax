@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Bot, Database, Newspaper, Sparkles, ExternalLink, ArrowRight, Loader2, Cpu, Send, Target, Lightbulb, Search, TrendingUp, CheckCircle2, BarChart3, Zap } from "lucide-react";
+import { Bot, Database, Newspaper, Sparkles, ExternalLink, ArrowRight, Loader2, Cpu, Send, Target, Lightbulb, Search, TrendingUp, CheckCircle2, BarChart3, Zap, FileCheck, Layers, AlertCircle, Info } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/lib/language-context";
 import ReactMarkdown from "react-markdown";
@@ -327,18 +327,156 @@ The current results are estimated to match your intent by **approximately 95%**.
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-4 mt-6 pt-6 border-t border-slate-200 dark:border-slate-800">
-                            <div className="flex items-center gap-2.5 px-4 py-2 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 text-green-700 dark:text-green-400 rounded-lg border border-green-200 dark:border-green-800 shadow-sm">
-                              <Target className="h-4 w-4" />
-                              <span className="text-sm font-bold">{t("Achievability", "달성 가능성")}:</span>
-                              <span className="text-sm font-bold">92%</span>
+                          {/* Metrics Section - Enhanced */}
+                          <div className="mt-8 pt-8 border-t-2 border-slate-200 dark:border-slate-800">
+                            <div className="mb-4 flex items-start gap-2">
+                              <Info className="h-4 w-4 text-slate-500 dark:text-slate-400 mt-0.5" />
+                              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                                {t(
+                                  "Achievability indicates the possibility of answering this question based on currently available data, MCPs, and content on the platform. This is a feasibility indicator, and decision-making typically requires the following additional metrics.",
+                                  "달성률은 현재 플랫폼에 존재하는 데이터·MCP·콘텐츠 기준으로 이 질문에 답할 수 있는 가능성을 나타냅니다. 이는 가능성 지표이며, 의사결정에는 아래 추가 지표들이 필요합니다."
+                                )}
+                              </p>
                             </div>
-                            <div className="flex-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                              <div className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" style={{ width: '92%' }}></div>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              {/* 1. Achievability */}
+                              <Card className="border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+                                <div className="p-4">
+                                  <div className="flex items-center gap-2 mb-3">
+                                    <div className="p-2 bg-green-100 dark:bg-green-900/40 rounded-lg">
+                                      <Target className="h-4 w-4 text-green-700 dark:text-green-400" />
+                                    </div>
+                                    <div>
+                                      <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                                        {t("Achievability", "달성 가능성")}
+                                      </h4>
+                                      <p className="text-[10px] text-slate-600 dark:text-slate-400">
+                                        {t("Feasibility Indicator", "가능성 지표")}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="mb-3">
+                                    <div className="flex items-baseline gap-2 mb-2">
+                                      <span className="text-2xl font-bold text-green-700 dark:text-green-400">92%</span>
+                                    </div>
+                                    <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                      <div className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" style={{ width: '92%' }}></div>
+                                    </div>
+                                  </div>
+                                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                                    {t("Based on available resources", "가용 리소스 기반")}
+                                  </p>
+                                </div>
+                              </Card>
+
+                              {/* 2. Completeness Score */}
+                              <Card className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20">
+                                <div className="p-4">
+                                  <div className="flex items-center gap-2 mb-3">
+                                    <div className="p-2 bg-blue-100 dark:bg-blue-900/40 rounded-lg">
+                                      <FileCheck className="h-4 w-4 text-blue-700 dark:text-blue-400" />
+                                    </div>
+                                    <div>
+                                      <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                                        {t("Completeness", "완성도")}
+                                      </h4>
+                                      <p className="text-[10px] text-slate-600 dark:text-slate-400">
+                                        {t("Decision-Ready Score", "의사결정 준비도")}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="mb-3">
+                                    <div className="flex items-baseline gap-2 mb-2">
+                                      <span className="text-2xl font-bold text-blue-700 dark:text-blue-400">68%</span>
+                                    </div>
+                                    <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                      <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style={{ width: '68%' }}></div>
+                                    </div>
+                                  </div>
+                                  <div className="space-y-1.5">
+                                    <p className="text-[10px] font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                                      {t("Missing Elements", "누락 요소")}:
+                                    </p>
+                                    <div className="flex flex-wrap gap-1.5">
+                                      <Badge variant="outline" className="text-[9px] px-1.5 py-0.5 h-5 border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30">
+                                        {t("Competitor Data", "경쟁사 데이터")}
+                                      </Badge>
+                                      <Badge variant="outline" className="text-[9px] px-1.5 py-0.5 h-5 border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30">
+                                        {t("Commodity Prices", "원자재 가격")}
+                                      </Badge>
+                                      <Badge variant="outline" className="text-[9px] px-1.5 py-0.5 h-5 border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30">
+                                        {t("Policy/Regulation", "정책/규제")}
+                                      </Badge>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Card>
+
+                              {/* 3. Data Coverage Index */}
+                              <Card className="border-2 border-purple-200 dark:border-purple-800 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+                                <div className="p-4">
+                                  <div className="flex items-center gap-2 mb-3">
+                                    <div className="p-2 bg-purple-100 dark:bg-purple-900/40 rounded-lg">
+                                      <Layers className="h-4 w-4 text-purple-700 dark:text-purple-400" />
+                                    </div>
+                                    <div>
+                                      <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                                        {t("Data Coverage", "데이터 커버리지")}
+                                      </h4>
+                                      <p className="text-[10px] text-slate-600 dark:text-slate-400">
+                                        {t("Coverage Index", "커버리지 지수")}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="mb-3">
+                                    <div className="flex items-baseline gap-2 mb-2">
+                                      <span className="text-2xl font-bold text-purple-700 dark:text-purple-400">75%</span>
+                                    </div>
+                                    <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                      <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" style={{ width: '75%' }}></div>
+                                    </div>
+                                  </div>
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-[10px] text-slate-600 dark:text-slate-400">{t("Market", "시장")}</span>
+                                      <div className="flex-1 mx-2 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                        <div className="h-full bg-green-500 rounded-full" style={{ width: '90%' }}></div>
+                                      </div>
+                                      <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-300">90%</span>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-[10px] text-slate-600 dark:text-slate-400">{t("Technology", "기술")}</span>
+                                      <div className="flex-1 mx-2 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                        <div className="h-full bg-green-500 rounded-full" style={{ width: '85%' }}></div>
+                                      </div>
+                                      <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-300">85%</span>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-[10px] text-slate-600 dark:text-slate-400">{t("Supply Chain", "공급망")}</span>
+                                      <div className="flex-1 mx-2 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                        <div className="h-full bg-yellow-500 rounded-full" style={{ width: '60%' }}></div>
+                                      </div>
+                                      <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-300">60%</span>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-[10px] text-slate-600 dark:text-slate-400">{t("Demand", "수요")}</span>
+                                      <div className="flex-1 mx-2 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                        <div className="h-full bg-green-500 rounded-full" style={{ width: '80%' }}></div>
+                                      </div>
+                                      <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-300">80%</span>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-[10px] text-slate-600 dark:text-slate-400">{t("Regulation", "규제")}</span>
+                                      <div className="flex-1 mx-2 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                        <div className="h-full bg-red-500 rounded-full" style={{ width: '40%' }}></div>
+                                      </div>
+                                      <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-300">40%</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Card>
                             </div>
-                            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                              {t("Based on available resources", "가용 리소스 기반")}
-                            </span>
                           </div>
                         </div>
                       </div>
