@@ -266,9 +266,6 @@ The current results are estimated to match your intent by **approximately 95%**.
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between mb-1">
                                 <h4 className="font-semibold text-sm truncate group-hover:text-indigo-600 transition-colors">{mcp.name}</h4>
-                                <Badge variant="secondary" className="text-[10px] h-5 bg-green-50 text-green-700 hover:bg-green-100 border-green-200">
-                                  {mcp.matchScore}% Match
-                                </Badge>
                               </div>
                               <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
                                 {mcp.description}
