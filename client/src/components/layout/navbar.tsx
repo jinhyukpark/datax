@@ -22,7 +22,7 @@ export function Navbar() {
   const navLinks = [
     { name: t("Data Map", "데이터 맵"), href: "/data-map" },
     { name: t("Platforms", "플랫폼"), href: "/platforms" },
-    { name: t("Agents", "에이전트"), href: "/agents" },
+    { name: t("Playground", "플레이그라운드"), href: "/agents" },
     { name: t("News", "뉴스"), href: "/news" },
     { name: t("Blog", "블로그"), href: "/blog" },
     { name: t("Advertise", "광고"), href: "/advertise" },
