@@ -318,7 +318,7 @@ export default function AgentChat() {
       
       <div className="flex-1 flex flex-col container mx-auto px-4 py-6 max-w-7xl min-h-0">
         {/* Notice Alert */}
-        {showNotice && (
+        {showNotice && false && (
           <div className="flex-none mb-6">
             <Alert className="bg-blue-50/50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800 relative">
               <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
