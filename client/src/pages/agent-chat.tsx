@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import TextareaAutosize from 'react-textarea-autosize';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import userAvatar from '@assets/stock_images/professional_user_av_69c3a7ea.jpg';
 import { Badge } from "@/components/ui/badge";
@@ -137,9 +137,9 @@ export default function AgentChat() {
       content: `금융 데이터 분석기(Financial Data Analyzer)에 오신 것을 환영합니다. 시장 추세 분석, 기업 재무제표 검토 및 과거 데이터를 기반으로 한 예측 통찰력을 제공해 드릴 수 있습니다.
 
 다음과 같은 질문을 해보세요:
-- "TechCorp의 2024년 3분기 수익 보고서를 분석해줘."
-- "재생 에너지 부문의 현재 추세는 어때?"
-- "지난 6개월 동안 비트코인과 금의 변동성을 비교해줘."
+- **"TechCorp의 2024년 3분기 수익 보고서를 분석해줘."**
+- **"재생 에너지 부문의 현재 추세는 어때?"**
+- **"지난 6개월 동안 비트코인과 금의 변동성을 비교해줘."**
 
 원하는 특정 데이터 세트나 매개변수가 있다면 언제든지 말씀해 주세요.`,
       timestamp: new Date(Date.now() - 1000 * 60 * 60),
@@ -170,12 +170,26 @@ export default function AgentChat() {
 *   **배터리 기술:** 전고체 배터리(Solid-state batteries)가 가시화되면서 더 긴 주행 거리와 빠른 충전 시간을 예고하고 있습니다.
 *   **충전 인프라:** 주요 자동차 제조사들의 NACS(북미 충전 표준) 채택은 충전 경험을 표준화하여 주행 거리 불안을 줄여주고 있습니다.
 
-#### 4. 투자 전망
-*   **변동성:** EV 주식은 여전히 높은 변동성을 보입니다. 장기적인 성장 전망은 밝지만, 고금리와 공급망 제약 같은 단기적인 역풍은 지속되고 있습니다.
-*   **섹터 로테이션:** 투자자들은 단순히 완성차 제조사뿐만 아니라 리튬 채굴업체, 배터리 제조사, 충전 네트워크 운영업체를 포함한 전체 EV 생태계를 점점 더 주목하고 있습니다.
+> **핵심 요약 (Key Takeaway)**
+> 
+> 시장은 여전히 성장 중이나 경쟁 심화와 규제 변화로 인해 기업들의 수익성 확보 전략이 중요해지고 있습니다. 장기적으로는 배터리 기술 혁신과 충전 인프라 확충이 성장의 핵심 동력이 될 것입니다.
+
+#### 4. 상세 투자 전망 분석
+
+| 구분 | 전망 | 주요 요인 |
+| :--- | :--- | :--- |
+| **단기** | **변동성 확대** | 고금리, 공급망 이슈, 가격 경쟁 심화 |
+| **중기** | **선별적 성장** | 정부 정책 지원, 인프라 확충 가속화 |
+| **장기** | **구조적 성장** | 내연기관차 퇴출, 기술 성숙도 도달 |
 
 **권장 사항:**
-균형 잡힌 포트폴리오를 위해 확고한 리더 기업과 유망한 인프라 관련 주에 분산 투자하는 것을 고려해 보세요. 생산 목표 달성 여부와 마진 개선 사항을 확인하기 위해 분기별 실적 발표를 주시하시기 바랍니다.`,
+균형 잡힌 포트폴리오를 위해 확고한 리더 기업과 유망한 인프라 관련 주에 분산 투자하는 것을 고려해 보세요. 생산 목표 달성 여부와 마진 개선 사항을 확인하기 위해 분기별 실적 발표를 주시하시기 바랍니다.
+
+---
+
+##### 추가 분석이 필요하신가요?
+특정 기업에 대한 심층 분석이나 비교 데이터가 필요하시다면 말씀해 주세요.
+`,
       timestamp: new Date(Date.now() - 1000 * 60 * 29),
       model: "GPT-4o"
     }
@@ -540,7 +554,38 @@ export default function AgentChat() {
                           </div>
                         ) : (
                           <div className="prose prose-sm dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 leading-relaxed">
-                            <ReactMarkdown>{message.content}</ReactMarkdown>
+                            <ReactMarkdown 
+                              remarkPlugins={[remarkGfm]}
+                              components={{
+                                blockquote: ({node, ...props}) => (
+                                  <div className="border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 p-4 my-4 rounded-r-lg">
+                                    <blockquote {...props} className="border-l-0 p-0 not-italic" />
+                                  </div>
+                                ),
+                                table: ({node, ...props}) => (
+                                  <div className="overflow-x-auto my-4 border rounded-lg">
+                                    <table {...props} className="w-full text-sm text-left" />
+                                  </div>
+                                ),
+                                thead: ({node, ...props}) => (
+                                  <thead {...props} className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold" />
+                                ),
+                                th: ({node, ...props}) => (
+                                  <th {...props} className="px-4 py-2 border-b dark:border-slate-700" />
+                                ),
+                                td: ({node, ...props}) => (
+                                  <td {...props} className="px-4 py-2 border-b dark:border-slate-800 last:border-0" />
+                                ),
+                                h3: ({node, ...props}) => (
+                                  <h3 {...props} className="text-lg font-bold mt-6 mb-3 text-blue-800 dark:text-blue-400 border-b pb-2 border-slate-200 dark:border-slate-800" />
+                                ),
+                                h4: ({node, ...props}) => (
+                                  <h4 {...props} className="text-base font-bold mt-5 mb-2 text-slate-900 dark:text-slate-100 flex items-center gap-2" />
+                                ),
+                              }}
+                            >
+                              {message.content}
+                            </ReactMarkdown>
                           </div>
                         )}
                       </div>
