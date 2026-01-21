@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -580,7 +579,6 @@ export default function AgentChat() {
         </div>
       </div>
       <div className="flex-none">
-        <Footer />
       </div>
     </div>
   );
