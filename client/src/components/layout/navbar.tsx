@@ -68,12 +68,12 @@ export function Navbar() {
             
             {/* Playground Link */}
             <Link href="/agents">
-              <a className={`flex items-center gap-2 text-sm font-medium transition-colors hover:text-indigo-700 cursor-pointer ${
+              <a className={`flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary cursor-pointer ${
                 location === '/agents'
-                  ? "text-indigo-600 font-semibold"
-                  : "text-indigo-500 hover:text-indigo-600"
+                  ? "bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent font-bold"
+                  : "text-muted-foreground hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-600 hover:bg-clip-text hover:text-transparent"
               }`}>
-                <FlaskConical className="h-4 w-4" />
+                <FlaskConical className={`h-4 w-4 ${location === '/agents' ? "text-indigo-600" : "text-muted-foreground group-hover:text-indigo-600"}`} />
                 {t("Playground", "플레이그라운드")}
               </a>
             </Link>
