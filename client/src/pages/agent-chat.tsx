@@ -235,12 +235,12 @@ Here is a structured analysis based on your request:
   const activeService = [...bookmarkedMCPs, ...purchasedMCPs].find(s => s.id === selectedServiceId);
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div className="flex flex-col h-screen bg-slate-50 dark:bg-slate-950 overflow-hidden">
       <Navbar />
       
-      <div className="flex-1 container mx-auto px-4 py-6 max-w-7xl h-[calc(100vh-64px)]">
+      <div className="flex-1 flex flex-col container mx-auto px-4 py-6 max-w-7xl min-h-0">
         {/* Notice Alert */}
-        <div className="mb-6">
+        <div className="flex-none mb-6">
           <Alert className="bg-blue-50/50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800">
             <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             <AlertTitle className="text-blue-800 dark:text-blue-300 font-semibold mb-1">
@@ -253,7 +253,7 @@ Here is a structured analysis based on your request:
           </Alert>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100%-80px)]">
+        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-4 gap-6">
           
           {/* Sidebar - MCP Selection */}
           <div className="lg:col-span-1 flex flex-col gap-4 h-full">
