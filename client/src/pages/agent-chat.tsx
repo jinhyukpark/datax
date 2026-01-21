@@ -715,14 +715,6 @@ export default function AgentChat() {
                       </div>
                     </div>
                   </form>
-                  <div className="text-center">
-                     <p className="text-[10px] text-muted-foreground">
-                       {selectedMode === 'test' 
-                         ? "테스트 모드: 제한된 가용성. 전체 액세스를 위해 실서비스로 업그레이드하세요."
-                         : "실서비스 모드: 엔터프라이즈급 안정성 및 보안."
-                       }
-                     </p>
-                  </div>
                 </div>
               </div>
             </Card>
