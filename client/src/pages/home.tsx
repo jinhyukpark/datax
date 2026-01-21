@@ -9,21 +9,37 @@ import { ResourceCard } from "@/components/ui/resource-card";
 import { Link } from "wouter";
 import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
 import floatingHeroBg from "@assets/generated_images/abstract_3d_isometric_data_flow_visualization_with_floating_cubes_and_connecting_lines_in_blue_and_purple_gradients_on_white.png";
+import { SearchResultsModal } from "@/components/search/search-results-modal";
 
 import { useLanguage } from "@/lib/language-context";
 
 export default function Home() {
   const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<'all' | ResourceType>('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 
   // Filter resources based on active selection and get top 8
   const filteredResources = RESOURCES
     .filter(r => activeFilter === 'all' || r.type === activeFilter)
     .slice(0, 8);
 
+  const handleSearch = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (searchQuery.trim()) {
+      setIsSearchModalOpen(true);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50/50 font-sans dark:bg-slate-950">
       <Navbar />
+      
+      <SearchResultsModal 
+        open={isSearchModalOpen} 
+        onOpenChange={setIsSearchModalOpen} 
+        query={searchQuery}
+      />
       
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-10 pb-16 lg:pt-20 lg:pb-24">
@@ -65,10 +81,21 @@ export default function Home() {
                 <Search className="ml-4 h-5 w-5 text-slate-400 shrink-0" />
                 <Input 
                   type="text" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearch();
+                    }
+                  }}
                   placeholder={t("Search for APIs, agents, or providers...", "API, 에이전트 또는 제공자 검색...")}
                   className="flex-1 border-none bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 text-base h-14 px-4 placeholder:text-slate-400"
                 />
-                <Button size="lg" className="rounded-xl px-8 shrink-0 h-12 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/50">
+                <Button 
+                  size="lg" 
+                  onClick={() => handleSearch()}
+                  className="rounded-xl px-8 shrink-0 h-12 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/50"
+                >
                   {t("Search", "검색")}
                 </Button>
               </div>
