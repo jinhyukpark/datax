@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Globe, LogIn, ArrowLeft, Bot } from "lucide-react";
+import { Menu, X, Globe, LogIn, ArrowLeft, Bot, FlaskConical } from "lucide-react";
 import { useState } from "react";
 import { Logo } from "@/components/ui/logo";
 import {
@@ -73,7 +73,7 @@ export function Navbar() {
                   ? "text-primary font-semibold"
                   : "text-muted-foreground"
               }`}>
-                <Bot className="h-4 w-4" />
+                <FlaskConical className="h-4 w-4" />
                 {t("Playground", "플레이그라운드")}
               </a>
             </Link>
