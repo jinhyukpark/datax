@@ -34,9 +34,9 @@ export function Navbar() {
         <div className="container mx-auto flex h-18 items-center justify-between px-4 py-2">
           {/* Logo */}
           <Link href="/">
-            <a className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <div className="flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer">
               <Logo />
-            </a>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -68,7 +68,7 @@ export function Navbar() {
             
             {/* Playground Link */}
             <Link href="/agents">
-              <a className={`group flex items-center gap-2 text-sm font-medium transition-colors cursor-pointer ${
+              <div className={`group flex items-center gap-2 text-sm font-medium transition-colors cursor-pointer ${
                 location === '/agents'
                   ? "bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent font-bold"
                   : "text-muted-foreground hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-600 hover:bg-clip-text hover:text-transparent"
@@ -91,7 +91,7 @@ export function Navbar() {
                   }} 
                 />
                 {t("Playground", "플레이그라운드")}
-              </a>
+              </div>
             </Link>
           </div>
 
