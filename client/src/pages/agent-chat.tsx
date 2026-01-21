@@ -3,6 +3,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import TextareaAutosize from 'react-textarea-autosize';
+import ReactMarkdown from 'react-markdown';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -483,8 +484,8 @@ export default function AgentChat() {
                             {message.content}
                           </div>
                         ) : (
-                          <div className="prose prose-sm dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-line">
-                            {message.content}
+                          <div className="prose prose-sm dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 leading-relaxed">
+                            <ReactMarkdown>{message.content}</ReactMarkdown>
                           </div>
                         )}
                       </div>
