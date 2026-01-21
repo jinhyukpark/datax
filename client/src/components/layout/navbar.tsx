@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Globe, LogIn, ArrowLeft } from "lucide-react";
+import { Menu, X, Globe, LogIn, ArrowLeft, Bot } from "lucide-react";
 import { useState } from "react";
 import { Logo } from "@/components/ui/logo";
 import {
@@ -22,7 +22,6 @@ export function Navbar() {
   const navLinks = [
     { name: t("Data Map", "데이터 맵"), href: "/data-map" },
     { name: t("Platforms", "플랫폼"), href: "/platforms" },
-    { name: t("Playground", "플레이그라운드"), href: "/agents" },
     { name: t("News", "뉴스"), href: "/news" },
     { name: t("Blog", "블로그"), href: "/blog" },
     { name: t("Advertise", "광고"), href: "/advertise" },
@@ -69,9 +68,8 @@ export function Navbar() {
           <div className="hidden items-center gap-4 md:flex">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground border border-slate-200 dark:border-slate-800 h-9">
+                <Button variant="ghost" size="sm" className="w-9 h-9 p-0 rounded-full text-muted-foreground border border-slate-200 dark:border-slate-800">
                   <Globe className="h-4 w-4" />
-                  {language}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -83,6 +81,14 @@ export function Navbar() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {/* Playground Button */}
+            <Link href="/agents">
+              <Button size="sm" variant="outline" className="h-9 gap-2 border-slate-200 dark:border-slate-800 text-muted-foreground hover:text-foreground">
+                <Bot className="h-4 w-4" />
+                {t("Playground", "플레이그라운드")}
+              </Button>
+            </Link>
 
             <Dialog>
               <DialogTrigger asChild>
