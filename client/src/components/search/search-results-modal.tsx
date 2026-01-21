@@ -77,8 +77,8 @@ The current results are estimated to match your intent by **approximately 95%**.
   );
 
   const aiSuggestion = t(
-    `**추가 제언:** 현재 결과도 유의미하지만, 경쟁사 분석을 위해 **'Global Competitor Analysis'** 관련 데이터나, 원자재 가격 변동성을 추적할 수 있는 **'Commodity Price Index'** 데이터를 추가로 확보하신다면, 공급망 리스크 관리 측면에서도 훨씬 더 완성도 높은 산업 분석 리포트를 작성하실 수 있을 것입니다.`,
-    `**Additional Suggestion:** While the current results are significant, acquiring **'Global Competitor Analysis'** data or **'Commodity Price Index'** data to track raw material price volatility would allow you to create a much more complete industrial analysis report, especially in terms of supply chain risk management.`
+    `현재 결과도 유의미하지만, 경쟁사 분석을 위해 **'Global Competitor Analysis'** 관련 데이터나, 원자재 가격 변동성을 추적할 수 있는 **'Commodity Price Index'** 데이터를 추가로 확보하신다면, 공급망 리스크 관리 측면에서도 훨씬 더 완성도 높은 산업 분석 리포트를 작성하실 수 있을 것입니다.`,
+    `While the current results are significant, acquiring **'Global Competitor Analysis'** data or **'Commodity Price Index'** data to track raw material price volatility would allow you to create a much more complete industrial analysis report, especially in terms of supply chain risk management.`
   );
 
   const relatedMCPs = [
@@ -261,16 +261,17 @@ The current results are estimated to match your intent by **approximately 95%**.
                       </ReactMarkdown>
                     </div>
 
-                    <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/30 rounded-lg">
-                      <div className="flex gap-3">
-                         <div className="flex-shrink-0 mt-0.5">
-                            <Lightbulb className="h-5 w-5 text-amber-600 dark:text-amber-400 fill-amber-100 dark:fill-amber-900/50" />
-                         </div>
-                         <div className="prose prose-sm prose-amber dark:prose-invert max-w-none prose-p:my-0 prose-p:leading-relaxed">
-                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                {aiSuggestion}
-                            </ReactMarkdown>
-                         </div>
+                    <div className="mt-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/30 rounded-lg overflow-hidden">
+                      <div className="px-4 py-2 bg-amber-100/50 dark:bg-amber-900/40 border-b border-amber-100 dark:border-amber-900/30 flex items-center gap-2">
+                         <Lightbulb className="h-4 w-4 text-amber-600 dark:text-amber-400 fill-amber-100 dark:fill-amber-900/50" />
+                         <span className="font-semibold text-amber-800 dark:text-amber-200 text-sm">
+                            {t("Additional Suggestion", "추가 제언")}
+                         </span>
+                      </div>
+                      <div className="p-4 prose prose-sm prose-amber dark:prose-invert max-w-none prose-p:my-0 prose-p:leading-relaxed">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {aiSuggestion}
+                        </ReactMarkdown>
                       </div>
                     </div>
 
