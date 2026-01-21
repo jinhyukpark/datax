@@ -41,24 +41,26 @@ export function SearchResultsModal({ open, onOpenChange, query }: SearchResultsM
   const aiSummary = t(
     `**"${query}"**에 대한 분석 결과를 바탕으로, 아래에 추천해 드린 리소스들을 어떻게 활용하면 좋은지 정리해 드립니다.
 
-먼저, 하단에 추천된 **Financial Data Analyzer** MCP를 활용하시면 실시간 시장 데이터를 빠르게 수집하고 분석 모델을 돌려보실 수 있습니다. 특히, **Global Market Trends** 에이전트와 함께 사용하면 거시적인 시장 흐름과 미시적인 금융 데이터를 교차 검증하여 더욱 정교한 예측이 가능해집니다.
+*   먼저, 하단에 추천된 **Financial Data Analyzer** MCP를 활용하시면 실시간 시장 데이터를 빠르게 수집하고 분석 모델을 돌려보실 수 있습니다.
+*   특히, **Global Market Trends** 에이전트와 함께 사용하면 거시적인 시장 흐름과 미시적인 금융 데이터를 교차 검증하여 더욱 정교한 예측이 가능해집니다.
 
 또한, **관련 데이터** 섹션에 있는 'Global EV Sales 2024' 데이터셋은 현재 전기차 시장의 수요 예측에 핵심적인 지표가 될 수 있으며, 'Consumer Sentiment Index' API를 연동하여 소비자들의 심리 지수까지 반영한다면 분석의 정확도를 약 **40% 이상 향상**시킬 수 있을 것으로 예상됩니다.
 
 **뉴스 및 인사이트**에 추천된 테크 데일리(TechDaily)의 기사와 DevLog의 블로그 포스트는 최신 산업 표준과 MCP 통합 가이드를 다루고 있어, 초기 시스템 구축 시 참고하시면 시행착오를 크게 줄일 수 있습니다.
 
-💡 **추가 제언:** 현재 결과도 유의미하지만, 경쟁사 분석을 위해 **'Global Competitor Analysis'** 관련 데이터나, 원자재 가격 변동성을 추적할 수 있는 **'Commodity Price Index'** 데이터를 추가로 확보하신다면, 공급망 리스크 관리 측면에서도 훨씬 더 완성도 높은 산업 분석 리포트를 작성하실 수 있을 것입니다.
+> 💡 **추가 제언:** 현재 결과도 유의미하지만, 경쟁사 분석을 위해 **'Global Competitor Analysis'** 관련 데이터나, 원자재 가격 변동성을 추적할 수 있는 **'Commodity Price Index'** 데이터를 추가로 확보하신다면, 공급망 리스크 관리 측면에서도 훨씬 더 완성도 높은 산업 분석 리포트를 작성하실 수 있을 것입니다.
 
 현재 제공된 결과는 귀하의 의도와 **약 95% 일치**하는 것으로 판단됩니다. 추가적인 데이터 소싱이 필요하시다면 언제든 말씀해 주세요.`,
     `Based on the analysis results for **"${query}"**, here is a summary of how to utilize the recommended resources below.
 
-First, you can use the **Financial Data Analyzer** MCP recommended at the bottom to quickly collect real-time market data and run analysis models. In particular, using it with the **Global Market Trends** agent allows you to cross-validate macroscopic market trends with microscopic financial data for more precise predictions.
+*   First, you can use the **Financial Data Analyzer** MCP recommended at the bottom to quickly collect real-time market data and run analysis models.
+*   In particular, using it with the **Global Market Trends** agent allows you to cross-validate macroscopic market trends with microscopic financial data for more precise predictions.
 
 In addition, the 'Global EV Sales 2024' dataset in the **Related Data** section can be a key indicator for demand forecasting in the EV market. Integrating the 'Consumer Sentiment Index' API to reflect consumer sentiment could improve analysis accuracy by over **40%**.
 
 The articles from TechDaily and blog posts from DevLog recommended in **News & Insights** cover the latest industry standards and MCP integration guides, which can significantly reduce trial and error during initial system setup.
 
-💡 **Additional Suggestion:** While the current results are significant, acquiring **'Global Competitor Analysis'** data or **'Commodity Price Index'** data to track raw material price volatility would allow you to create a much more complete industrial analysis report, especially in terms of supply chain risk management.
+> 💡 **Additional Suggestion:** While the current results are significant, acquiring **'Global Competitor Analysis'** data or **'Commodity Price Index'** data to track raw material price volatility would allow you to create a much more complete industrial analysis report, especially in terms of supply chain risk management.
 
 The current results are estimated to match your intent by **approximately 95%**. Please let me know if you need additional data sourcing.`
   );
@@ -191,8 +193,9 @@ The current results are estimated to match your intent by **approximately 95%**.
                   <div className="flex-1 space-y-2">
                     <div className="prose prose-slate dark:prose-invert max-w-none 
                       prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-p:leading-relaxed prose-p:my-2
-                      prose-strong:text-indigo-700 dark:prose-strong:text-indigo-400 prose-strong:font-semibold
+                      prose-strong:text-indigo-700 dark:prose-strong:text-indigo-400 prose-strong:font-bold
                       prose-ul:my-2 prose-li:my-0.5
+                      [&>p>strong]:font-bold [&>p>strong]:text-indigo-700 dark:[&>p>strong]:text-indigo-400
                     ">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
                           {aiSummary}
