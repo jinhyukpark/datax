@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Bot, Database, Newspaper, BookOpen, Sparkles, ExternalLink, ArrowRight, X, Search, Loader2, Cpu, Send, CornerDownLeft, Target, Lightbulb } from "lucide-react";
+import { Bot, Database, Newspaper, BookOpen, Sparkles, ExternalLink, ArrowRight, X, Search, Loader2, Cpu, Send, CornerDownLeft, Target, Lightbulb, TrendingUp, CheckCircle2, Zap } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/lib/language-context";
 import ReactMarkdown from "react-markdown";
@@ -183,29 +183,45 @@ The current results are estimated to match your intent by **approximately 95%**.
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl h-[90vh] flex flex-col p-0 overflow-hidden bg-slate-50 dark:bg-slate-950">
-        <DialogHeader className="p-6 pb-0 bg-white dark:bg-slate-900 flex-shrink-0 z-20 border-none">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
-              <Sparkles className="h-5 w-5" />
+      <DialogContent className="max-w-6xl h-[90vh] flex flex-col p-0 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+        <DialogHeader className="p-8 pb-6 bg-gradient-to-r from-indigo-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex-shrink-0 z-20 border-b border-slate-200/50 dark:border-slate-800/50">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg text-white">
+                <Sparkles className="h-6 w-6" />
+              </div>
+              <div>
+                <DialogTitle className="text-2xl font-bold flex items-center gap-3 text-slate-900 dark:text-slate-100">
+                  {t("AI Smart Search", "AI 스마트 검색")}
+                  <Badge className="ml-2 font-semibold text-xs bg-indigo-600 text-white border-0 shadow-sm">
+                    Beta
+                  </Badge>
+                </DialogTitle>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                  {t("Intelligent analysis powered by AI", "AI 기반 지능형 분석")}
+                </p>
+              </div>
             </div>
-            <div>
-              <DialogTitle className="text-xl font-bold flex items-center gap-2">
-                {t("AI Smart Search", "AI 스마트 검색")}
-                <Badge variant="outline" className="ml-2 font-normal text-xs bg-slate-100 dark:bg-slate-800">
-                   Beta
-                </Badge>
-              </DialogTitle>
-            </div>
+            {query && (
+              <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-white/60 dark:bg-slate-800/60 rounded-lg border border-slate-200 dark:border-slate-700">
+                <Search className="h-4 w-4 text-slate-400" />
+                <span className="text-sm text-slate-600 dark:text-slate-300 font-medium truncate max-w-xs">
+                  "{query}"
+                </span>
+              </div>
+            )}
           </div>
         </DialogHeader>
 
-        {/* Search Query Input - Sticky at Top */}
-        <div className="bg-white dark:bg-slate-900 px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex-shrink-0 z-10 shadow-sm">
+        {/* Search Query Input - Enhanced */}
+        <div className="bg-white/50 dark:bg-slate-900/50 px-8 py-5 border-b border-slate-200/50 dark:border-slate-800/50 flex-shrink-0 z-10 backdrop-blur-sm">
             <div className="relative">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                  <Search className="h-5 w-5" />
+                </div>
                 <TextareaAutosize 
                     placeholder={t("Ask a follow-up question...", "추가 질문을 입력하세요...")}
-                    className="w-full flex rounded-md border border-input px-4 py-3 shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 pr-12 resize-none bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus-visible:ring-indigo-500 text-base min-h-[44px]"
+                    className="w-full flex rounded-xl border-2 border-slate-200 dark:border-slate-700 px-12 py-4 shadow-sm placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:border-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 pr-14 resize-none bg-white dark:bg-slate-800 text-base min-h-[56px] transition-all"
                     minRows={1}
                     maxRows={4}
                     value={followUpQuery}
@@ -213,7 +229,7 @@ The current results are estimated to match your intent by **approximately 95%**.
                 />
                 <Button 
                     size="icon" 
-                    className="absolute right-3 top-2 h-8 w-8 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-lg transition-all shadow-md hover:shadow-lg"
                     disabled={!followUpQuery.trim() || followUpQuery === query}
                 >
                     <Send className="h-4 w-4" />
@@ -239,156 +255,211 @@ The current results are estimated to match your intent by **approximately 95%**.
             </div>
           ) : (
             <ScrollArea className="h-full">
-              <div className="p-6 pb-20">
-                {/* 1. AI Answer Section - Conversational Style */}
-                <div className="flex gap-4 mb-8 max-w-4xl">
-                  <div className="flex-shrink-0 mt-1">
-                    <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center border border-indigo-200 dark:border-indigo-800">
-                      <Sparkles className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1 space-y-4">
-                    <div className="prose prose-slate dark:prose-invert max-w-none 
-                      prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-p:leading-relaxed prose-p:my-2
-                      prose-strong:text-indigo-700 dark:prose-strong:text-indigo-400 prose-strong:font-bold
-                      prose-ul:my-2 prose-li:my-0.5
-                      [&>h3]:text-lg [&>h3]:font-bold [&>h3]:text-slate-800 dark:[&>h3]:text-slate-100 [&>h3]:mt-6 [&>h3]:mb-3 [&>h3:first-child]:mt-0
-                      [&>p>strong]:font-bold [&>p>strong]:text-indigo-700 dark:[&>p>strong]:text-indigo-400
-                    ">
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                          {aiSummary}
-                      </ReactMarkdown>
-                    </div>
-
-                    <div className="mt-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/30 rounded-lg overflow-hidden">
-                      <div className="px-4 py-2 bg-amber-100/50 dark:bg-amber-900/40 border-b border-amber-100 dark:border-amber-900/30 flex items-center gap-2">
-                         <Lightbulb className="h-4 w-4 text-amber-600 dark:text-amber-400 fill-amber-100 dark:fill-amber-900/50" />
-                         <span className="font-semibold text-amber-800 dark:text-amber-200 text-sm">
-                            {t("Additional Suggestion", "추가 제언")}
-                         </span>
+              <div className="p-8 pb-20">
+                {/* 1. AI Answer Section - Enhanced Professional Style */}
+                <div className="mb-10">
+                  <div className="flex gap-5 mb-6">
+                    <div className="flex-shrink-0">
+                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                        <Sparkles className="h-6 w-6 text-white" />
                       </div>
-                      <div className="p-4 prose prose-sm prose-amber dark:prose-invert max-w-none prose-p:my-0 prose-p:leading-relaxed">
+                    </div>
+                    
+                    <div className="flex-1">
+                      <div className="mb-4 flex items-center gap-3">
+                        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                          {t("Analysis Results", "분석 결과")}
+                        </h2>
+                        <div className="flex items-center gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full border border-green-200 dark:border-green-800">
+                          <CheckCircle2 className="h-3.5 w-3.5" />
+                          <span className="text-xs font-semibold">95% {t("Match", "일치")}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="prose prose-slate dark:prose-invert max-w-none 
+                        prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-p:leading-relaxed prose-p:my-3 prose-p:text-[15px]
+                        prose-strong:text-indigo-700 dark:prose-strong:text-indigo-400 prose-strong:font-bold
+                        prose-ul:my-3 prose-li:my-1.5 prose-li:text-[15px]
+                        [&>h3]:text-lg [&>h3]:font-bold [&>h3]:text-slate-900 dark:[&>h3]:text-slate-100 [&>h3]:mt-8 [&>h3]:mb-4 [&>h3]:first-child]:mt-0
+                        [&>h3]:flex [&>h3]:items-center [&>h3]:gap-2
+                        [&>p>strong]:font-bold [&>p>strong]:text-indigo-700 dark:[&>p>strong]:text-indigo-400
+                        bg-slate-50/50 dark:bg-slate-800/30 rounded-xl p-6 border border-slate-200/50 dark:border-slate-700/50
+                      ">
                         <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                            {aiSuggestion}
+                            {aiSummary}
                         </ReactMarkdown>
                       </div>
-                    </div>
 
-                    <div className="flex items-center gap-3 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
-                      <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-full border border-green-200 dark:border-green-800 text-sm font-medium">
-                        <Target className="h-4 w-4" />
-                        {t("Achievability Indicator", "달성 가능지표")}: 92%
+                      <div className="mt-6 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-2 border-amber-200 dark:border-amber-800/50 rounded-xl overflow-hidden shadow-sm">
+                        <div className="px-5 py-3 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/40 dark:to-orange-900/40 border-b border-amber-200 dark:border-amber-800/50 flex items-center gap-2.5">
+                          <Lightbulb className="h-5 w-5 text-amber-600 dark:text-amber-400 fill-amber-200 dark:fill-amber-900/50" />
+                          <span className="font-bold text-amber-900 dark:text-amber-200 text-sm">
+                            {t("Additional Suggestion", "추가 제언")}
+                          </span>
+                        </div>
+                        <div className="p-5 prose prose-sm prose-amber dark:prose-invert max-w-none prose-p:my-0 prose-p:leading-relaxed prose-p:text-[14px]">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                              {aiSuggestion}
+                          </ReactMarkdown>
+                        </div>
                       </div>
-                      <span className="text-xs text-slate-400">
-                        {t("Based on available resources", "가용 리소스 기반 산출")}
-                      </span>
+
+                      <div className="flex items-center gap-4 mt-6 pt-6 border-t border-slate-200 dark:border-slate-800">
+                        <div className="flex items-center gap-2.5 px-4 py-2 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 text-green-700 dark:text-green-400 rounded-lg border border-green-200 dark:border-green-800 shadow-sm">
+                          <Target className="h-4 w-4" />
+                          <span className="text-sm font-bold">{t("Achievability", "달성 가능성")}:</span>
+                          <span className="text-sm font-bold">92%</span>
+                        </div>
+                        <div className="flex-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                          <div className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" style={{ width: '92%' }}></div>
+                        </div>
+                        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                          {t("Based on available resources", "가용 리소스 기반")}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <Separator className="mb-8" />
+                <Separator className="mb-10 bg-slate-200 dark:bg-slate-700" />
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  {/* 2. Related MCPs */}
-                  <div className="space-y-4">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                      <Cpu className="h-4 w-4" />
-                      {t("Recommended Agents (MCP)", "추천 에이전트 (MCP)")}
-                    </h3>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* 2. Related MCPs - Enhanced */}
+                  <div className="space-y-5">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
+                        <Cpu className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                      </div>
+                      <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
+                        {t("Recommended Agents (MCP)", "추천 에이전트 (MCP)")}
+                      </h3>
+                    </div>
                     <div className="space-y-3">
                       {relatedMCPs.slice(0, 5).map((mcp) => (
-                        <Card key={mcp.id} className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer group border-slate-200 dark:border-slate-800">
-                          <div className="p-4 flex items-start gap-3">
-                            <Avatar className="h-10 w-10 border border-slate-100">
-                              <AvatarImage src={mcp.icon} />
-                              <AvatarFallback>AI</AvatarFallback>
-                            </Avatar>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between mb-1">
-                                <h4 className="font-semibold text-sm truncate group-hover:text-indigo-600 transition-colors">{mcp.name}</h4>
+                        <Card key={mcp.id} className="overflow-hidden hover:shadow-lg hover:border-indigo-300 dark:hover:border-indigo-700 transition-all cursor-pointer group border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+                          <div className="p-4">
+                            <div className="flex items-start gap-3 mb-3">
+                              <Avatar className="h-12 w-12 border-2 border-slate-200 dark:border-slate-700 shadow-sm">
+                                <AvatarImage src={mcp.icon} />
+                                <AvatarFallback className="bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400">AI</AvatarFallback>
+                              </Avatar>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between mb-1.5">
+                                  <h4 className="font-bold text-sm truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{mcp.name}</h4>
+                                  <Badge className="ml-2 bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400 border-0 text-[10px] font-semibold px-1.5 py-0 h-5">
+                                    {mcp.matchScore}%
+                                  </Badge>
+                                </div>
+                                <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 mb-2.5 leading-relaxed">
+                                  {mcp.description}
+                                </p>
+                                <div className="flex items-center gap-2 text-[10px] text-slate-500 dark:text-slate-400">
+                                  <span className="font-medium">by {mcp.provider}</span>
+                                </div>
                               </div>
-                              <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
-                                {mcp.description}
-                              </p>
-                              <div className="flex items-center text-[10px] text-slate-400">
-                                <span>by {mcp.provider}</span>
+                            </div>
+                            <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
+                              <div className="flex items-center gap-1.5">
+                                <TrendingUp className="h-3 w-3 text-green-500" />
+                                <span className="text-[10px] text-slate-400 font-medium">{t("High Match", "높은 일치도")}</span>
                               </div>
+                              <ExternalLink className="h-3.5 w-3.5 text-slate-300 group-hover:text-indigo-500 transition-colors" />
                             </div>
                           </div>
                         </Card>
                       ))}
                       {relatedMCPs.length > 5 && (
-                        <Button variant="ghost" size="sm" className="w-full text-xs text-muted-foreground hover:text-foreground">
+                        <Button variant="outline" size="sm" className="w-full text-xs font-semibold border-slate-300 dark:border-slate-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:border-indigo-300 dark:hover:border-indigo-700">
                           {t("View more agents", "에이전트 더 보기")} <ArrowRight className="h-3 w-3 ml-1" />
                         </Button>
                       )}
                     </div>
                   </div>
 
-                  {/* 3. Related Data */}
-                  <div className="space-y-4">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                      <Database className="h-4 w-4" />
-                      {t("Related Data", "관련 데이터")}
-                    </h3>
+                  {/* 3. Related Data - Enhanced */}
+                  <div className="space-y-5">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                        <Database className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
+                        {t("Related Data", "관련 데이터")}
+                      </h3>
+                    </div>
                     <div className="space-y-3">
                       {relatedData.map((data) => (
-                        <Card key={data.id} className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer group border-slate-200 dark:border-slate-800">
+                        <Card key={data.id} className="overflow-hidden hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-700 transition-all cursor-pointer group border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                           <div className="p-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <Badge variant="outline" className="text-[10px] font-normal">
+                            <div className="flex items-center justify-between mb-3">
+                              <Badge className={`text-[10px] font-semibold px-2 py-1 ${
+                                data.type === 'Dataset' 
+                                  ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 border-0' 
+                                  : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-0'
+                              }`}>
                                 {data.type}
                               </Badge>
-                              <span className="text-[10px] text-slate-400 font-mono">{data.format}</span>
+                              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">{data.format}</span>
                             </div>
-                            <h4 className="font-semibold text-sm mb-1 group-hover:text-indigo-600 transition-colors">{data.title}</h4>
-                            <p className="text-xs text-muted-foreground mb-3">
-                               Provider: {data.provider}
-                            </p>
-                            <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
-                               <span className="text-[10px] text-slate-400">Updated 2d ago</span>
-                               <ExternalLink className="h-3 w-3 text-slate-300 group-hover:text-indigo-400" />
+                            <h4 className="font-bold text-sm mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{data.title}</h4>
+                            <div className="flex items-center gap-2 mb-3">
+                              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                                {t("Provider", "제공자")}:
+                              </span>
+                              <span className="text-xs text-slate-700 dark:text-slate-300 font-semibold">{data.provider}</span>
+                            </div>
+                            <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
+                              <div className="flex items-center gap-1.5">
+                                <Zap className="h-3 w-3 text-yellow-500" />
+                                <span className="text-[10px] text-slate-400 font-medium">{t("Updated 2d ago", "2일 전 업데이트")}</span>
+                              </div>
+                              <ExternalLink className="h-3.5 w-3.5 text-slate-300 group-hover:text-blue-500 transition-colors" />
                             </div>
                           </div>
                         </Card>
                       ))}
-                      <Button variant="ghost" size="sm" className="w-full text-xs text-muted-foreground hover:text-foreground">
+                      <Button variant="outline" size="sm" className="w-full text-xs font-semibold border-slate-300 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700">
                         {t("View more data", "데이터 더 보기")} <ArrowRight className="h-3 w-3 ml-1" />
                       </Button>
                     </div>
                   </div>
 
-                  {/* 4. News & Blogs */}
-                  <div className="space-y-4">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                      <Newspaper className="h-4 w-4" />
-                      {t("News & Insights", "뉴스 및 인사이트")}
-                    </h3>
+                  {/* 4. News & Blogs - Enhanced */}
+                  <div className="space-y-5">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
+                        <Newspaper className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                      </div>
+                      <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
+                        {t("News & Insights", "뉴스 및 인사이트")}
+                      </h3>
+                    </div>
                     <div className="space-y-3">
                       {relatedContent.map((item, idx) => (
                         <a key={idx} href={item.url} className="block group">
-                          <Card className="hover:bg-slate-50 dark:hover:bg-slate-900 border-slate-200 dark:border-slate-800 transition-colors">
-                            <div className="p-3">
-                              <div className="flex items-center gap-2 mb-1.5">
-                                <Badge variant="secondary" className={
+                          <Card className="hover:shadow-lg hover:border-orange-300 dark:hover:border-orange-700 border-2 border-slate-200 dark:border-slate-800 transition-all bg-white dark:bg-slate-900">
+                            <div className="p-4">
+                              <div className="flex items-center justify-between mb-2.5">
+                                <Badge className={`text-[10px] font-semibold px-2 py-1 border-0 ${
                                   item.type === 'News' 
-                                    ? "bg-orange-50 text-orange-700 hover:bg-orange-100 border-orange-200 text-[10px] px-1.5 py-0 h-5"
-                                    : "bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200 text-[10px] px-1.5 py-0 h-5"
-                                }>
+                                    ? "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400"
+                                    : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                }`}>
                                   {item.type}
                                 </Badge>
-                                <span className="text-[10px] text-slate-400">{item.date}</span>
+                                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">{item.date}</span>
                               </div>
-                              <h4 className="text-sm font-medium leading-tight group-hover:text-indigo-600 transition-colors mb-1">
+                              <h4 className="text-sm font-bold leading-tight group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors mb-2">
                                 {item.title}
                               </h4>
-                              <span className="text-[10px] text-slate-500">{item.source}</span>
+                              <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+                                <span className="text-[10px] text-slate-600 dark:text-slate-400 font-semibold">{item.source}</span>
+                                <ExternalLink className="h-3.5 w-3.5 text-slate-300 group-hover:text-orange-500 transition-colors" />
+                              </div>
                             </div>
                           </Card>
                         </a>
                       ))}
-                      <Button variant="ghost" size="sm" className="w-full text-xs text-muted-foreground hover:text-foreground">
+                      <Button variant="outline" size="sm" className="w-full text-xs font-semibold border-slate-300 dark:border-slate-700 hover:bg-orange-50 dark:hover:bg-orange-900/20 hover:border-orange-300 dark:hover:border-orange-700">
                         {t("View more content", "콘텐츠 더 보기")} <ArrowRight className="h-3 w-3 ml-1" />
                       </Button>
                     </div>
