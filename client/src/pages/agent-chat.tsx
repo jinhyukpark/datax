@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import TextareaAutosize from 'react-textarea-autosize';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -522,10 +523,18 @@ export default function AgentChat() {
                      </div>
 
                     {/* Middle Row: Text Input */}
-                    <div className="flex-1 relative min-h-[60px]">
-                      <Input 
+                    <div className="flex-1 relative">
+                      <TextareaAutosize
+                        minRows={1}
+                        maxRows={8}
                         value={inputMessage}
                         onChange={(e) => setInputMessage(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            handleSendMessage(e as any);
+                          }
+                        }}
                         placeholder={
                           !selectedServiceId 
                             ? "먼저 에이전트를 선택해주세요..." 
@@ -533,7 +542,7 @@ export default function AgentChat() {
                               ? "테스트 모드 일일 제한에 도달했습니다." 
                               : `${activeService?.name || '에이전트'}에게 무엇이든 물어보세요...`
                         }
-                        className="w-full border-0 focus-visible:ring-0 px-0 py-0 h-full bg-transparent text-base shadow-none resize-none placeholder:text-slate-400"
+                        className="w-full border-0 focus:ring-0 px-0 py-2 bg-transparent text-base shadow-none resize-none placeholder:text-slate-400 focus-visible:ring-0 outline-none"
                         disabled={!selectedServiceId || (selectedMode === 'test' && usedCount >= dailyLimit)}
                       />
                     </div>
