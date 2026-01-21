@@ -66,22 +66,6 @@ export function Navbar() {
 
           {/* Actions */}
           <div className="hidden items-center gap-4 md:flex">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="w-9 h-9 p-0 rounded-full text-muted-foreground border border-slate-200 dark:border-slate-800">
-                  <Globe className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setLanguage("English")}>
-                  English
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLanguage("한국어")}>
-                  한국어
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
             {/* Playground Button */}
             <Link href="/agents">
               <Button size="sm" variant="outline" className="h-9 gap-2 border-slate-200 dark:border-slate-800 text-muted-foreground hover:text-foreground">
@@ -104,7 +88,7 @@ export function Navbar() {
                 </ScrollArea>
               </DialogContent>
             </Dialog>
-            
+
             {/* Mock Logged In State - Link to My Page */}
             <Link href="/my-page">
               <Button variant="ghost" size="sm" className="gap-2 h-9 px-2 rounded-full border border-slate-200 dark:border-slate-800">
@@ -114,6 +98,24 @@ export function Navbar() {
                 <span className="text-sm font-medium hidden sm:inline">Min-su</span>
               </Button>
             </Link>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="gap-1.5 h-9 px-3 rounded-full text-muted-foreground border border-slate-200 dark:border-slate-800">
+                  <Globe className="h-3.5 w-3.5" />
+                  <span className="text-xs font-medium">{language === "English" ? "ENG" : "KOR"}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setLanguage("English")}>
+                  English (ENG)
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLanguage("한국어")}>
+                  한국어 (KOR)
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
           </div>
 
           {/* Mobile Menu Toggle */}
