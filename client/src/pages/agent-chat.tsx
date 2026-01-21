@@ -253,7 +253,7 @@ Here is a structured analysis based on your request:
           </Alert>
         </div>
 
-        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-4 gap-6 pb-6">
+        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-4 gap-6">
           
           {/* Sidebar - MCP Selection */}
           <div className="lg:col-span-1 flex flex-col gap-4 h-full">
@@ -396,7 +396,7 @@ Here is a structured analysis based on your request:
           </div>
 
           {/* Chat Interface */}
-          <div className="lg:col-span-3 flex flex-col h-full gap-4">
+          <div className="lg:col-span-3 flex flex-col h-full gap-4 min-h-0">
             <Card className="flex-1 flex flex-col overflow-hidden border-slate-200 dark:border-slate-800 shadow-md">
               {/* Chat Header */}
               <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-between">
@@ -567,7 +567,9 @@ Here is a structured analysis based on your request:
           </div>
         </div>
       </div>
-      <Footer />
+      <div className="flex-none">
+        <Footer />
+      </div>
     </div>
   );
 }
