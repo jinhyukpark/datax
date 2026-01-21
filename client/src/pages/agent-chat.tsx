@@ -489,7 +489,7 @@ Here is a structured analysis based on your request:
                    <div className="flex items-center gap-2">
                      <DropdownMenu>
                        <DropdownMenuTrigger asChild>
-                         <Button variant="outline" size="sm" className="h-8 gap-2 text-xs font-medium border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400">
+                         <Button variant="outline" size="sm" className="h-8 gap-2 text-xs font-medium border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-950">
                            <Sparkles className="h-3.5 w-3.5 text-purple-500" />
                            {aiModels.find(m => m.id === selectedModel)?.name || "Select Model"}
                            <ChevronDown className="h-3 w-3 opacity-50" />
@@ -511,7 +511,7 @@ Here is a structured analysis based on your request:
                    </div>
 
                    {/* Input Box */}
-                   <form onSubmit={handleSendMessage} className="relative flex gap-3">
+                   <form onSubmit={handleSendMessage} className="relative flex items-end gap-3 p-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all">
                     <div className="flex-1 relative">
                       <Input 
                         value={inputMessage}
@@ -523,33 +523,35 @@ Here is a structured analysis based on your request:
                               ? "Daily limit reached for Test Mode" 
                               : `Ask ${activeService?.name || 'Agent'} anything...`
                         }
-                        className="pr-12 py-6 bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 focus-visible:ring-blue-500 rounded-xl shadow-inner text-base"
+                        className="w-full border-0 focus-visible:ring-0 px-0 py-2 h-auto max-h-[200px] bg-transparent text-base shadow-none resize-none"
                         disabled={!selectedServiceId || (selectedMode === 'test' && usedCount >= dailyLimit)}
                       />
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                        {selectedMode === 'test' && (
-                           <span className={cn(
-                             "text-xs px-2 py-0.5 rounded-full font-medium",
-                             usedCount >= dailyLimit ? "bg-red-100 text-red-600" : "bg-slate-100 text-slate-500"
-                           )}>
-                             {usedCount}/{dailyLimit}
-                           </span>
-                        )}
-                      </div>
                     </div>
-                    <Button 
-                      type="submit" 
-                      size="icon" 
-                      className={cn(
-                        "h-12 w-12 rounded-xl shadow-md transition-all shrink-0",
-                        selectedMode === 'production' 
-                          ? "bg-green-600 hover:bg-green-700" 
-                          : "bg-blue-600 hover:bg-blue-700"
+                    
+                    <div className="flex items-center gap-3 pb-1">
+                      {selectedMode === 'test' && (
+                         <span className={cn(
+                           "text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap",
+                           usedCount >= dailyLimit ? "bg-red-100 text-red-600" : "bg-slate-100 text-slate-500"
+                         )}>
+                           {usedCount}/{dailyLimit}
+                         </span>
                       )}
-                      disabled={!selectedServiceId || !inputMessage.trim() || (selectedMode === 'test' && usedCount >= dailyLimit)}
-                    >
-                      <Send className="h-5 w-5" />
-                    </Button>
+                      
+                      <Button 
+                        type="submit" 
+                        size="icon" 
+                        className={cn(
+                          "h-9 w-9 rounded-lg shadow-sm transition-all shrink-0",
+                          selectedMode === 'production' 
+                            ? "bg-green-600 hover:bg-green-700" 
+                            : "bg-blue-600 hover:bg-blue-700"
+                        )}
+                        disabled={!selectedServiceId || !inputMessage.trim() || (selectedMode === 'test' && usedCount >= dailyLimit)}
+                      >
+                        <Send className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </form>
                   <div className="text-center">
                      <p className="text-[10px] text-muted-foreground">
