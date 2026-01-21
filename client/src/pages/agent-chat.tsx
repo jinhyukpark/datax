@@ -69,6 +69,7 @@ export default function AgentChat() {
   const [showNotice, setShowNotice] = useState(true);
   const [modeSwitchOpen, setModeSwitchOpen] = useState(false);
   const [pendingMode, setPendingMode] = useState<'test' | 'production' | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // AI Models
@@ -244,6 +245,7 @@ export default function AgentChat() {
 
     setMessages(prev => [...prev, newMessage]);
     setInputMessage("");
+    setIsLoading(true);
     
     if (selectedMode === 'test') {
       setUsedCount(prev => prev + 1);
@@ -270,7 +272,8 @@ export default function AgentChat() {
         model: selectedModel
       };
       setMessages(prev => [...prev, responseMessage]);
-    }, 1000);
+      setIsLoading(false);
+    }, 3000);
   };
 
   const getActiveServiceName = () => {
@@ -670,6 +673,28 @@ export default function AgentChat() {
                       </div>
                     </div>
                   ))}
+                  
+                  {isLoading && (
+                    <div className="flex w-full flex-row gap-4">
+                      <Avatar className="h-8 w-8 shrink-0 mt-1 bg-white border border-slate-200">
+                        <AvatarImage src={mainActiveService?.icon} />
+                        <AvatarFallback>AI</AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col gap-1 max-w-[90%] items-start">
+                        <div className="flex items-center gap-2 px-1">
+                           <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                             {getActiveServiceName()}
+                           </span>
+                        </div>
+                        <div className="flex items-center gap-1.5 h-8 px-2">
+                          <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                          <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                          <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
                   <div ref={messagesEndRef} />
                 </div>
               </ScrollArea>
@@ -699,10 +724,12 @@ export default function AgentChat() {
                             ? "먼저 에이전트를 선택해주세요..." 
                             : selectedMode === 'test' && usedCount >= dailyLimit 
                               ? "테스트 모드 일일 제한에 도달했습니다." 
-                              : `${getActiveServiceName()}에게 무엇이든 물어보세요...`
+                              : isLoading 
+                                ? "AI가 답변을 생성중입니다..."
+                                : `${getActiveServiceName()}에게 무엇이든 물어보세요...`
                         }
                         className="w-full border-0 focus:ring-0 px-0 py-2 bg-transparent text-base shadow-none resize-none placeholder:text-slate-400 focus-visible:ring-0 outline-none"
-                        disabled={selectedServiceIds.length === 0 || (selectedMode === 'test' && usedCount >= dailyLimit)}
+                        disabled={selectedServiceIds.length === 0 || (selectedMode === 'test' && usedCount >= dailyLimit) || isLoading}
                       />
                     </div>
                     
@@ -754,7 +781,7 @@ export default function AgentChat() {
                               ? "bg-green-600 hover:bg-green-700" 
                               : "bg-blue-600 hover:bg-blue-700"
                           )}
-                          disabled={selectedServiceIds.length === 0 || !inputMessage.trim() || (selectedMode === 'test' && usedCount >= dailyLimit)}
+                          disabled={selectedServiceIds.length === 0 || !inputMessage.trim() || (selectedMode === 'test' && usedCount >= dailyLimit) || isLoading}
                         >
                           <Send className="h-4 w-4" />
                         </Button>
