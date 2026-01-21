@@ -7,7 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import userAvatar from '@assets/stock_images/professional_user_av_69c3a7ea.jpg';
+// import userAvatar from '@assets/stock_images/professional_user_av_69c3a7ea.jpg';
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/lib/language-context";
@@ -603,7 +603,8 @@ export default function AgentChat() {
                           message.role === 'user' ? "bg-indigo-100 text-indigo-700" : "bg-white border border-slate-200"
                         )}>
                           {message.role === 'user' ? (
-                            <AvatarImage src={userAvatar} className="object-cover" />
+                            // <AvatarImage src={userAvatar} className="object-cover" />
+                            null
                           ) : (
                             <AvatarImage src={mainActiveService?.icon} />
                           )}
