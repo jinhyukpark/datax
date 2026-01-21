@@ -253,7 +253,7 @@ Here is a structured analysis based on your request:
           </Alert>
         </div>
 
-        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-4 gap-6 pb-6">
           
           {/* Sidebar - MCP Selection */}
           <div className="lg:col-span-1 flex flex-col gap-4 h-full">
