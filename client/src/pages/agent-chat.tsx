@@ -60,7 +60,7 @@ interface Message {
 export default function AgentChat() {
   const { t } = useLanguage();
   const [selectedMode, setSelectedMode] = useState<'test' | 'production'>('test');
-  const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
+  const [selectedServiceIds, setSelectedServiceIds] = useState<string[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [dailyLimit, setDailyLimit] = useState(30);
   const [usedCount, setUsedCount] = useState(5); // Mock usage
@@ -197,17 +197,33 @@ export default function AgentChat() {
 
   useEffect(() => {
     // Select first item by default if nothing selected
-    if (!selectedServiceId) {
+    if (selectedServiceIds.length === 0) {
       if (selectedMode === 'test' && bookmarkedMCPs.length > 0) {
-        setSelectedServiceId(bookmarkedMCPs[0].id);
+        setSelectedServiceIds([bookmarkedMCPs[0].id]);
       } else if (selectedMode === 'production' && purchasedMCPs.length > 0) {
-        setSelectedServiceId(purchasedMCPs[0].id);
+        setSelectedServiceIds([purchasedMCPs[0].id]);
       }
     }
     
     // Scroll to bottom
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, selectedMode, selectedServiceId]);
+  }, [messages, selectedMode, selectedServiceIds]);
+
+  const handleServiceToggle = (serviceId: string) => {
+    setSelectedServiceIds(prev => {
+      if (prev.includes(serviceId)) {
+        // Don't allow deselecting the last item
+        if (prev.length === 1) return prev;
+        return prev.filter(id => id !== serviceId);
+      } else {
+        if (prev.length >= 5) {
+          toast.error(t("Maximum 5 services can be selected", "최대 5개까지만 선택할 수 있습니다"));
+          return prev;
+        }
+        return [...prev, serviceId];
+      }
+    });
+  };
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -258,10 +274,15 @@ export default function AgentChat() {
 
   const getActiveServiceName = () => {
     const allServices = [...bookmarkedMCPs, ...purchasedMCPs];
-    return allServices.find(s => s.id === selectedServiceId)?.name || "AI Agent";
+    const selectedServices = allServices.filter(s => selectedServiceIds.includes(s.id));
+    
+    if (selectedServices.length === 0) return "AI Agent";
+    if (selectedServices.length === 1) return selectedServices[0].name;
+    return `${selectedServices[0].name} +${selectedServices.length - 1}`;
   };
 
-  const activeService = [...bookmarkedMCPs, ...purchasedMCPs].find(s => s.id === selectedServiceId);
+  const activeServices = [...bookmarkedMCPs, ...purchasedMCPs].filter(s => selectedServiceIds.includes(s.id));
+  const mainActiveService = activeServices[0];
 
   const handleModeSwitch = (mode: 'test' | 'production') => {
     if (selectedMode === mode) return;
@@ -277,9 +298,9 @@ export default function AgentChat() {
     
     // Default service selection logic
     if (pendingMode === 'test') {
-      setSelectedServiceId(bookmarkedMCPs[0]?.id || null);
+      setSelectedServiceIds(bookmarkedMCPs[0] ? [bookmarkedMCPs[0].id] : []);
     } else {
-      setSelectedServiceId(purchasedMCPs[0]?.id || null);
+      setSelectedServiceIds(purchasedMCPs[0] ? [purchasedMCPs[0].id] : []);
     }
     
     // Clear messages
@@ -397,21 +418,26 @@ export default function AgentChat() {
 
               <ScrollArea className="flex-1">
                 <div className="p-3 space-y-2">
-                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    {selectedMode === 'test' 
-                      ? t("Bookmarked MCPs", "찜한 MCP 상품")
-                      : t("Purchased Services", "구매한 서비스")
-                    }
+                  <div className="px-2 py-1.5 flex items-center justify-between text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    <span>
+                      {selectedMode === 'test' 
+                        ? t("Bookmarked MCPs", "찜한 MCP 상품")
+                        : t("Purchased Services", "구매한 서비스")
+                      }
+                    </span>
+                    <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">
+                      {selectedServiceIds.length} / 5
+                    </span>
                   </div>
                   
                   {selectedMode === 'test' ? (
                     bookmarkedMCPs.map((service) => (
                       <button
                         key={service.id}
-                        onClick={() => setSelectedServiceId(service.id)}
+                        onClick={() => handleServiceToggle(service.id)}
                         className={cn(
                           "w-full text-left p-3 rounded-xl transition-all border",
-                          selectedServiceId === service.id
+                          selectedServiceIds.includes(service.id)
                             ? "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 ring-1 ring-blue-300 dark:ring-blue-700"
                             : "bg-white dark:bg-slate-900 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700"
                         )}
@@ -424,7 +450,7 @@ export default function AgentChat() {
                           <div className="flex-1 overflow-hidden">
                             <div className="flex items-center justify-between">
                               <h3 className="font-semibold text-sm truncate pr-2">{service.name}</h3>
-                              {selectedServiceId === service.id && (
+                              {selectedServiceIds.includes(service.id) && (
                                 <CheckCircle2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
                               )}
                             </div>
@@ -438,10 +464,10 @@ export default function AgentChat() {
                       purchasedMCPs.map((service) => (
                         <button
                           key={service.id}
-                          onClick={() => setSelectedServiceId(service.id)}
+                          onClick={() => handleServiceToggle(service.id)}
                           className={cn(
                             "w-full text-left p-3 rounded-xl transition-all border",
-                            selectedServiceId === service.id
+                            selectedServiceIds.includes(service.id)
                               ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 ring-1 ring-green-300 dark:ring-green-700"
                               : "bg-white dark:bg-slate-900 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700"
                           )}
@@ -454,7 +480,7 @@ export default function AgentChat() {
                             <div className="flex-1 overflow-hidden">
                               <div className="flex items-center justify-between">
                                 <h3 className="font-semibold text-sm truncate pr-2">{service.name}</h3>
-                                {selectedServiceId === service.id && (
+                                {selectedServiceIds.includes(service.id) && (
                                   <Crown className="h-3.5 w-3.5 text-yellow-600 dark:text-yellow-400 shrink-0" />
                                 )}
                               </div>
@@ -514,13 +540,17 @@ export default function AgentChat() {
               {/* Chat Header */}
               <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10 border border-slate-200 dark:border-slate-700">
-                    <AvatarImage src={activeService?.icon} />
-                    <AvatarFallback><Bot className="h-6 w-6" /></AvatarFallback>
-                  </Avatar>
+                  <div className="flex -space-x-2">
+                    {activeServices.map((service, i) => (
+                      <Avatar key={service.id} className={cn("h-10 w-10 border-2 border-white dark:border-slate-900", i > 0 && "opacity-90")}>
+                        <AvatarImage src={service.icon} />
+                        <AvatarFallback><Bot className="h-6 w-6" /></AvatarFallback>
+                      </Avatar>
+                    ))}
+                  </div>
                   <div>
                     <h2 className="font-bold flex items-center gap-2">
-                      {activeService?.name || "Select an Agent"}
+                      {getActiveServiceName()}
                       <Badge variant={selectedMode === 'test' ? 'secondary' : 'default'} className={cn(
                         "ml-2 text-[10px] px-1.5 py-0 h-5",
                         selectedMode === 'production' && "bg-green-600 hover:bg-green-700"
@@ -528,7 +558,11 @@ export default function AgentChat() {
                         {selectedMode === 'test' ? 'TEST MODE' : 'PRO'}
                       </Badge>
                     </h2>
-                    <p className="text-xs text-muted-foreground">{activeService?.provider || "Please select a service"}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {activeServices.length > 1 
+                        ? t(`${activeServices.length} agents selected`, `${activeServices.length}개의 에이전트 선택됨`) 
+                        : (mainActiveService?.provider || "Please select a service")}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -556,7 +590,7 @@ export default function AgentChat() {
                           {message.role === 'user' ? (
                             <AvatarImage src={userAvatar} className="object-cover" />
                           ) : (
-                            <AvatarImage src={activeService?.icon} />
+                            <AvatarImage src={mainActiveService?.icon} />
                           )}
                           <AvatarFallback>
                             {message.role === 'user' ? "Me" : "AI"}
@@ -570,7 +604,7 @@ export default function AgentChat() {
                           {message.role !== 'user' && (
                             <div className="flex items-center gap-2 px-1">
                               <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                {activeService?.name}
+                                {getActiveServiceName()}
                               </span>
                               {message.role === 'assistant' && message.model && (
                                 <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">
@@ -649,14 +683,14 @@ export default function AgentChat() {
                           }
                         }}
                         placeholder={
-                          !selectedServiceId 
+                          selectedServiceIds.length === 0
                             ? "먼저 에이전트를 선택해주세요..." 
                             : selectedMode === 'test' && usedCount >= dailyLimit 
                               ? "테스트 모드 일일 제한에 도달했습니다." 
-                              : `${activeService?.name || '에이전트'}에게 무엇이든 물어보세요...`
+                              : `${getActiveServiceName()}에게 무엇이든 물어보세요...`
                         }
                         className="w-full border-0 focus:ring-0 px-0 py-2 bg-transparent text-base shadow-none resize-none placeholder:text-slate-400 focus-visible:ring-0 outline-none"
-                        disabled={!selectedServiceId || (selectedMode === 'test' && usedCount >= dailyLimit)}
+                        disabled={selectedServiceIds.length === 0 || (selectedMode === 'test' && usedCount >= dailyLimit)}
                       />
                     </div>
                     
@@ -708,7 +742,7 @@ export default function AgentChat() {
                               ? "bg-green-600 hover:bg-green-700" 
                               : "bg-blue-600 hover:bg-blue-700"
                           )}
-                          disabled={!selectedServiceId || !inputMessage.trim() || (selectedMode === 'test' && usedCount >= dailyLimit)}
+                          disabled={selectedServiceIds.length === 0 || !inputMessage.trim() || (selectedMode === 'test' && usedCount >= dailyLimit)}
                         >
                           <Send className="h-4 w-4" />
                         </Button>
