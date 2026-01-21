@@ -17,6 +17,7 @@ import Signup from "@/pages/signup";
 import MyPage from "@/pages/my-page";
 import News from "@/pages/news";
 import Submit from "@/pages/submit";
+import AgentChat from "@/pages/agent-chat";
 import AdminLogin from "@/pages/admin/admin-login";
 import UserManagement from "@/pages/admin/users";
 import AdminManagement from "@/pages/admin/admins";
@@ -49,6 +50,7 @@ function Router() {
         <Route path="/signup" component={Signup} />
         <Route path="/my-page" component={MyPage} />
         <Route path="/submit" component={Submit} />
+        <Route path="/agents" component={AgentChat} />
         
         {/* Admin Routes */}
         <Route path="/admin" component={AdminLogin} />
