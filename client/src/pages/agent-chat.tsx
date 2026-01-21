@@ -501,30 +501,6 @@ export default function AgentChat() {
                    {/* Combined Input Box */}
                    <form onSubmit={handleSendMessage} className="relative flex flex-col p-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all">
                     
-                    {/* Top Row: Model Selector */}
-                    <div className="flex items-center gap-2 mb-2">
-                       <DropdownMenu>
-                         <DropdownMenuTrigger asChild>
-                           <Button variant="ghost" size="sm" className="h-7 gap-1.5 text-xs font-medium border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 px-2.5 rounded-md">
-                             <Sparkles className="h-3 w-3 text-purple-500" />
-                             {aiModels.find(m => m.id === selectedModel)?.name || "Select Model"}
-                             <ChevronDown className="h-3 w-3 opacity-50" />
-                           </Button>
-                         </DropdownMenuTrigger>
-                         <DropdownMenuContent align="start" className="w-56">
-                           {aiModels.map((model) => (
-                             <DropdownMenuItem 
-                               key={model.id}
-                               onClick={() => setSelectedModel(model.name)}
-                               className={cn("flex items-center justify-between text-xs", selectedModel === model.name && "bg-slate-100 dark:bg-slate-800")}
-                             >
-                               {model.name}
-                               {selectedModel === model.name && <CheckCircle2 className="h-3.5 w-3.5 text-blue-600" />}
-                             </DropdownMenuItem>
-                           ))}
-                         </DropdownMenuContent>
-                       </DropdownMenu>
-                     </div>
 
                     {/* Middle Row: Text Input */}
                     <div className="flex-1 relative">
@@ -551,30 +527,59 @@ export default function AgentChat() {
                       />
                     </div>
                     
-                    {/* Bottom Row: Footer info & Send Button */}
-                    <div className="flex items-center justify-end gap-3 pt-2">
-                      {selectedMode === 'test' && (
-                         <span className={cn(
-                           "text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap",
-                           usedCount >= dailyLimit ? "bg-red-100 text-red-600" : "bg-slate-100 text-slate-500"
-                         )}>
-                           {usedCount}/{dailyLimit}
-                         </span>
-                      )}
+                    {/* Bottom Row: Model Selector & Footer info & Send Button */}
+                    <div className="flex items-end justify-between mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                       
-                      <Button 
-                        type="submit" 
-                        size="icon" 
-                        className={cn(
-                          "h-8 w-8 rounded-lg shadow-sm transition-all shrink-0",
-                          selectedMode === 'production' 
-                            ? "bg-green-600 hover:bg-green-700" 
-                            : "bg-blue-600 hover:bg-blue-700"
+                      {/* Left: Model Selector */}
+                      <div className="flex items-center gap-2">
+                         <DropdownMenu>
+                           <DropdownMenuTrigger asChild>
+                             <Button variant="ghost" size="sm" className="h-7 gap-1.5 text-xs font-medium border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 px-2.5 rounded-md">
+                               <Sparkles className="h-3 w-3 text-purple-500" />
+                               {aiModels.find(m => m.id === selectedModel)?.name || "Select Model"}
+                               <ChevronDown className="h-3 w-3 opacity-50" />
+                             </Button>
+                           </DropdownMenuTrigger>
+                           <DropdownMenuContent align="start" className="w-56">
+                             {aiModels.map((model) => (
+                               <DropdownMenuItem 
+                                 key={model.id}
+                                 onClick={() => setSelectedModel(model.name)}
+                                 className={cn("flex items-center justify-between text-xs", selectedModel === model.name && "bg-slate-100 dark:bg-slate-800")}
+                               >
+                                 {model.name}
+                                 {selectedModel === model.name && <CheckCircle2 className="h-3.5 w-3.5 text-blue-600" />}
+                               </DropdownMenuItem>
+                             ))}
+                           </DropdownMenuContent>
+                         </DropdownMenu>
+                       </div>
+
+                      {/* Right: Usage & Send Button */}
+                      <div className="flex items-center gap-3">
+                        {selectedMode === 'test' && (
+                           <span className={cn(
+                             "text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap",
+                             usedCount >= dailyLimit ? "bg-red-100 text-red-600" : "bg-slate-100 text-slate-500"
+                           )}>
+                             {usedCount}/{dailyLimit}
+                           </span>
                         )}
-                        disabled={!selectedServiceId || !inputMessage.trim() || (selectedMode === 'test' && usedCount >= dailyLimit)}
-                      >
-                        <Send className="h-4 w-4" />
-                      </Button>
+                        
+                        <Button 
+                          type="submit" 
+                          size="icon" 
+                          className={cn(
+                            "h-8 w-8 rounded-lg shadow-sm transition-all shrink-0",
+                            selectedMode === 'production' 
+                              ? "bg-green-600 hover:bg-green-700" 
+                              : "bg-blue-600 hover:bg-blue-700"
+                          )}
+                          disabled={!selectedServiceId || !inputMessage.trim() || (selectedMode === 'test' && usedCount >= dailyLimit)}
+                        >
+                          <Send className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
                   </form>
                   <div className="text-center">
