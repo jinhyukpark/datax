@@ -22,6 +22,7 @@ import { AnalyticsView } from "@/components/analytics-view";
 import { HostedRequestDetails } from "@/components/hosted-request-details";
 import { HostedServiceManage } from "@/components/hosted-service-manage";
 import { HostedServiceLogs } from "@/components/hosted-service-logs";
+import { HostedServiceReviews } from "@/components/hosted-service-reviews";
 import { GeneralRequestDetails } from "@/components/general-request-details";
 import {
   AlertDialog,
@@ -1569,6 +1570,17 @@ export default function MyPage() {
                                   </DialogTrigger>
                                   <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
                                     <HostedRequestDetails data={item} isEditable={true} />
+                                  </DialogContent>
+                                </Dialog>
+
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <Button variant="outline" size="sm" className="w-full">
+                                      Reviews
+                                    </Button>
+                                  </DialogTrigger>
+                                  <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+                                    <HostedServiceReviews />
                                   </DialogContent>
                                 </Dialog>
                                 

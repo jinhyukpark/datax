@@ -170,7 +170,7 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
       )}
 
       <Tabs defaultValue="application" className="w-full">
-        <TabsList className="grid w-full grid-cols-5 mb-8 h-auto p-0 bg-transparent gap-0">
+        <TabsList className="grid w-full grid-cols-4 mb-8 h-auto p-0 bg-transparent gap-0">
           <TabsTrigger 
             value="application" 
             className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
@@ -194,12 +194,6 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
             className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
           >
             Pricing
-          </TabsTrigger>
-          <TabsTrigger 
-            value="reviews" 
-            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-          >
-            Reviews
           </TabsTrigger>
         </TabsList>
 
@@ -803,52 +797,6 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
                 </ul>
               </CardContent>
             </Card>
-          </div>
-        </TabsContent>
-
-        {/* Reviews Tab */}
-        <TabsContent value="reviews" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
-          <div className="flex items-center justify-between">
-             <div className="flex items-center gap-4">
-               <div className="text-4xl font-bold">4.8</div>
-               <div>
-                 <div className="flex items-center gap-1 text-amber-500">
-                   <Star className="h-4 w-4 fill-current" />
-                   <Star className="h-4 w-4 fill-current" />
-                   <Star className="h-4 w-4 fill-current" />
-                   <Star className="h-4 w-4 fill-current" />
-                   <Star className="h-4 w-4 fill-current text-slate-300 dark:text-slate-600" />
-                 </div>
-                 <p className="text-sm text-muted-foreground">Based on 124 reviews</p>
-               </div>
-             </div>
-             <Button>Write a Review</Button>
-          </div>
-
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="border-b border-slate-100 dark:border-slate-800 pb-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-bold text-xs">User</div>
-                    <div>
-                      <div className="font-semibold text-sm">User {i}</div>
-                      <div className="text-xs text-muted-foreground">2 days ago</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-0.5 text-amber-500">
-                    <Star className="h-3 w-3 fill-current" />
-                    <Star className="h-3 w-3 fill-current" />
-                    <Star className="h-3 w-3 fill-current" />
-                    <Star className="h-3 w-3 fill-current" />
-                    <Star className="h-3 w-3 fill-current" />
-                  </div>
-                </div>
-                <p className="text-sm text-slate-600 dark:text-slate-300">
-                  Excellent resource! The API is very reliable and the documentation is easy to follow. Highly recommended for anyone building data-intensive applications.
-                </p>
-              </div>
-            ))}
           </div>
         </TabsContent>
       </Tabs>
