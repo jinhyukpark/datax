@@ -33,6 +33,15 @@ export default function Advertise() {
     cardholderName: ""
   });
 
+  // Mock reserved dates
+  const reservedDates = [
+    addDays(new Date(), 2),
+    addDays(new Date(), 3),
+    addDays(new Date(), 10),
+    addDays(new Date(), 12),
+    addDays(new Date(), 13),
+  ];
+
   const adProducts = [
     {
       id: "banner",
@@ -291,10 +300,30 @@ export default function Advertise() {
                   selected={date}
                   onSelect={setDate}
                   numberOfMonths={1}
-                  disabled={(date) => date < new Date()}
+                  disabled={[
+                    { before: new Date() },
+                    ...reservedDates
+                  ]}
+                  modifiers={{
+                    booked: reservedDates
+                  }}
+                  modifiersStyles={{
+                    booked: { textDecoration: "line-through", color: "#ef4444", opacity: 0.5 }
+                  }}
                 />
               </div>
               
+              <div className="flex flex-wrap gap-2 justify-center mb-4 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                  <span>{t("Available", "예약 가능")}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-red-400 opacity-50"></div>
+                  <span>{t("Reserved", "예약됨")}</span>
+                </div>
+              </div>
+
               {date?.from && date?.to && (
                 <div className="w-full bg-slate-50 dark:bg-slate-900 p-4 rounded-lg">
                   <div className="flex justify-between mb-2">
@@ -366,16 +395,10 @@ export default function Advertise() {
 
           <DialogFooter className="flex-col sm:flex-row gap-2">
             {paymentStep === 'dates' ? (
-              <>
-                <Button variant="outline" className="w-full sm:w-auto" onClick={() => handleAction('cart')}>
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  {t("Add to Cart", "장바구니 담기")}
-                </Button>
-                <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700" onClick={() => handleAction('pay')}>
-                  <CreditCard className="mr-2 h-4 w-4" />
-                  {t("Pay Immediately", "바로 결제하기")}
-                </Button>
-              </>
+              <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => handleAction('pay')}>
+                <CreditCard className="mr-2 h-4 w-4" />
+                {t("Apply", "신청하기")}
+              </Button>
             ) : (
               <>
                 <Button variant="outline" className="w-full sm:w-auto" onClick={() => setPaymentStep('dates')}>
