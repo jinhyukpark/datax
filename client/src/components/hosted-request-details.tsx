@@ -486,12 +486,12 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
 
             <div className="space-y-3 bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
               <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Category <span className="text-red-500">*</span></Label>
-              <RadioGroup value={detailsData.category.toLowerCase()} onValueChange={(val) => handleDetailsChange('category', val)} className="gap-0">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+              <RadioGroup value={detailsData.category.toLowerCase()} onValueChange={(val) => handleDetailsChange('category', val)} className="w-full">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-3">
                   {CATEGORIES.map((cat) => (
-                    <div key={cat} className="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800">
-                      <RadioGroupItem value={cat.toLowerCase()} id={`cat-${cat.toLowerCase()}`} />
-                      <Label htmlFor={`cat-${cat.toLowerCase()}`} className="font-medium text-sm cursor-pointer">{cat}</Label>
+                    <div key={cat} className="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors">
+                      <RadioGroupItem value={cat.toLowerCase()} id={`cat-${cat.toLowerCase()}`} className="shrink-0" />
+                      <Label htmlFor={`cat-${cat.toLowerCase()}`} className="font-medium text-sm cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis">{cat}</Label>
                     </div>
                   ))}
                 </div>
