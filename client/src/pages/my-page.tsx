@@ -1560,6 +1560,17 @@ export default function MyPage() {
                                     <HostedServiceLogs serviceName={item.title} />
                                   </DialogContent>
                                 </Dialog>
+
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <Button variant="outline" size="sm" className="w-full">
+                                      {t("Edit", "편집")}
+                                    </Button>
+                                  </DialogTrigger>
+                                  <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
+                                    <HostedRequestDetails data={item} isEditable={true} />
+                                  </DialogContent>
+                                </Dialog>
                                 
                                 <p className="text-[10px] text-muted-foreground text-center mt-2">
                                   Next bill: {item.nextBilling}
