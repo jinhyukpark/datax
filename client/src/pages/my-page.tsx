@@ -423,7 +423,8 @@ export default function MyPage() {
       tier: "Pro Plan",
       uptime: "99.99%",
       nextBilling: "2026-01-20",
-      type: "DATA"
+      type: "DATA",
+      unreadReviews: 3
     },
     {
       id: "ha2",
@@ -435,7 +436,8 @@ export default function MyPage() {
       tier: "Enterprise",
       uptime: "99.95%",
       nextBilling: "2026-01-15",
-      type: "AGENT"
+      type: "AGENT",
+      unreadReviews: 0
     },
     {
       id: "ha3",
@@ -447,7 +449,8 @@ export default function MyPage() {
       tier: "Enterprise",
       uptime: "99.99%",
       nextBilling: "2026-01-25",
-      type: "MCP"
+      type: "MCP",
+      unreadReviews: 5
     }
   ];
 
@@ -1199,16 +1202,9 @@ export default function MyPage() {
                             <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l min-w-[140px]">
                               <Dialog>
                                 <DialogTrigger asChild>
-                                  <div className="relative w-full">
-                                    <Button variant="outline" size="sm" className="w-full">
-                                      {t("Edit", "수정")}
-                                    </Button>
-                                    {(item as any).unreadReviews > 0 && (
-                                      <span className="absolute -top-1.5 -right-1.5 h-4 w-4 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold border-2 border-white dark:border-slate-900">
-                                        {(item as any).unreadReviews}
-                                      </span>
-                                    )}
-                                  </div>
+                                  <Button variant="outline" size="sm" className="w-full">
+                                    {t("Edit", "수정")}
+                                  </Button>
                                 </DialogTrigger>
                                 <DialogContent className="sm:max-w-[900px] h-[90vh] overflow-y-auto">
                                   <SubmitForm 
@@ -1225,9 +1221,16 @@ export default function MyPage() {
                               
                               <Dialog>
                                 <DialogTrigger asChild>
-                                  <Button variant="outline" size="sm" className="w-full">
-                                    Reviews
-                                  </Button>
+                                  <div className="relative w-full">
+                                    <Button variant="outline" size="sm" className="w-full">
+                                      Reviews
+                                    </Button>
+                                    {(item as any).unreadReviews > 0 && (
+                                      <span className="absolute -top-1.5 -right-1.5 h-4 w-4 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold border-2 border-white dark:border-slate-900 z-10">
+                                        {(item as any).unreadReviews}
+                                      </span>
+                                    )}
+                                  </div>
                                 </DialogTrigger>
                                 <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
                                   <HostedServiceReviews />
@@ -1590,9 +1593,16 @@ export default function MyPage() {
 
                                 <Dialog>
                                   <DialogTrigger asChild>
-                                    <Button variant="outline" size="sm" className="w-full">
-                                      Reviews
-                                    </Button>
+                                    <div className="relative w-full">
+                                      <Button variant="outline" size="sm" className="w-full">
+                                        Reviews
+                                      </Button>
+                                      {(item as any).unreadReviews > 0 && (
+                                        <span className="absolute -top-1.5 -right-1.5 h-4 w-4 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold border-2 border-white dark:border-slate-900 z-10">
+                                          {(item as any).unreadReviews}
+                                        </span>
+                                      )}
+                                    </div>
                                   </DialogTrigger>
                                   <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
                                     <HostedServiceReviews />
