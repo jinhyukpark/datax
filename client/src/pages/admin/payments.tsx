@@ -874,9 +874,6 @@ export default function PaymentManagement() {
                  </>
                )}
             </DialogFooter>
-            <DialogFooter>
-              <Button onClick={() => setDetailOpen(false)}>Close</Button>
-            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
