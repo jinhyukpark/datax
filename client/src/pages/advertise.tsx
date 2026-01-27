@@ -2,7 +2,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle2, Target, Award, Rocket, Megaphone, Layout, Star, PanelRight, Calendar as CalendarIcon, ShoppingCart, CreditCard } from "lucide-react";
+import { CheckCircle2, Target, Award, Rocket, Megaphone, Layout, Star, PanelRight, Calendar as CalendarIcon, ShoppingCart, Send, User, Mail, Phone } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
@@ -13,6 +13,7 @@ import { useLocation } from "wouter";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function Advertise() {
   const { t } = useLanguage();
@@ -23,15 +24,16 @@ export default function Advertise() {
   });
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [paymentStep, setPaymentStep] = useState<'dates' | 'payment'>('dates');
+  const [paymentStep, setPaymentStep] = useState<'dates' | 'inquiry'>('dates');
 
-  // Payment Form State
-  const [paymentInfo, setPaymentInfo] = useState({
-    cardNumber: "",
-    expiryDate: "",
-    cvc: "",
-    cardholderName: ""
+  // Inquiry Form State
+  const [inquiryInfo, setInquiryInfo] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    notes: ""
   });
+
 
   // Mock reserved dates
   const reservedDates = [
@@ -142,11 +144,11 @@ export default function Advertise() {
     return selectedProduct.priceValue * weeks;
   };
 
-  const handleAction = (action: 'pay' | 'cart' | 'confirm_pay') => {
+  const handleAction = (action: 'inquiry' | 'cart' | 'submit_inquiry') => {
     if (!date?.from || !date?.to || !selectedProduct) return;
 
-    if (action === 'pay') {
-      setPaymentStep('payment');
+    if (action === 'inquiry') {
+      setPaymentStep('inquiry');
       return;
     }
 
@@ -159,7 +161,7 @@ export default function Advertise() {
         to: date.to.toISOString()
       },
       price: `$${calculateTotal()}`,
-      status: action === 'confirm_pay' ? 'Completed' : 'Pending Payment',
+      status: action === 'submit_inquiry' ? 'Pending Inquiry' : 'Pending Payment',
       type: 'advertise',
       date: format(new Date(), 'yyyy-MM-dd')
     };
@@ -171,8 +173,8 @@ export default function Advertise() {
 
     setIsModalOpen(false);
     
-    if (action === 'confirm_pay') {
-      toast.success(t("Payment successful!", "결제가 완료되었습니다!"));
+    if (action === 'submit_inquiry') {
+      toast.success(t("Inquiry submitted! A manager will contact you soon.", "문의가 접수되었습니다! 담당자가 곧 연락드릴 예정입니다."));
       setLocation('/my-page');
     } else {
       toast.success(t("Added to cart", "장바구니에 추가되었습니다"));
@@ -284,10 +286,12 @@ export default function Advertise() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>
-              {paymentStep === 'dates' ? t("Select Duration", "기간 선택") : t("Enter Payment Details", "결제 정보 입력")}
+              {paymentStep === 'dates' ? t("Select Duration", "기간 선택") : t("Request Advertising Inquiry", "광고 문의 신청")}
             </DialogTitle>
             <DialogDescription>
-              {paymentStep === 'dates' ? t("Choose the dates for your advertisement.", "광고를 게재할 기간을 선택하세요.") : t("Secure payment processing.", "안전한 결제 처리를 위해 정보를 입력하세요.")}
+              {paymentStep === 'dates' 
+                ? t("Choose the dates for your advertisement.", "광고를 게재할 기간을 선택하세요.") 
+                : t("Please provide your contact details. A platform manager will reach out to you directly.", "담당자 연락처를 입력해 주세요. 플랫폼 담당자가 확인 후 직접 연락드릴 예정입니다.")}
             </DialogDescription>
           </DialogHeader>
           
@@ -347,56 +351,76 @@ export default function Advertise() {
           ) : (
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label htmlFor="card-number">{t("Card Number", "카드 번호")}</Label>
-                <Input 
-                  id="card-number" 
-                  placeholder="0000 0000 0000 0000" 
-                  value={paymentInfo.cardNumber}
-                  onChange={(e) => setPaymentInfo({...paymentInfo, cardNumber: e.target.value})}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="expiry">{t("Expiry Date", "유효기간")}</Label>
+                <Label htmlFor="contact-name">{t("Contact Name", "담당자 이름")}</Label>
+                <div className="relative">
                   <Input 
-                    id="expiry" 
-                    placeholder="MM/YY" 
-                    value={paymentInfo.expiryDate}
-                    onChange={(e) => setPaymentInfo({...paymentInfo, expiryDate: e.target.value})}
+                    id="contact-name" 
+                    placeholder={t("Enter name", "이름을 입력하세요")}
+                    value={inquiryInfo.name}
+                    onChange={(e) => setInquiryInfo({...inquiryInfo, name: e.target.value})}
+                    className="pl-9"
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="cvc">{t("CVC", "CVC")}</Label>
-                  <Input 
-                    id="cvc" 
-                    placeholder="123" 
-                    value={paymentInfo.cvc}
-                    onChange={(e) => setPaymentInfo({...paymentInfo, cvc: e.target.value})}
-                  />
+                  <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                 </div>
               </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="contact-email">{t("Email", "이메일")}</Label>
+                  <div className="relative">
+                    <Input 
+                      id="contact-email" 
+                      type="email"
+                      placeholder="email@company.com" 
+                      value={inquiryInfo.email}
+                      onChange={(e) => setInquiryInfo({...inquiryInfo, email: e.target.value})}
+                      className="pl-9"
+                    />
+                    <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="contact-phone">{t("Phone Number", "연락처")}</Label>
+                  <div className="relative">
+                     <Input 
+                      id="contact-phone" 
+                      placeholder="010-0000-0000" 
+                      value={inquiryInfo.phone}
+                      onChange={(e) => setInquiryInfo({...inquiryInfo, phone: e.target.value})}
+                      className="pl-9"
+                    />
+                    <Phone className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                  </div>
+                </div>
+              </div>
+
               <div className="space-y-2">
-                <Label htmlFor="name">{t("Cardholder Name", "카드 소유자 이름")}</Label>
-                <Input 
-                  id="name" 
-                  placeholder="John Doe" 
-                  value={paymentInfo.cardholderName}
-                  onChange={(e) => setPaymentInfo({...paymentInfo, cardholderName: e.target.value})}
+                <Label htmlFor="inquiry-notes">{t("Request Details / Notes", "요청 사항 / 메모")}</Label>
+                <Textarea 
+                  id="inquiry-notes" 
+                  placeholder={t("Any specific requirements or questions...", "특별한 요청 사항이나 질문이 있으시면 적어주세요...")}
+                  value={inquiryInfo.notes}
+                  onChange={(e) => setInquiryInfo({...inquiryInfo, notes: e.target.value})}
+                  className="min-h-[100px]"
                 />
               </div>
+
               <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg mt-4">
-                <div className="flex justify-between items-center">
-                  <span className="font-bold">{t("Total to Pay", "결제 금액")}</span>
+                <div className="flex justify-between items-center mb-1">
+                  <span className="font-bold">{t("Estimated Cost", "예상 비용")}</span>
                   <span className="text-xl font-bold text-blue-600">${calculateTotal()}</span>
                 </div>
+                <p className="text-xs text-muted-foreground">
+                  {t("* Final cost may vary based on duration and additional requirements discussed with the manager.", "* 최종 비용은 기간 및 담당자와의 협의 내용에 따라 달라질 수 있습니다.")}
+                </p>
               </div>
             </div>
           )}
 
           <DialogFooter className="flex-col sm:flex-row gap-2">
             {paymentStep === 'dates' ? (
-              <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => handleAction('pay')}>
-                <CreditCard className="mr-2 h-4 w-4" />
+              <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => handleAction('inquiry')}>
+                <Send className="mr-2 h-4 w-4" />
                 {t("Apply", "신청하기")}
               </Button>
             ) : (
@@ -404,8 +428,8 @@ export default function Advertise() {
                 <Button variant="outline" className="w-full sm:w-auto" onClick={() => setPaymentStep('dates')}>
                   {t("Back", "뒤로가기")}
                 </Button>
-                <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700" onClick={() => handleAction('confirm_pay')}>
-                  {t("Confirm Payment", "결제 확인")}
+                <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700" onClick={() => handleAction('submit_inquiry')}>
+                  {t("Submit Request", "신청서 제출")}
                 </Button>
               </>
             )}
