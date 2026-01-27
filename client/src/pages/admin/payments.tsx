@@ -140,7 +140,11 @@ const MOCK_AD_PAYMENTS = [
     date: "2025-12-01", 
     status: "Completed",
     paymentMethod: "Credit Card",
-    details: "Main page banner advertisement campaign."
+    details: "Main page banner advertisement campaign.",
+    contactName: "James Wilson",
+    email: "james.w@techcorp.com",
+    phone: "010-1234-5678",
+    notes: "Please ensure the banner is high resolution."
   },
   { 
     id: "AD-002", 
@@ -154,7 +158,11 @@ const MOCK_AD_PAYMENTS = [
     date: "2025-12-10", 
     status: "Completed",
     paymentMethod: "PayPal",
-    details: "Sidebar placement for recruitment drive."
+    details: "Sidebar placement for recruitment drive.",
+    contactName: "Sarah Lee",
+    email: "sarah@visionai.io",
+    phone: "010-9876-5432",
+    notes: "Targeting engineering candidates."
   },
   { 
     id: "AD-003", 
@@ -168,7 +176,11 @@ const MOCK_AD_PAYMENTS = [
     date: "2025-12-15", 
     status: "Refunded",
     paymentMethod: "Credit Card",
-    details: "Premium listing placement. Refunded due to cancellation."
+    details: "Premium listing placement. Refunded due to cancellation.",
+    contactName: "Mike Chen",
+    email: "mike@startup.inc",
+    phone: "010-5555-4444",
+    notes: "Cancellation requested due to strategy change."
   },
   { 
     id: "AD-004", 
@@ -182,7 +194,11 @@ const MOCK_AD_PAYMENTS = [
     date: "2025-12-14", 
     status: "Completed",
     paymentMethod: "Credit Card",
-    details: "Featured spot in the weekly industry newsletter."
+    details: "Featured spot in the weekly industry newsletter.",
+    contactName: "Emma Davis",
+    email: "emma@greeneco.org",
+    phone: "010-3333-2222",
+    notes: "Focus on sustainability initiative."
   },
 ];
 
@@ -669,7 +685,7 @@ export default function PaymentManagement() {
         <Dialog open={detailOpen} onOpenChange={setDetailOpen}>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
-              <DialogTitle>Payment Details</DialogTitle>
+              <DialogTitle>{activeTab === "ads" ? "Ad Inquiry Details" : "Payment Details"}</DialogTitle>
               <DialogDescription>
                 Transaction information for {selectedPayment?.id}
               </DialogDescription>
@@ -704,17 +720,39 @@ export default function PaymentManagement() {
                     )}
                   </div>
                   
+                  {/* Contact Info for Ad Inquiries */}
+                  {activeTab === "ads" && (
+                     <div className="grid grid-cols-2 gap-4 mb-4 bg-slate-50 dark:bg-slate-900 p-3 rounded-md">
+                        <div className="space-y-1">
+                          <span className="text-xs font-medium text-muted-foreground">Contact Name</span>
+                          <p className="text-sm">{selectedPayment.contactName || "N/A"}</p>
+                        </div>
+                        <div className="space-y-1">
+                          <span className="text-xs font-medium text-muted-foreground">Phone</span>
+                          <p className="text-sm">{selectedPayment.phone || "N/A"}</p>
+                        </div>
+                        <div className="col-span-2 space-y-1">
+                          <span className="text-xs font-medium text-muted-foreground">Email</span>
+                          <p className="text-sm">{selectedPayment.email || "N/A"}</p>
+                        </div>
+                     </div>
+                  )}
+
                   <div className="space-y-1 mb-4">
-                    <span className="text-xs font-medium text-muted-foreground">Description/Notes</span>
+                    <span className="text-xs font-medium text-muted-foreground">
+                      {activeTab === "ads" ? "Request Details / Notes" : "Description/Notes"}
+                    </span>
                     <p className="text-sm text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 p-3 rounded-md">
-                      {selectedPayment.details}
+                      {activeTab === "ads" && selectedPayment.notes ? selectedPayment.notes : selectedPayment.details}
                     </p>
                   </div>
 
-                  <div className="space-y-1">
-                     <span className="text-xs font-medium text-muted-foreground">Payment Method</span>
-                     <p className="text-sm">{selectedPayment.paymentMethod}</p>
-                  </div>
+                  {activeTab !== "ads" && (
+                    <div className="space-y-1">
+                       <span className="text-xs font-medium text-muted-foreground">Payment Method</span>
+                       <p className="text-sm">{selectedPayment.paymentMethod}</p>
+                    </div>
+                  )}
                 </div>
 
                 <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg space-y-2">
@@ -727,9 +765,14 @@ export default function PaymentManagement() {
                     <span>-${selectedPayment.discountValue.toLocaleString()}</span>
                   </div>
                   <div className="border-t pt-2 flex justify-between font-bold">
-                    <span>Total Paid</span>
+                    <span>{activeTab === "ads" ? "Estimated Cost" : "Total Paid"}</span>
                     <span>{selectedPayment.amount}</span>
                   </div>
+                  {activeTab === "ads" && (
+                    <p className="text-[10px] text-muted-foreground mt-1">
+                      * Final cost may vary based on duration and additional requirements.
+                    </p>
+                  )}
                 </div>
               </div>
             )}
