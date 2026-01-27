@@ -803,9 +803,11 @@ export default function PaymentManagement() {
                         className="min-h-[100px]"
                       />
                     ) : (
-                      <p className="text-sm text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 p-3 rounded-md">
-                        {activeTab === "ads" && selectedPayment.notes ? selectedPayment.notes : selectedPayment.details}
-                      </p>
+                      <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-md">
+                        <p className="text-sm text-slate-600 dark:text-slate-300">
+                          {activeTab === "ads" && selectedPayment.notes ? selectedPayment.notes : selectedPayment.details}
+                        </p>
+                      </div>
                     )}
                   </div>
 
