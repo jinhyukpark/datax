@@ -1518,7 +1518,7 @@ export default function MyPage() {
                                 </div>
                                 <p className="text-muted-foreground text-sm mb-4">{item.description}</p>
 
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
                                   <div className="space-y-1">
                                     <p className="text-xs text-muted-foreground">Endpoint</p>
                                     <div className="flex items-center gap-1 font-mono text-xs bg-slate-100 dark:bg-slate-900 px-2 py-1 rounded max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
@@ -1536,6 +1536,10 @@ export default function MyPage() {
                                   <div className="space-y-1">
                                     <p className="text-xs text-muted-foreground">Uptime (30d)</p>
                                     <p className="font-medium text-green-600">{item.uptime}</p>
+                                  </div>
+                                  <div className="space-y-1">
+                                    <p className="text-xs text-muted-foreground">Next Bill</p>
+                                    <p className="font-medium">{item.nextBilling}</p>
                                   </div>
                                 </div>
                               </div>
@@ -1583,10 +1587,6 @@ export default function MyPage() {
                                     <HostedServiceReviews />
                                   </DialogContent>
                                 </Dialog>
-                                
-                                <p className="text-[10px] text-muted-foreground text-center mt-2">
-                                  Next bill: {item.nextBilling}
-                                </p>
                               </div>
                             </div>
                           </Card>
