@@ -1236,18 +1236,6 @@ export default function MyPage() {
                                   <HostedServiceReviews />
                                 </DialogContent>
                               </Dialog>
-
-                              <Dialog>
-                                <DialogTrigger asChild>
-                                  <Button variant="outline" size="sm" className="w-full gap-2">
-                                    <BarChart2 className="h-3 w-3" />
-                                    {t("Analytics", "통계")}
-                                  </Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-[1000px] h-[90vh] overflow-y-auto">
-                                    <AnalyticsView resourceId={item.id} resourceTitle={item.title} />
-                                </DialogContent>
-                              </Dialog>
                             </div>
                           </div>
                         </Card>
