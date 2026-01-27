@@ -720,29 +720,75 @@ export default function PaymentManagement() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <span className="text-sm font-medium text-muted-foreground">Transaction ID</span>
-                    <p className="text-base font-medium">{selectedPayment.id}</p>
+                    {isEditing ? (
+                      <Input 
+                        value={editForm.id || ""} 
+                        onChange={(e) => setEditForm({...editForm, id: e.target.value})}
+                        className="h-10 text-base"
+                      />
+                    ) : (
+                      <p className="text-base font-medium">{selectedPayment.id}</p>
+                    )}
                   </div>
                   <div className="space-y-1">
                     <span className="text-sm font-medium text-muted-foreground">Date</span>
-                    <p className="text-base font-medium">{selectedPayment.date}</p>
+                    {isEditing ? (
+                      <Input 
+                        type="date"
+                        value={editForm.date || ""} 
+                        onChange={(e) => setEditForm({...editForm, date: e.target.value})}
+                        className="h-10 text-base"
+                      />
+                    ) : (
+                      <p className="text-base font-medium">{selectedPayment.date}</p>
+                    )}
                   </div>
                   <div className="space-y-1">
                     <span className="text-sm font-medium text-muted-foreground">User/Company</span>
-                    <p className="text-base font-medium">{selectedPayment.user}</p>
+                    {isEditing ? (
+                      <Input 
+                        value={editForm.user || ""} 
+                        onChange={(e) => setEditForm({...editForm, user: e.target.value})}
+                        className="h-10 text-base"
+                      />
+                    ) : (
+                      <p className="text-base font-medium">{selectedPayment.user}</p>
+                    )}
                   </div>
                   <div className="space-y-1">
                     <span className="text-sm font-medium text-muted-foreground block">Status</span>
-                    <Badge variant={selectedPayment.status === 'Completed' ? 'default' : selectedPayment.status === 'Rejected' ? 'destructive' : 'secondary'} className="text-sm">
-                      {selectedPayment.status}
-                    </Badge>
+                    {isEditing ? (
+                      <select 
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        value={editForm.status}
+                        onChange={(e) => setEditForm({...editForm, status: e.target.value})}
+                      >
+                        <option value="Completed">Completed</option>
+                        <option value="Pending">Pending Inquiry</option>
+                        <option value="Refunded">Refunded</option>
+                        <option value="Rejected">Rejected</option>
+                      </select>
+                    ) : (
+                      <Badge variant={selectedPayment.status === 'Completed' ? 'default' : selectedPayment.status === 'Rejected' ? 'destructive' : 'secondary'} className="text-sm">
+                        {selectedPayment.status}
+                      </Badge>
+                    )}
                   </div>
                 </div>
                 
                 <div className="border-t pt-4">
                   <div className="space-y-1 mb-4">
                     <span className="text-sm font-medium text-muted-foreground">Product</span>
-                    <p className="text-base font-medium">{selectedPayment.product}</p>
-                    {selectedPayment.duration && (
+                    {isEditing ? (
+                      <Input 
+                        value={editForm.product || ""} 
+                        onChange={(e) => setEditForm({...editForm, product: e.target.value})}
+                        className="h-10 text-base"
+                      />
+                    ) : (
+                      <p className="text-base font-medium">{selectedPayment.product}</p>
+                    )}
+                    {selectedPayment.duration && !isEditing && (
                       <span className="text-sm text-muted-foreground">Duration: {selectedPayment.duration}</span>
                     )}
                   </div>
@@ -822,15 +868,51 @@ export default function PaymentManagement() {
                 <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg space-y-2">
                   <div className="flex justify-between text-base">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span>${(selectedPayment.amountValue + selectedPayment.discountValue).toLocaleString()}</span>
+                    {isEditing ? (
+                      <Input 
+                        type="number"
+                        value={editForm.amountValue + editForm.discountValue} 
+                        onChange={(e) => {
+                          const val = Number(e.target.value);
+                          setEditForm({...editForm, amountValue: val - editForm.discountValue});
+                        }}
+                        className="h-8 w-24 text-right"
+                      />
+                    ) : (
+                      <span>${(selectedPayment.amountValue + selectedPayment.discountValue).toLocaleString()}</span>
+                    )}
                   </div>
                   <div className="flex justify-between text-base text-green-600">
                     <span>Discount</span>
-                    <span>-${selectedPayment.discountValue.toLocaleString()}</span>
+                    {isEditing ? (
+                      <Input 
+                        type="number"
+                        value={editForm.discountValue} 
+                        onChange={(e) => {
+                          const val = Number(e.target.value);
+                          setEditForm({...editForm, discountValue: val, amountValue: (editForm.amountValue + editForm.discountValue) - val});
+                        }}
+                        className="h-8 w-24 text-right"
+                      />
+                    ) : (
+                      <span>-${selectedPayment.discountValue.toLocaleString()}</span>
+                    )}
                   </div>
                   <div className="border-t pt-2 flex justify-between text-lg font-bold">
                     <span>{activeTab === "ads" ? "Estimated Cost" : "Total Paid"}</span>
-                    <span>{selectedPayment.amount}</span>
+                    {isEditing ? (
+                      <div className="flex items-center">
+                        <span>$</span>
+                        <Input 
+                          type="number"
+                          value={editForm.amountValue} 
+                          readOnly
+                          className="h-8 w-24 text-right border-none bg-transparent"
+                        />
+                      </div>
+                    ) : (
+                      <span>{selectedPayment.amount}</span>
+                    )}
                   </div>
                   {activeTab === "ads" && (
                     <p className="text-[10px] text-muted-foreground mt-1">
