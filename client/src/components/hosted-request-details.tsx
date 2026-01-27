@@ -4,13 +4,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/lib/language-context";
-import { ShieldCheck, ArrowRight, Loader2, Save, Info, AlertCircle, CheckCircle2, Upload, Paperclip, Plus, Trash2 } from "lucide-react";
+import { ShieldCheck, ArrowRight, Loader2, Save, Info, AlertCircle, CheckCircle2, Upload, Paperclip, Plus, Trash2, Zap, Star, Check, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 interface HostedRequestDetailsProps {
   data: any;
@@ -168,9 +170,37 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
       )}
 
       <Tabs defaultValue="application" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-8">
-          <TabsTrigger value="application">Application Form</TabsTrigger>
-          <TabsTrigger value="details">Data Information Details</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-5 mb-8 h-auto p-0 bg-transparent gap-0">
+          <TabsTrigger 
+            value="application" 
+            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+          >
+            Application Form
+          </TabsTrigger>
+          <TabsTrigger 
+            value="details" 
+            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+          >
+            Data Details
+          </TabsTrigger>
+          <TabsTrigger 
+            value="documentation" 
+            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+          >
+            Documentation
+          </TabsTrigger>
+          <TabsTrigger 
+            value="pricing" 
+            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+          >
+            Pricing
+          </TabsTrigger>
+          <TabsTrigger 
+            value="reviews" 
+            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+          >
+            Reviews
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="application" className="space-y-8">
@@ -661,6 +691,164 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
                     ))}
                 </div>
             </div>
+          </div>
+        </TabsContent>
+
+        {/* Documentation Tab */}
+        <TabsContent value="documentation" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-bold flex items-center gap-2">
+                <Terminal className="h-5 w-5" />
+                Quick Start Guide
+              </h3>
+              <Badge variant="outline">{detailsData.version || "v1.0.0"}</Badge>
+            </div>
+
+            {/* Step 1: Installation */}
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-sm">1</div>
+                <h4 className="font-bold">Installation</h4>
+              </div>
+              <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50">
+                <div className="absolute right-4 top-4 text-xs text-slate-400">BASH</div>
+                <p className="text-slate-400"># Using npm</p>
+                <p className="mb-3">npm install @em-data/sdk</p>
+                <p className="text-slate-400"># Using pip (Python)</p>
+                <p className="mb-3">pip install em-data-sdk</p>
+              </div>
+            </div>
+
+            {/* Step 2: Usage */}
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-8 w-8 rounded-full bg-yellow-100 dark:bg-yellow-900/50 flex items-center justify-center text-yellow-600 dark:text-yellow-400 font-bold text-sm">2</div>
+                <h4 className="font-bold">JavaScript / Node.js Integration</h4>
+              </div>
+              <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
+                <div className="absolute right-4 top-4 text-xs text-slate-400">JAVASCRIPT</div>
+                <p><span className="text-purple-400">import</span> {"{"} EMDataClient {"}"} <span className="text-purple-400">from</span> <span className="text-green-400">'@em-data/sdk'</span>;</p>
+                <br/>
+                <p className="text-slate-400">// Initialize the client</p>
+                <p><span className="text-purple-400">const</span> client = <span className="text-blue-400">new</span> EMDataClient({"{"}</p>
+                <p>&nbsp;&nbsp;apiKey: process.env.<span className="text-orange-400">EM_API_KEY</span>,</p>
+                <p>&nbsp;&nbsp;baseUrl: <span className="text-green-400">'{detailsData.websiteUrl || "https://api.example.com"}'</span></p>
+                <p>{"}"});</p>
+              </div>
+            </div>
+            
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">3</div>
+                <h4 className="font-bold">Full Documentation</h4>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                For complete API reference, guides, and tutorials, please visit our documentation portal.
+              </p>
+              <Button variant="outline" className="gap-2" onClick={() => window.open(detailsData.docsUrl || "#", "_blank")}>
+                View Documentation <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Pricing Tab */}
+        <TabsContent value="pricing" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Free Plan */}
+            <Card className="border-slate-200 dark:border-slate-800">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-bold mb-2">Free Tier</h3>
+                <div className="text-3xl font-bold mb-4">$0 <span className="text-sm font-normal text-muted-foreground">/ month</span></div>
+                <p className="text-sm text-muted-foreground mb-6">Perfect for testing and personal projects.</p>
+                <Button className="w-full mb-6" variant="outline">Current Plan</Button>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> 1,000 API calls / month</li>
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Basic support</li>
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Community access</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Pro Plan */}
+            <Card className="border-indigo-200 bg-indigo-50/50 dark:border-indigo-800 dark:bg-indigo-900/10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">POPULAR</div>
+              <CardContent className="p-6">
+                <h3 className="text-lg font-bold mb-2 text-indigo-700 dark:text-indigo-300">Pro Tier</h3>
+                <div className="text-3xl font-bold mb-4">$49 <span className="text-sm font-normal text-muted-foreground">/ month</span></div>
+                <p className="text-sm text-muted-foreground mb-6">For professional developers and small teams.</p>
+                <Button className="w-full mb-6 bg-indigo-600 hover:bg-indigo-700 text-white">Upgrade</Button>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-indigo-500" /> 100,000 API calls / month</li>
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-indigo-500" /> Priority support</li>
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-indigo-500" /> Advanced analytics</li>
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-indigo-500" /> SLA Guarantee</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Enterprise Plan */}
+            <Card className="border-slate-200 dark:border-slate-800">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-bold mb-2">Enterprise</h3>
+                <div className="text-3xl font-bold mb-4">Custom</div>
+                <p className="text-sm text-muted-foreground mb-6">For large scale applications and organizations.</p>
+                <Button className="w-full mb-6" variant="outline">Contact Sales</Button>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Unlimited API calls</li>
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Dedicated account manager</li>
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Custom integrations</li>
+                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> On-premise deployment</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Reviews Tab */}
+        <TabsContent value="reviews" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="flex items-center justify-between">
+             <div className="flex items-center gap-4">
+               <div className="text-4xl font-bold">4.8</div>
+               <div>
+                 <div className="flex items-center gap-1 text-amber-500">
+                   <Star className="h-4 w-4 fill-current" />
+                   <Star className="h-4 w-4 fill-current" />
+                   <Star className="h-4 w-4 fill-current" />
+                   <Star className="h-4 w-4 fill-current" />
+                   <Star className="h-4 w-4 fill-current text-slate-300 dark:text-slate-600" />
+                 </div>
+                 <p className="text-sm text-muted-foreground">Based on 124 reviews</p>
+               </div>
+             </div>
+             <Button>Write a Review</Button>
+          </div>
+
+          <div className="space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="border-b border-slate-100 dark:border-slate-800 pb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-bold text-xs">User</div>
+                    <div>
+                      <div className="font-semibold text-sm">User {i}</div>
+                      <div className="text-xs text-muted-foreground">2 days ago</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-0.5 text-amber-500">
+                    <Star className="h-3 w-3 fill-current" />
+                    <Star className="h-3 w-3 fill-current" />
+                    <Star className="h-3 w-3 fill-current" />
+                    <Star className="h-3 w-3 fill-current" />
+                    <Star className="h-3 w-3 fill-current" />
+                  </div>
+                </div>
+                <p className="text-sm text-slate-600 dark:text-slate-300">
+                  Excellent resource! The API is very reliable and the documentation is easy to follow. Highly recommended for anyone building data-intensive applications.
+                </p>
+              </div>
+            ))}
           </div>
         </TabsContent>
       </Tabs>
