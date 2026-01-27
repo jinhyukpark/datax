@@ -442,7 +442,7 @@ export default function PaymentManagement() {
                     Reserve Ad Space
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[700px] h-[90vh] sm:h-auto overflow-y-auto">
+                <DialogContent className="sm:max-w-[800px] h-fit max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle>Create Ad Reservation</DialogTitle>
                     <DialogDescription>
