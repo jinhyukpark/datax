@@ -350,6 +350,23 @@ export default function Advertise() {
             </div>
           ) : (
             <div className="space-y-4 py-4">
+              {/* Product Info Summary */}
+              {selectedProduct && date?.from && date?.to && (
+                <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-800">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">{t("Selected Product", "선택한 상품")}</span>
+                    <h3 className="font-bold text-lg">{selectedProduct.title}</h3>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                      <CalendarIcon className="h-3.5 w-3.5" />
+                      <span>
+                        {format(date.from, "MMM dd")} - {format(date.to, "MMM dd, yyyy")} 
+                        {' '}({differenceInDays(date.to, date.from) + 1} days)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="space-y-2">
                 <Label htmlFor="contact-name">{t("Contact Name", "담당자 이름")}</Label>
                 <div className="relative">
