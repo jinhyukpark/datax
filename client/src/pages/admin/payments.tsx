@@ -702,15 +702,15 @@ export default function PaymentManagement() {
         <Dialog open={detailOpen} onOpenChange={setDetailOpen}>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
-              <DialogTitle className="flex justify-between items-center pr-8">
-                <span>{activeTab === "ads" ? "Ad Inquiry Details" : "Payment Details"}</span>
+              <div className="flex justify-between items-center pr-8">
+                <DialogTitle>{activeTab === "ads" ? "Ad Inquiry Details" : "Payment Details"}</DialogTitle>
                 {activeTab === "ads" && !isEditing && (
-                  <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)}>
-                    <Edit2 className="h-4 w-4 mr-2" />
+                  <Button variant="outline" size="sm" onClick={() => setIsEditing(true)} className="h-8">
+                    <Edit2 className="h-3.5 w-3.5 mr-2" />
                     Edit
                   </Button>
                 )}
-              </DialogTitle>
+              </div>
               <DialogDescription>
                 Transaction information for {selectedPayment?.id}
               </DialogDescription>
