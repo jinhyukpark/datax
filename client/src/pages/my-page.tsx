@@ -1225,6 +1225,17 @@ export default function MyPage() {
                               
                               <Dialog>
                                 <DialogTrigger asChild>
+                                  <Button variant="outline" size="sm" className="w-full">
+                                    Reviews
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+                                  <HostedServiceReviews />
+                                </DialogContent>
+                              </Dialog>
+
+                              <Dialog>
+                                <DialogTrigger asChild>
                                   <Button variant="outline" size="sm" className="w-full gap-2">
                                     <BarChart2 className="h-3 w-3" />
                                     {t("Analytics", "통계")}
