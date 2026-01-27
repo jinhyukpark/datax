@@ -15,16 +15,66 @@ interface HostedServiceManageProps {
   data: any;
 }
 
-const mockMetrics = Array.from({ length: 24 }, (_, i) => ({
-  time: `${i}:00`,
-  requests: Math.floor(Math.random() * 500) + 100,
-  latency: Math.floor(Math.random() * 50) + 10,
-  cpu: Math.floor(Math.random() * 40) + 10,
-}));
 
 export function HostedServiceManage({ data }: HostedServiceManageProps) {
   const [copiedKey, setCopiedKey] = useState(false);
   const [isRunning, setIsRunning] = useState(true);
+  const [timeRange, setTimeRange] = useState("7d");
+
+  const generateMockData = (range: string) => {
+    const data = [];
+    switch(range) {
+      case "7d":
+        for (let i = 0; i < 7; i++) {
+          data.push({
+            time: `Day ${i + 1}`,
+            requests: Math.floor(Math.random() * 5000) + 1000,
+            latency: Math.floor(Math.random() * 40) + 20,
+          });
+        }
+        break;
+      case "1m":
+        for (let i = 0; i < 30; i += 2) {
+           data.push({
+            time: `${i + 1}th`,
+            requests: Math.floor(Math.random() * 8000) + 2000,
+            latency: Math.floor(Math.random() * 50) + 20,
+          });
+        }
+        break;
+      case "6m":
+        const months6 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+        months6.forEach(m => {
+          data.push({
+            time: m,
+            requests: Math.floor(Math.random() * 50000) + 10000,
+            latency: Math.floor(Math.random() * 60) + 30,
+          });
+        });
+        break;
+      case "1y":
+        const months12 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        months12.forEach(m => {
+          data.push({
+            time: m,
+            requests: Math.floor(Math.random() * 100000) + 20000,
+            latency: Math.floor(Math.random() * 70) + 30,
+          });
+        });
+        break;
+      default:
+         for (let i = 0; i < 24; i++) {
+          data.push({
+            time: `${i}:00`,
+            requests: Math.floor(Math.random() * 500) + 100,
+            latency: Math.floor(Math.random() * 50) + 10,
+          });
+         }
+    }
+    return data;
+  };
+
+  const currentData = generateMockData(timeRange);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -114,12 +164,31 @@ export function HostedServiceManage({ data }: HostedServiceManageProps) {
 
           <Card>
             <CardHeader>
-              <CardTitle>Traffic Overview</CardTitle>
-              <CardDescription>Requests per hour over the last 24 hours</CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Traffic Overview</CardTitle>
+                  <CardDescription>Requests over time</CardDescription>
+                </div>
+                <div className="flex items-center space-x-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+                  {["7d", "1m", "6m", "1y"].map((r) => (
+                    <button
+                      key={r}
+                      onClick={() => setTimeRange(r)}
+                      className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
+                        timeRange === r 
+                          ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm" 
+                          : "text-slate-500 hover:text-slate-900 dark:hover:text-slate-300"
+                      }`}
+                    >
+                      {r === "7d" ? "7 Days" : r === "1m" ? "1 Month" : r === "6m" ? "6 Months" : "1 Year"}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </CardHeader>
             <CardContent className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={mockMetrics}>
+                <LineChart data={currentData}>
                   <XAxis dataKey="time" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
                   <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value}`} />
                   <Tooltip />
