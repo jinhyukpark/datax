@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Download, Calendar as CalendarIcon, DollarSign, Percent, Eye } from "lucide-react";
-import { useState } from "react";
+import { Download, Calendar as CalendarIcon, DollarSign, Percent, Eye, Plus, Check, Search, User } from "lucide-react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -26,10 +26,50 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { format, isWithinInterval, parseISO, startOfDay, endOfDay, subDays } from "date-fns";
+import { format, isWithinInterval, parseISO, startOfDay, endOfDay, subDays, addDays, differenceInDays } from "date-fns";
 import { DateRange } from "react-day-picker";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList
+} from "@/components/ui/command";
+
+// Mock Users for Selection
+const MOCK_USERS = [
+  { id: "u1", name: "Kim Min-su", email: "kim@example.com", company: "Tech Corp", avatar: "/avatars/01.png" },
+  { id: "u2", name: "Lee Ji-won", email: "lee@example.com", company: "Vision AI", avatar: "/avatars/02.png" },
+  { id: "u3", name: "Park Sung-hoon", email: "park@example.com", company: "StartUp Inc", avatar: "/avatars/03.png" },
+  { id: "u4", name: "Choi Yu-jin", email: "choi@example.com", company: "Green Eco", avatar: "/avatars/04.png" },
+  { id: "u5", name: "Jung Woo-sung", email: "jung@example.com", company: "Data Systems", avatar: "/avatars/05.png" },
+];
+
+// Mock Ad Products
+const AD_PRODUCTS = [
+  { id: "banner", name: "Banner Ad (Main)", price: 79, description: "Top banner on main page" },
+  { id: "sidebar", name: "Sidebar Ad", price: 59, description: "Right sidebar on details pages" },
+  { id: "listing", name: "Listing Ad", price: 69, description: "Highlighted in search results" },
+  { id: "newsletter", name: "Newsletter Feature", price: 150, description: "Mention in weekly newsletter" },
+];
+
+// Mock Reserved Dates
+const RESERVED_DATES = [
+  addDays(new Date(), 2),
+  addDays(new Date(), 3),
+  addDays(new Date(), 5),
+  addDays(new Date(), 6),
+  addDays(new Date(), 7),
+];
 
 // Mock Payments
 const MOCK_DATA_PAYMENTS = [
@@ -156,6 +196,14 @@ export default function PaymentManagement() {
   const [detailOpen, setDetailOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("data");
 
+  // Reservation State
+  const [reservationOpen, setReservationOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [userSearchOpen, setUserSearchOpen] = useState(false);
+  const [selectedAdProducts, setSelectedAdProducts] = useState<string[]>([]);
+  const [reservationDate, setReservationDate] = useState<DateRange | undefined>();
+  const [discountRate, setDiscountRate] = useState(0);
+
   const filterPayments = (payments: any[]) => {
     if (!date?.from) return payments;
     
@@ -188,6 +236,21 @@ export default function PaymentManagement() {
     setSelectedPayment(payment);
     setDetailOpen(true);
   };
+
+  // Reservation Calculations
+  const selectedProductsData = AD_PRODUCTS.filter(p => selectedAdProducts.includes(p.id));
+  const productsTotal = selectedProductsData.reduce((sum, p) => sum + p.price, 0);
+  
+  const durationDays = reservationDate?.from && reservationDate?.to 
+    ? differenceInDays(reservationDate.to, reservationDate.from) + 1 
+    : 0;
+  
+  const weeks = Math.ceil(durationDays / 7) || 1; // Minimum 1 week billing unit for simplicity or use exact days
+  // Let's assume price is per week for simplicity as per previous mockups, or just flat price for now based on previous context "79/week"
+  
+  const baseTotal = productsTotal * weeks;
+  const discountAmount = baseTotal * (discountRate / 100);
+  const finalTotal = baseTotal - discountAmount;
 
   return (
     <AdminLayout title="Payment Management">
@@ -338,6 +401,216 @@ export default function PaymentManagement() {
 
           {/* Advertising Payments Tab */}
           <TabsContent value="ads" className="mt-0">
+            <div className="flex justify-end mb-4">
+               <Dialog open={reservationOpen} onOpenChange={setReservationOpen}>
+                <DialogTrigger asChild>
+                  <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
+                    <Plus className="h-4 w-4" />
+                    Reserve Ad Space
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[700px] h-[90vh] sm:h-auto overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Create Ad Reservation</DialogTitle>
+                    <DialogDescription>
+                      Manually reserve advertising space for a client.
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <div className="grid gap-6 py-4">
+                    {/* User Selection */}
+                    <div className="space-y-2">
+                      <Label>Select Client</Label>
+                      <Popover open={userSearchOpen} onOpenChange={setUserSearchOpen}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={userSearchOpen}
+                            className="w-full justify-between"
+                          >
+                            {selectedUser ? (
+                              <div className="flex items-center gap-2">
+                                <Avatar className="h-6 w-6">
+                                  <AvatarImage src={selectedUser.avatar} />
+                                  <AvatarFallback>{selectedUser.name[0]}</AvatarFallback>
+                                </Avatar>
+                                <span>{selectedUser.name}</span>
+                                <span className="text-muted-foreground text-xs ml-2">({selectedUser.company})</span>
+                              </div>
+                            ) : (
+                              "Search for client..."
+                            )}
+                            <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[400px] p-0">
+                          <Command>
+                            <CommandInput placeholder="Search client..." />
+                            <CommandList>
+                              <CommandEmpty>No client found.</CommandEmpty>
+                              <CommandGroup>
+                                {MOCK_USERS.map((user) => (
+                                  <CommandItem
+                                    key={user.id}
+                                    value={user.name}
+                                    onSelect={() => {
+                                      setSelectedUser(user);
+                                      setUserSearchOpen(false);
+                                    }}
+                                  >
+                                    <div className="flex items-center gap-2 w-full">
+                                      <Avatar className="h-8 w-8">
+                                        <AvatarImage src={user.avatar} />
+                                        <AvatarFallback>{user.name[0]}</AvatarFallback>
+                                      </Avatar>
+                                      <div className="flex flex-col">
+                                        <span className="font-medium">{user.name}</span>
+                                        <span className="text-xs text-muted-foreground">{user.company} • {user.email}</span>
+                                      </div>
+                                      {selectedUser?.id === user.id && (
+                                        <Check className="ml-auto h-4 w-4" />
+                                      )}
+                                    </div>
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {/* Left Column: Products & Dates */}
+                      <div className="space-y-6">
+                         {/* Product Selection */}
+                        <div className="space-y-3">
+                          <Label>Ad Products</Label>
+                          <div className="border rounded-lg p-4 space-y-3 bg-slate-50 dark:bg-slate-900/50">
+                            {AD_PRODUCTS.map((product) => (
+                              <div key={product.id} className="flex items-start space-x-3">
+                                <Checkbox 
+                                  id={product.id} 
+                                  checked={selectedAdProducts.includes(product.id)}
+                                  onCheckedChange={(checked) => {
+                                    if (checked) {
+                                      setSelectedAdProducts([...selectedAdProducts, product.id]);
+                                    } else {
+                                      setSelectedAdProducts(selectedAdProducts.filter(id => id !== product.id));
+                                    }
+                                  }}
+                                />
+                                <div className="grid gap-1.5 leading-none w-full">
+                                  <label
+                                    htmlFor={product.id}
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex justify-between"
+                                  >
+                                    <span>{product.name}</span>
+                                    <span className="font-bold">${product.price}/wk</span>
+                                  </label>
+                                  <p className="text-xs text-muted-foreground">
+                                    {product.description}
+                                  </p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Discount */}
+                        <div className="space-y-2">
+                          <Label>Discount (%)</Label>
+                          <div className="relative">
+                            <Input 
+                              type="number" 
+                              min="0" 
+                              max="100"
+                              value={discountRate}
+                              onChange={(e) => setDiscountRate(Number(e.target.value))}
+                              className="pl-9"
+                            />
+                            <Percent className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right Column: Calendar */}
+                      <div className="space-y-2">
+                        <Label>Select Duration</Label>
+                        <div className="border rounded-md p-3 flex justify-center bg-white dark:bg-slate-950">
+                          <Calendar
+                            mode="range"
+                            selected={reservationDate}
+                            onSelect={setReservationDate}
+                            numberOfMonths={1}
+                            disabled={[
+                              { before: new Date() },
+                              ...RESERVED_DATES
+                            ]}
+                            modifiers={{
+                              booked: RESERVED_DATES
+                            }}
+                            modifiersStyles={{
+                              booked: { textDecoration: "line-through", color: "#ef4444", opacity: 0.5 }
+                            }}
+                          />
+                        </div>
+                        <div className="flex gap-4 text-xs text-muted-foreground justify-center">
+                           <div className="flex items-center gap-1">
+                            <div className="w-2 h-2 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                            <span>Available</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <div className="w-2 h-2 rounded-full bg-red-400 opacity-50"></div>
+                            <span>Reserved</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Summary Section */}
+                    <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg space-y-3">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Selected Products ({selectedAdProducts.length})</span>
+                        <span>${productsTotal.toLocaleString()}/week</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Duration</span>
+                        <span>{weeks} week(s) ({durationDays} days)</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                         <span className="text-muted-foreground">Subtotal</span>
+                         <span>${baseTotal.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-sm text-green-600">
+                         <span>Discount ({discountRate}%)</span>
+                         <span>-${discountAmount.toLocaleString()}</span>
+                      </div>
+                      <div className="border-t border-slate-200 dark:border-slate-700 pt-3 flex justify-between items-center">
+                        <span className="font-bold text-lg">Total</span>
+                        <span className="font-bold text-2xl text-blue-600">${finalTotal.toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setReservationOpen(false)}>Cancel</Button>
+                    <Button 
+                      className="bg-blue-600 hover:bg-blue-700" 
+                      onClick={() => {
+                        setReservationOpen(false);
+                        // In a real app, handle submission here
+                      }}
+                      disabled={!selectedUser || selectedAdProducts.length === 0 || !reservationDate?.from || !reservationDate?.to}
+                    >
+                      Confirm Reservation
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+            
             <div className="rounded-md border bg-white dark:bg-slate-900">
               <Table>
                 <TableHeader>
