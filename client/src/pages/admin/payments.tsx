@@ -10,10 +10,11 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Download, Calendar as CalendarIcon, DollarSign, Percent, Eye, Plus, Check, Search, User } from "lucide-react";
+import { Download, Calendar as CalendarIcon, DollarSign, Percent, Eye, Plus, Check, Search, User, Edit2, Save, X } from "lucide-react";
 import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Popover,
   PopoverContent,
@@ -210,6 +211,8 @@ export default function PaymentManagement() {
   
   const [selectedPayment, setSelectedPayment] = useState<any>(null);
   const [detailOpen, setDetailOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState<any>({});
   const [activeTab, setActiveTab] = useState("data");
 
   // Reservation State
@@ -250,7 +253,21 @@ export default function PaymentManagement() {
 
   const handleViewDetails = (payment: any) => {
     setSelectedPayment(payment);
+    setEditForm(payment); // Initialize edit form
+    setIsEditing(false); // Reset edit mode
     setDetailOpen(true);
+  };
+
+  const handleSave = () => {
+    // In a real app, you would make an API call here
+    setSelectedPayment(editForm);
+    setIsEditing(false);
+    // Also update the list in a real app
+  };
+
+  const handleStatusChange = (newStatus: string) => {
+     setSelectedPayment({...selectedPayment, status: newStatus});
+     // In a real app, update the list state too
   };
 
   // Reservation Calculations
@@ -685,7 +702,15 @@ export default function PaymentManagement() {
         <Dialog open={detailOpen} onOpenChange={setDetailOpen}>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
-              <DialogTitle>{activeTab === "ads" ? "Ad Inquiry Details" : "Payment Details"}</DialogTitle>
+              <DialogTitle className="flex justify-between items-center pr-8">
+                <span>{activeTab === "ads" ? "Ad Inquiry Details" : "Payment Details"}</span>
+                {activeTab === "ads" && !isEditing && (
+                  <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)}>
+                    <Edit2 className="h-4 w-4 mr-2" />
+                    Edit
+                  </Button>
+                )}
+              </DialogTitle>
               <DialogDescription>
                 Transaction information for {selectedPayment?.id}
               </DialogDescription>
@@ -707,7 +732,9 @@ export default function PaymentManagement() {
                   </div>
                   <div className="space-y-1">
                     <span className="text-xs font-medium text-muted-foreground block">Status</span>
-                    <Badge variant="outline">{selectedPayment.status}</Badge>
+                    <Badge variant={selectedPayment.status === 'Completed' ? 'default' : selectedPayment.status === 'Rejected' ? 'destructive' : 'secondary'}>
+                      {selectedPayment.status}
+                    </Badge>
                   </div>
                 </div>
                 
@@ -722,18 +749,42 @@ export default function PaymentManagement() {
                   
                   {/* Contact Info for Ad Inquiries */}
                   {activeTab === "ads" && (
-                     <div className="grid grid-cols-2 gap-4 mb-4 bg-slate-50 dark:bg-slate-900 p-3 rounded-md">
+                     <div className="grid grid-cols-2 gap-4 mb-4">
                         <div className="space-y-1">
                           <span className="text-xs font-medium text-muted-foreground">Contact Name</span>
-                          <p className="text-sm">{selectedPayment.contactName || "N/A"}</p>
+                          {isEditing ? (
+                            <Input 
+                              value={editForm.contactName || ""} 
+                              onChange={(e) => setEditForm({...editForm, contactName: e.target.value})}
+                              className="h-8"
+                            />
+                          ) : (
+                            <p className="text-sm">{selectedPayment.contactName || "N/A"}</p>
+                          )}
                         </div>
                         <div className="space-y-1">
                           <span className="text-xs font-medium text-muted-foreground">Phone</span>
-                          <p className="text-sm">{selectedPayment.phone || "N/A"}</p>
+                          {isEditing ? (
+                            <Input 
+                              value={editForm.phone || ""} 
+                              onChange={(e) => setEditForm({...editForm, phone: e.target.value})}
+                              className="h-8"
+                            />
+                          ) : (
+                             <p className="text-sm">{selectedPayment.phone || "N/A"}</p>
+                          )}
                         </div>
                         <div className="col-span-2 space-y-1">
                           <span className="text-xs font-medium text-muted-foreground">Email</span>
-                          <p className="text-sm">{selectedPayment.email || "N/A"}</p>
+                          {isEditing ? (
+                            <Input 
+                              value={editForm.email || ""} 
+                              onChange={(e) => setEditForm({...editForm, email: e.target.value})}
+                              className="h-8"
+                            />
+                          ) : (
+                            <p className="text-sm">{selectedPayment.email || "N/A"}</p>
+                          )}
                         </div>
                      </div>
                   )}
@@ -742,9 +793,20 @@ export default function PaymentManagement() {
                     <span className="text-xs font-medium text-muted-foreground">
                       {activeTab === "ads" ? "Request Details / Notes" : "Description/Notes"}
                     </span>
-                    <p className="text-sm text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 p-3 rounded-md">
-                      {activeTab === "ads" && selectedPayment.notes ? selectedPayment.notes : selectedPayment.details}
-                    </p>
+                    {isEditing ? (
+                      <Textarea 
+                        value={activeTab === "ads" ? (editForm.notes || "") : (editForm.details || "")}
+                        onChange={(e) => {
+                          const key = activeTab === "ads" ? "notes" : "details";
+                          setEditForm({...editForm, [key]: e.target.value});
+                        }}
+                        className="min-h-[100px]"
+                      />
+                    ) : (
+                      <p className="text-sm text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 p-3 rounded-md">
+                        {activeTab === "ads" && selectedPayment.notes ? selectedPayment.notes : selectedPayment.details}
+                      </p>
+                    )}
                   </div>
 
                   {activeTab !== "ads" && (
@@ -776,6 +838,42 @@ export default function PaymentManagement() {
                 </div>
               </div>
             )}
+            <DialogFooter className="flex gap-2 sm:justify-between sm:gap-0">
+               {isEditing ? (
+                 <div className="flex w-full justify-end gap-2">
+                    <Button variant="outline" onClick={() => {
+                      setIsEditing(false);
+                      setEditForm(selectedPayment);
+                    }}>Cancel</Button>
+                    <Button onClick={handleSave}>Save Changes</Button>
+                 </div>
+               ) : (
+                 <>
+                   {activeTab === "ads" ? (
+                     <div className="flex w-full justify-between items-center">
+                        <div className="flex gap-2">
+                          <Button 
+                            variant="destructive" 
+                            className="bg-red-50 text-red-600 hover:bg-red-100 border-red-200"
+                            onClick={() => handleStatusChange("Rejected")}
+                          >
+                            Reject Request
+                          </Button>
+                          <Button 
+                             className="bg-green-600 hover:bg-green-700 text-white"
+                             onClick={() => handleStatusChange("Completed")}
+                          >
+                            Approve Request
+                          </Button>
+                        </div>
+                        <Button variant="outline" onClick={() => setDetailOpen(false)}>Close</Button>
+                     </div>
+                   ) : (
+                     <Button className="w-full sm:w-auto ml-auto" onClick={() => setDetailOpen(false)}>Close</Button>
+                   )}
+                 </>
+               )}
+            </DialogFooter>
             <DialogFooter>
               <Button onClick={() => setDetailOpen(false)}>Close</Button>
             </DialogFooter>
