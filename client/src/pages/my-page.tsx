@@ -1506,7 +1506,7 @@ export default function MyPage() {
                                           <Eye className="h-3 w-3" />
                                         </Button>
                                       </DialogTrigger>
-                                      <DialogContent>
+                                      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
                                         <HostedRequestDetails data={item} />
                                       </DialogContent>
                                     </Dialog>
