@@ -719,20 +719,20 @@ export default function PaymentManagement() {
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <span className="text-xs font-medium text-muted-foreground">Transaction ID</span>
-                    <p className="text-sm font-medium">{selectedPayment.id}</p>
+                    <span className="text-sm font-medium text-muted-foreground">Transaction ID</span>
+                    <p className="text-base font-medium">{selectedPayment.id}</p>
                   </div>
                   <div className="space-y-1">
-                    <span className="text-xs font-medium text-muted-foreground">Date</span>
-                    <p className="text-sm font-medium">{selectedPayment.date}</p>
+                    <span className="text-sm font-medium text-muted-foreground">Date</span>
+                    <p className="text-base font-medium">{selectedPayment.date}</p>
                   </div>
                   <div className="space-y-1">
-                    <span className="text-xs font-medium text-muted-foreground">User/Company</span>
-                    <p className="text-sm font-medium">{selectedPayment.user}</p>
+                    <span className="text-sm font-medium text-muted-foreground">User/Company</span>
+                    <p className="text-base font-medium">{selectedPayment.user}</p>
                   </div>
                   <div className="space-y-1">
-                    <span className="text-xs font-medium text-muted-foreground block">Status</span>
-                    <Badge variant={selectedPayment.status === 'Completed' ? 'default' : selectedPayment.status === 'Rejected' ? 'destructive' : 'secondary'}>
+                    <span className="text-sm font-medium text-muted-foreground block">Status</span>
+                    <Badge variant={selectedPayment.status === 'Completed' ? 'default' : selectedPayment.status === 'Rejected' ? 'destructive' : 'secondary'} className="text-sm">
                       {selectedPayment.status}
                     </Badge>
                   </div>
@@ -740,10 +740,10 @@ export default function PaymentManagement() {
                 
                 <div className="border-t pt-4">
                   <div className="space-y-1 mb-4">
-                    <span className="text-xs font-medium text-muted-foreground">Product</span>
-                    <p className="text-sm font-medium">{selectedPayment.product}</p>
+                    <span className="text-sm font-medium text-muted-foreground">Product</span>
+                    <p className="text-base font-medium">{selectedPayment.product}</p>
                     {selectedPayment.duration && (
-                      <span className="text-xs text-muted-foreground">Duration: {selectedPayment.duration}</span>
+                      <span className="text-sm text-muted-foreground">Duration: {selectedPayment.duration}</span>
                     )}
                   </div>
                   
@@ -751,46 +751,46 @@ export default function PaymentManagement() {
                   {activeTab === "ads" && (
                      <div className="grid grid-cols-2 gap-4 mb-4">
                         <div className="space-y-1">
-                          <span className="text-xs font-medium text-muted-foreground">Contact Name</span>
+                          <span className="text-sm font-medium text-muted-foreground">Contact Name</span>
                           {isEditing ? (
                             <Input 
                               value={editForm.contactName || ""} 
                               onChange={(e) => setEditForm({...editForm, contactName: e.target.value})}
-                              className="h-8"
+                              className="h-10 text-base"
                             />
                           ) : (
-                            <p className="text-sm">{selectedPayment.contactName || "N/A"}</p>
+                            <p className="text-base">{selectedPayment.contactName || "N/A"}</p>
                           )}
                         </div>
                         <div className="space-y-1">
-                          <span className="text-xs font-medium text-muted-foreground">Phone</span>
+                          <span className="text-sm font-medium text-muted-foreground">Phone</span>
                           {isEditing ? (
                             <Input 
                               value={editForm.phone || ""} 
                               onChange={(e) => setEditForm({...editForm, phone: e.target.value})}
-                              className="h-8"
+                              className="h-10 text-base"
                             />
                           ) : (
-                             <p className="text-sm">{selectedPayment.phone || "N/A"}</p>
+                             <p className="text-base">{selectedPayment.phone || "N/A"}</p>
                           )}
                         </div>
                         <div className="col-span-2 space-y-1">
-                          <span className="text-xs font-medium text-muted-foreground">Email</span>
+                          <span className="text-sm font-medium text-muted-foreground">Email</span>
                           {isEditing ? (
                             <Input 
                               value={editForm.email || ""} 
                               onChange={(e) => setEditForm({...editForm, email: e.target.value})}
-                              className="h-8"
+                              className="h-10 text-base"
                             />
                           ) : (
-                            <p className="text-sm">{selectedPayment.email || "N/A"}</p>
+                            <p className="text-base">{selectedPayment.email || "N/A"}</p>
                           )}
                         </div>
                      </div>
                   )}
 
                   <div className="space-y-1 mb-4">
-                    <span className="text-xs font-medium text-muted-foreground">
+                    <span className="text-sm font-medium text-muted-foreground">
                       {activeTab === "ads" ? "Request Details / Notes" : "Description/Notes"}
                     </span>
                     {isEditing ? (
@@ -800,11 +800,11 @@ export default function PaymentManagement() {
                           const key = activeTab === "ads" ? "notes" : "details";
                           setEditForm({...editForm, [key]: e.target.value});
                         }}
-                        className="min-h-[100px]"
+                        className="min-h-[150px] text-base resize-y"
                       />
                     ) : (
-                      <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-md">
-                        <p className="text-sm text-slate-600 dark:text-slate-300">
+                      <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-md min-h-[120px] overflow-auto resize-y">
+                        <p className="text-base text-slate-600 dark:text-slate-300">
                           {activeTab === "ads" && selectedPayment.notes ? selectedPayment.notes : selectedPayment.details}
                         </p>
                       </div>
@@ -813,22 +813,22 @@ export default function PaymentManagement() {
 
                   {activeTab !== "ads" && (
                     <div className="space-y-1">
-                       <span className="text-xs font-medium text-muted-foreground">Payment Method</span>
-                       <p className="text-sm">{selectedPayment.paymentMethod}</p>
+                       <span className="text-sm font-medium text-muted-foreground">Payment Method</span>
+                       <p className="text-base">{selectedPayment.paymentMethod}</p>
                     </div>
                   )}
                 </div>
 
                 <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg space-y-2">
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-base">
                     <span className="text-muted-foreground">Subtotal</span>
                     <span>${(selectedPayment.amountValue + selectedPayment.discountValue).toLocaleString()}</span>
                   </div>
-                  <div className="flex justify-between text-sm text-green-600">
+                  <div className="flex justify-between text-base text-green-600">
                     <span>Discount</span>
                     <span>-${selectedPayment.discountValue.toLocaleString()}</span>
                   </div>
-                  <div className="border-t pt-2 flex justify-between font-bold">
+                  <div className="border-t pt-2 flex justify-between text-lg font-bold">
                     <span>{activeTab === "ads" ? "Estimated Cost" : "Total Paid"}</span>
                     <span>{selectedPayment.amount}</span>
                   </div>
