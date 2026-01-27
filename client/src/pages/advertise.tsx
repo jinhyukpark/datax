@@ -174,8 +174,7 @@ export default function Advertise() {
     setIsModalOpen(false);
     
     if (action === 'submit_inquiry') {
-      toast.success(t("Inquiry submitted! A manager will contact you soon.", "문의가 접수되었습니다! 담당자가 곧 연락드릴 예정입니다."));
-      setLocation('/my-page');
+      toast.success(t("Application submitted successfully.", "신청이 완료되었습니다."));
     } else {
       toast.success(t("Added to cart", "장바구니에 추가되었습니다"));
     }
