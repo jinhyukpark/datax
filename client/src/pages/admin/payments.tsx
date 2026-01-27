@@ -700,7 +700,7 @@ export default function PaymentManagement() {
 
         {/* Detail Dialog */}
         <Dialog open={detailOpen} onOpenChange={setDetailOpen}>
-          <DialogContent className="sm:max-w-[500px]">
+          <DialogContent className="sm:max-w-[600px] font-sans">
             <DialogHeader>
               <div className="flex justify-between items-center pr-8">
                 <DialogTitle>{activeTab === "ads" ? "Ad Inquiry Details" : "Payment Details"}</DialogTitle>
