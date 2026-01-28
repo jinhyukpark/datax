@@ -18,13 +18,28 @@ import {
   Activity,
   Terminal,
   Settings,
-  FileSignature
+  FileSignature,
+  Power,
+  XCircle
 } from "lucide-react";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { HostedServiceManage } from "@/components/hosted-service-manage";
 import { HostedServiceLogs } from "@/components/hosted-service-logs";
 import { ContractDetailsDialog } from "@/components/contract-details-dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 // Mock Approved Hosted Services with Owner info
 const HOSTED_SERVICES_MOCK = [
@@ -91,16 +106,27 @@ export default function HostedServicesManagement() {
   const [services, setServices] = useState(HOSTED_SERVICES_MOCK);
   const [contractDialog, setContractDialog] = useState<{open: boolean, service: typeof HOSTED_SERVICES_MOCK[0] | null}>({ open: false, service: null });
 
+  const handleStopService = (id: string) => {
+    setServices(services.map(service => 
+      service.id === id ? { ...service, status: "Stopped" } : service
+    ));
+    toast.success("Service stopped successfully");
+  };
+
   const filteredServices = services.filter(service =>  
     service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     service.owner.toLowerCase().includes(searchQuery.toLowerCase()) ||
     service.ownerEmail.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const activeServices = filteredServices.filter(s => s.status === 'Active');
+  const stoppedServices = filteredServices.filter(s => s.status === 'Stopped');
+
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'Active': return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Active</Badge>;
       case 'Suspended': return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Suspended</Badge>;
+      case 'Stopped': return <Badge variant="secondary">Stopped</Badge>;
       case 'Maintenance': return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Maintenance</Badge>;
       default: return <Badge variant="secondary">{status}</Badge>;
     }
@@ -114,6 +140,121 @@ export default function HostedServicesManagement() {
       default: return <Badge variant="outline">{type}</Badge>;
     }
   };
+
+  const ServiceCard = ({ service, isStopped = false }: { service: typeof HOSTED_SERVICES_MOCK[0], isStopped?: boolean }) => (
+    <Card className={`overflow-hidden border-slate-200 dark:border-slate-800 hover:shadow-md transition-all duration-300 ${isStopped ? 'opacity-75 grayscale hover:grayscale-0' : ''}`}>
+      <div className="flex flex-col md:flex-row">
+        <div className="p-6 flex-grow">
+          <div className="flex justify-between items-start mb-2">
+            <div className="flex items-center gap-3">
+              <h3 className="text-lg font-bold">{service.title}</h3>
+              {getTypeBadge(service.type)}
+              {getStatusBadge(service.status)}
+            </div>
+          </div>
+          
+          <div className="mb-4">
+            <p className="text-muted-foreground text-sm mb-2">{service.description}</p>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="font-semibold text-slate-700 dark:text-slate-300">Owner:</span>
+              <span className="text-slate-600 dark:text-slate-400">{service.owner}</span>
+              <span className="text-slate-400 text-xs">({service.ownerEmail})</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mt-4 bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg border border-slate-100 dark:border-slate-800">
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Endpoint</p>
+              <div className="flex items-center gap-1 font-mono text-xs max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                {service.endpoint}
+              </div>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Region</p>
+              <p className="font-medium">{service.region}</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Pricing</p>
+              <p className={`font-medium ${service.pricing === 'Free' ? 'text-green-600' : ''}`}>{service.pricing}</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Uptime (30d)</p>
+              <p className="font-medium text-green-600 flex items-center gap-1">
+                <Activity className="h-3 w-3" />
+                {service.uptime}
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-3 border-t md:border-t-0 md:border-l min-w-[180px]">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="w-full gap-2" disabled={isStopped}>
+                <Settings className="h-4 w-4" />
+                Manage
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-5xl h-[90vh] p-6">
+              <HostedServiceManage data={service} />
+            </DialogContent>
+          </Dialog>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="w-full gap-2" disabled={isStopped}>
+                <Terminal className="h-4 w-4" />
+                View Logs
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-5xl p-0 border-none bg-transparent shadow-none">
+              <HostedServiceLogs serviceName={service.title} />
+            </DialogContent>
+          </Dialog>
+
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full gap-2"
+            onClick={() => setContractDialog({ open: true, service: service })}
+            disabled={isStopped}
+          >
+            <FileSignature className="h-4 w-4" />
+            Contract
+          </Button>
+
+          {!isStopped && (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline" size="sm" className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 border-red-200 dark:border-red-900/50">
+                  <Power className="h-3 w-3 mr-2" />
+                  Stop
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Stop Service?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will stop the service and move it to the Stopped Services tab. You can restart it later.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => handleStopService(service.id)} className="bg-red-600 hover:bg-red-700">
+                    Stop Service
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
+          
+          <p className="text-[10px] text-muted-foreground text-center mt-auto">
+            Next bill: {service.nextBilling}
+          </p>
+        </div>
+      </div>
+    </Card>
+  );
 
   return (
     <AdminLayout title="Hosted Service Management">
@@ -137,104 +278,44 @@ export default function HostedServicesManagement() {
         </Card>
 
         {/* Services List */}
-        <div className="space-y-4">
-          {filteredServices.length === 0 ? (
-            <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
-              <Server className="mx-auto h-12 w-12 mb-4 opacity-20" />
-              <h3 className="text-lg font-medium text-muted-foreground">No services found</h3>
-              <p className="text-sm text-muted-foreground mt-1">Try adjusting your search terms.</p>
-            </div>
-          ) : (
-            filteredServices.map((service) => (
-              <Card key={service.id} className="overflow-hidden border-slate-200 dark:border-slate-800 hover:shadow-md transition-shadow">
-                <div className="flex flex-col md:flex-row">
-                  <div className="p-6 flex-grow">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="flex items-center gap-3">
-                        <h3 className="text-lg font-bold">{service.title}</h3>
-                        {getTypeBadge(service.type)}
-                        {getStatusBadge(service.status)}
-                      </div>
-                    </div>
-                    
-                    <div className="mb-4">
-                      <p className="text-muted-foreground text-sm mb-2">{service.description}</p>
-                      <div className="flex items-center gap-2 text-sm">
-                        <span className="font-semibold text-slate-700 dark:text-slate-300">Owner:</span>
-                        <span className="text-slate-600 dark:text-slate-400">{service.owner}</span>
-                        <span className="text-slate-400 text-xs">({service.ownerEmail})</span>
-                      </div>
-                    </div>
+        <Tabs defaultValue="active" className="w-full">
+          <TabsList className="mb-4">
+            <TabsTrigger value="active">Active Services</TabsTrigger>
+            <TabsTrigger value="stopped">Stopped Services</TabsTrigger>
+          </TabsList>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mt-4 bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg border border-slate-100 dark:border-slate-800">
-                      <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">Endpoint</p>
-                        <div className="flex items-center gap-1 font-mono text-xs max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                          {service.endpoint}
-                        </div>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">Region</p>
-                        <p className="font-medium">{service.region}</p>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">Pricing</p>
-                        <p className={`font-medium ${service.pricing === 'Free' ? 'text-green-600' : ''}`}>{service.pricing}</p>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">Uptime (30d)</p>
-                        <p className="font-medium text-green-600 flex items-center gap-1">
-                          <Activity className="h-3 w-3" />
-                          {service.uptime}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-3 border-t md:border-t-0 md:border-l min-w-[180px]">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="w-full gap-2">
-                          <Settings className="h-4 w-4" />
-                          Manage
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-5xl h-[90vh] p-6">
-                        <HostedServiceManage data={service} />
-                      </DialogContent>
-                    </Dialog>
-
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="w-full gap-2">
-                          <Terminal className="h-4 w-4" />
-                          View Logs
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-5xl p-0 border-none bg-transparent shadow-none">
-                        <HostedServiceLogs serviceName={service.title} />
-                      </DialogContent>
-                    </Dialog>
-
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full gap-2"
-                      onClick={() => setContractDialog({ open: true, service: service })}
-                    >
-                      <FileSignature className="h-4 w-4" />
-                      Contract
-                    </Button>
-                    
-                    <p className="text-[10px] text-muted-foreground text-center mt-auto">
-                      Next bill: {service.nextBilling}
-                    </p>
-                  </div>
+          <TabsContent value="active">
+            <div className="space-y-4">
+              {activeServices.length === 0 ? (
+                <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
+                  <Server className="mx-auto h-12 w-12 mb-4 opacity-20" />
+                  <h3 className="text-lg font-medium text-muted-foreground">No active services found</h3>
+                  <p className="text-sm text-muted-foreground mt-1">Try adjusting your search terms.</p>
                 </div>
-              </Card>
-            ))
-          )}
-        </div>
+              ) : (
+                activeServices.map((service) => (
+                  <ServiceCard key={service.id} service={service} />
+                ))
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="stopped">
+             <div className="space-y-4">
+              {stoppedServices.length === 0 ? (
+                <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
+                  <XCircle className="mx-auto h-12 w-12 mb-4 opacity-20" />
+                  <h3 className="text-lg font-medium text-muted-foreground">No stopped services found</h3>
+                  <p className="text-sm text-muted-foreground mt-1">Stopped services will appear here.</p>
+                </div>
+              ) : (
+                stoppedServices.map((service) => (
+                   <ServiceCard key={service.id} service={service} isStopped={true} />
+                ))
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
 
       {contractDialog.service && (
