@@ -678,8 +678,6 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
             </Card>
           </div>
         </TabsContent>
-          </>
-        )}
       </Tabs>
       
       {isEditable && (
