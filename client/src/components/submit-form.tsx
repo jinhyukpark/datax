@@ -314,7 +314,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   );
 
   const GeneralForm = () => (
-    <form onSubmit={handleGeneralSubmit} className="flex flex-col h-full overflow-hidden">
+    <form onSubmit={handleGeneralSubmit} className="flex flex-col flex-1 overflow-hidden min-h-0">
         <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-6">
         <div className="space-y-8">
             {/* Section Header */}
@@ -1527,7 +1527,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
       </div>
 
       {mode === 'edit-approved' ? (
-        <Tabs defaultValue={defaultTab} className="flex flex-col h-full overflow-hidden w-full">
+        <Tabs defaultValue={defaultTab} className="flex flex-col flex-1 overflow-hidden w-full min-h-0">
           <div className="px-6 shrink-0">
           <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="overview">{t("Overview", "기본 정보")}</TabsTrigger>
@@ -1536,8 +1536,8 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
           </TabsList>
           </div>
 
-          <TabsContent value="overview" className="flex-1 overflow-hidden flex flex-col h-full mt-0">
-            <div className="flex-1 overflow-hidden flex flex-col">
+          <TabsContent value="overview" className="flex-1 overflow-hidden flex flex-col min-h-0 mt-0">
+            <div className="flex-1 overflow-hidden flex flex-col min-h-0">
             <Alert className="mb-6 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200 shrink-0 mx-6">
               <AlertTitle>{t("Info", "안내")}</AlertTitle>
               <AlertDescription>
