@@ -598,29 +598,12 @@ export default function SubmissionManagement() {
        return (
         <Tabs defaultValue="requests" className="w-full">
            <TabsList className="mb-4">
-              <TabsTrigger value="requests">Requests (Submissions)</TabsTrigger>
-              <TabsTrigger value="active">Active Services</TabsTrigger>
+              <TabsTrigger value="requests">Active Services</TabsTrigger>
               <TabsTrigger value="stopped">Stopped Services</TabsTrigger>
            </TabsList>
            
            <TabsContent value="requests">
               {submissionContent}
-           </TabsContent>
-           
-           <TabsContent value="active">
-              <div className="space-y-4">
-                 {activeServices.length === 0 ? (
-                    <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
-                       <Server className="mx-auto h-12 w-12 mb-4 opacity-20" />
-                       <h3 className="text-lg font-medium text-muted-foreground">No active services found</h3>
-                       <p className="text-sm text-muted-foreground mt-1">Services will appear here after approval and deployment.</p>
-                    </div>
-                 ) : (
-                    activeServices.map((service) => (
-                       <ServiceCard key={service.id} service={service} />
-                    ))
-                 )}
-              </div>
            </TabsContent>
            
            <TabsContent value="stopped">
