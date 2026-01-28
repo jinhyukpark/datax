@@ -57,6 +57,7 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
     category: "Analysis",
     accessModel: "API",
     price: "Free",
+    priceAmount: "",
     license: "commercial",
     version: "",
     tags: [] as string[],
@@ -548,7 +549,7 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
 
               <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
                 <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Pricing <span className="text-red-500">*</span></Label>
-                <RadioGroup value={detailsData.price.toLowerCase()} onValueChange={(val) => handleDetailsChange('price', val)} className="gap-2">
+                <RadioGroup value={detailsData.price.toLowerCase()} onValueChange={(val) => handleDetailsChange('price', val === 'free' ? 'Free' : 'Paid')} className="gap-2">
                   {["Free", "Paid"].map((p) => (
                     <div key={p} className="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800">
                       <RadioGroupItem value={p.toLowerCase()} id={`pricing-${p.toLowerCase()}`} />
@@ -556,6 +557,24 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
                     </div>
                   ))}
                 </RadioGroup>
+                
+                {detailsData.price === 'Paid' && (
+                  <div className="mt-3 animate-in fade-in slide-in-from-top-2">
+                    <Label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Price (USD)</Label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-2.5 text-muted-foreground">$</span>
+                      <Input 
+                        value={detailsData.priceAmount || ''} 
+                        onChange={(e) => handleDetailsChange('priceAmount', e.target.value)}
+                        placeholder="0.00" 
+                        className="pl-7 h-9"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
