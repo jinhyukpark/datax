@@ -65,7 +65,9 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
     useCases: [{ title: "", content: "" }],
     longDescription: data.description || "",
     featuredImages: ["image01.png", "image02.png", "image03.png", "image04.png"] as string[],
-    agentLogo: ""
+    agentLogo: "",
+    refundPolicy: data.refundPolicy || "If you are not satisfied with our service, you can request a full refund within 14 days of your purchase. Please contact support for assistance.",
+    termsOfService: data.termsOfService || "By using this service, you agree to our terms and conditions. We reserve the right to modify these terms at any time."
   });
 
   const handleChange = (field: string, value: any) => {
@@ -199,10 +201,10 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
               Documentation
             </TabsTrigger>
             <TabsTrigger 
-              value="pricing" 
+              value="terms" 
               className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
             >
-              Pricing
+              Terms & Policies
             </TabsTrigger>
           </TabsList>
 
@@ -629,56 +631,54 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
           </div>
         </TabsContent>
 
-        {/* Pricing Tab */}
-        <TabsContent value="pricing" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Free Plan */}
-            <Card className="border-slate-200 dark:border-slate-800">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-bold mb-2">Free Tier</h3>
-                <div className="text-3xl font-bold mb-4">$0 <span className="text-sm font-normal text-muted-foreground">/ month</span></div>
-                <p className="text-sm text-muted-foreground mb-6">Perfect for testing and personal projects.</p>
-                <Button className="w-full mb-6" variant="outline">Current Plan</Button>
-                <ul className="space-y-3 text-sm">
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> 1,000 API calls / month</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Basic support</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Community access</li>
-                </ul>
-              </CardContent>
-            </Card>
+        {/* Terms & Policies Tab */}
+        <TabsContent value="terms" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="space-y-6">
+            <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+              <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold text-sm">
+                <FileText className="h-4 w-4" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold">Terms & Policies</h2>
+                <p className="text-xs text-muted-foreground">Define your service terms and refund policies</p>
+              </div>
+            </div>
 
-            {/* Pro Plan */}
-            <Card className="border-indigo-200 bg-indigo-50/50 dark:border-indigo-800 dark:bg-indigo-900/10 relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">POPULAR</div>
-              <CardContent className="p-6">
-                <h3 className="text-lg font-bold mb-2 text-indigo-700 dark:text-indigo-300">Pro Tier</h3>
-                <div className="text-3xl font-bold mb-4">$49 <span className="text-sm font-normal text-muted-foreground">/ month</span></div>
-                <p className="text-sm text-muted-foreground mb-6">For professional developers and small teams.</p>
-                <Button className="w-full mb-6 bg-indigo-600 hover:bg-indigo-700 text-white">Upgrade</Button>
-                <ul className="space-y-3 text-sm">
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-indigo-500" /> 100,000 API calls / month</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-indigo-500" /> Priority support</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-indigo-500" /> Advanced analytics</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-indigo-500" /> SLA Guarantee</li>
-                </ul>
-              </CardContent>
-            </Card>
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <Label className="font-semibold text-sm">Terms of Service</Label>
+                <div className="text-xs text-muted-foreground mb-2">
+                  Please describe the terms and conditions for using your service.
+                </div>
+                <Textarea 
+                  value={detailsData.termsOfService} 
+                  onChange={(e) => handleDetailsChange('termsOfService', e.target.value)} 
+                  placeholder="Enter your terms of service here..." 
+                  className="min-h-[200px] font-normal leading-relaxed" 
+                />
+              </div>
 
-            {/* Enterprise Plan */}
-            <Card className="border-slate-200 dark:border-slate-800">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-bold mb-2">Enterprise</h3>
-                <div className="text-3xl font-bold mb-4">Custom</div>
-                <p className="text-sm text-muted-foreground mb-6">For large scale applications and organizations.</p>
-                <Button className="w-full mb-6" variant="outline">Contact Sales</Button>
-                <ul className="space-y-3 text-sm">
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Unlimited API calls</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Dedicated account manager</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> Custom integrations</li>
-                  <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500" /> On-premise deployment</li>
-                </ul>
-              </CardContent>
-            </Card>
+              <div className="space-y-3">
+                <Label className="font-semibold text-sm">Refund Policy</Label>
+                <div className="text-xs text-muted-foreground mb-2">
+                  Explain your refund policy for users who purchase your service.
+                </div>
+                <Textarea 
+                  value={detailsData.refundPolicy} 
+                  onChange={(e) => handleDetailsChange('refundPolicy', e.target.value)} 
+                  placeholder="Enter your refund policy here..." 
+                  className="min-h-[150px] font-normal leading-relaxed" 
+                />
+              </div>
+            </div>
+            
+            <Alert className="bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800">
+              <Info className="h-4 w-4 text-slate-500" />
+              <AlertTitle className="text-slate-700 dark:text-slate-300">Note</AlertTitle>
+              <AlertDescription className="text-slate-600 dark:text-slate-400 text-xs">
+                These terms will be displayed to users before they subscribe to your service. Ensure they comply with platform guidelines.
+              </AlertDescription>
+            </Alert>
           </div>
         </TabsContent>
       </Tabs>
