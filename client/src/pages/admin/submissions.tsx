@@ -423,7 +423,7 @@ export default function SubmissionManagement() {
             </ScrollArea>
           )}
 
-          {viewDialog.item && viewDialog.item.status !== 'Approved' && viewDialog.item.status !== 'Rejected' && (
+          {viewDialog.item && viewDialog.item.status !== 'Rejected' && (
             <div className="p-4 border-t flex justify-end gap-2 bg-slate-50 dark:bg-slate-900/50">
               {viewDialog.mode === 'application' ? (
                 <Button 
@@ -444,6 +444,7 @@ export default function SubmissionManagement() {
                   <Button 
                     className="bg-green-600 hover:bg-green-700"
                     onClick={() => handleApproveClick(viewDialog.item!.id)}
+                    disabled={viewDialog.item.status === 'Approved'}
                   >
                     Approve Submission
                   </Button>
