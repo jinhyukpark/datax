@@ -1526,11 +1526,10 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
 
       {mode === 'edit-approved' ? (
         <Tabs defaultValue={defaultTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="overview">{t("Overview", "기본 정보")}</TabsTrigger>
             <TabsTrigger value="documentation">{t("Documentation", "문서")}</TabsTrigger>
             <TabsTrigger value="pricing">{t("Pricing", "가격")}</TabsTrigger>
-            <TabsTrigger value="reviews">{t("Reviews", "리뷰")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -1552,10 +1551,6 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
 
           <TabsContent value="pricing">
             <PricingForm />
-          </TabsContent>
-
-          <TabsContent value="reviews">
-            <ReviewsForm />
           </TabsContent>
         </Tabs>
       ) : (
