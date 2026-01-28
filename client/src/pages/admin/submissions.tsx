@@ -311,6 +311,16 @@ export default function SubmissionManagement() {
                           <>
                             <Button 
                               size="sm" 
+                              variant="outline"
+                              className="text-blue-600 border-blue-200 hover:bg-blue-50 h-8 w-8 p-0"
+                              onClick={() => handleStatusChange(item.id, 'Reviewing')}
+                              disabled={item.status === 'Reviewing'}
+                              title="Set to Reviewing"
+                            >
+                              <Clock className="h-4 w-4" />
+                            </Button>
+                            <Button 
+                              size="sm" 
                               className="bg-green-600 hover:bg-green-700 h-8 w-8 p-0"
                               onClick={() => handleApproveClick(item.id)}
                               disabled={item.status === 'Approved'}
