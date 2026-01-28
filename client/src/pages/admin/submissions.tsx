@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { GeneralRequestDetails } from "@/components/general-request-details";
 import { HostedRequestDetails } from "@/components/hosted-request-details";
+import { ServiceReviewsDialog } from "@/components/service-reviews-dialog";
 
 // Mock Submissions with detailed data
 const MOCK_SUBMISSIONS = [
@@ -142,6 +143,7 @@ export default function SubmissionManagement() {
   const [rejectDialog, setRejectDialog] = useState<{open: boolean, id: number | null}>({ open: false, id: null });
   const [rejectReason, setRejectReason] = useState("");
   const [viewDialog, setViewDialog] = useState<{open: boolean, item: typeof MOCK_SUBMISSIONS[0] | null, mode: 'all' | 'application' | 'details'}>({ open: false, item: null, mode: 'all' });
+  const [reviewsDialog, setReviewsDialog] = useState<{open: boolean, item: typeof MOCK_SUBMISSIONS[0] | null}>({ open: false, item: null });
   
   // Alert Dialog State
   const [alertOpen, setAlertOpen] = useState(false);
@@ -283,13 +285,25 @@ export default function SubmissionManagement() {
                     <TableCell>{getStatusBadge(item.status)}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item, mode: 'application' })}>
-                          <Eye className="h-4 w-4" />
-                        </Button>
+                        {item.serviceType === 'Hosted' ? (
+                          <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item, mode: 'application' })}>
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        ) : (
+                           <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item, mode: 'all' })}>
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        )}
 
                         {item.serviceType === 'Hosted' && (
                           <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item, mode: 'details' })}>
                             <Edit className="h-4 w-4" />
+                          </Button>
+                        )}
+
+                        {item.serviceType === 'Linked' && (
+                          <Button variant="ghost" size="sm" onClick={() => setReviewsDialog({ open: true, item: item })}>
+                            <MessageSquare className="h-4 w-4" />
                           </Button>
                         )}
                         
@@ -427,6 +441,13 @@ export default function SubmissionManagement() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Reviews Dialog */}
+      <ServiceReviewsDialog 
+        isOpen={reviewsDialog.open}
+        onOpenChange={(open) => !open && setReviewsDialog({ open: false, item: null })}
+        serviceTitle={reviewsDialog.item?.title || ""}
+      />
     </AdminLayout>
   );
 }
