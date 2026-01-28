@@ -204,16 +204,6 @@ export default function HostedServicesManagement() {
                       </DialogContent>
                     </Dialog>
 
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full gap-2"
-                      onClick={() => setContractDialog({ open: true, service: service })}
-                    >
-                      <FileSignature className="h-4 w-4" />
-                      Contract
-                    </Button>
-
                     <Dialog>
                       <DialogTrigger asChild>
                         <Button variant="outline" size="sm" className="w-full gap-2">
@@ -225,6 +215,16 @@ export default function HostedServicesManagement() {
                         <HostedServiceLogs serviceName={service.title} />
                       </DialogContent>
                     </Dialog>
+
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full gap-2"
+                      onClick={() => setContractDialog({ open: true, service: service })}
+                    >
+                      <FileSignature className="h-4 w-4" />
+                      Contract
+                    </Button>
                     
                     <p className="text-[10px] text-muted-foreground text-center mt-auto">
                       Next bill: {service.nextBilling}
