@@ -255,7 +255,7 @@ export default function ResourceDetail() {
                   value="pricing" 
                   className="rounded-none border-b-2 border-transparent px-6 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400"
                 >
-                  {t("Pricing", "요금")}
+                  {resource.accessModel === "AI Agent" ? t("Terms & Policies", "이용약관 및 정책") : t("Pricing", "요금")}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="reviews" 
@@ -703,7 +703,81 @@ export default function ResourceDetail() {
                 </div>
               </TabsContent>
 
-              <TabsContent value="pricing" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+              <TabsContent value="pricing" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                {resource.accessModel === "AI Agent" ? (
+                  /* Terms and Policies Content for Hosted Service / AI Agents */
+                  <div className="space-y-8">
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                        <div className="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold">
+                          <CheckCircle2 className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h2 className="text-xl font-bold">{t("Terms of Service", "이용약관")}</h2>
+                          <p className="text-sm text-muted-foreground">{t("Please review the terms for using this service.", "서비스 이용을 위한 약관을 확인해주세요.")}</p>
+                        </div>
+                      </div>
+
+                      <div className="prose prose-slate max-w-none dark:prose-invert">
+                        <p>
+                          {t("By accessing and using this AI Agent service, you agree to comply with the following terms and conditions. These terms govern your access to and use of the services provided.", "본 AI 에이전트 서비스에 접근하고 사용함으로써 귀하는 다음 이용약관을 준수할 것에 동의합니다. 이 약관은 제공된 서비스에 대한 귀하의 접근 및 사용을 규율합니다.")}
+                        </p>
+                        <ul>
+                          <li>{t("Usage is limited to the scope defined in your subscription plan.", "사용은 구독 요금제에 정의된 범위로 제한됩니다.")}</li>
+                          <li>{t("You may not resell or redistribute the service without explicit permission.", "명시적인 허가 없이 서비스를 재판매하거나 재배포할 수 없습니다.")}</li>
+                          <li>{t("We reserve the right to modify or terminate the service for any reason, without notice at any time.", "우리는 언제든지 어떤 이유로든 통지 없이 서비스를 수정하거나 종료할 권리가 있습니다.")}</li>
+                          <li>{t("You agree not to use the service for any illegal or unauthorized purpose.", "귀하는 불법적이거나 승인되지 않은 목적으로 서비스를 사용하지 않을 것에 동의합니다.")}</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                        <div className="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold">
+                          <ShieldCheck className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h2 className="text-xl font-bold">{t("Refund Policy", "환불 정책")}</h2>
+                          <p className="text-sm text-muted-foreground">{t("Our policy regarding refunds and cancellations.", "환불 및 취소에 관한 정책입니다.")}</p>
+                        </div>
+                      </div>
+
+                      <div className="prose prose-slate max-w-none dark:prose-invert">
+                        <p>
+                          {t("We want you to be satisfied with our service. If you are not completely happy, please review our refund policy below.", "우리는 귀하가 서비스에 만족하기를 바랍니다. 완전히 만족하지 않으시면 아래 환불 정책을 확인해주세요.")}
+                        </p>
+                        <p>
+                          {t("You may request a full refund within 14 days of your initial purchase if the service usage does not exceed 10% of the allocated quota. Refund requests must be submitted via the support channel.", "서비스 사용량이 할당된 쿼터의 10%를 초과하지 않는 경우, 최초 구매일로부터 14일 이내에 전액 환불을 요청할 수 있습니다. 환불 요청은 지원 채널을 통해 제출해야 합니다.")}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                         <div className="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold">
+                          <Zap className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h2 className="text-xl font-bold">{t("Licensing", "라이센싱")}</h2>
+                          <p className="text-sm text-muted-foreground">{t("Details about the software license.", "소프트웨어 라이센스에 대한 세부 정보입니다.")}</p>
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-lg border border-slate-200 dark:border-slate-800">
+                         <div className="flex items-center justify-between mb-4">
+                            <h4 className="font-semibold">{t("Commercial License", "상용 라이센스")}</h4>
+                            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">Active</Badge>
+                         </div>
+                         <p className="text-sm text-muted-foreground mb-4">
+                           {t("This license grants you the right to use the software for commercial purposes, including integration into your own products and services.", "이 라이센스는 귀하의 제품 및 서비스에 통합하는 것을 포함하여 상업적 목적으로 소프트웨어를 사용할 수 있는 권한을 부여합니다.")}
+                         </p>
+                         <div className="text-xs text-slate-500 font-mono bg-slate-100 dark:bg-slate-900 p-3 rounded">
+                            License ID: LIC-2025-XXXX-YYYY
+                         </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
                 <div className="grid md:grid-cols-3 gap-6">
                   {['Starter', 'Pro', 'Enterprise'].map((plan, i) => (
                     <Card key={plan} className={`relative ${i === 1 ? 'border-indigo-600 shadow-lg ring-1 ring-indigo-600' : ''}`}>
@@ -728,6 +802,7 @@ export default function ResourceDetail() {
                     </Card>
                   ))}
                 </div>
+                )}
               </TabsContent>
 
               <TabsContent value="reviews" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
