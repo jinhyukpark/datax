@@ -597,16 +597,28 @@ export default function SubmissionManagement() {
     if (serviceType === "Hosted") {
        return (
         <Tabs defaultValue="requests" className="w-full">
-           <TabsList className="mb-4">
-              <TabsTrigger value="requests">Active Services</TabsTrigger>
-              <TabsTrigger value="stopped">Stopped Services</TabsTrigger>
-           </TabsList>
+           <div className="flex items-center justify-between mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
+             <TabsList className="bg-transparent h-auto p-0 space-x-6">
+                <TabsTrigger 
+                  value="requests"
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-1 py-2 font-medium text-muted-foreground data-[state=active]:text-primary hover:text-primary transition-colors"
+                >
+                  Active Services
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="stopped"
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-1 py-2 font-medium text-muted-foreground data-[state=active]:text-primary hover:text-primary transition-colors"
+                >
+                  Stopped Services
+                </TabsTrigger>
+             </TabsList>
+           </div>
            
-           <TabsContent value="requests">
+           <TabsContent value="requests" className="mt-0">
               {submissionContent}
            </TabsContent>
            
-           <TabsContent value="stopped">
+           <TabsContent value="stopped" className="mt-0">
               <div className="space-y-4">
                  {stoppedServices.length === 0 ? (
                     <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
