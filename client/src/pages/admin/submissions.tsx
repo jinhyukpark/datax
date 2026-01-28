@@ -301,7 +301,7 @@ export default function SubmissionManagement() {
                           </Button>
                         )}
 
-                        {item.serviceType === 'Linked' && (
+                        {(item.serviceType === 'Linked' || item.serviceType === 'Hosted') && (
                           <Button variant="ghost" size="sm" onClick={() => setReviewsDialog({ open: true, item: item })}>
                             <MessageSquare className="h-4 w-4" />
                           </Button>
