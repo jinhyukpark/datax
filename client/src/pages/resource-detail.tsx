@@ -719,8 +719,8 @@ export default function ResourceDetail() {
                         </div>
                         <ul className="space-y-2">
                           {(displayFeatures && displayFeatures.length > 0 ? displayFeatures : [t("Enterprise-grade data analysis", "엔터프라이즈급 데이터 분석"), t("REST API access", "REST API 접근")]).map((feature, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
-                              <span className="text-indigo-500 mt-1.5">•</span>
+                            <li key={idx} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                              <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
                               <span>{feature}</span>
                             </li>
                           ))}
@@ -736,12 +736,12 @@ export default function ResourceDetail() {
                           <h3 className="font-bold">{t("Service Period", "제공 기간")}</h3>
                         </div>
                         <ul className="space-y-2">
-                          <li className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <span className="text-indigo-500 mt-1.5">•</span>
+                          <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
                             <span>{t("Monthly subscription with automatic renewal", "매월 자동 갱신되는 월간 구독 서비스")}</span>
                           </li>
-                          <li className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <span className="text-indigo-500 mt-1.5">•</span>
+                          <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
                             <span>{t("Service available immediately upon payment", "결제 즉시 서비스 이용 가능")}</span>
                           </li>
                         </ul>
@@ -756,18 +756,15 @@ export default function ResourceDetail() {
                           <h3 className="font-bold">{t("License & Pricing", "라이선스 및 가격 정보")}</h3>
                         </div>
                         <ul className="space-y-2">
-                          <li className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <span className="text-indigo-500 mt-1.5">•</span>
+                          <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
                             <span>{t("Commercial License: Business use permitted", "상업용 라이선스: 비즈니스 용도 사용 가능")}</span>
                           </li>
-                          <li className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <span className="text-indigo-500 mt-1.5">•</span>
+                          <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
                             <div className="flex flex-col">
                               <span className="font-semibold text-slate-900 dark:text-slate-100">
                                 {t("Monthly Fee", "월 이용료")}: {resource.priceValue || "$78.00"}
-                              </span>
-                              <span className="text-xs text-indigo-600 dark:text-indigo-400">
-                                {t("Annual plan discount", "연간 플랜 결제 시")} 20% {t("off applied", "할인 적용")}
                               </span>
                             </div>
                           </li>
@@ -783,12 +780,12 @@ export default function ResourceDetail() {
                           <h3 className="font-bold">{t("Refund Policy", "환불 정책")}</h3>
                         </div>
                         <ul className="space-y-2">
-                          <li className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <span className="text-indigo-500 mt-1.5">•</span>
+                          <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
                             <span>{t("Full refund within 7 days if service not accessed", "서비스 미사용 시 7일 이내 전액 환불")}</span>
                           </li>
-                          <li className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <span className="text-indigo-500 mt-1.5">•</span>
+                          <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
                             <span>{t("Pro-rated refund available for annual plans", "연간 플랜의 경우 잔여 기간에 대한 부분 환불 가능")}</span>
                           </li>
                         </ul>
