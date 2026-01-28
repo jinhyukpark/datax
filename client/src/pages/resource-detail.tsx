@@ -156,12 +156,25 @@ export default function ResourceDetail() {
 
             <div className="flex flex-col gap-3 shrink-0 md:min-w-[200px]">
               {resource.price === 'Paid' ? (
-                <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
-                  <a href={resource.websiteUrl || "#"} target="_blank" rel="noopener noreferrer">
-                    <ShoppingCart className="mr-2 h-4 w-4" />
-                    {t("Purchase", "구매하기")}
-                  </a>
-                </Button>
+                <div className="space-y-3">
+                  <div className="p-4 rounded-xl bg-indigo-50 border border-indigo-100 dark:bg-indigo-900/20 dark:border-indigo-800">
+                    <div className="text-xs font-semibold text-indigo-600/70 dark:text-indigo-400/70 uppercase tracking-wider mb-1">
+                      {t("Subscription", "구독 요금")}
+                    </div>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">
+                        {resource.priceValue || "$78.00"}
+                      </span>
+                      <span className="text-sm text-indigo-600/60 dark:text-indigo-400/60">/mo</span>
+                    </div>
+                  </div>
+                  <Button size="lg" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
+                    <a href={resource.websiteUrl || "#"} target="_blank" rel="noopener noreferrer">
+                      <ShoppingCart className="mr-2 h-4 w-4" />
+                      {t("Purchase", "구매하기")}
+                    </a>
+                  </Button>
+                </div>
               ) : (
                 <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
                   <a href={resource.websiteUrl || resource.demoUrl || "#"} target="_blank" rel="noopener noreferrer">
@@ -411,696 +424,399 @@ export default function ResourceDetail() {
                       <br/>
                       <p className="text-slate-400">// Fetch resources</p>
                       <p><span className="text-purple-400">const</span> resources = <span className="text-purple-400">await</span> client.resources.list({"{"}</p>
-                      <p>&nbsp;&nbsp;category: <span className="text-green-400">'analysis'</span>,</p>
-                      <p>&nbsp;&nbsp;limit: <span className="text-orange-400">10</span></p>
+                      <p>&nbsp;&nbsp;limit: <span className="text-orange-400">10</span>,</p>
+                      <p>&nbsp;&nbsp;category: <span className="text-green-400">'financial'</span></p>
                       <p>{"}"});</p>
-                      <br/>
-                      <p>console.log(resources.data);</p>
-                    </div>
-                  </div>
-
-                  {/* Step 3: Python Integration */}
-                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">3</div>
-                      <h4 className="font-bold">Python Integration</h4>
-                    </div>
-                    <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
-                      <div className="absolute right-4 top-4 text-xs text-slate-400">PYTHON</div>
-                      <p><span className="text-purple-400">from</span> em_data <span className="text-purple-400">import</span> EMDataClient</p>
-                      <p><span className="text-purple-400">import</span> os</p>
-                      <br/>
-                      <p className="text-slate-400"># Initialize the client</p>
-                      <p>client = EMDataClient(</p>
-                      <p>&nbsp;&nbsp;api_key=os.environ[<span className="text-green-400">"EM_API_KEY"</span>],</p>
-                      <p>&nbsp;&nbsp;base_url=<span className="text-green-400">"https://api.emdata.io"</span></p>
-                      <p>)</p>
-                      <br/>
-                      <p className="text-slate-400"># Fetch resources</p>
-                      <p>resources = client.resources.list(</p>
-                      <p>&nbsp;&nbsp;category=<span className="text-green-400">"analysis"</span>,</p>
-                      <p>&nbsp;&nbsp;limit=<span className="text-orange-400">10</span></p>
-                      <p>)</p>
-                      <br/>
-                      <p><span className="text-purple-400">for</span> resource <span className="text-purple-400">in</span> resources.data:</p>
-                      <p>&nbsp;&nbsp;print(resource.name, resource.category)</p>
-                    </div>
-                  </div>
-
-                  {/* Step 4: Java Integration */}
-                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="h-8 w-8 rounded-full bg-red-100 dark:bg-red-900/50 flex items-center justify-center text-red-600 dark:text-red-400 font-bold text-sm">4</div>
-                      <h4 className="font-bold">Java Integration</h4>
-                    </div>
-                    <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
-                      <div className="absolute right-4 top-4 text-xs text-slate-400">JAVA</div>
-                      <p><span className="text-purple-400">import</span> com.emdata.EMDataClient;</p>
-                      <p><span className="text-purple-400">import</span> com.emdata.models.Resource;</p>
-                      <p><span className="text-purple-400">import</span> com.emdata.models.ResourceListResponse;</p>
-                      <br/>
-                      <p><span className="text-purple-400">public class</span> <span className="text-blue-400">Example</span> {"{"}</p>
-                      <p>&nbsp;&nbsp;<span className="text-purple-400">public static void</span> main(String[] args) {"{"}</p>
-                      <p>&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-400">// Initialize client</span></p>
-                      <p>&nbsp;&nbsp;&nbsp;&nbsp;EMDataClient client = <span className="text-blue-400">new</span> EMDataClient.Builder()</p>
-                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.apiKey(System.getenv(<span className="text-green-400">"EM_API_KEY"</span>))</p>
-                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.baseUrl(<span className="text-green-400">"https://api.emdata.io"</span>)</p>
-                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.build();</p>
-                      <br/>
-                      <p>&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-400">// Fetch resources</span></p>
-                      <p>&nbsp;&nbsp;&nbsp;&nbsp;ResourceListResponse response = client.resources()</p>
-                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.list(<span className="text-green-400">"analysis"</span>, <span className="text-orange-400">10</span>);</p>
-                      <br/>
-                      <p>&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-purple-400">for</span> (Resource r : response.getData()) {"{"}</p>
-                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(r.getName());</p>
-                      <p>&nbsp;&nbsp;&nbsp;&nbsp;{"}"}</p>
-                      <p>&nbsp;&nbsp;{"}"}</p>
-                      <p>{"}"}</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Endpoints Section */}
-                <div className="space-y-6">
-                  <h3 className="text-xl font-bold">API Endpoints</h3>
-                  
-                  {/* GET /v1/resources/list */}
-                  <Collapsible defaultOpen={false}>
-                    <Card className="overflow-hidden">
-                      <CollapsibleTrigger className="w-full text-left">
-                        <div className="p-4 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors group">
-                          <div>
-                            <div className="flex items-center gap-3 mb-2">
-                              <Badge className="bg-blue-500 hover:bg-blue-600">GET</Badge>
-                              <code className="text-sm font-mono font-bold">/v1/resources/list</code>
-                            </div>
-                            <p className="text-sm text-muted-foreground">Retrieve a paginated list of available resources matching the filter criteria.</p>
-                          </div>
-                          <ChevronDown className="h-5 w-5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-                        </div>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <CardContent className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-6">
-                          <div>
-                            <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                              <span className="h-5 w-5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs">Q</span>
-                              Query Parameters
-                            </h5>
-                            <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-                              <table className="w-full text-sm">
-                                <thead className="bg-slate-50 dark:bg-slate-800">
-                                  <tr>
-                                    <th className="text-left px-4 py-2 font-medium">Parameter</th>
-                                    <th className="text-left px-4 py-2 font-medium">Type</th>
-                                    <th className="text-left px-4 py-2 font-medium">Required</th>
-                                    <th className="text-left px-4 py-2 font-medium">Description</th>
-                                  </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                                  <tr><td className="px-4 py-2 font-mono text-xs">category</td><td className="px-4 py-2">string</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Filter by resource category</td></tr>
-                                  <tr><td className="px-4 py-2 font-mono text-xs">limit</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Max results (default: 20, max: 100)</td></tr>
-                                  <tr><td className="px-4 py-2 font-mono text-xs">offset</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Pagination offset</td></tr>
-                                  <tr><td className="px-4 py-2 font-mono text-xs">sort</td><td className="px-4 py-2">string</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Sort field (created_at, name, rating)</td></tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-
-                          <div>
-                            <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                              <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
-                              Response
-                            </h5>
-                            <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
-                              <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
-                              <pre>{`{
-  "success": true,
-  "data": [
-    {
-      "id": "res_abc123",
-      "name": "Market Analysis Agent",
-      "category": "analysis",
-      "description": "AI-powered market analysis",
-      "rating": 4.8,
-      "created_at": "2024-01-15T10:30:00Z"
-    }
-  ],
-  "pagination": {
-    "total": 150,
-    "limit": 20,
-    "offset": 0,
-    "has_more": true
-  }
-}`}</pre>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </CollapsibleContent>
-                    </Card>
-                  </Collapsible>
-
-                  {/* POST /v1/agents/interact */}
-                  <Collapsible defaultOpen={false}>
-                    <Card className="overflow-hidden">
-                      <CollapsibleTrigger className="w-full text-left">
-                        <div className="p-4 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors group">
-                          <div>
-                            <div className="flex items-center gap-3 mb-2">
-                              <Badge className="bg-green-500 hover:bg-green-600">POST</Badge>
-                              <code className="text-sm font-mono font-bold">/v1/agents/interact</code>
-                            </div>
-                            <p className="text-sm text-muted-foreground">Send a prompt to the AI agent and receive a streamed response.</p>
-                          </div>
-                          <ChevronDown className="h-5 w-5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-                        </div>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <CardContent className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-6">
-                          <div>
-                            <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                              <span className="h-5 w-5 rounded bg-orange-100 dark:bg-orange-900/50 text-orange-600 dark:text-orange-400 flex items-center justify-center text-xs">B</span>
-                              Request Body
-                            </h5>
-                            <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-                              <table className="w-full text-sm">
-                                <thead className="bg-slate-50 dark:bg-slate-800">
-                                  <tr>
-                                    <th className="text-left px-4 py-2 font-medium">Field</th>
-                                    <th className="text-left px-4 py-2 font-medium">Type</th>
-                                    <th className="text-left px-4 py-2 font-medium">Required</th>
-                                    <th className="text-left px-4 py-2 font-medium">Description</th>
-                                  </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                                  <tr><td className="px-4 py-2 font-mono text-xs">agent_id</td><td className="px-4 py-2">string</td><td className="px-4 py-2">Yes</td><td className="px-4 py-2 text-muted-foreground">Target agent identifier</td></tr>
-                                  <tr><td className="px-4 py-2 font-mono text-xs">prompt</td><td className="px-4 py-2">string</td><td className="px-4 py-2">Yes</td><td className="px-4 py-2 text-muted-foreground">User input message</td></tr>
-                                  <tr><td className="px-4 py-2 font-mono text-xs">stream</td><td className="px-4 py-2">boolean</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Enable streaming (default: true)</td></tr>
-                                  <tr><td className="px-4 py-2 font-mono text-xs">context</td><td className="px-4 py-2">object</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Additional context data</td></tr>
-                                  <tr><td className="px-4 py-2 font-mono text-xs">max_tokens</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">No</td><td className="px-4 py-2 text-muted-foreground">Max response tokens (default: 1024)</td></tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-
-                          <div>
-                            <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                              <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
-                              Response
-                            </h5>
-                            <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
-                              <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
-                              <pre>{`{
-  "success": true,
-  "data": {
-    "id": "msg_xyz789",
-    "agent_id": "agent_abc123",
-    "content": "Based on the market analysis...",
-    "tokens_used": 256,
-    "model": "gpt-4-turbo",
-    "created_at": "2024-01-15T10:35:00Z"
-  },
-  "usage": {
-    "prompt_tokens": 45,
-    "completion_tokens": 256,
-    "total_tokens": 301
-  }
-}`}</pre>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </CollapsibleContent>
-                    </Card>
-                  </Collapsible>
-
-                  {/* GET /v1/agents/:id */}
-                  <Collapsible defaultOpen={false}>
-                    <Card className="overflow-hidden">
-                      <CollapsibleTrigger className="w-full text-left">
-                        <div className="p-4 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors group">
-                          <div>
-                            <div className="flex items-center gap-3 mb-2">
-                              <Badge className="bg-blue-500 hover:bg-blue-600">GET</Badge>
-                              <code className="text-sm font-mono font-bold">/v1/agents/:id</code>
-                            </div>
-                            <p className="text-sm text-muted-foreground">Retrieve detailed information about a specific agent.</p>
-                          </div>
-                          <ChevronDown className="h-5 w-5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-                        </div>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <CardContent className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-6">
-                          <div>
-                            <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                              <span className="h-5 w-5 rounded bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xs">P</span>
-                              Path Parameters
-                            </h5>
-                            <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-                              <table className="w-full text-sm">
-                                <thead className="bg-slate-50 dark:bg-slate-800">
-                                  <tr>
-                                    <th className="text-left px-4 py-2 font-medium">Parameter</th>
-                                    <th className="text-left px-4 py-2 font-medium">Type</th>
-                                    <th className="text-left px-4 py-2 font-medium">Description</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr><td className="px-4 py-2 font-mono text-xs">id</td><td className="px-4 py-2">string</td><td className="px-4 py-2 text-muted-foreground">Unique agent identifier (e.g., agent_abc123)</td></tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-
-                          <div>
-                            <h5 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                              <span className="h-5 w-5 rounded bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">R</span>
-                              Response
-                            </h5>
-                            <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-xs text-slate-50 overflow-x-auto">
-                              <div className="absolute right-4 top-4 text-xs text-slate-400">JSON</div>
-                              <pre>{`{
-  "success": true,
-  "data": {
-    "id": "agent_abc123",
-    "name": "Market Analysis Agent",
-    "description": "AI-powered market analysis tool",
-    "version": "2.1.0",
-    "capabilities": ["analysis", "prediction", "reporting"],
-    "pricing": {
-      "model": "per_request",
-      "base_cost": 0.002
-    },
-    "stats": {
-      "total_requests": 15420,
-      "avg_response_time": 1.2,
-      "uptime": 99.9
-    }
-  }
-}`}</pre>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </CollapsibleContent>
-                    </Card>
-                  </Collapsible>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Button variant="outline" className="flex items-center gap-2 h-auto py-4 px-6 justify-start border-slate-200 dark:border-slate-800">
+                    <FileText className="h-5 w-5 text-indigo-500" />
+                    <div className="text-left">
+                      <p className="font-bold text-sm">Full API Reference</p>
+                      <p className="text-xs text-muted-foreground">Comprehensive API guides</p>
+                    </div>
+                  </Button>
+                  <Button variant="outline" className="flex items-center gap-2 h-auto py-4 px-6 justify-start border-slate-200 dark:border-slate-800">
+                    <Terminal className="h-5 w-5 text-indigo-500" />
+                    <div className="text-left">
+                      <p className="font-bold text-sm">SDK Documentation</p>
+                      <p className="text-xs text-muted-foreground">Integration guides & tips</p>
+                    </div>
+                  </Button>
+                  <Button variant="outline" className="flex items-center gap-2 h-auto py-4 px-6 justify-start border-slate-200 dark:border-slate-800">
+                    <Database className="h-5 w-5 text-indigo-500" />
+                    <div className="text-left">
+                      <p className="font-bold text-sm">Data Dictionary</p>
+                      <p className="text-xs text-muted-foreground">Field definitions & types</p>
+                    </div>
+                  </Button>
                 </div>
               </TabsContent>
 
               <TabsContent value="terms-pricing" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
                 {resource.price === 'Paid' ? (
-                  <div className="space-y-8">
-                    <div className="grid grid-cols-1 gap-6">
-                      {/* Provided Services */}
-                      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-                            <Zap className="h-4 w-4" />
+                  <div className="space-y-10">
+                    {/* Detailed Terms - Now at the top with enhanced design */}
+                    <div className="relative overflow-hidden rounded-3xl border border-indigo-100 bg-gradient-to-br from-indigo-50/50 to-white p-8 shadow-sm dark:border-indigo-900/20 dark:from-indigo-900/10 dark:to-slate-950">
+                      <div className="absolute top-0 right-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-indigo-100/20 blur-3xl dark:bg-indigo-900/10" />
+                      
+                      <div className="relative flex flex-col gap-6">
+                        <div className="flex items-center gap-4">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-indigo-600 shadow-sm dark:bg-indigo-900 dark:text-indigo-400">
+                            <ShieldCheck className="h-6 w-6" />
                           </div>
-                          <h3 className="font-bold">{t("Provided Services", "제공 서비스")}</h3>
-                        </div>
-                        <ul className="space-y-2">
-                          {(displayFeatures && displayFeatures.length > 0 ? displayFeatures : [t("Enterprise-grade data analysis", "엔터프라이즈급 데이터 분석"), t("REST API access", "REST API 접근")]).map((feature, idx) => (
-                            <li key={idx} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                              <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
-                              <span>{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Provided Period */}
-                      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
-                            <Calendar className="h-4 w-4" />
+                          <div>
+                            <h3 className="text-2xl font-bold text-indigo-950 dark:text-indigo-100">{t("Detailed Terms of Service", "상세 이용약관")}</h3>
+                            <p className="text-sm text-indigo-600/70 dark:text-indigo-400/70">{t("Last updated: June 2025", "최종 업데이트: 2025년 6월")}</p>
                           </div>
-                          <h3 className="font-bold">{t("Service Period", "제공 기간")}</h3>
                         </div>
-                        <ul className="space-y-2">
-                          <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
-                            <span>{t("Monthly subscription with automatic renewal", "매월 자동 갱신되는 월간 구독 서비스")}</span>
-                          </li>
-                          <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
-                            <span>{t("Service available immediately upon payment", "결제 즉시 서비스 이용 가능")}</span>
-                          </li>
-                        </ul>
-                      </div>
-
-                      {/* License & Pricing Details */}
-                      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">
-                            <CreditCard className="h-4 w-4" />
-                          </div>
-                          <h3 className="font-bold">{t("License & Pricing", "라이선스 및 가격 정보")}</h3>
+                        
+                        <div className="rounded-2xl bg-white/80 backdrop-blur-md p-6 border border-indigo-50/50 shadow-inner dark:bg-slate-900/80 dark:border-indigo-900/30">
+                          <p className="text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line text-sm md:text-base italic">
+                            {resource.termsOfService || t("By using this service, you agree to our terms and conditions. We reserve the right to modify these terms at any time. This agreement outlines the terms and conditions for the provision of hosted data services on the Illunex Platform.", "본 서비스를 이용함으로써 귀하는 당사의 이용약관에 동의하게 됩니다. 당사는 언제든지 본 약관을 수정할 권리를 보유합니다. 본 계약은 Illunex 플랫폼에서 제공되는 호스팅 데이터 서비스의 제공에 관한 약관을 규정합니다.")}
+                          </p>
                         </div>
-                        <ul className="space-y-2">
-                          <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
-                            <span>{t("Commercial License: Business use permitted", "상업용 라이선스: 비즈니스 용도 사용 가능")}</span>
-                          </li>
-                          <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
-                            <div className="flex flex-col">
-                              <span className="font-semibold text-slate-900 dark:text-slate-100">
-                                {t("Monthly Fee", "월 이용료")}: {resource.priceValue || "$78.00"}
-                              </span>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-
-                      {/* Refund Policy */}
-                      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
-                            <CheckCircle2 className="h-4 w-4" />
-                          </div>
-                          <h3 className="font-bold">{t("Refund Policy", "환불 정책")}</h3>
-                        </div>
-                        <ul className="space-y-2">
-                          <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
-                            <span>{t("Full refund within 7 days if service not accessed", "서비스 미사용 시 7일 이내 전액 환불")}</span>
-                          </li>
-                          <li className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
-                            <span>{t("Pro-rated refund available for annual plans", "연간 플랜의 경우 잔여 기간에 대한 부분 환불 가능")}</span>
-                          </li>
-                        </ul>
                       </div>
                     </div>
 
-                    {/* Detailed Terms */}
-                    <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold">
-                          <ShieldCheck className="h-5 w-5" />
-                        </div>
-                        <h3 className="text-xl font-bold">{t("Detailed Terms of Service", "상세 이용약관")}</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3 px-2">
+                        <div className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
+                        <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">{t("Service Guidelines", "서비스 가이드라인")}</h4>
+                        <div className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
                       </div>
-                      <div className="bg-slate-50/50 p-6 rounded-xl border border-slate-100 dark:border-slate-800/50 min-h-[120px]">
-                        <p className="text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line text-sm md:text-base">
-                          {resource.termsOfService || t("By using this service, you agree to our terms and conditions. We reserve the right to modify these terms at any time. This agreement outlines the terms and conditions for the provision of hosted data services on the Illunex Platform.", "본 서비스를 이용함으로써 귀하는 당사의 이용약관에 동의하게 됩니다. 당사는 언제든지 본 약관을 수정할 권리를 보유합니다. 본 계약은 Illunex 플랫폼에서 제공되는 호스팅 데이터 서비스의 제공에 관한 약관을 규정합니다.")}
-                        </p>
+                      
+                      {/* Modern List Layout */}
+                      <div className="grid grid-cols-1 gap-4">
+                        {/* Provided Services */}
+                        <div className="group flex flex-col md:flex-row md:items-center gap-6 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:border-indigo-200 hover:shadow-md transition-all dark:bg-slate-900 dark:border-slate-800 dark:hover:border-indigo-900/50">
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 group-hover:scale-110 transition-transform dark:bg-blue-900/30 dark:text-blue-400">
+                            <Zap className="h-6 w-6" />
+                          </div>
+                          <div className="flex-1 space-y-3">
+                            <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t("Provided Services", "제공 서비스")}</h3>
+                            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-3">
+                              {(displayFeatures && displayFeatures.length > 0 ? displayFeatures : [t("Enterprise-grade data analysis", "엔터프라이즈급 데이터 분석"), t("REST API access", "REST API 접근")]).map((feature, idx) => (
+                                <li key={idx} className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                                  <div className="h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                                  <span>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* Provided Period */}
+                        <div className="group flex flex-col md:flex-row md:items-center gap-6 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:border-purple-200 hover:shadow-md transition-all dark:bg-slate-900 dark:border-slate-800 dark:hover:border-purple-900/50">
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-purple-50 text-purple-600 group-hover:scale-110 transition-transform dark:bg-purple-900/30 dark:text-purple-400">
+                            <Calendar className="h-6 w-6" />
+                          </div>
+                          <div className="flex-1 space-y-3">
+                            <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t("Service Period", "제공 기간")}</h3>
+                            <ul className="space-y-3">
+                              <li className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                                <div className="h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                                <span>{t("Monthly subscription with automatic renewal", "매월 자동 갱신되는 월간 구독 서비스")}</span>
+                              </li>
+                              <li className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                                <div className="h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                                <span>{t("Service available immediately upon payment", "결제 즉시 서비스 이용 가능")}</span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* License & Pricing Details */}
+                        <div className="group flex flex-col md:flex-row md:items-center gap-6 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:border-amber-200 hover:shadow-md transition-all dark:bg-slate-900 dark:border-slate-800 dark:hover:border-amber-900/50">
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 group-hover:scale-110 transition-transform dark:bg-amber-900/30 dark:text-amber-400">
+                            <CreditCard className="h-6 w-6" />
+                          </div>
+                          <div className="flex-1 space-y-3">
+                            <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t("License & Pricing", "라이선스 및 가격 정보")}</h3>
+                            <ul className="space-y-3">
+                              <li className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                                <div className="h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                                <span>{t("Commercial License: Business use permitted", "상업용 라이선스: 비즈니스 용도 사용 가능")}</span>
+                              </li>
+                              <li className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                                <div className="h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                                <div className="flex items-baseline gap-2">
+                                  <span className="font-bold text-indigo-700 dark:text-indigo-300">
+                                    {t("Monthly Fee", "월 이용료")}: {resource.priceValue || "$78.00"}
+                                  </span>
+                                  <span className="text-xs text-slate-400">(Billed monthly)</span>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* Refund Policy */}
+                        <div className="group flex flex-col md:flex-row md:items-center gap-6 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:border-emerald-200 hover:shadow-md transition-all dark:bg-slate-900 dark:border-slate-800 dark:hover:border-emerald-900/50">
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 group-hover:scale-110 transition-transform dark:bg-emerald-900/30 dark:text-emerald-400">
+                            <CheckCircle2 className="h-6 w-6" />
+                          </div>
+                          <div className="flex-1 space-y-3">
+                            <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t("Refund Policy", "환불 정책")}</h3>
+                            <ul className="space-y-3">
+                              <li className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                                <div className="h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                                <span>{t("Full refund within 7 days if service not accessed", "서비스 미사용 시 7일 이내 전액 환불")}</span>
+                              </li>
+                              <li className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                                <div className="h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                                <span>{t("Pro-rated refund available for annual plans", "연간 플랜의 경우 잔여 기간에 대한 부분 환불 가능")}</span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="grid md:grid-cols-3 gap-6">
-                    {[
-                      { name: "Free Tier", price: "$0", features: ["100 Requests", "Community Support", "Basic Analytics"] },
-                      { name: "Pro", price: "$49", features: ["10,000 Requests", "Standard Support", "Advanced Analytics"], popular: true },
-                      { name: "Enterprise", price: "Custom", features: ["Unlimited Requests", "24/7 Support", "SLA Guarantee"] }
-                    ].map((plan) => (
-                      <Card key={plan.name} className={cn("relative overflow-hidden", plan.popular && "border-indigo-500 shadow-indigo-100 dark:shadow-none shadow-lg")}>
-                        {plan.popular && (
-                          <div className="absolute top-0 right-0">
-                            <div className="bg-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">
-                              Most Popular
-                            </div>
-                          </div>
-                        )}
-                        <CardContent className="p-6">
-                          <h4 className="font-bold text-lg mb-1">{plan.name}</h4>
-                          <div className="flex items-baseline gap-1 mb-6">
-                            <span className="text-3xl font-bold">{plan.price}</span>
-                            {plan.price !== "Custom" && <span className="text-muted-foreground text-sm">/mo</span>}
-                          </div>
-                          <ul className="space-y-3 mb-8">
-                            {plan.features.map((f) => (
-                              <li key={f} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                                <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
-                                {f}
-                              </li>
-                            ))}
-                          </ul>
-                          <Button variant={plan.popular ? "default" : "outline"} className={cn("w-full", plan.popular && "bg-indigo-600 hover:bg-indigo-700")}>
-                            {plan.price === "$0" ? t("Get Started", "시작하기") : t("Choose Plan", "플랜 선택")}
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
+                  <div className="space-y-8">
+                    <div className="flex items-center gap-4 pb-2 border-b border-slate-100 dark:border-slate-800">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+                        <Zap className="h-6 w-6" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold tracking-tight">{t("Pricing", "요금")}</h2>
+                        <p className="text-sm text-muted-foreground">{t("This resource is free for all users.", "이 리소스는 모든 사용자에게 무료로 제공됩니다.")}</p>
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center dark:border-slate-800 dark:bg-slate-900/50">
+                      <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-50 text-green-600 dark:bg-green-900/20 mb-6">
+                        <CheckCircle2 className="h-10 w-10" />
+                      </div>
+                      <h3 className="text-3xl font-bold mb-2">Free Forever</h3>
+                      <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-sm mx-auto">
+                        This resource is part of our open data initiative and is free to use for both personal and commercial projects.
+                      </p>
+                      <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 px-8" asChild>
+                         <a href={resource.websiteUrl || resource.demoUrl || "#"} target="_blank" rel="noopener noreferrer">
+                          {t("Get Started Now", "지금 시작하기")}
+                         </a>
+                      </Button>
+                    </div>
                   </div>
                 )}
               </TabsContent>
 
-              <TabsContent value="reviews" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+              <TabsContent value="reviews" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold">User Reviews</h3>
+                  <div className="flex items-center gap-1 font-bold text-amber-500 bg-amber-50 px-3 py-1.5 rounded-full dark:bg-amber-900/20">
+                    <Star className="h-4 w-4 fill-current" />
+                    4.8 (124 reviews)
+                  </div>
+                </div>
+
                 <div className="space-y-6">
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="text-center">
-                      <div className="text-4xl font-bold text-foreground">4.8</div>
-                      <div className="text-sm text-muted-foreground">out of 5</div>
+                  {/* Review 1 */}
+                  <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm dark:bg-slate-900 dark:border-slate-800">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center dark:bg-slate-800">
+                          <User className="h-5 w-5 text-slate-500" />
+                        </div>
+                        <div>
+                          <p className="font-bold text-sm">Sarah Johnson</p>
+                          <p className="text-xs text-muted-foreground">CTO, DataVision Inc.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-0.5 text-amber-400">
+                        {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-3.5 w-3.5 fill-current" />)}
+                      </div>
                     </div>
-                    <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden dark:bg-slate-800">
-                      <div className="h-full bg-amber-400 w-[85%]" />
+                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                      "The accuracy of the AI agents' responses is impressive. We've integrated this into our customer support workflow and seen a 40% reduction in resolution time. Highly recommended for scaling businesses."
+                    </p>
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <span>June 12, 2025</span>
+                      <button className="hover:text-indigo-600 flex items-center gap-1"><Reply className="h-3 w-3" /> Reply</button>
                     </div>
-                    <div className="text-sm text-muted-foreground">124 ratings</div>
                   </div>
 
-                  {/* Review Writing Form - Visible for logged-in users */}
-                  <div className="p-5 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100/50 dark:from-slate-900 dark:to-slate-800/50 border border-slate-200 dark:border-slate-700 mb-8">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
-                        <User className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                  {/* Review 2 */}
+                  <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm dark:bg-slate-900 dark:border-slate-800">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center dark:bg-slate-800">
+                          <User className="h-5 w-5 text-slate-500" />
+                        </div>
+                        <div>
+                          <p className="font-bold text-sm">Michael Chen</p>
+                          <p className="text-xs text-muted-foreground">Senior Data Analyst</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-medium text-sm">{t("Write a Review", "리뷰 작성")}</p>
-                        <p className="text-xs text-muted-foreground">{t("Share your experience with this resource", "이 리소스에 대한 경험을 공유해주세요")}</p>
+                      <div className="flex items-center gap-0.5 text-amber-400">
+                        {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-3.5 w-3.5 fill-current" />)}
                       </div>
                     </div>
-                    <div className="flex gap-1 mb-3">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <button key={star} className="p-1 hover:scale-110 transition-transform" data-testid={`rating-star-${star}`}>
-                          <Star className="h-5 w-5 text-slate-300 hover:text-amber-400 dark:text-slate-600" />
-                        </button>
-                      ))}
-                      <span className="text-xs text-muted-foreground ml-2 self-center">{t("Click to rate", "클릭하여 평가")}</span>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                      "Excellent documentation and easy integration. We were up and running in less than an hour. The real-time updates are truly real-time, which was critical for our use case."
+                    </p>
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <span>May 28, 2025</span>
+                      <button className="hover:text-indigo-600 flex items-center gap-1"><Reply className="h-3 w-3" /> Reply</button>
                     </div>
-                    <Textarea 
-                      placeholder={t("Write your review here...", "리뷰 내용을 입력해주세요...")}
-                      className="mb-3 resize-none bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700"
-                      rows={3}
-                      data-testid="input-review"
-                    />
-                    <div className="flex justify-end">
-                      <Button 
-                        className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white"
-                        data-testid="button-submit-review"
-                        onClick={() => toast.success(t("Review submitted successfully!", "리뷰가 성공적으로 등록되었습니다!"))}
-                      >
-                        <Send className="h-4 w-4" />
-                        {t("Submit Review", "리뷰 등록")}
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <h4 className="font-bold mb-4">Write a Review</h4>
+                  <div className="space-y-4">
+                    <Textarea placeholder="Share your experience with this resource..." className="min-h-[120px] rounded-xl border-slate-200 dark:border-slate-800" />
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium">Rating:</p>
+                        <div className="flex items-center gap-1 text-slate-300">
+                          {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-5 w-5 hover:text-amber-400 cursor-pointer transition-colors" />)}
+                        </div>
+                      </div>
+                      <Button className="bg-indigo-600 hover:bg-indigo-700 rounded-xl px-8">
+                        Post Review
                       </Button>
                     </div>
                   </div>
-
-                  {/* Reviews List with Reply functionality */}
-                  {[
-                    { id: 1, user: "John Kim", date: "2 days ago", rating: 5, content: "This resource has significantly improved our workflow. The integration was straightforward and the documentation is excellent. Highly recommended for teams looking to scale.", hasReply: true, reply: { author: resource?.provider || "Publisher", content: "Thank you for your kind review! We're thrilled to hear that the integration was smooth. Let us know if you need any further assistance.", date: "1 day ago" } },
-                    { id: 2, user: "Sarah Lee", date: "1 week ago", rating: 4, content: "Great product overall. The API is well-designed and the response times are impressive. Would love to see more documentation on advanced use cases.", hasReply: false },
-                    { id: 3, user: "Mike Park", date: "2 weeks ago", rating: 5, content: "Excellent support and reliable service. We've been using it for 3 months now with zero downtime.", hasReply: false }
-                  ].map((review) => (
-                    <div key={review.id} className="border-b border-slate-100 pb-6 last:border-0 dark:border-slate-800">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <div className="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-300">
-                            {review.user.charAt(0)}
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium">{review.user}</p>
-                            <p className="text-xs text-muted-foreground">{review.date}</p>
-                          </div>
-                        </div>
-                        <div className="flex text-amber-400">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className={`h-3 w-3 ${i < review.rating ? 'fill-current' : 'text-slate-200 dark:text-slate-700'}`} />
-                          ))}
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        {review.content}
-                      </p>
-                      
-                      {/* Publisher Reply */}
-                      {review.hasReply && review.reply && (
-                        <div className="ml-6 mt-3 p-3 rounded-lg bg-indigo-50/50 dark:bg-indigo-900/20 border-l-2 border-indigo-500">
-                          <div className="flex items-center gap-2 mb-2">
-                            <div className="h-6 w-6 rounded-full bg-indigo-100 dark:bg-indigo-800 flex items-center justify-center">
-                              <Reply className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />
-                            </div>
-                            <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">{review.reply.author}</span>
-                            <Badge variant="secondary" className="text-[10px] px-1.5 py-0 bg-indigo-100 text-indigo-700 dark:bg-indigo-800/50 dark:text-indigo-300">Publisher</Badge>
-                            <span className="text-xs text-muted-foreground">{review.reply.date}</span>
-                          </div>
-                          <p className="text-xs text-slate-600 dark:text-slate-400">{review.reply.content}</p>
-                        </div>
-                      )}
-                      
-                      {/* Reply Button for Owner (demo) */}
-                      {!review.hasReply && (
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="text-xs text-muted-foreground hover:text-indigo-600 gap-1 mt-2"
-                          data-testid={`button-reply-${review.id}`}
-                          onClick={() => toast.info(t("Reply feature available for resource owners", "리소스 소유자만 답변을 남길 수 있습니다"))}
-                        >
-                          <Reply className="h-3 w-3" />
-                          {t("Reply", "답변하기")}
-                        </Button>
-                      )}
-                    </div>
-                  ))}
                 </div>
               </TabsContent>
             </Tabs>
           </div>
 
-          {/* Right Column - Sidebar */}
+          {/* Right Column - Sidebar Info */}
           <div className="lg:col-span-4 space-y-6">
-            {/* Summary Card */}
-            <Card className="shadow-sm border-slate-200 dark:border-slate-800 lg:sticky lg:top-24">
-              <CardContent className="p-6 space-y-6">
-                <div className="space-y-4">
-                  <h3 className="font-heading font-bold text-lg">{t("Resource Details", "리소스 상세")}</h3>
-                  
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <p className="text-muted-foreground mb-1">{t("Type", "유형")}</p>
-                      <p className="font-medium flex items-center gap-2">
-                        {resource.type === 'API' ? <Server className="h-4 w-4 text-slate-400" /> : 
-                         resource.type === 'Agent' ? <Zap className="h-4 w-4 text-slate-400" /> : 
-                         <Database className="h-4 w-4 text-slate-400" />}
-                        {resource.type}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground mb-1">{t("Published", "게시일")}</p>
-                      <p className="font-medium flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-slate-400" />
-                        {resource.publishedDate}
-                      </p>
-                    </div>
-                    
-                    {resource.accessModel && (
-                      <div>
-                        <p className="text-muted-foreground mb-1">{t("Access Model", "접근 모델")}</p>
-                        <Badge variant="outline" className="font-medium">{resource.accessModel}</Badge>
+            {/* Resource Metadata Card */}
+            <Card className="overflow-hidden border-slate-200 shadow-sm dark:border-slate-800">
+              <CardContent className="p-0">
+                <div className="bg-slate-50/80 px-6 py-4 border-b border-slate-100 dark:bg-slate-900/50 dark:border-slate-800">
+                  <h3 className="font-bold text-foreground">Resource Details</h3>
+                </div>
+                <div className="p-6 space-y-5">
+                  <div className="grid grid-cols-2 gap-y-5">
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Type</p>
+                      <div className="flex items-center gap-2 text-sm font-semibold">
+                        <Database className="h-3.5 w-3.5 text-indigo-500" />
+                        {resource.type.toUpperCase()}
                       </div>
-                    )}
-                    
-                    {resource.industry && (
-                      <div>
-                        <p className="text-muted-foreground mb-1">{t("Industry", "산업 분야")}</p>
-                        <p className="font-medium">{resource.industry}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Published</p>
+                      <div className="flex items-center gap-2 text-sm font-semibold">
+                        <Calendar className="h-3.5 w-3.5 text-indigo-500" />
+                        2025-07-13
                       </div>
-                    )}
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Access Model</p>
+                      <Badge variant="secondary" className="font-bold text-[10px] uppercase">{resource.type}</Badge>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Industry</p>
+                      <p className="text-sm font-semibold">Horizontal</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">License</p>
+                      <p className="text-sm font-semibold">Commercial</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Version</p>
+                      <p className="text-sm font-semibold">v2.4.1</p>
+                    </div>
+                  </div>
 
-                    <div>
-                      <p className="text-muted-foreground mb-1">{t("License", "라이선스")}</p>
-                      <p className="font-medium">Commercial</p>
+                  <div className="h-px bg-slate-100 dark:bg-slate-800 w-full" />
+
+                  <div className="space-y-3">
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Social Presence</p>
+                    <div className="flex items-center gap-2">
+                      <Button variant="outline" size="icon" className="h-9 w-9 rounded-lg border-slate-200 hover:border-blue-400 hover:text-blue-500 dark:border-slate-800">
+                        <Linkedin className="h-4 w-4" />
+                      </Button>
+                      <Button variant="outline" size="icon" className="h-9 w-9 rounded-lg border-slate-200 hover:border-sky-400 hover:text-sky-500 dark:border-slate-800">
+                        <Twitter className="h-4 w-4" />
+                      </Button>
+                      <Button variant="outline" size="icon" className="h-9 w-9 rounded-lg border-slate-200 hover:border-slate-900 hover:text-slate-900 dark:border-slate-800">
+                        <Github className="h-4 w-4" />
+                      </Button>
                     </div>
-                    <div>
-                      <p className="text-muted-foreground mb-1">{t("Version", "버전")}</p>
-                      <p className="font-medium">v2.4.1</p>
+                  </div>
+
+                  <div className="h-px bg-slate-100 dark:bg-slate-800 w-full" />
+
+                  <div className="space-y-3">
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Tags</p>
+                    <div className="flex flex-wrap gap-2">
+                      {["Analysis", "Social", "Trend", "Marketing", "Data"].map(tag => (
+                        <Badge key={tag} variant="outline" className="bg-slate-50/50 text-slate-600 dark:bg-slate-800/30 dark:text-slate-400">
+                          {tag}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
 
-                <div className="h-px bg-slate-100 dark:bg-slate-800" />
+            {/* Provider Info Card */}
+            <Card className="overflow-hidden border-slate-200 shadow-sm dark:border-slate-800">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xl dark:bg-indigo-900/30 dark:text-indigo-400">
+                    S
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-foreground">Social Trend Co.</h4>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <ShieldCheck className="h-3 w-3 text-green-500" />
+                      Verified Publisher
+                    </p>
+                  </div>
+                </div>
                 
-                {resource.socialLinks && Object.keys(resource.socialLinks).length > 0 && (
-                  <>
-                    <div>
-                      <h4 className="font-medium mb-3 flex items-center gap-2">
-                        <Globe className="h-4 w-4 text-muted-foreground" />
-                        {t("Social Presence", "소셜 미디어")}
-                      </h4>
-                      <div className="flex gap-2">
-                        {resource.socialLinks.linkedin && (
-                          <Button variant="outline" size="icon" className="h-8 w-8" asChild>
-                            <a href={resource.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
-                              <Linkedin className="h-4 w-4 text-blue-700" />
-                            </a>
-                          </Button>
-                        )}
-                        {resource.socialLinks.twitter && (
-                          <Button variant="outline" size="icon" className="h-8 w-8" asChild>
-                            <a href={resource.socialLinks.twitter} target="_blank" rel="noopener noreferrer">
-                              <Twitter className="h-4 w-4 text-sky-500" />
-                            </a>
-                          </Button>
-                        )}
-                        {resource.socialLinks.github && (
-                          <Button variant="outline" size="icon" className="h-8 w-8" asChild>
-                            <a href={resource.socialLinks.github} target="_blank" rel="noopener noreferrer">
-                              <Github className="h-4 w-4" />
-                            </a>
-                          </Button>
-                        )}
-                        {resource.socialLinks.discord && (
-                          <Button variant="outline" size="icon" className="h-8 w-8" asChild>
-                            <a href={resource.socialLinks.discord} target="_blank" rel="noopener noreferrer">
-                              <MessageSquare className="h-4 w-4 text-indigo-500" />
-                            </a>
-                          </Button>
-                        )}
-                        {resource.socialLinks.telegram && (
-                          <Button variant="outline" size="icon" className="h-8 w-8" asChild>
-                            <a href={resource.socialLinks.telegram} target="_blank" rel="noopener noreferrer">
-                              <MessageSquare className="h-4 w-4 text-blue-400" />
-                            </a>
-                          </Button>
-                        )}
-                      </div>
+                <div className="space-y-4">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Social Trend Co. is a leading provider of real-time social data analytics, helping businesses understand market sentiment and consumer behavior.
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400">
+                      <Globe className="h-3.5 w-3.5 text-slate-400" />
+                      socialtrend.com
                     </div>
-                    <div className="h-px bg-slate-100 dark:bg-slate-800" />
-                  </>
-                )}
-
-                <div>
-                  <h4 className="font-medium mb-3 flex items-center gap-2">
-                    <Tag className="h-4 w-4 text-muted-foreground" />
-                    {t("Tags", "태그")}
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {resource.tags.map(tag => (
-                       <Badge key={tag} variant="secondary" className="font-normal bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300">
-                         {tag}
-                       </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="rounded-lg bg-slate-50 p-4 dark:bg-slate-900">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="h-10 w-10 rounded-full bg-white flex items-center justify-center shadow-sm text-xl font-bold text-indigo-600 dark:bg-slate-800">
-                      {resource.provider.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="font-bold text-sm">{resource.provider}</p>
-                      <p className="text-xs text-muted-foreground">Verified Publisher</p>
-                      {resource.contactEmail && (
-                         <p className="text-xs text-muted-foreground mt-0.5">{resource.contactEmail}</p>
-                      )}
+                    <div className="flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400">
+                      <Building2 className="h-3.5 w-3.5 text-slate-400" />
+                      San Francisco, CA
                     </div>
                   </div>
-                  <Button variant="outline" size="sm" className="w-full text-xs h-8" asChild>
-                    <a href={resource.websiteUrl || `https://${resource.provider.toLowerCase().replace(/\s+/g, '')}.com`} target="_blank" rel="noopener noreferrer">
-                      {t("Visit Website", "웹사이트 방문")}
+                  <Button variant="outline" className="w-full border-slate-200 dark:border-slate-800" asChild>
+                    <a href={resource.websiteUrl || "#"} target="_blank" rel="noopener noreferrer">
+                      Visit Website
                     </a>
                   </Button>
                 </div>
               </CardContent>
             </Card>
+
+            {/* Support Information */}
+            <div className="p-6 rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/30">
+              <h4 className="font-bold mb-2">Need help?</h4>
+              <p className="text-sm text-indigo-100 mb-4 leading-relaxed">
+                Our support team is available 24/7 to help you with any integration issues.
+              </p>
+              <Button className="w-full bg-white text-indigo-600 hover:bg-indigo-50 font-bold border-none">
+                Contact Support
+              </Button>
+            </div>
           </div>
         </div>
       </div>
-
+      
       <Footer />
     </div>
   );
 }
-
