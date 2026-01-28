@@ -420,7 +420,8 @@ export default function MyPage() {
       status: "Active",
       endpoint: "https://api.platform.com/v1/weather",
       region: "US-East (N. Virginia)",
-      tier: "Pro Plan",
+      pricingType: "Paid",
+      price: "$49",
       uptime: "99.99%",
       nextBilling: "2026-01-20",
       type: "DATA",
@@ -433,7 +434,8 @@ export default function MyPage() {
       status: "Active",
       endpoint: "https://api.platform.com/v1/biomed",
       region: "Asia-Pacific (Seoul)",
-      tier: "Enterprise",
+      pricingType: "Paid",
+      price: "$199",
       uptime: "99.95%",
       nextBilling: "2026-01-15",
       type: "AGENT",
@@ -446,7 +448,8 @@ export default function MyPage() {
       status: "Active",
       endpoint: "wss://api.platform.com/v1/stream",
       region: "US-West (Oregon)",
-      tier: "Enterprise",
+      pricingType: "Paid",
+      price: "$299",
       uptime: "99.99%",
       nextBilling: "2026-01-25",
       type: "MCP",
@@ -1533,8 +1536,19 @@ export default function MyPage() {
                                     <p className="font-medium">{item.region}</p>
                                   </div>
                                   <div className="space-y-1">
-                                    <p className="text-xs text-muted-foreground">Plan Tier</p>
-                                    <p className="font-medium">{item.tier}</p>
+                                    <p className="text-xs text-muted-foreground">Pricing</p>
+                                    <div className="flex items-center gap-1.5">
+                                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold border ${
+                                        (item as any).pricingType === 'Paid' 
+                                          ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' 
+                                          : 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800'
+                                      }`}>
+                                        {(item as any).pricingType}
+                                      </span>
+                                      {(item as any).pricingType === 'Paid' && (item as any).price && (
+                                        <span className="font-medium text-sm">{(item as any).price}</span>
+                                      )}
+                                    </div>
                                   </div>
                                   <div className="space-y-1">
                                     <p className="text-xs text-muted-foreground">Uptime (30d)</p>
