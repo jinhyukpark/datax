@@ -207,14 +207,18 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
         )}
 
         {(mode === 'all' || mode === 'application') && (
-          <TabsContent value="application" className="space-y-8">
+          <TabsContent value="application" className="space-y-4">
             {/* Section Header */}
-            <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-               <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
+            <div className="flex items-center justify-between gap-4 pb-2 border-b border-slate-100 dark:border-slate-800">
                <div>
                  <h2 className="text-lg font-bold">Hosted Data Service Request</h2>
                  <p className="text-xs text-muted-foreground">Submitted information about your dataset</p>
                </div>
+               {data.submittedAt && (
+                 <div className="text-xs text-muted-foreground bg-slate-50 dark:bg-slate-900 px-3 py-1 rounded-full border border-slate-100 dark:border-slate-800">
+                   Submitted: {data.submittedAt}
+                 </div>
+               )}
             </div>
 
           {/* Basic Info Fields */}
