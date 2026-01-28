@@ -1,3 +1,4 @@
+import AdminLayout from "./admin-layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -254,90 +255,92 @@ export default function SubmissionManagement() {
   );
 
   return (
-    <div className="p-8 space-y-8 bg-slate-50 min-h-screen">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Submission Management</h1>
-        <p className="text-muted-foreground mt-2">Review and manage service listing requests.</p>
+    <AdminLayout>
+      <div className="p-8 space-y-8 bg-slate-50 min-h-screen">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Submission Management</h1>
+          <p className="text-muted-foreground mt-2">Review and manage service listing requests.</p>
+        </div>
+
+        <Tabs defaultValue="hosted" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
+            <TabsTrigger value="hosted">Hosted Service</TabsTrigger>
+            <TabsTrigger value="linked">Linked Service</TabsTrigger>
+          </TabsList>
+          <TabsContent value="hosted" className="space-y-6">
+            {renderDashboard("Hosted")}
+          </TabsContent>
+          <TabsContent value="linked" className="space-y-6">
+            {renderDashboard("Linked")}
+          </TabsContent>
+        </Tabs>
+
+        {/* Reviews Dialog */}
+        <ReviewsDialog 
+          open={reviewsOpen} 
+          onOpenChange={setReviewsOpen} 
+          resourceTitle={selectedReviewItem?.title || ""} 
+        />
+
+        {/* Confirmation Alert Dialog */}
+        <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{alertConfig.title}</AlertDialogTitle>
+              <AlertDialogDescription>
+                {alertConfig.description}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={alertConfig.action}>Confirm</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* Reject Dialog */}
+        <Dialog open={rejectDialog.open} onOpenChange={(open) => !open && setRejectDialog({ open: false, id: null })}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Reject Submission</DialogTitle>
+              <DialogDescription>
+                Please provide a reason for rejecting this submission. This will be sent to the provider.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4">
+              <Label htmlFor="reason" className="mb-2 block">Rejection Reason</Label>
+              <textarea 
+                id="reason"
+                className="w-full min-h-[100px] p-3 border rounded-md text-sm"
+                placeholder="e.g., Incomplete documentation, Security vulnerability found..."
+                value={rejectReason}
+                onChange={(e) => setRejectReason(e.target.value)}
+              />
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setRejectDialog({ open: false, id: null })}>Cancel</Button>
+              <Button variant="destructive" onClick={handleReject}>Reject Submission</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* View Details Dialog */}
+        <Dialog open={viewDialog.open} onOpenChange={(open) => !open && setViewDialog({ open: false, item: null, mode: 'all' })}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+             {viewDialog.item && (
+               viewDialog.item.serviceType === 'Hosted' ? (
+                  <HostedRequestDetails 
+                    data={viewDialog.item} 
+                    mode={viewDialog.mode}
+                  />
+               ) : (
+                  <GeneralRequestDetails data={viewDialog.item} />
+               )
+             )}
+          </DialogContent>
+        </Dialog>
       </div>
-
-      <Tabs defaultValue="hosted" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
-          <TabsTrigger value="hosted">Hosted Service</TabsTrigger>
-          <TabsTrigger value="linked">Linked Service</TabsTrigger>
-        </TabsList>
-        <TabsContent value="hosted" className="space-y-6">
-          {renderDashboard("Hosted")}
-        </TabsContent>
-        <TabsContent value="linked" className="space-y-6">
-          {renderDashboard("Linked")}
-        </TabsContent>
-      </Tabs>
-
-      {/* Reviews Dialog */}
-      <ReviewsDialog 
-        open={reviewsOpen} 
-        onOpenChange={setReviewsOpen} 
-        resourceTitle={selectedReviewItem?.title || ""} 
-      />
-
-      {/* Confirmation Alert Dialog */}
-      <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{alertConfig.title}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {alertConfig.description}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={alertConfig.action}>Confirm</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      {/* Reject Dialog */}
-      <Dialog open={rejectDialog.open} onOpenChange={(open) => !open && setRejectDialog({ open: false, id: null })}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Reject Submission</DialogTitle>
-            <DialogDescription>
-              Please provide a reason for rejecting this submission. This will be sent to the provider.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            <Label htmlFor="reason" className="mb-2 block">Rejection Reason</Label>
-            <textarea 
-              id="reason"
-              className="w-full min-h-[100px] p-3 border rounded-md text-sm"
-              placeholder="e.g., Incomplete documentation, Security vulnerability found..."
-              value={rejectReason}
-              onChange={(e) => setRejectReason(e.target.value)}
-            />
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setRejectDialog({ open: false, id: null })}>Cancel</Button>
-            <Button variant="destructive" onClick={handleReject}>Reject Submission</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* View Details Dialog */}
-      <Dialog open={viewDialog.open} onOpenChange={(open) => !open && setViewDialog({ open: false, item: null, mode: 'all' })}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-           {viewDialog.item && (
-             viewDialog.item.serviceType === 'Hosted' ? (
-                <HostedRequestDetails 
-                  data={viewDialog.item} 
-                  mode={viewDialog.mode}
-                />
-             ) : (
-                <GeneralRequestDetails data={viewDialog.item} />
-             )
-           )}
-        </DialogContent>
-      </Dialog>
-    </div>
+    </AdminLayout>
   );
 }
 
