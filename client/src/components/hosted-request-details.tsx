@@ -138,6 +138,16 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
 
   return (
     <div className="space-y-6">
+      {/* Header Section with Hosted Service Indicator */}
+      <div className="flex flex-col items-center justify-center pb-6 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center gap-3 mb-2">
+          <h1 className="text-2xl font-bold text-center">Manage <span className="text-indigo-600 dark:text-indigo-400">{detailsData.title}</span></h1>
+          <Badge variant="outline" className="bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:border-indigo-800 px-2 py-0.5 text-xs">
+            Hosted Service
+          </Badge>
+        </div>
+      </div>
+
       {/* Status Banners for Non-Editable States */}
       {!isEditable && data.status && data.status !== 'submitted' && (
         <div className="animate-in fade-in slide-in-from-top-2 mb-6">
@@ -171,199 +181,41 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
         </div>
       )}
 
-      <Tabs defaultValue={mode === 'details' ? 'details' : 'application'} className="w-full">
-        {mode !== 'application' && (
-          <TabsList className={`grid w-full ${mode === 'details' ? 'grid-cols-3' : 'grid-cols-4'} mb-8 h-auto p-0 bg-transparent gap-0`}>
-            {mode === 'all' && (
-              <TabsTrigger 
-                value="application" 
-                className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-              >
-                Application Form
-              </TabsTrigger>
-            )}
-            {(mode === 'all' || mode === 'details') && (
-              <>
-                <TabsTrigger 
-                  value="details" 
-                  className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-                >
-                  Data Details
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="documentation" 
-                  className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-                >
-                  Documentation
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="pricing" 
-                  className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-                >
-                  Pricing
-                </TabsTrigger>
-              </>
-            )}
-          </TabsList>
-        )}
+      <Tabs defaultValue={mode === 'details' ? 'overview' : 'overview'} className="w-full">
+        <TabsList className={`grid w-full grid-cols-3 mb-8 h-auto p-0 bg-transparent gap-0`}>
+          <TabsTrigger 
+            value="overview" 
+            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+          >
+            Overview
+          </TabsTrigger>
+          <TabsTrigger 
+            value="documentation" 
+            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+          >
+            Documentation
+          </TabsTrigger>
+          <TabsTrigger 
+            value="pricing" 
+            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+          >
+            Pricing
+          </TabsTrigger>
+        </TabsList>
 
-        {(mode === 'all' || mode === 'application') && (
-          <TabsContent value="application" className="space-y-4">
-            {/* Section Header - Hidden for cleaner look as per request */}
-            {/* <div className="flex items-center justify-between gap-4 pb-2 border-b border-slate-100 dark:border-slate-800">
-            </div> */}
-
-          {/* Basic Info Fields */}
-          <div className="grid grid-cols-1 gap-6 pt-0">
-            <div className="space-y-3">
-              <Label htmlFor="data-name" className="flex justify-between font-semibold text-sm">
-                 <span>Data Name <span className="text-red-500">*</span></span>
-              </Label>
-              <Input 
-                id="data-name" 
-                value={formData.title} 
-                onChange={(e) => handleChange('title', e.target.value)}
-                readOnly={!isEditable} 
-                disabled={!isEditable} 
-                className={`h-10 ${!isEditable ? 'bg-slate-50 dark:bg-slate-900' : ''}`} 
-              />
-            </div>
-
-            <div className="space-y-3">
-               <Label htmlFor="data-desc" className="flex justify-between font-semibold text-sm">
-                 <span>Description <span className="text-red-500">*</span></span>
-               </Label>
-               <Textarea 
-                 id="data-desc" 
-                 value={formData.description} 
-                 onChange={(e) => handleChange('description', e.target.value)}
-                 readOnly={!isEditable} 
-                 disabled={!isEditable} 
-                 className={`min-h-[100px] resize-y ${!isEditable ? 'bg-slate-50 dark:bg-slate-900' : ''}`} 
-               />
-            </div>
-
-            <div className="space-y-3">
-              <Label htmlFor="organization" className="flex justify-between font-semibold text-sm">
-                 <span>Organization / Institution <span className="text-red-500">*</span></span>
-              </Label>
-              <Input 
-                id="organization" 
-                value={formData.organization} 
-                onChange={(e) => handleChange('organization', e.target.value)}
-                readOnly={!isEditable} 
-                disabled={!isEditable} 
-                className={`h-10 ${!isEditable ? 'bg-slate-50 dark:bg-slate-900' : ''}`} 
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-3">
-                  <Label htmlFor="capacity" className="flex justify-between font-semibold text-sm">
-                     <span>Data Capacity (Volume)</span>
-                  </Label>
-                  <Input 
-                    id="capacity" 
-                    value={formData.capacity} 
-                    onChange={(e) => handleChange('capacity', e.target.value)}
-                    readOnly={!isEditable} 
-                    disabled={!isEditable} 
-                    className={`h-10 ${!isEditable ? 'bg-slate-50 dark:bg-slate-900' : ''}`} 
-                  />
-              </div>
-              <div className="space-y-3">
-                  <Label htmlFor="frequency" className="flex justify-between font-semibold text-sm">
-                     <span>Update Frequency</span>
-                  </Label>
-                  <Select 
-                    value={formData.updateFreq} 
-                    onValueChange={(val) => handleChange('updateFreq', val)}
-                    disabled={!isEditable}
-                  >
-                    <SelectTrigger className={`h-10 ${!isEditable ? 'bg-slate-50 dark:bg-slate-900' : ''}`}>
-                      <SelectValue placeholder="Select frequency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="daily">{t("1 Day", "1일")}</SelectItem>
-                      <SelectItem value="weekly">{t("7 Days", "7일")}</SelectItem>
-                      <SelectItem value="monthly">{t("1 Month", "한달")}</SelectItem>
-                      <SelectItem value="6months">{t("6 Months", "6개월")}</SelectItem>
-                      <SelectItem value="yearly">{t("12 Months", "12개월")}</SelectItem>
-                      <SelectItem value="other">{t("Other", "기타")}</SelectItem>
-                    </SelectContent>
-                  </Select>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <Label htmlFor="contact-person" className="flex justify-between font-semibold text-sm">
-                 <span>Contact Person <span className="text-red-500">*</span></span>
-              </Label>
-              <Input 
-                id="contact-person" 
-                value={formData.contactPerson} 
-                onChange={(e) => handleChange('contactPerson', e.target.value)}
-                readOnly={!isEditable} 
-                disabled={!isEditable} 
-                className={`h-10 ${!isEditable ? 'bg-slate-50 dark:bg-slate-900' : ''}`} 
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-3">
-                <Label htmlFor="contact-email" className="flex justify-between font-semibold text-sm">
-                   <span>Contact Email <span className="text-red-500">*</span></span>
-                </Label>
-                <div className="space-y-2">
-                  <Input 
-                    id="contact-email" 
-                    value={formData.contactEmail} 
-                    onChange={(e) => handleChange('contactEmail', e.target.value)}
-                    readOnly={!isEditable || formData.useAccountEmail}
-                    disabled={!isEditable || formData.useAccountEmail}
-                    className={`h-10 ${!isEditable || formData.useAccountEmail ? 'bg-slate-50 dark:bg-slate-900' : ''}`} 
-                  />
-                  <div className={`flex items-center space-x-2 ${!isEditable ? 'opacity-50' : ''}`}>
-                    <Checkbox 
-                      id="use-account-email-hosted" 
-                      checked={formData.useAccountEmail}
-                      onCheckedChange={(checked) => handleChange('useAccountEmail', checked)}
-                      disabled={!isEditable}
-                    />
-                    <label
-                      htmlFor="use-account-email-hosted"
-                      className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-muted-foreground"
-                    >
-                      Use account email
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-3">
-                <Label htmlFor="contact-phone" className="flex justify-between font-semibold text-sm">
-                   <span>Contact Phone</span>
-                </Label>
-                <Input 
-                  id="contact-phone" 
-                  value={formData.contactPhone} 
-                  onChange={(e) => handleChange('contactPhone', e.target.value)}
-                  readOnly={!isEditable} 
-                  disabled={!isEditable} 
-                  className={`h-10 ${!isEditable ? 'bg-slate-50 dark:bg-slate-900' : ''}`} 
-                />
-              </div>
-            </div>
+        <TabsContent value="overview" className="space-y-8">
+          {/* Info Banner */}
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900 rounded-lg p-4 mb-6">
+            <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-300 mb-1">Info</h4>
+            <p className="text-sm text-blue-700 dark:text-blue-400">
+              Changes to basic information will require re-approval from the administration team.
+            </p>
           </div>
-        </TabsContent>
-        )}
 
-        {(mode === 'all' || mode === 'details') && (
-          <>
-            <TabsContent value="details" className="space-y-8">
-              {/* Detailed Data Information Form (Linked Service Style) */}
-              
-              {/* Section 1: Basic Information */}
-              <div className="space-y-6">
+          {/* Detailed Data Information Form (Linked Service Style) */}
+          
+          {/* Section 1: Basic Information */}
+          <div className="space-y-6">
                 <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
                   <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
                   <div>
