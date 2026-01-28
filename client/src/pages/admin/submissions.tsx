@@ -445,27 +445,40 @@ export default function SubmissionManagement() {
               ) : (
                 <>
                   <Button 
-                    variant="outline" 
-                    className="mr-auto"
+                    variant="ghost" 
+                    size="sm"
+                    className="mr-auto text-muted-foreground"
                     onClick={() => setReviewsDialog({ open: true, item: viewDialog.item })}
                   >
                     <MessageSquare className="h-4 w-4 mr-2" />
                     Reviews
                   </Button>
-                  <Button 
-                    variant="outline" 
-                    className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
-                    onClick={() => setRejectDialog({ open: true, id: viewDialog.item!.id })}
-                  >
-                    Reject
-                  </Button>
-                  <Button 
-                    className="bg-green-600 hover:bg-green-700"
-                    onClick={() => handleApproveClick(viewDialog.item!.id)}
-                    disabled={viewDialog.item.status === 'Approved'}
-                  >
-                    Approve Submission
-                  </Button>
+                  
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                      onClick={() => handleStatusChange(viewDialog.item!.id, 'Reviewing')}
+                      disabled={viewDialog.item.status === 'Reviewing'}
+                    >
+                      <Clock className="h-4 w-4 mr-2" />
+                      Reviewing
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+                      onClick={() => setRejectDialog({ open: true, id: viewDialog.item!.id })}
+                    >
+                      Reject
+                    </Button>
+                    <Button 
+                      className="bg-green-600 hover:bg-green-700"
+                      onClick={() => handleApproveClick(viewDialog.item!.id)}
+                      disabled={viewDialog.item.status === 'Approved'}
+                    >
+                      Approve Submission
+                    </Button>
+                  </div>
                 </>
               )}
             </div>
