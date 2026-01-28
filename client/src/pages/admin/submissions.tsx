@@ -614,8 +614,8 @@ export default function SubmissionManagement() {
                         </Button>
                         
                         {item.serviceType === 'Hosted' ? (
-                          <div className="flex items-center space-x-2">
-                             <span className="text-xs font-medium text-blue-600">Active</span>
+                          <div className="flex items-center space-x-3 border rounded-full px-4 py-1.5 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 shadow-sm">
+                             <span className="text-sm font-bold text-blue-600">Active</span>
                              <Switch 
                                id={`status-${item.id}`}
                                checked={true}
