@@ -42,7 +42,6 @@ import { HostedServiceLogs } from "@/components/hosted-service-logs";
 import { ContractDetailsDialog } from "@/components/contract-details-dialog";
 
 import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 
 // Mock Approved Hosted Services with Owner info (from hosted-services.tsx)
 const HOSTED_SERVICES_MOCK = [
