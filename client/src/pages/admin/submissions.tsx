@@ -58,6 +58,7 @@ const MOCK_SUBMISSIONS = [
     // Extra fields for compatibility if needed
     founder: "Tech Manufacturing Inc.",
     website: "https://techmfg.example.com",
+    newReviews: 2,
   },
   { 
     id: 102, 
@@ -74,6 +75,7 @@ const MOCK_SUBMISSIONS = [
     docUrl: "https://api.logitech.example.io",
     contactEmail: "dev@logitech.example.io",
     contactPhone: "+1-555-0102",
+    newReviews: 0,
   },
   { 
     id: 103, 
@@ -90,6 +92,7 @@ const MOCK_SUBMISSIONS = [
     contactEmail: "research@greenenergy.example.org",
     contactPhone: "+1-555-0103",
     organization: "Green Energy Research",
+    newReviews: 5,
   },
   { 
     id: 104, 
@@ -302,9 +305,14 @@ export default function SubmissionManagement() {
                         )}
 
                         {(item.serviceType === 'Linked' || item.serviceType === 'Hosted') && (
-                          <Button variant="ghost" size="sm" onClick={() => setReviewsDialog({ open: true, item: item })}>
-                            <MessageSquare className="h-4 w-4" />
-                          </Button>
+                          <div className="relative inline-block">
+                            <Button variant="ghost" size="sm" onClick={() => setReviewsDialog({ open: true, item: item })}>
+                              <MessageSquare className="h-4 w-4" />
+                            </Button>
+                            {item.newReviews && item.newReviews > 0 ? (
+                              <span className="absolute top-0 right-0 h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white dark:border-slate-900" />
+                            ) : null}
+                          </div>
                         )}
                         
                         {/* Actions for all statuses including Rejected */}
