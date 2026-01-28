@@ -1504,14 +1504,14 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
           </Button>
       )}
 
-      <div className="mb-6 text-center px-6 pt-6 shrink-0">
+      <div className="text-center p-6 border-b border-slate-100 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-950 z-10">
         {mode === 'create' && (
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-xs font-bold text-green-600 mb-4">
               <ShieldCheck className="h-3 w-3" /> 59 CERTIFIED DOMAIN RATING
           </div>
         )}
         
-        <h1 className="text-2xl md:text-3xl font-extrabold mb-4 text-slate-900 dark:text-slate-50 tracking-tight">
+        <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-slate-50 tracking-tight">
           {mode === 'create' ? (
             <>Submit Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">AI Agent</span></>
           ) : (
@@ -1520,7 +1520,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
         </h1>
         
         {mode === 'create' && (
-          <p className="text-muted-foreground text-sm max-w-lg mx-auto leading-relaxed">
+          <p className="text-muted-foreground text-sm max-w-lg mx-auto leading-relaxed mt-4">
             Connect with global users and join thousands of innovative agentic solutions.
           </p>
         )}
@@ -1528,8 +1528,8 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
 
       {mode === 'edit-approved' ? (
         <Tabs defaultValue={defaultTab} className="flex flex-col flex-1 overflow-hidden w-full min-h-0">
-          <div className="px-6 shrink-0">
-          <TabsList className="grid w-full grid-cols-3 mb-4">
+          <div className="p-6 shrink-0">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="overview">{t("Overview", "기본 정보")}</TabsTrigger>
             <TabsTrigger value="documentation">{t("Documentation", "문서")}</TabsTrigger>
             <TabsTrigger value="pricing">{t("Pricing", "가격")}</TabsTrigger>
