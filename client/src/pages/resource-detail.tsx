@@ -145,14 +145,15 @@ export default function ResourceDetail() {
                   <button 
                     onClick={toggleFavorite}
                     className={cn(
-                      "ml-3 p-2 rounded-full transition-all duration-300 shadow-sm border",
+                      "ml-4 flex items-center gap-1.5 px-2 py-1 rounded-md transition-all duration-300",
                       isFavorite 
-                        ? "bg-pink-100 text-pink-600 border-pink-200 dark:bg-pink-900/40 dark:text-pink-400 dark:border-pink-800" 
-                        : "bg-white text-slate-400 border-slate-200 hover:text-pink-500 hover:border-pink-200 hover:bg-pink-50 dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800"
+                        ? "text-pink-600 dark:text-pink-400" 
+                        : "text-slate-400 hover:text-pink-500 dark:text-slate-500 dark:hover:text-pink-400"
                     )}
                     aria-label={t("Toggle Favorite", "즐겨찾기 토글")}
                   >
-                    <Heart className={cn("h-4.5 w-4.5", isFavorite && "fill-current")} />
+                    <Heart className={cn("h-4.5 w-4.5 stroke-[2.5px]", isFavorite && "fill-current")} />
+                    <span className="text-xs font-semibold uppercase tracking-tight">{t("Favorite", "즐겨찾기")}</span>
                   </button>
                 </div>
               </div>
