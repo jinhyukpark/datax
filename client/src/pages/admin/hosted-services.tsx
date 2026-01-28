@@ -20,14 +20,14 @@ import {
   Settings,
   FileSignature,
   Power,
-  XCircle
+  XCircle,
+  Filter
 } from "lucide-react";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { HostedServiceManage } from "@/components/hosted-service-manage";
 import { HostedServiceLogs } from "@/components/hosted-service-logs";
 import { ContractDetailsDialog } from "@/components/contract-details-dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -40,6 +40,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Mock Approved Hosted Services with Owner info
 const HOSTED_SERVICES_MOCK = [
@@ -101,10 +108,13 @@ const HOSTED_SERVICES_MOCK = [
   }
 ];
 
+type FilterStatus = "All" | "Active" | "Stopped" | "Expired";
+
 export default function HostedServicesManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [services, setServices] = useState(HOSTED_SERVICES_MOCK);
   const [contractDialog, setContractDialog] = useState<{open: boolean, service: typeof HOSTED_SERVICES_MOCK[0] | null}>({ open: false, service: null });
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>("All");
 
   const handleStopService = (id: string) => {
     setServices(services.map(service => 
@@ -113,14 +123,19 @@ export default function HostedServicesManagement() {
     toast.success("Service stopped successfully");
   };
 
-  const filteredServices = services.filter(service =>  
-    service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    service.owner.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    service.ownerEmail.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredServices = services.filter(service => {
+    const matchesSearch = 
+      service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      service.owner.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      service.ownerEmail.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesFilter = 
+      filterStatus === "All" ? true :
+      filterStatus === "Expired" ? false : // No expired services in mock data yet
+      service.status === filterStatus;
 
-  const activeServices = filteredServices.filter(s => s.status === 'Active');
-  const stoppedServices = filteredServices.filter(s => s.status === 'Stopped');
+    return matchesSearch && matchesFilter;
+  });
 
   const getStatusBadge = (status: string) => {
     switch(status) {
@@ -271,51 +286,45 @@ export default function HostedServicesManagement() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <div className="flex gap-2">
-              {/* Additional filters can be added here */}
+            <div className="flex gap-2 items-center">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <Select value={filterStatus} onValueChange={(value) => setFilterStatus(value as FilterStatus)}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Filter by status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="All">All Services</SelectItem>
+                    <SelectItem value="Active">Active</SelectItem>
+                    <SelectItem value="Stopped">Stopped</SelectItem>
+                    <SelectItem value="Expired">Service Expired</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Services List */}
-        <Tabs defaultValue="active" className="w-full">
-          <TabsList className="mb-4">
-            <TabsTrigger value="active">Active Services</TabsTrigger>
-            <TabsTrigger value="stopped">Stopped Services</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="active">
-            <div className="space-y-4">
-              {activeServices.length === 0 ? (
-                <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
-                  <Server className="mx-auto h-12 w-12 mb-4 opacity-20" />
-                  <h3 className="text-lg font-medium text-muted-foreground">No active services found</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Try adjusting your search terms.</p>
-                </div>
-              ) : (
-                activeServices.map((service) => (
-                  <ServiceCard key={service.id} service={service} />
-                ))
-              )}
+        <div className="space-y-4">
+          {filteredServices.length === 0 ? (
+            <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
+              <Server className="mx-auto h-12 w-12 mb-4 opacity-20" />
+              <h3 className="text-lg font-medium text-muted-foreground">No services found</h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                {filterStatus !== "All" ? `No ${filterStatus.toLowerCase()} services found.` : "Try adjusting your search terms."}
+              </p>
             </div>
-          </TabsContent>
-
-          <TabsContent value="stopped">
-             <div className="space-y-4">
-              {stoppedServices.length === 0 ? (
-                <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
-                  <XCircle className="mx-auto h-12 w-12 mb-4 opacity-20" />
-                  <h3 className="text-lg font-medium text-muted-foreground">No stopped services found</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Stopped services will appear here.</p>
-                </div>
-              ) : (
-                stoppedServices.map((service) => (
-                   <ServiceCard key={service.id} service={service} isStopped={true} />
-                ))
-              )}
-            </div>
-          </TabsContent>
-        </Tabs>
+          ) : (
+            filteredServices.map((service) => (
+              <ServiceCard 
+                key={service.id} 
+                service={service} 
+                isStopped={service.status === 'Stopped'} 
+              />
+            ))
+          )}
+        </div>
       </div>
 
       {contractDialog.service && (
