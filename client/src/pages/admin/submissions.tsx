@@ -194,6 +194,20 @@ export default function SubmissionManagement() {
     }
   };
 
+  const handleReviewingClick = (id: number) => {
+    const submission = submissions.find(s => s.id === id);
+    if (submission && submission.status === 'Approved') {
+      setAlertConfig({
+        title: "Set to Reviewing",
+        description: "Warning: Changing status from 'Approved' to 'Reviewing' will make this service invisible to users. Are you sure you want to proceed?",
+        action: () => handleStatusChange(id, 'Reviewing')
+      });
+      setAlertOpen(true);
+    } else {
+      handleStatusChange(id, 'Reviewing');
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'Approved': return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Approved</Badge>;
@@ -320,7 +334,7 @@ export default function SubmissionManagement() {
                           size="sm" 
                           variant="outline"
                           className="text-blue-600 border-blue-200 hover:bg-blue-50 h-8 w-8 p-0"
-                          onClick={() => handleStatusChange(item.id, 'Reviewing')}
+                          onClick={() => handleReviewingClick(item.id)}
                           disabled={item.status === 'Reviewing'}
                           title="Set to Reviewing"
                         >
@@ -454,7 +468,7 @@ export default function SubmissionManagement() {
                     <Button 
                       variant="outline" 
                       className="text-blue-600 border-blue-200 hover:bg-blue-50"
-                      onClick={() => handleStatusChange(viewDialog.item!.id, 'Reviewing')}
+                      onClick={() => handleReviewingClick(viewDialog.item!.id)}
                       disabled={viewDialog.item.status === 'Reviewing'}
                     >
                       <Clock className="h-4 w-4 mr-2" />
