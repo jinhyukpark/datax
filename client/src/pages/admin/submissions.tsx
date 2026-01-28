@@ -41,6 +41,9 @@ import { HostedServiceManage } from "@/components/hosted-service-manage";
 import { HostedServiceLogs } from "@/components/hosted-service-logs";
 import { ContractDetailsDialog } from "@/components/contract-details-dialog";
 
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+
 // Mock Approved Hosted Services with Owner info (from hosted-services.tsx)
 const HOSTED_SERVICES_MOCK = [
   {
@@ -251,7 +254,7 @@ export default function SubmissionManagement() {
       id: `stopped-${submission.id}`,
       title: submission.title,
       description: submission.description,
-      status: "Stopped",
+      status: "Deactive", // Changed from Stopped
       endpoint: "https://api.platform.com/v1/stopped", // Mock
       region: "Unknown",
       pricing: submission.pricing || "Paid",
@@ -267,11 +270,11 @@ export default function SubmissionManagement() {
     // Remove from submissions list
     setSubmissions(submissions.filter(s => s.id !== id));
     
-    toast.success("Service stopped and moved to Stopped Services tab");
+    toast.success("Service deactivated and moved to Deactive Services tab");
   };
 
   const activeServices = hostedServices.filter(s => s.status === 'Active');
-  const stoppedServices = hostedServices.filter(s => s.status === 'Stopped');
+  const stoppedServices = hostedServices.filter(s => s.status === 'Deactive' || s.status === 'Stopped');
 
   const getServiceStatusBadge = (status: string) => {
     switch(status) {
@@ -418,8 +421,8 @@ export default function SubmissionManagement() {
 
   const confirmStopHosted = (id: number) => {
     setAlertConfig({
-      title: "Stop Hosted Service",
-      description: "호스티드 서비스를 중지할 경우에는 시스템 호스팅 되어 있는 그 서버에 대한 영향을 서버가 서버와 연결이 끊길 수 있어서 신중하게 선택하시기 바랍니다.",
+      title: "Deactivate Hosted Service",
+      description: "호스티드 서비스를 비활성화할 경우에는 시스템 호스팅 되어 있는 그 서버에 대한 영향을 서버가 서버와 연결이 끊길 수 있어서 신중하게 선택하시기 바랍니다.",
       action: () => handleStopSubmission(id)
     });
     setAlertOpen(true);
@@ -612,15 +615,15 @@ export default function SubmissionManagement() {
                         </Button>
                         
                         {item.serviceType === 'Hosted' ? (
-                          <Button 
-                            size="sm" 
-                            variant="destructive" 
-                            className="h-8 w-8 p-0"
-                            onClick={() => confirmStopHosted(item.id)}
-                            title="Stop Service"
-                          >
-                            <Power className="h-4 w-4" />
-                          </Button>
+                          <div className="flex items-center space-x-2">
+                             <Label htmlFor={`status-${item.id}`} className="sr-only">Active Status</Label>
+                             <Switch 
+                               id={`status-${item.id}`}
+                               checked={true}
+                               onCheckedChange={(checked) => !checked && confirmStopHosted(item.id)}
+                               className="data-[state=checked]:bg-green-600"
+                             />
+                          </div>
                         ) : (
                           <Button 
                             size="sm" 
@@ -659,7 +662,7 @@ export default function SubmissionManagement() {
                   value="stopped"
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-1 py-2 font-medium text-muted-foreground data-[state=active]:text-primary hover:text-primary transition-colors"
                 >
-                  Stopped Services
+                  Deactive Services
                 </TabsTrigger>
              </TabsList>
            </div>
@@ -673,8 +676,8 @@ export default function SubmissionManagement() {
                  {stoppedServices.length === 0 ? (
                     <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
                        <XCircle className="mx-auto h-12 w-12 mb-4 opacity-20" />
-                       <h3 className="text-lg font-medium text-muted-foreground">No stopped services found</h3>
-                       <p className="text-sm text-muted-foreground mt-1">Stopped services will appear here.</p>
+                       <h3 className="text-lg font-medium text-muted-foreground">No deactivated services found</h3>
+                       <p className="text-sm text-muted-foreground mt-1">Deactivated services will appear here.</p>
                     </div>
                  ) : (
                     stoppedServices.map((service) => (
