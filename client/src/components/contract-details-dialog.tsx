@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { FileSignature, Calendar, DollarSign, User, Building, Percent, FileText, Edit, Send, Mail } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { FileSignature, Calendar, DollarSign, User, Building, Percent, FileText, Edit, Send, Mail, XCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
@@ -75,11 +76,29 @@ export function ContractDetailsDialog({ open, onOpenChange, service }: ContractD
     );
   };
 
+  const handleAddSpecialTerm = () => {
+    const newContracts = { ...contracts };
+    newContracts[activeTab].specialTerms = [...newContracts[activeTab].specialTerms, "New special term"];
+    setContracts(newContracts);
+  };
+
+  const handleUpdateSpecialTerm = (index: number, value: string) => {
+    const newContracts = { ...contracts };
+    newContracts[activeTab].specialTerms[index] = value;
+    setContracts(newContracts);
+  };
+
+  const handleRemoveSpecialTerm = (index: number) => {
+    const newContracts = { ...contracts };
+    newContracts[activeTab].specialTerms = newContracts[activeTab].specialTerms.filter((_: any, i: number) => i !== index);
+    setContracts(newContracts);
+  };
+
   const currentContract = contracts[activeTab];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl h-[90vh] flex flex-col p-0">
+      <DialogContent className="max-w-5xl h-[92vh] flex flex-col p-0">
         <DialogHeader className="px-6 py-4 border-b">
           <div className="flex justify-between items-center w-full pr-8">
             <div>
@@ -138,46 +157,77 @@ export function ContractDetailsDialog({ open, onOpenChange, service }: ContractD
                 {/* Contract Header Card */}
                 <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-lg p-6 shadow-sm">
                   <div className="flex justify-between items-start mb-4">
-                    <div className="space-y-1">
+                    <div className="space-y-1 flex-1 mr-4">
                       {isEditing ? (
-                        <Input 
-                          value={currentContract.title} 
-                          className="text-xl font-bold h-9 mb-2"
-                          onChange={(e) => {
-                            const newContracts = { ...contracts };
-                            newContracts[activeTab].title = e.target.value;
-                            setContracts(newContracts);
-                          }}
-                        />
+                        <div className="space-y-2">
+                          <Label className="text-xs font-bold text-muted-foreground uppercase">Contract Title</Label>
+                          <Input 
+                            value={currentContract.title} 
+                            className="text-lg font-bold h-10 w-full"
+                            onChange={(e) => {
+                              const newContracts = { ...contracts };
+                              newContracts[activeTab].title = e.target.value;
+                              setContracts(newContracts);
+                            }}
+                          />
+                        </div>
                       ) : (
                         <h2 className="text-xl font-bold">{currentContract.title}</h2>
                       )}
-                      <p className="text-sm text-muted-foreground flex items-center gap-2">
-                        <Calendar className="h-3.5 w-3.5" />
-                        Contract Period: {currentContract.startDate} ~ {currentContract.endDate}
-                      </p>
+                      <div className="flex items-center gap-4 mt-2">
+                         <p className="text-sm text-muted-foreground flex items-center gap-2">
+                           <Calendar className="h-3.5 w-3.5" />
+                           Contract Period: {currentContract.startDate} ~ {currentContract.endDate}
+                         </p>
+                         {isEditing && (
+                           <div className="flex gap-2 items-center">
+                             <Input 
+                               type="date" 
+                               value={currentContract.startDate}
+                               className="h-7 text-xs w-32"
+                               onChange={(e) => {
+                                 const newContracts = { ...contracts };
+                                 newContracts[activeTab].startDate = e.target.value;
+                                 setContracts(newContracts);
+                               }}
+                             />
+                             <span className="text-muted-foreground">~</span>
+                             <Input 
+                               type="date" 
+                               value={currentContract.endDate}
+                               className="h-7 text-xs w-32"
+                               onChange={(e) => {
+                                 const newContracts = { ...contracts };
+                                 newContracts[activeTab].endDate = e.target.value;
+                                 setContracts(newContracts);
+                               }}
+                             />
+                           </div>
+                         )}
+                      </div>
                     </div>
                     <Badge className={currentContract.status === 'Active' ? 'bg-green-100 text-green-800 border-green-200' : 'bg-slate-100 text-slate-800 border-slate-200'}>
                       {currentContract.status}
                     </Badge>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-200 dark:border-slate-800">
-                    <div className="flex flex-col">
-                      <span className="text-xs text-muted-foreground mb-1 font-medium">Total Contract Value</span>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-200 dark:border-slate-800">
+                    <div className="flex flex-col space-y-2">
+                      <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Total Contract Value</span>
                       {isEditing ? (
                         <div className="flex items-center gap-2">
                           <DollarSign className="h-4 w-4 text-green-600" />
                           <Input 
                             type="number" 
                             value={currentContract.amount}
-                            className="h-8 py-0"
+                            className="h-9 font-bold"
                             onChange={(e) => {
                               const newContracts = { ...contracts };
                               newContracts[activeTab].amount = parseInt(e.target.value);
                               setContracts(newContracts);
                             }}
                           />
+                          <span className="text-sm font-bold">{currentContract.currency}</span>
                         </div>
                       ) : (
                         <span className="text-lg font-bold flex items-center gap-1">
@@ -186,15 +236,31 @@ export function ContractDetailsDialog({ open, onOpenChange, service }: ContractD
                         </span>
                       )}
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs text-muted-foreground mb-1 font-medium">Applied Discount</span>
-                      <span className="text-lg font-bold flex items-center gap-1">
-                        <Percent className="h-4 w-4 text-orange-600" />
-                        {currentContract.discountRate}%
-                      </span>
+                    <div className="flex flex-col space-y-2">
+                      <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Applied Discount</span>
+                      {isEditing ? (
+                        <div className="flex items-center gap-2">
+                          <Percent className="h-4 w-4 text-orange-600" />
+                          <Input 
+                            type="number" 
+                            value={currentContract.discountRate}
+                            className="h-9 font-bold w-24"
+                            onChange={(e) => {
+                              const newContracts = { ...contracts };
+                              newContracts[activeTab].discountRate = parseInt(e.target.value);
+                              setContracts(newContracts);
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <span className="text-lg font-bold flex items-center gap-1">
+                          <Percent className="h-4 w-4 text-orange-600" />
+                          {currentContract.discountRate}%
+                        </span>
+                      )}
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs text-muted-foreground mb-1 font-medium">Next Renewal</span>
+                    <div className="flex flex-col space-y-2">
+                      <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Next Renewal</span>
                       <span className="text-lg font-bold flex items-center gap-1">
                         <Calendar className="h-4 w-4 text-blue-600" />
                         {currentContract.endDate}
@@ -219,16 +285,43 @@ export function ContractDetailsDialog({ open, onOpenChange, service }: ContractD
                             Service Provider
                             <Badge variant="secondary" className="text-[10px] h-5 rounded-sm">Counterparty</Badge>
                           </h4>
-                          <div className="flex items-start gap-3 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border border-slate-100">
-                            <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold shrink-0 shadow-inner">
+                          <div className="flex items-start gap-4 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border border-slate-100">
+                            <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold shrink-0 shadow-inner text-lg">
                               {currentContract.manager.charAt(0)}
                             </div>
-                            <div className="overflow-hidden">
-                              <p className="font-bold text-sm truncate" title={service.owner}>{service.owner}</p>
-                              <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1 truncate">
-                                <User className="h-3 w-3" />
-                                {currentContract.manager}
-                              </p>
+                            <div className="overflow-hidden flex-1 space-y-2">
+                              {isEditing ? (
+                                <>
+                                  <div className="space-y-1">
+                                    <Label className="text-[10px] text-muted-foreground">Provider Name</Label>
+                                    <Input 
+                                      value={service.owner} 
+                                      className="h-8 text-sm"
+                                      disabled // Usually owner shouldn't change here
+                                    />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <Label className="text-[10px] text-muted-foreground">Manager Name</Label>
+                                    <Input 
+                                      value={currentContract.manager} 
+                                      className="h-8 text-sm"
+                                      onChange={(e) => {
+                                        const newContracts = { ...contracts };
+                                        newContracts[activeTab].manager = e.target.value;
+                                        setContracts(newContracts);
+                                      }}
+                                    />
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <p className="font-bold text-base truncate" title={service.owner}>{service.owner}</p>
+                                  <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1 truncate">
+                                    <User className="h-3.5 w-3.5" />
+                                    {currentContract.manager}
+                                  </p>
+                                </>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -238,16 +331,39 @@ export function ContractDetailsDialog({ open, onOpenChange, service }: ContractD
                             Illunex Platform
                             <Badge className="text-[10px] h-5 bg-indigo-100 text-indigo-800 hover:bg-indigo-100 border-none rounded-sm">Our Side</Badge>
                           </h4>
-                          <div className="flex items-start gap-3 bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg border border-indigo-100 dark:border-indigo-900 shadow-sm">
-                            <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold shrink-0 shadow-inner">
+                          <div className="flex items-start gap-4 bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg border border-indigo-100 dark:border-indigo-900 shadow-sm">
+                            <div className="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold shrink-0 shadow-inner text-lg">
                               {currentContract.illunexManager.charAt(0)}
                             </div>
-                            <div className="overflow-hidden">
-                              <p className="font-bold text-sm">Illunex Corp.</p>
-                              <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1 truncate">
-                                <User className="h-3 w-3" />
-                                {currentContract.illunexManager}
-                              </p>
+                            <div className="overflow-hidden flex-1 space-y-2">
+                              {isEditing ? (
+                                <>
+                                  <div className="space-y-1">
+                                    <Label className="text-[10px] text-muted-foreground">Internal Entity</Label>
+                                    <Input value="Illunex Corp." className="h-8 text-sm" disabled />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <Label className="text-[10px] text-muted-foreground">Internal Manager</Label>
+                                    <Input 
+                                      value={currentContract.illunexManager} 
+                                      className="h-8 text-sm"
+                                      onChange={(e) => {
+                                        const newContracts = { ...contracts };
+                                        newContracts[activeTab].illunexManager = e.target.value;
+                                        setContracts(newContracts);
+                                      }}
+                                    />
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <p className="font-bold text-base">Illunex Corp.</p>
+                                  <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1 truncate">
+                                    <User className="h-3.5 w-3.5" />
+                                    {currentContract.illunexManager}
+                                  </p>
+                                </>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -264,36 +380,68 @@ export function ContractDetailsDialog({ open, onOpenChange, service }: ContractD
                     </CardHeader>
                     <CardContent className="space-y-4">
                       {isEditing ? (
-                        <Textarea 
-                          value={currentContract.content}
-                          className="min-h-[150px] text-sm leading-relaxed"
-                          onChange={(e) => {
-                            const newContracts = { ...contracts };
-                            newContracts[activeTab].content = e.target.value;
-                            setContracts(newContracts);
-                          }}
-                        />
+                        <div className="space-y-2">
+                           <Label className="text-xs font-bold text-muted-foreground uppercase">General Agreement Content</Label>
+                           <Textarea 
+                             value={currentContract.content}
+                             className="min-h-[180px] text-sm leading-relaxed"
+                             onChange={(e) => {
+                               const newContracts = { ...contracts };
+                               newContracts[activeTab].content = e.target.value;
+                               setContracts(newContracts);
+                             }}
+                           />
+                        </div>
                       ) : (
                         <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line bg-slate-50/50 p-4 rounded-lg border border-slate-100">
                           {currentContract.content}
                         </p>
                       )}
                       
-                      <div className="space-y-3 mt-6">
-                        <h4 className="font-bold text-sm flex items-center gap-2">
-                          <Badge variant="outline" className="text-[10px] h-5 font-bold uppercase tracking-tighter">Special Terms</Badge>
-                        </h4>
-                        <div className="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 p-4 shadow-inner">
-                          <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-400 space-y-2">
-                            {currentContract.specialTerms.map((term: string, i: number) => (
-                              <li key={i} className="pl-1">{term}</li>
-                            ))}
-                          </ul>
+                      <div className="space-y-4 mt-6">
+                        <div className="flex justify-between items-center">
+                          <h4 className="font-bold text-sm flex items-center gap-2">
+                            <Badge variant="outline" className="text-[10px] h-5 font-bold uppercase tracking-tighter">Special Terms</Badge>
+                          </h4>
                           {isEditing && (
-                            <Button variant="ghost" size="sm" className="mt-4 text-xs h-7 gap-1 text-indigo-600">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-xs h-7 gap-1 text-indigo-600 font-bold"
+                              onClick={handleAddSpecialTerm}
+                            >
                               <Edit className="h-3 w-3" />
-                              Add special term
+                              Add New Term
                             </Button>
+                          )}
+                        </div>
+                        <div className="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 p-4 shadow-inner space-y-3">
+                          {isEditing ? (
+                            <div className="space-y-3">
+                              {currentContract.specialTerms.map((term: string, i: number) => (
+                                <div key={i} className="flex gap-2 items-center">
+                                  <Input 
+                                    value={term}
+                                    className="h-8 text-sm flex-1"
+                                    onChange={(e) => handleUpdateSpecialTerm(i, e.target.value)}
+                                  />
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
+                                    onClick={() => handleRemoveSpecialTerm(i)}
+                                  >
+                                    <XCircle className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-400 space-y-2 pl-2">
+                              {currentContract.specialTerms.map((term: string, i: number) => (
+                                <li key={i} className="pl-1 leading-relaxed">{term}</li>
+                              ))}
+                            </ul>
                           )}
                         </div>
                       </div>
