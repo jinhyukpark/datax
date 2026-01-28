@@ -1,464 +1,199 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { FileSignature, Calendar, DollarSign, User, Building, Percent, FileText, Edit, Send, Mail, XCircle } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FileText, ShieldCheck, Zap, Calendar, CreditCard, CheckCircle2, Info } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
 
 interface ContractDetailsDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  service: any;
+  isOpen: boolean;
+  onClose: () => void;
+  resourceName: string;
+  resourceType: string;
 }
 
-export function ContractDetailsDialog({ open, onOpenChange, service }: ContractDetailsDialogProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [activeTab, setActiveTab] = useState("2026");
-
-  // Mock contract data based on year
-  const [contracts, setContracts] = useState<any>({
-    "2026": {
-      title: `${service.title} - 2026 Annual Service Agreement`,
-      status: "Active",
-      startDate: "2026-01-01",
-      endDate: "2026-12-31",
-      amount: 12000,
-      currency: "USD",
-      discountRate: 10,
-      manager: service.owner || "Provider Manager",
-      illunexManager: "Kim Min-su",
-      content: "This agreement outlines the terms and conditions for the provision of hosted data services on the Illunex Platform. The Service Provider agrees to maintain the dataset quality and update frequency as specified in the original submission. Illunex agrees to provide the hosting infrastructure and handle billing operations.",
-      specialTerms: [
-        "Includes 24/7 dedicated support channel",
-        "99.99% Uptime SLA Guarantee",
-        "Quarterly performance review meetings",
-        "Data sovereignty compliance for EU region"
-      ]
-    },
-    "2025": {
-      title: `${service.title} - 2025 Annual Service Agreement`,
-      status: "Expired",
-      startDate: "2025-01-01",
-      endDate: "2025-12-31",
-      amount: 10000,
-      currency: "USD",
-      discountRate: 5,
-      manager: service.owner || "Provider Manager",
-      illunexManager: "Lee Ji-won",
-      content: "This agreement outlines the terms and conditions for the provision of hosted data services on the Illunex Platform. Standard terms apply.",
-      specialTerms: [
-        "99.9% Uptime SLA Guarantee",
-        "Standard business hour support"
-      ]
-    }
+export function ContractDetailsDialog({
+  isOpen,
+  onClose,
+  resourceName,
+  resourceType,
+}: ContractDetailsDialogProps) {
+  const { t } = useLanguage();
+  const [formData, setFormData] = useState({
+    termsOfService: "By using this service, you agree to our terms and conditions. We reserve the right to modify these terms at any time.",
+    providedServices: "Enterprise-grade data analysis, REST API access",
+    servicePeriod: "Monthly subscription with automatic renewal",
+    licensePricing: "Commercial License: Business use permitted. Monthly Fee: $78.00",
+    refundPolicy: "Full refund within 7 days if service not accessed",
   });
 
-  const handleSave = () => {
-    setIsEditing(false);
-    toast.success("Contract updated successfully");
+  const handleChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
-
-  const handleSendEmail = () => {
-    toast.promise(
-      new Promise((resolve) => setTimeout(resolve, 1500)),
-      {
-        loading: 'Preparing contract documents...',
-        success: `Contract sent to ${service.ownerEmail || 'provider'} successfully`,
-        error: 'Failed to send contract',
-      }
-    );
-  };
-
-  const handleAddSpecialTerm = () => {
-    const newContracts = { ...contracts };
-    newContracts[activeTab].specialTerms = [...newContracts[activeTab].specialTerms, "New special term"];
-    setContracts(newContracts);
-  };
-
-  const handleUpdateSpecialTerm = (index: number, value: string) => {
-    const newContracts = { ...contracts };
-    newContracts[activeTab].specialTerms[index] = value;
-    setContracts(newContracts);
-  };
-
-  const handleRemoveSpecialTerm = (index: number) => {
-    const newContracts = { ...contracts };
-    newContracts[activeTab].specialTerms = newContracts[activeTab].specialTerms.filter((_: any, i: number) => i !== index);
-    setContracts(newContracts);
-  };
-
-  const currentContract = contracts[activeTab];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl h-[92vh] flex flex-col p-0">
-        <DialogHeader className="px-6 py-4 border-b">
-          <div className="flex justify-between items-center w-full pr-8">
-            <div>
-              <DialogTitle className="flex items-center gap-2 text-xl">
-                <FileSignature className="h-5 w-5 text-indigo-600" />
-                Contract Information
-              </DialogTitle>
-              <DialogDescription>
-                Manage contract details and history for {service.title}
-              </DialogDescription>
-            </div>
-            <div className="flex gap-2">
-              <Button 
-                variant={isEditing ? "default" : "outline"} 
-                size="sm" 
-                className="gap-2"
-                onClick={() => isEditing ? handleSave() : setIsEditing(true)}
-              >
-                {isEditing ? <FileText className="h-4 w-4" /> : <Edit className="h-4 w-4" />}
-                {isEditing ? "Save Contract" : "Edit Contract"}
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="gap-2 text-indigo-600 border-indigo-200 hover:bg-indigo-50"
-                onClick={handleSendEmail}
-              >
-                <Mail className="h-4 w-4" />
-                Send via Email
-              </Button>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden flex flex-col p-0 gap-0">
+        <DialogHeader className="p-6 pb-2">
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-xl font-bold flex items-center gap-2">
+              Manage <span className="text-indigo-600">{resourceName}</span>
+            </DialogTitle>
+            <div className="bg-indigo-600 text-white text-[10px] font-bold px-2 py-1 rounded flex items-center gap-1 uppercase">
+              <ShieldCheck className="h-3 w-3" />
+              {resourceType} Service
             </div>
           </div>
         </DialogHeader>
 
-        <div className="flex-1 overflow-hidden flex flex-col">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-            <div className="px-6 pt-4 bg-slate-50/50">
-              <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent gap-6">
-                <TabsTrigger 
-                  value="2026"
-                  className="rounded-none border-b-2 border-transparent px-4 py-2 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm transition-all"
-                >
-                  2026 (Current)
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="2025"
-                  className="rounded-none border-b-2 border-transparent px-4 py-2 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm transition-all"
-                >
-                  2025
-                </TabsTrigger>
-              </TabsList>
-            </div>
+        <Tabs defaultValue="terms" className="flex-1 flex flex-col overflow-hidden">
+          <div className="px-6 border-b">
+            <TabsList className="bg-transparent h-auto p-0 gap-6">
+              <TabsTrigger 
+                value="overview" 
+                className="rounded-none border-b-2 border-transparent px-1 py-3 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent shadow-none"
+              >
+                Overview
+              </TabsTrigger>
+              <TabsTrigger 
+                value="documentation" 
+                className="rounded-none border-b-2 border-transparent px-1 py-3 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent shadow-none"
+              >
+                Documentation
+              </TabsTrigger>
+              <TabsTrigger 
+                value="terms" 
+                className="rounded-none border-b-2 border-transparent px-1 py-3 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent shadow-none"
+              >
+                Terms & Policies
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
-            <ScrollArea className="flex-1 p-6">
-              <div className="space-y-6">
-                {/* Contract Header Card */}
-                <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-lg p-6 shadow-sm">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="space-y-1 flex-1 mr-4">
-                      {isEditing ? (
-                        <div className="space-y-2">
-                          <Label className="text-xs font-bold text-muted-foreground uppercase">Contract Title</Label>
-                          <Input 
-                            value={currentContract.title} 
-                            className="text-lg font-bold h-10 w-full"
-                            onChange={(e) => {
-                              const newContracts = { ...contracts };
-                              newContracts[activeTab].title = e.target.value;
-                              setContracts(newContracts);
-                            }}
-                          />
-                        </div>
-                      ) : (
-                        <h2 className="text-xl font-bold">{currentContract.title}</h2>
-                      )}
-                      <div className="flex items-center gap-4 mt-2">
-                         <p className="text-sm text-muted-foreground flex items-center gap-2">
-                           <Calendar className="h-3.5 w-3.5" />
-                           Contract Period: {currentContract.startDate} ~ {currentContract.endDate}
-                         </p>
-                         {isEditing && (
-                           <div className="flex gap-2 items-center">
-                             <Input 
-                               type="date" 
-                               value={currentContract.startDate}
-                               className="h-7 text-xs w-32"
-                               onChange={(e) => {
-                                 const newContracts = { ...contracts };
-                                 newContracts[activeTab].startDate = e.target.value;
-                                 setContracts(newContracts);
-                               }}
-                             />
-                             <span className="text-muted-foreground">~</span>
-                             <Input 
-                               type="date" 
-                               value={currentContract.endDate}
-                               className="h-7 text-xs w-32"
-                               onChange={(e) => {
-                                 const newContracts = { ...contracts };
-                                 newContracts[activeTab].endDate = e.target.value;
-                                 setContracts(newContracts);
-                               }}
-                             />
-                           </div>
-                         )}
-                      </div>
-                    </div>
-                    <Badge className={currentContract.status === 'Active' ? 'bg-green-100 text-green-800 border-green-200' : 'bg-slate-100 text-slate-800 border-slate-200'}>
-                      {currentContract.status}
-                    </Badge>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-200 dark:border-slate-800">
-                    <div className="flex flex-col space-y-2">
-                      <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Total Contract Value</span>
-                      {isEditing ? (
-                        <div className="flex items-center gap-2">
-                          <DollarSign className="h-4 w-4 text-green-600" />
-                          <Input 
-                            type="number" 
-                            value={currentContract.amount}
-                            className="h-9 font-bold"
-                            onChange={(e) => {
-                              const newContracts = { ...contracts };
-                              newContracts[activeTab].amount = parseInt(e.target.value);
-                              setContracts(newContracts);
-                            }}
-                          />
-                          <span className="text-sm font-bold">{currentContract.currency}</span>
-                        </div>
-                      ) : (
-                        <span className="text-lg font-bold flex items-center gap-1">
-                          <DollarSign className="h-4 w-4 text-green-600" />
-                          {currentContract.amount.toLocaleString()} {currentContract.currency}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex flex-col space-y-2">
-                      <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Applied Discount</span>
-                      {isEditing ? (
-                        <div className="flex items-center gap-2">
-                          <Percent className="h-4 w-4 text-orange-600" />
-                          <Input 
-                            type="number" 
-                            value={currentContract.discountRate}
-                            className="h-9 font-bold w-24"
-                            onChange={(e) => {
-                              const newContracts = { ...contracts };
-                              newContracts[activeTab].discountRate = parseInt(e.target.value);
-                              setContracts(newContracts);
-                            }}
-                          />
-                        </div>
-                      ) : (
-                        <span className="text-lg font-bold flex items-center gap-1">
-                          <Percent className="h-4 w-4 text-orange-600" />
-                          {currentContract.discountRate}%
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex flex-col space-y-2">
-                      <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Next Renewal</span>
-                      <span className="text-lg font-bold flex items-center gap-1">
-                        <Calendar className="h-4 w-4 text-blue-600" />
-                        {currentContract.endDate}
-                      </span>
-                    </div>
-                  </div>
+          <div className="flex-1 overflow-y-auto p-6">
+            <TabsContent value="terms" className="mt-0 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="flex items-center gap-3 pb-4 border-b">
+                <div className="h-10 w-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
+                  <FileText className="h-5 w-5" />
                 </div>
-
-                {/* Contract Content */}
-                <div className="flex flex-col gap-6">
-                  <Card className="shadow-sm">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-base font-bold flex items-center gap-2">
-                        <Building className="h-4 w-4 text-slate-500" />
-                        Parties Involved
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-3">
-                          <h4 className="text-xs font-bold uppercase text-muted-foreground flex justify-between tracking-wider">
-                            Service Provider
-                            <Badge variant="secondary" className="text-[10px] h-5 rounded-sm">Counterparty</Badge>
-                          </h4>
-                          <div className="flex items-start gap-4 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border border-slate-100">
-                            <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold shrink-0 shadow-inner text-lg">
-                              {currentContract.manager.charAt(0)}
-                            </div>
-                            <div className="overflow-hidden flex-1 space-y-2">
-                              {isEditing ? (
-                                <>
-                                  <div className="space-y-1">
-                                    <Label className="text-[10px] text-muted-foreground">Provider Name</Label>
-                                    <Input 
-                                      value={service.owner} 
-                                      className="h-8 text-sm"
-                                      disabled // Usually owner shouldn't change here
-                                    />
-                                  </div>
-                                  <div className="space-y-1">
-                                    <Label className="text-[10px] text-muted-foreground">Manager Name</Label>
-                                    <Input 
-                                      value={currentContract.manager} 
-                                      className="h-8 text-sm"
-                                      onChange={(e) => {
-                                        const newContracts = { ...contracts };
-                                        newContracts[activeTab].manager = e.target.value;
-                                        setContracts(newContracts);
-                                      }}
-                                    />
-                                  </div>
-                                </>
-                              ) : (
-                                <>
-                                  <p className="font-bold text-base truncate" title={service.owner}>{service.owner}</p>
-                                  <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1 truncate">
-                                    <User className="h-3.5 w-3.5" />
-                                    {currentContract.manager}
-                                  </p>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-3">
-                          <h4 className="text-xs font-bold uppercase text-muted-foreground flex justify-between tracking-wider">
-                            Illunex Platform
-                            <Badge className="text-[10px] h-5 bg-indigo-100 text-indigo-800 hover:bg-indigo-100 border-none rounded-sm">Our Side</Badge>
-                          </h4>
-                          <div className="flex items-start gap-4 bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg border border-indigo-100 dark:border-indigo-900 shadow-sm">
-                            <div className="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold shrink-0 shadow-inner text-lg">
-                              {currentContract.illunexManager.charAt(0)}
-                            </div>
-                            <div className="overflow-hidden flex-1 space-y-2">
-                              {isEditing ? (
-                                <>
-                                  <div className="space-y-1">
-                                    <Label className="text-[10px] text-muted-foreground">Internal Entity</Label>
-                                    <Input value="Illunex Corp." className="h-8 text-sm" disabled />
-                                  </div>
-                                  <div className="space-y-1">
-                                    <Label className="text-[10px] text-muted-foreground">Internal Manager</Label>
-                                    <Input 
-                                      value={currentContract.illunexManager} 
-                                      className="h-8 text-sm"
-                                      onChange={(e) => {
-                                        const newContracts = { ...contracts };
-                                        newContracts[activeTab].illunexManager = e.target.value;
-                                        setContracts(newContracts);
-                                      }}
-                                    />
-                                  </div>
-                                </>
-                              ) : (
-                                <>
-                                  <p className="font-bold text-base">Illunex Corp.</p>
-                                  <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1 truncate">
-                                    <User className="h-3.5 w-3.5" />
-                                    {currentContract.illunexManager}
-                                  </p>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="shadow-sm">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-base font-bold flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-slate-500" />
-                        Terms & Conditions
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {isEditing ? (
-                        <div className="space-y-2">
-                           <Label className="text-xs font-bold text-muted-foreground uppercase">General Agreement Content</Label>
-                           <Textarea 
-                             value={currentContract.content}
-                             className="min-h-[180px] text-sm leading-relaxed"
-                             onChange={(e) => {
-                               const newContracts = { ...contracts };
-                               newContracts[activeTab].content = e.target.value;
-                               setContracts(newContracts);
-                             }}
-                           />
-                        </div>
-                      ) : (
-                        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line bg-slate-50/50 p-4 rounded-lg border border-slate-100">
-                          {currentContract.content}
-                        </p>
-                      )}
-                      
-                      <div className="space-y-4 mt-6">
-                        <div className="flex justify-between items-center">
-                          <h4 className="font-bold text-sm flex items-center gap-2">
-                            <Badge variant="outline" className="text-[10px] h-5 font-bold uppercase tracking-tighter">Special Terms</Badge>
-                          </h4>
-                          {isEditing && (
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="text-xs h-7 gap-1 text-indigo-600 font-bold"
-                              onClick={handleAddSpecialTerm}
-                            >
-                              <Edit className="h-3 w-3" />
-                              Add New Term
-                            </Button>
-                          )}
-                        </div>
-                        <div className="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 p-4 shadow-inner space-y-3">
-                          {isEditing ? (
-                            <div className="space-y-3">
-                              {currentContract.specialTerms.map((term: string, i: number) => (
-                                <div key={i} className="flex gap-2 items-center">
-                                  <Input 
-                                    value={term}
-                                    className="h-8 text-sm flex-1"
-                                    onChange={(e) => handleUpdateSpecialTerm(i, e.target.value)}
-                                  />
-                                  <Button 
-                                    variant="ghost" 
-                                    size="sm" 
-                                    className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
-                                    onClick={() => handleRemoveSpecialTerm(i)}
-                                  >
-                                    <XCircle className="h-4 w-4" />
-                                  </Button>
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-400 space-y-2 pl-2">
-                              {currentContract.specialTerms.map((term: string, i: number) => (
-                                <li key={i} className="pl-1 leading-relaxed">{term}</li>
-                              ))}
-                            </ul>
-                          )}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                <div>
+                  <h3 className="font-bold text-lg">Terms & Policies</h3>
+                  <p className="text-xs text-slate-500">Define your service terms and refund policies for users.</p>
                 </div>
               </div>
-            </ScrollArea>
-          </Tabs>
-        </div>
-        
-        {isEditing && (
-          <DialogFooter className="px-6 py-4 border-t bg-slate-50/80">
-            <Button variant="ghost" onClick={() => setIsEditing(false)}>Cancel Changes</Button>
-            <Button onClick={handleSave} className="bg-indigo-600 hover:bg-indigo-700">Save & Apply Contract</Button>
-          </DialogFooter>
-        )}
+
+              {/* Terms of Service */}
+              <div className="space-y-2">
+                <Label className="text-sm font-bold flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 text-indigo-500" />
+                  Terms of Service
+                </Label>
+                <p className="text-xs text-slate-500">Please describe the terms and conditions for using your service.</p>
+                <Textarea 
+                  value={formData.termsOfService}
+                  onChange={(e) => handleChange("termsOfService", e.target.value)}
+                  className="min-h-[100px] text-sm bg-slate-50/50"
+                  placeholder="Enter detailed terms of service..."
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Provided Services */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-bold flex items-center gap-2">
+                    <Zap className="h-4 w-4 text-blue-500" />
+                    Provided Services
+                  </Label>
+                  <Input 
+                    value={formData.providedServices}
+                    onChange={(e) => handleChange("providedServices", e.target.value)}
+                    className="text-sm bg-slate-50/50"
+                    placeholder="e.g. API access, Data analysis"
+                  />
+                </div>
+
+                {/* Service Period */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-bold flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-purple-500" />
+                    Service Period
+                  </Label>
+                  <Input 
+                    value={formData.servicePeriod}
+                    onChange={(e) => handleChange("servicePeriod", e.target.value)}
+                    className="text-sm bg-slate-50/50"
+                    placeholder="e.g. Monthly, Yearly"
+                  />
+                </div>
+
+                {/* License & Pricing */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-bold flex items-center gap-2">
+                    <CreditCard className="h-4 w-4 text-amber-500" />
+                    License & Pricing
+                  </Label>
+                  <Input 
+                    value={formData.licensePricing}
+                    onChange={(e) => handleChange("licensePricing", e.target.value)}
+                    className="text-sm bg-slate-50/50"
+                    placeholder="e.g. Commercial, $78.00/mo"
+                  />
+                </div>
+
+                {/* Refund Policy */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-bold flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                    Refund Policy
+                  </Label>
+                  <Input 
+                    value={formData.refundPolicy}
+                    onChange={(e) => handleChange("refundPolicy", e.target.value)}
+                    className="text-sm bg-slate-50/50"
+                    placeholder="e.g. 7-day money back guarantee"
+                  />
+                </div>
+              </div>
+
+              {/* Note Section */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 flex gap-3">
+                <Info className="h-5 w-5 text-slate-400 shrink-0" />
+                <div className="space-y-1">
+                  <p className="text-xs font-bold text-slate-700">Note</p>
+                  <p className="text-[11px] text-slate-500 leading-relaxed">
+                    These terms will be displayed to users before they subscribe to your service. Ensure they comply with platform guidelines.
+                  </p>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="overview" className="mt-0">
+              <div className="p-8 text-center text-slate-400 italic">Overview editing coming soon...</div>
+            </TabsContent>
+            
+            <TabsContent value="documentation" className="mt-0">
+              <div className="p-8 text-center text-slate-400 italic">Documentation editing coming soon...</div>
+            </TabsContent>
+          </div>
+        </Tabs>
+
+        <DialogFooter className="p-6 border-t bg-slate-50/50">
+          <Button variant="outline" onClick={onClose} className="rounded-xl">
+            Cancel
+          </Button>
+          <Button onClick={onClose} className="bg-indigo-600 hover:bg-indigo-700 rounded-xl px-8">
+            Submit Agent
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
