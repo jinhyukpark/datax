@@ -160,6 +160,7 @@ const MOCK_SUBMISSIONS = [
     organization: "Green Energy Research",
     newReviews: 5,
     pricing: "Paid",
+    price: "$299",
   },
   { 
     id: 104, 
@@ -193,6 +194,7 @@ const MOCK_SUBMISSIONS = [
     contactPhone: "+1-555-0105",
     organization: "Climate Data Org",
     pricing: "Paid",
+    price: "$49",
   },
   {
     id: 106,
@@ -517,9 +519,14 @@ export default function SubmissionManagement() {
                     <TableCell>{item.type}</TableCell>
                     {serviceType === 'Hosted' && (
                       <TableCell>
-                        <span className={`font-medium ${item.pricing === 'Free' ? 'text-green-600' : ''}`}>
-                          {item.pricing || 'Paid'}
-                        </span>
+                        <div className="flex flex-col">
+                          <span className={`font-medium ${item.pricing === 'Free' ? 'text-green-600' : 'text-blue-600'}`}>
+                            {item.pricing || 'Paid'}
+                          </span>
+                          {item.pricing === 'Paid' && item.price && (
+                             <span className="text-xs text-muted-foreground font-medium">{item.price}</span>
+                          )}
+                        </div>
                       </TableCell>
                     )}
                     <TableCell>{item.submittedAt}</TableCell>
