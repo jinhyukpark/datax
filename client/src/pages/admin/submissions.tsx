@@ -422,7 +422,7 @@ export default function SubmissionManagement() {
   const confirmStopHosted = (id: number) => {
     setAlertConfig({
       title: "Deactivate Hosted Service",
-      description: "호스티드 서비스를 비활성화할 경우에는 시스템 호스팅 되어 있는 그 서버에 대한 영향을 서버가 서버와 연결이 끊길 수 있어서 신중하게 선택하시기 바랍니다.",
+      description: "Deactive 상태로 변경하면 연결된 서비스가 제대로 동작이 되질 않습니다.",
       action: () => handleStopSubmission(id)
     });
     setAlertOpen(true);

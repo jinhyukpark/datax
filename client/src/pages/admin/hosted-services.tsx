@@ -355,7 +355,7 @@ export default function HostedServicesManagement() {
           <AlertDialogHeader>
             <AlertDialogTitle>Deactivate Service?</AlertDialogTitle>
             <AlertDialogDescription>
-              디애티브 상태일 경우에는 노출되어 있는 호스티드 서비스가 제대로 연결이 되어 있지 않기 때문에 사용자들 연결이 되어 있지 않아서 서비스 되지 않습니다.
+              Deactive 상태로 변경하면 연결된 서비스가 제대로 동작이 되질 않습니다.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
