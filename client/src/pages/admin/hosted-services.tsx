@@ -21,7 +21,8 @@ import {
   FileSignature,
   Power,
   XCircle,
-  Filter
+  Filter,
+  Send
 } from "lucide-react";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -280,6 +281,16 @@ export default function HostedServicesManagement() {
               className="data-[state=checked]:bg-blue-600"
             />
           </div>
+          
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="w-full gap-2 text-xs text-muted-foreground hover:text-primary mt-1"
+            onClick={() => toast.info("Email notification service is ready to be configured")}
+          >
+            <Send className="h-3 w-3" />
+            Notification Settings
+          </Button>
           
           <p className="text-[10px] text-muted-foreground text-center mt-auto">
             Next bill: {service.nextBilling}
