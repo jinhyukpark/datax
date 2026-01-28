@@ -48,6 +48,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+
 // Mock Approved Hosted Services with Owner info
 const HOSTED_SERVICES_MOCK = [
   {
@@ -115,12 +118,40 @@ export default function HostedServicesManagement() {
   const [services, setServices] = useState(HOSTED_SERVICES_MOCK);
   const [contractDialog, setContractDialog] = useState<{open: boolean, service: typeof HOSTED_SERVICES_MOCK[0] | null}>({ open: false, service: null });
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("All");
+  
+  // Alert Dialog State
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [pendingDeactivateId, setPendingDeactivateId] = useState<string | null>(null);
 
-  const handleStopService = (id: string) => {
+  const handleStatusChange = (id: string, newStatus: string) => {
     setServices(services.map(service => 
-      service.id === id ? { ...service, status: "Stopped" } : service
+      service.id === id ? { ...service, status: newStatus } : service
     ));
-    toast.success("Service stopped successfully");
+    
+    if (newStatus === "Active") {
+      toast.success("Service activated successfully");
+    } else {
+      toast.success("Service deactivated successfully");
+    }
+  };
+
+  const handleSwitchChange = (id: string, checked: boolean) => {
+    if (!checked) {
+      // Trying to deactivate
+      setPendingDeactivateId(id);
+      setAlertOpen(true);
+    } else {
+      // Activating
+      handleStatusChange(id, "Active");
+    }
+  };
+
+  const confirmDeactivate = () => {
+    if (pendingDeactivateId) {
+      handleStatusChange(pendingDeactivateId, "Stopped");
+      setPendingDeactivateId(null);
+      setAlertOpen(false);
+    }
   };
 
   const filteredServices = services.filter(service => {
@@ -238,30 +269,16 @@ export default function HostedServicesManagement() {
             Contract
           </Button>
 
-          {!isStopped && (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="outline" size="sm" className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 border-red-200 dark:border-red-900/50">
-                  <Power className="h-3 w-3 mr-2" />
-                  Stop
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Stop Service?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This will stop the service and move it to the Stopped Services tab. You can restart it later.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => handleStopService(service.id)} className="bg-red-600 hover:bg-red-700">
-                    Stop Service
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          )}
+          <div className="flex items-center justify-between px-1 py-2 border rounded-md border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+            <Label htmlFor={`status-${service.id}`} className="text-sm font-medium cursor-pointer">
+              {service.status === 'Active' ? 'Active' : 'Stopped'}
+            </Label>
+            <Switch 
+              id={`status-${service.id}`}
+              checked={service.status === 'Active'}
+              onCheckedChange={(checked) => handleSwitchChange(service.id, checked)}
+            />
+          </div>
           
           <p className="text-[10px] text-muted-foreground text-center mt-auto">
             Next bill: {service.nextBilling}
@@ -332,6 +349,23 @@ export default function HostedServicesManagement() {
           service={contractDialog.service}
         />
       )}
+
+      <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Deactivate Service?</AlertDialogTitle>
+            <AlertDialogDescription>
+              디애티브 상태일 경우에는 노출되어 있는 호스티드 서비스가 제대로 연결이 되어 있지 않기 때문에 사용자들 연결이 되어 있지 않아서 서비스 되지 않습니다.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDeactivate} className="bg-red-600 hover:bg-red-700">
+              Deactivate
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </AdminLayout>
   );
 }
