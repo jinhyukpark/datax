@@ -556,7 +556,7 @@ export default function SubmissionManagement() {
                             {item.pricing || 'Paid'}
                           </span>
                           {item.pricing === 'Paid' && item.price && (
-                             <span className="text-xs text-muted-foreground font-medium">{item.price}</span>
+                             <span className="text-xs text-muted-foreground font-medium">({item.price})</span>
                           )}
                         </div>
                       </TableCell>
