@@ -15,7 +15,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from "@/components/ui/label";
 import { 
   Eye, CheckCircle, XCircle, Clock, FileText, AlertCircle, 
-  ExternalLink, Github, Linkedin, Twitter, MessageSquare, Send, Globe 
+  ExternalLink, Github, Linkedin, Twitter, MessageSquare, Send, Globe, Edit 
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -141,7 +141,7 @@ export default function SubmissionManagement() {
   const [submissions, setSubmissions] = useState<any[]>(MOCK_SUBMISSIONS);
   const [rejectDialog, setRejectDialog] = useState<{open: boolean, id: number | null}>({ open: false, id: null });
   const [rejectReason, setRejectReason] = useState("");
-  const [viewDialog, setViewDialog] = useState<{open: boolean, item: typeof MOCK_SUBMISSIONS[0] | null}>({ open: false, item: null });
+  const [viewDialog, setViewDialog] = useState<{open: boolean, item: typeof MOCK_SUBMISSIONS[0] | null, mode: 'all' | 'application' | 'details'}>({ open: false, item: null, mode: 'all' });
   
   // Alert Dialog State
   const [alertOpen, setAlertOpen] = useState(false);
@@ -159,7 +159,7 @@ export default function SubmissionManagement() {
     
     // Close dialog if open
     if (viewDialog.open && viewDialog.item?.id === id) {
-      setViewDialog({ open: false, item: null });
+      setViewDialog({ open: false, item: null, mode: 'all' });
     }
   };
 
@@ -283,9 +283,15 @@ export default function SubmissionManagement() {
                     <TableCell>{getStatusBadge(item.status)}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item })}>
+                        <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item, mode: 'application' })}>
                           <Eye className="h-4 w-4" />
                         </Button>
+
+                        {item.serviceType === 'Hosted' && (
+                          <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item, mode: 'details' })}>
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        )}
                         
                         {item.status !== 'Approved' && item.status !== 'Rejected' && (
                           <>
@@ -380,7 +386,7 @@ export default function SubmissionManagement() {
       </Dialog>
 
       {/* View Detail Dialog */}
-      <Dialog open={viewDialog.open} onOpenChange={(open) => !open && setViewDialog({ open: false, item: null })}>
+      <Dialog open={viewDialog.open} onOpenChange={(open) => !open && setViewDialog({ open: false, item: null, mode: 'all' })}>
         <DialogContent className="max-w-3xl h-[80vh] flex flex-col p-0">
           <DialogHeader className="px-6 py-4 border-b">
             <DialogTitle className="flex items-center gap-2">
@@ -395,7 +401,7 @@ export default function SubmissionManagement() {
           {viewDialog.item && (
             <ScrollArea className="flex-1 px-6 py-6">
               {viewDialog.item.serviceType === 'Hosted' ? (
-                <HostedRequestDetails data={viewDialog.item} isEditable={false} />
+                <HostedRequestDetails data={viewDialog.item} isEditable={false} mode={viewDialog.mode} />
               ) : (
                 <GeneralRequestDetails data={viewDialog.item} />
               )}

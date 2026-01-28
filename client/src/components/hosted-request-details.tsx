@@ -17,9 +17,10 @@ import { Badge } from "@/components/ui/badge";
 interface HostedRequestDetailsProps {
   data: any;
   isEditable?: boolean;
+  mode?: 'all' | 'application' | 'details';
 }
 
-export function HostedRequestDetails({ data, isEditable = false }: HostedRequestDetailsProps) {
+export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }: HostedRequestDetailsProps) {
   const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -169,43 +170,50 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
         </div>
       )}
 
-      <Tabs defaultValue="application" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-8 h-auto p-0 bg-transparent gap-0">
-          <TabsTrigger 
-            value="application" 
-            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-          >
-            Application Form
-          </TabsTrigger>
-          <TabsTrigger 
-            value="details" 
-            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-          >
-            Data Details
-          </TabsTrigger>
-          <TabsTrigger 
-            value="documentation" 
-            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-          >
-            Documentation
-          </TabsTrigger>
-          <TabsTrigger 
-            value="pricing" 
-            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-          >
-            Pricing
-          </TabsTrigger>
+      <Tabs defaultValue={mode === 'details' ? 'details' : 'application'} className="w-full">
+        <TabsList className={`grid w-full ${mode === 'application' ? 'grid-cols-1' : mode === 'details' ? 'grid-cols-3' : 'grid-cols-4'} mb-8 h-auto p-0 bg-transparent gap-0`}>
+          {(mode === 'all' || mode === 'application') && (
+            <TabsTrigger 
+              value="application" 
+              className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+            >
+              Application Form
+            </TabsTrigger>
+          )}
+          {(mode === 'all' || mode === 'details') && (
+            <>
+              <TabsTrigger 
+                value="details" 
+                className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+              >
+                Data Details
+              </TabsTrigger>
+              <TabsTrigger 
+                value="documentation" 
+                className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+              >
+                Documentation
+              </TabsTrigger>
+              <TabsTrigger 
+                value="pricing" 
+                className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+              >
+                Pricing
+              </TabsTrigger>
+            </>
+          )}
         </TabsList>
 
-        <TabsContent value="application" className="space-y-8">
-          {/* Section Header */}
-          <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-             <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
-             <div>
-               <h2 className="text-lg font-bold">Hosted Data Service Request</h2>
-               <p className="text-xs text-muted-foreground">Submitted information about your dataset</p>
-             </div>
-          </div>
+        {(mode === 'all' || mode === 'application') && (
+          <TabsContent value="application" className="space-y-8">
+            {/* Section Header */}
+            <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+               <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
+               <div>
+                 <h2 className="text-lg font-bold">Hosted Data Service Request</h2>
+                 <p className="text-xs text-muted-foreground">Submitted information about your dataset</p>
+               </div>
+            </div>
 
           {/* Basic Info Fields */}
           <div className="grid grid-cols-1 gap-6">
@@ -349,19 +357,22 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
             </div>
           </div>
         </TabsContent>
+        )}
 
-        <TabsContent value="details" className="space-y-8">
-          {/* Detailed Data Information Form (Linked Service Style) */}
-          
-          {/* Section 1: Basic Information */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-              <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
-              <div>
-                <h2 className="text-lg font-bold">Basic Information</h2>
-                <p className="text-xs text-muted-foreground">Tell us about your AI Agent</p>
-              </div>
-            </div>
+        {(mode === 'all' || mode === 'details') && (
+          <>
+            <TabsContent value="details" className="space-y-8">
+              {/* Detailed Data Information Form (Linked Service Style) */}
+              
+              {/* Section 1: Basic Information */}
+              <div className="space-y-6">
+                <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                  <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
+                  <div>
+                    <h2 className="text-lg font-bold">Basic Information</h2>
+                    <p className="text-xs text-muted-foreground">Tell us about your AI Agent</p>
+                  </div>
+                </div>
 
             <div className="grid grid-cols-1 gap-6">
               <div className="space-y-3">
@@ -799,6 +810,8 @@ export function HostedRequestDetails({ data, isEditable = false }: HostedRequest
             </Card>
           </div>
         </TabsContent>
+          </>
+        )}
       </Tabs>
       
       {isEditable && (
