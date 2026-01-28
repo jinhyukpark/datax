@@ -255,7 +255,7 @@ export default function SubmissionManagement() {
   );
 
   return (
-    <AdminLayout>
+    <AdminLayout title="Submissions">
       <div className="p-8 space-y-8 bg-slate-50 min-h-screen">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">Submission Management</h1>
