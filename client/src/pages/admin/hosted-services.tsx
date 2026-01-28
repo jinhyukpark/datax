@@ -287,20 +287,18 @@ export default function HostedServicesManagement() {
               />
             </div>
             <div className="flex gap-2 items-center">
-              <div className="flex items-center gap-2">
-                <Filter className="h-4 w-4 text-muted-foreground" />
-                <Select value={filterStatus} onValueChange={(value) => setFilterStatus(value as FilterStatus)}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Filter by status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="All">All Services</SelectItem>
-                    <SelectItem value="Active">Active</SelectItem>
-                    <SelectItem value="Stopped">Stopped</SelectItem>
-                    <SelectItem value="Expired">Service Expired</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Select value={filterStatus} onValueChange={(value) => setFilterStatus(value as FilterStatus)}>
+                <SelectTrigger className="w-[180px] gap-2">
+                  <Filter className="h-4 w-4 text-muted-foreground" />
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All">All Services</SelectItem>
+                  <SelectItem value="Active">Active</SelectItem>
+                  <SelectItem value="Stopped">Stopped</SelectItem>
+                  <SelectItem value="Expired">Service Expired</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
         </Card>
