@@ -269,14 +269,15 @@ export default function HostedServicesManagement() {
             Contract
           </Button>
 
-          <div className="flex items-center justify-between px-1 py-2 border rounded-md border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
-            <Label htmlFor={`status-${service.id}`} className="text-sm font-medium cursor-pointer">
-              {service.status === 'Active' ? 'Active' : 'Stopped'}
-            </Label>
+          <div className="flex items-center justify-between px-3 py-2 border rounded-md border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 min-w-[120px]">
+            <span className={`text-xs font-bold ${service.status === 'Active' ? 'text-blue-600' : 'text-slate-500'}`}>
+              {service.status === 'Active' ? 'Active' : 'Deactive'}
+            </span>
             <Switch 
               id={`status-${service.id}`}
               checked={service.status === 'Active'}
               onCheckedChange={(checked) => handleSwitchChange(service.id, checked)}
+              className="data-[state=checked]:bg-blue-600"
             />
           </div>
           

@@ -615,7 +615,7 @@ export default function SubmissionManagement() {
                         
                         {item.serviceType === 'Hosted' ? (
                           <div className="flex items-center space-x-2">
-                             <Label htmlFor={`status-${item.id}`} className="sr-only">Active Status</Label>
+                             <span className="text-xs font-medium text-blue-600">Active</span>
                              <Switch 
                                id={`status-${item.id}`}
                                checked={true}
