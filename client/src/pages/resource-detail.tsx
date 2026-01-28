@@ -705,105 +705,125 @@ export default function ResourceDetail() {
                 </div>
               </TabsContent>
 
-              <TabsContent value="pricing" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
-                {resource.accessModel === "AI Agent" ? (
-                  /* Terms and Policies Content for Hosted Service / AI Agents */
+              <TabsContent value="terms-pricing" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                {resource.price === 'Paid' ? (
                   <div className="space-y-8">
-                    <div className="space-y-6">
-                      <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-                        <div className="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold">
-                          <CheckCircle2 className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <h2 className="text-xl font-bold">{t("Terms of Service", "이용약관")}</h2>
-                          <p className="text-sm text-muted-foreground">{t("Please review the terms for using this service.", "서비스 이용을 위한 약관을 확인해주세요.")}</p>
-                        </div>
+                    {/* Header */}
+                    <div className="flex items-center gap-4 pb-2 border-b border-slate-100 dark:border-slate-800">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400">
+                        <FileText className="h-6 w-6" />
                       </div>
-
-                      <div className="prose prose-slate max-w-none dark:prose-invert">
-                        <p>
-                          {t("By accessing and using this AI Agent service, you agree to comply with the following terms and conditions. These terms govern your access to and use of the services provided.", "본 AI 에이전트 서비스에 접근하고 사용함으로써 귀하는 다음 이용약관을 준수할 것에 동의합니다. 이 약관은 제공된 서비스에 대한 귀하의 접근 및 사용을 규율합니다.")}
-                        </p>
-                        <ul>
-                          <li>{t("Usage is limited to the scope defined in your subscription plan.", "사용은 구독 요금제에 정의된 범위로 제한됩니다.")}</li>
-                          <li>{t("You may not resell or redistribute the service without explicit permission.", "명시적인 허가 없이 서비스를 재판매하거나 재배포할 수 없습니다.")}</li>
-                          <li>{t("We reserve the right to modify or terminate the service for any reason, without notice at any time.", "우리는 언제든지 어떤 이유로든 통지 없이 서비스를 수정하거나 종료할 권리가 있습니다.")}</li>
-                          <li>{t("You agree not to use the service for any illegal or unauthorized purpose.", "귀하는 불법적이거나 승인되지 않은 목적으로 서비스를 사용하지 않을 것에 동의합니다.")}</li>
-                        </ul>
+                      <div>
+                        <h2 className="text-2xl font-bold tracking-tight">{t("Terms & Policies", "이용약관 및 정책")}</h2>
+                        <p className="text-sm text-muted-foreground">{t("Review the service terms and refund policies before purchase.", "구매 전 서비스 이용약관 및 환불 정책을 확인해주세요.")}</p>
                       </div>
                     </div>
 
-                    <div className="space-y-6">
-                      <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-                        <div className="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Provided Services */}
+                      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+                            <Zap className="h-4 w-4" />
+                          </div>
+                          <h3 className="font-bold">{t("Provided Services", "제공 서비스")}</h3>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 whitespace-pre-line">
+                          {displayFeatures && displayFeatures.length > 0 ? displayFeatures.join(", ") : t("Enterprise-grade data analysis and API access.", "엔터프라이즈급 데이터 분석 및 API 접근 제공.")}
+                        </p>
+                      </div>
+
+                      {/* Provided Period */}
+                      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
+                            <Calendar className="h-4 w-4" />
+                          </div>
+                          <h3 className="font-bold">{t("Service Period", "제공 기간")}</h3>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          {t("Monthly subscription with automatic renewal until cancelled.", "해지 전까지 매월 자동 갱신되는 월간 구독 서비스입니다.")}
+                        </p>
+                      </div>
+
+                      {/* License */}
+                      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">
+                            <ShieldCheck className="h-4 w-4" />
+                          </div>
+                          <h3 className="font-bold">{t("License", "라이선스")}</h3>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          {t("Commercial License: Suitable for business use and production environments.", "상업용 라이선스: 비즈니스 용도 및 프로덕션 환경에 적합합니다.")}
+                        </p>
+                      </div>
+
+                      {/* Refund Policy */}
+                      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+                            <CheckCircle2 className="h-4 w-4" />
+                          </div>
+                          <h3 className="font-bold">{t("Refund Policy", "환불 정책")}</h3>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 whitespace-pre-line">
+                          {resource.refundPolicy || t("Refunds are available within 14 days of purchase if the service has not been significantly used.", "서비스를 실질적으로 이용하지 않은 경우 구매 후 14일 이내에 환불이 가능합니다.")}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Detailed Terms */}
+                    <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold">
                           <ShieldCheck className="h-5 w-5" />
                         </div>
-                        <div>
-                          <h2 className="text-xl font-bold">{t("Refund Policy", "환불 정책")}</h2>
-                          <p className="text-sm text-muted-foreground">{t("Our policy regarding refunds and cancellations.", "환불 및 취소에 관한 정책입니다.")}</p>
-                        </div>
+                        <h3 className="text-xl font-bold">{t("Detailed Terms of Service", "상세 이용약관")}</h3>
                       </div>
-
-                      <div className="prose prose-slate max-w-none dark:prose-invert">
-                        <p>
-                          {t("We want you to be satisfied with our service. If you are not completely happy, please review our refund policy below.", "우리는 귀하가 서비스에 만족하기를 바랍니다. 완전히 만족하지 않으시면 아래 환불 정책을 확인해주세요.")}
+                      <div className="bg-slate-50/50 p-6 rounded-xl border border-slate-100 dark:border-slate-800/50 min-h-[120px]">
+                        <p className="text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line text-sm md:text-base">
+                          {resource.termsOfService || t("By using this service, you agree to our terms and conditions. We reserve the right to modify these terms at any time. This agreement outlines the terms and conditions for the provision of hosted data services on the Illunex Platform.", "본 서비스를 이용함으로써 귀하는 당사의 이용약관에 동의하게 됩니다. 당사는 언제든지 본 약관을 수정할 권리를 보유합니다. 본 계약은 Illunex 플랫폼에서 제공되는 호스팅 데이터 서비스의 제공에 관한 약관을 규정합니다.")}
                         </p>
-                        <p>
-                          {t("You may request a full refund within 14 days of your initial purchase if the service usage does not exceed 10% of the allocated quota. Refund requests must be submitted via the support channel.", "서비스 사용량이 할당된 쿼터의 10%를 초과하지 않는 경우, 최초 구매일로부터 14일 이내에 전액 환불을 요청할 수 있습니다. 환불 요청은 지원 채널을 통해 제출해야 합니다.")}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-6">
-                      <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-                         <div className="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold">
-                          <Zap className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <h2 className="text-xl font-bold">{t("Licensing", "라이센싱")}</h2>
-                          <p className="text-sm text-muted-foreground">{t("Details about the software license.", "소프트웨어 라이센스에 대한 세부 정보입니다.")}</p>
-                        </div>
-                      </div>
-
-                      <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-lg border border-slate-200 dark:border-slate-800">
-                         <div className="flex items-center justify-between mb-4">
-                            <h4 className="font-semibold">{t("Commercial License", "상용 라이센스")}</h4>
-                            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">Active</Badge>
-                         </div>
-                         <p className="text-sm text-muted-foreground mb-4">
-                           {t("This license grants you the right to use the software for commercial purposes, including integration into your own products and services.", "이 라이센스는 귀하의 제품 및 서비스에 통합하는 것을 포함하여 상업적 목적으로 소프트웨어를 사용할 수 있는 권한을 부여합니다.")}
-                         </p>
-                         <div className="text-xs text-slate-500 font-mono bg-slate-100 dark:bg-slate-900 p-3 rounded">
-                            License ID: LIC-2025-XXXX-YYYY
-                         </div>
                       </div>
                     </div>
                   </div>
                 ) : (
-                <div className="grid md:grid-cols-3 gap-6">
-                  {['Starter', 'Pro', 'Enterprise'].map((plan, i) => (
-                    <Card key={plan} className={`relative ${i === 1 ? 'border-indigo-600 shadow-lg ring-1 ring-indigo-600' : ''}`}>
-                      {i === 1 && <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full">MOST POPULAR</div>}
-                      <CardContent className="p-6">
-                        <h3 className="font-bold text-lg mb-2">{plan}</h3>
-                        <div className="mb-4">
-                          <span className="text-3xl font-bold">${i * 49 + 29}</span>
-                          <span className="text-muted-foreground">/mo</span>
-                        </div>
-                        <ul className="space-y-3 text-sm mb-6">
-                          <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> {i === 0 ? '1,000' : i === 1 ? '50,000' : 'Unlimited'} Requests</li>
-                          <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> {i === 0 ? 'Standard' : 'Priority'} Support</li>
-                          <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> {i > 0 ? 'Advanced' : 'Basic'} Analytics</li>
-                          {i > 0 && <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> SLA Guarantee</li>}
-                          {i > 1 && <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-500" /> Custom Integration</li>}
-                        </ul>
-                        <Button className={`w-full ${i === 1 ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : ''}`} variant={i === 1 ? 'default' : 'outline'}>
-                          Choose {plan}
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {[
+                      { name: "Free Tier", price: "$0", features: ["100 Requests", "Community Support", "Basic Analytics"] },
+                      { name: "Pro", price: "$49", features: ["10,000 Requests", "Standard Support", "Advanced Analytics"], popular: true },
+                      { name: "Enterprise", price: "Custom", features: ["Unlimited Requests", "24/7 Support", "SLA Guarantee"] }
+                    ].map((plan) => (
+                      <Card key={plan.name} className={cn("relative overflow-hidden", plan.popular && "border-indigo-500 shadow-indigo-100 dark:shadow-none shadow-lg")}>
+                        {plan.popular && (
+                          <div className="absolute top-0 right-0">
+                            <div className="bg-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">
+                              Most Popular
+                            </div>
+                          </div>
+                        )}
+                        <CardContent className="p-6">
+                          <h4 className="font-bold text-lg mb-1">{plan.name}</h4>
+                          <div className="flex items-baseline gap-1 mb-6">
+                            <span className="text-3xl font-bold">{plan.price}</span>
+                            {plan.price !== "Custom" && <span className="text-muted-foreground text-sm">/mo</span>}
+                          </div>
+                          <ul className="space-y-3 mb-8">
+                            {plan.features.map((f) => (
+                              <li key={f} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                                <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
+                                {f}
+                              </li>
+                            ))}
+                          </ul>
+                          <Button variant={plan.popular ? "default" : "outline"} className={cn("w-full", plan.popular && "bg-indigo-600 hover:bg-indigo-700")}>
+                            {plan.price === "$0" ? t("Get Started", "시작하기") : t("Choose Plan", "플랜 선택")}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 )}
               </TabsContent>
 
