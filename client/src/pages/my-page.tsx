@@ -16,6 +16,8 @@ import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { Resource } from "@/lib/data";
 import { SubmitForm } from "@/components/submit-form";
 import { AnalyticsView } from "@/components/analytics-view";
@@ -41,8 +43,83 @@ import { format, differenceInDays } from "date-fns";
 export default function MyPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
-  const [editingResource, setEditingResource] = useState<Resource | null>(null);
-  const [myPurchases, setMyPurchases] = useState<any[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingPlatform, setEditingPlatform] = useState<any>(null);
+  const [pricingType, setPricingType] = useState<"Paid" | "Free">("Paid");
+  const [pricingPlans, setPricingPlans] = useState([
+    {
+      id: "p1",
+      name: "Starter",
+      price: "29",
+      features: ["1,000 Requests", "Standard Support", "Basic Analytics"],
+      recommended: false
+    },
+    {
+      id: "p2",
+      name: "Pro",
+      price: "78",
+      features: ["50,000 Requests", "Priority Support", "Advanced Analytics", "SLA Guarantee"],
+      recommended: true
+    },
+    {
+      id: "p3",
+      name: "Enterprise",
+      price: "127",
+      features: ["Unlimited Requests", "Priority Support", "Advanced Analytics", "SLA Guarantee", "Custom Integration"],
+      recommended: false
+    }
+  ]);
+  const [freePricingText, setFreePricingText] = useState("This resource is part of our open data initiative and is free to use for both personal and commercial projects.");
+
+  const addPlan = () => {
+    const newId = `p${Date.now()}`;
+    setPricingPlans([...pricingPlans, {
+      id: newId,
+      name: "New Plan",
+      price: "0",
+      features: ["New Feature"],
+      recommended: false
+    }]);
+  };
+
+  const removePlan = (id: string) => {
+    setPricingPlans(pricingPlans.filter(p => p.id !== id));
+  };
+
+  const updatePlan = (id: string, field: string, value: any) => {
+    setPricingPlans(pricingPlans.map(p => p.id === id ? { ...p, [field]: value } : p));
+  };
+
+  const addFeature = (planId: string) => {
+    setPricingPlans(pricingPlans.map(p => 
+      p.id === planId ? { ...p, features: [...p.features, "New Feature"] } : p
+    ));
+  };
+
+  const updateFeature = (planId: string, featureIndex: number, value: string) => {
+    setPricingPlans(pricingPlans.map(p => {
+      if (p.id === planId) {
+        const newFeatures = [...p.features];
+        newFeatures[featureIndex] = value;
+        return { ...p, features: newFeatures };
+      }
+      return p;
+    }));
+  };
+
+  const removeFeature = (planId: string, featureIndex: number) => {
+    setPricingPlans(pricingPlans.map(p => {
+      if (p.id === planId) {
+        return { ...p, features: p.features.filter((_, i) => i !== featureIndex) };
+      }
+      return p;
+    }));
+  };
+
+  const openEditDialog = (platform: any) => {
+    setEditingPlatform(platform);
+    setIsDialogOpen(true);
+  };
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [selectedPaymentItem, setSelectedPaymentItem] = useState<string | null>(null);
   
@@ -1204,24 +1281,9 @@ export default function MyPage() {
                               </div>
                             </div>
                             <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l min-w-[140px]">
-                              <Dialog>
-                                <DialogTrigger asChild>
-                                  <Button variant="outline" size="sm" className="w-full">
-                                    {t("Edit", "수정")}
-                                  </Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-[900px] h-[90vh] overflow-y-auto">
-                                  <SubmitForm 
-                                    initialData={item as Resource} 
-                                    mode="edit-approved" 
-                                    defaultTab="overview"
-                                    onSuccess={() => {
-                                      // In a real app, refresh data
-                                      // For now, close dialog is handled inside SubmitForm or we could use state
-                                    }}
-                                  />
-                                </DialogContent>
-                              </Dialog>
+                              <Button variant="outline" size="sm" className="w-full" onClick={() => openEditDialog(item)}>
+                                {t("Edit", "수정")}
+                              </Button>
                               
                               <Dialog>
                                 <DialogTrigger asChild>
@@ -1822,6 +1884,193 @@ export default function MyPage() {
             </Tabs>
           </div>
         </div>
+
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="max-w-5xl max-h-[90vh] p-0 overflow-hidden flex flex-col">
+            <DialogHeader className="px-8 pt-8 pb-4 border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-between">
+                <DialogTitle className="text-2xl font-bold">
+                  Manage <span className="text-indigo-600">{editingPlatform?.title || "Resource"}</span>
+                </DialogTitle>
+              </div>
+            </DialogHeader>
+
+            <div className="flex-1 overflow-hidden flex flex-col">
+              <div className="px-8 bg-slate-50/50 border-b border-slate-100">
+                <Tabs defaultValue="pricing" className="w-full">
+                  <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent gap-8">
+                    <TabsTrigger value="overview" className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Overview</TabsTrigger>
+                    <TabsTrigger value="documentation" className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Documentation</TabsTrigger>
+                    <TabsTrigger value="pricing" className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Pricing</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+
+              <ScrollArea className="flex-1">
+                <div className="p-8 space-y-8">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Pricing Policy</h3>
+                      <p className="text-sm text-slate-500">Choose between paid plans or a free service model.</p>
+                    </div>
+                    <div className="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-xl w-fit">
+                      <button
+                        onClick={() => setPricingType("Paid")}
+                        className={cn(
+                          "px-6 py-2 text-sm font-bold rounded-lg transition-all",
+                          pricingType === "Paid" ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                        )}
+                      >
+                        Paid Plans
+                      </button>
+                      <button
+                        onClick={() => setPricingType("Free")}
+                        className={cn(
+                          "px-6 py-2 text-sm font-bold rounded-lg transition-all",
+                          pricingType === "Free" ? "bg-white text-green-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                        )}
+                      >
+                        Free Forever
+                      </button>
+                    </div>
+                  </div>
+
+                  {pricingType === "Paid" ? (
+                    <div className="space-y-6 animate-in fade-in duration-300">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm text-slate-500 italic">Define your pricing plans. You can add or remove plans as needed.</p>
+                        <Button onClick={addPlan} variant="outline" className="gap-2 border-slate-200">
+                          <Plus className="h-4 w-4 text-indigo-500" /> Add Plan
+                        </Button>
+                      </div>
+
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        {pricingPlans.map((plan) => (
+                          <div 
+                            key={plan.id}
+                            className={cn(
+                              "relative flex flex-col p-6 rounded-2xl border transition-all",
+                              plan.recommended 
+                                ? "border-indigo-600 ring-1 ring-indigo-600 bg-indigo-50/10" 
+                                : "border-slate-200 bg-white"
+                            )}
+                          >
+                            {plan.recommended && (
+                              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                Most Popular
+                              </div>
+                            )}
+                            
+                            <button 
+                              onClick={() => removePlan(plan.id)}
+                              className="absolute top-4 right-4 text-slate-300 hover:text-red-500 transition-colors"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+
+                            <div className="space-y-4 mb-6">
+                              <div className="space-y-1.5">
+                                <Label className="text-[10px] font-bold text-slate-400 uppercase">Plan Name</Label>
+                                <Input 
+                                  value={plan.name} 
+                                  onChange={(e) => updatePlan(plan.id, "name", e.target.value)}
+                                  className="font-bold border-slate-100"
+                                />
+                              </div>
+                              <div className="space-y-1.5">
+                                <Label className="text-[10px] font-bold text-slate-400 uppercase">Monthly Price ($)</Label>
+                                <div className="flex items-center gap-2">
+                                  <div className="relative flex-1">
+                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">$</span>
+                                    <Input 
+                                      value={plan.price} 
+                                      onChange={(e) => updatePlan(plan.id, "price", e.target.value)}
+                                      className="pl-7 font-bold border-slate-100"
+                                    />
+                                  </div>
+                                  <span className="text-sm text-slate-400 font-medium">/mo</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="space-y-3 flex-1">
+                              <Label className="text-[10px] font-bold text-slate-400 uppercase">Features</Label>
+                              <div className="space-y-2">
+                                {plan.features.map((feature, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 group">
+                                    <div className="h-5 w-5 rounded-full bg-green-50 flex items-center justify-center shrink-0">
+                                      <CheckCircle2 className="h-3 w-3 text-green-600" />
+                                    </div>
+                                    <Input 
+                                      value={feature} 
+                                      onChange={(e) => updateFeature(plan.id, idx, e.target.value)}
+                                      className="h-8 text-xs border-slate-100"
+                                    />
+                                    <button 
+                                      onClick={() => removeFeature(plan.id, idx)}
+                                      className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all"
+                                    >
+                                      <XCircle className="h-3.5 w-3.5" />
+                                    </button>
+                                  </div>
+                                ))}
+                                <button 
+                                  onClick={() => addFeature(plan.id)}
+                                  className="flex items-center gap-2 text-[10px] font-bold text-indigo-600 hover:text-indigo-700 transition-colors mt-2 pl-1"
+                                >
+                                  + Add Feature
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center gap-2">
+                              <input 
+                                type="checkbox" 
+                                id={`rec-${plan.id}`}
+                                checked={plan.recommended}
+                                onChange={(e) => updatePlan(plan.id, "recommended", e.target.checked)}
+                                className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                              />
+                              <label htmlFor={`rec-${plan.id}`} className="text-xs font-medium text-slate-600 cursor-pointer">
+                                Recommended Plan
+                              </label>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-6 animate-in fade-in duration-300 max-w-2xl mx-auto">
+                      <div className="p-10 rounded-3xl border border-dashed border-green-200 bg-green-50/30 text-center space-y-6">
+                        <div className="mx-auto h-16 w-16 rounded-2xl bg-green-100 flex items-center justify-center text-green-600 shadow-sm">
+                          <Zap className="h-8 w-8" />
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="text-xl font-bold text-slate-900">Free Forever Content</h4>
+                          <p className="text-sm text-slate-500">Enter the description that will be shown to users for this free resource.</p>
+                        </div>
+                        <Textarea 
+                          value={freePricingText}
+                          onChange={(e) => setFreePricingText(e.target.value)}
+                          className="min-h-[120px] rounded-2xl border-slate-200 text-sm leading-relaxed p-4 text-center italic shadow-inner bg-white"
+                          placeholder="Enter free service description..."
+                        />
+                        <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Preview: This will be shown in the "Pricing" tab</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </ScrollArea>
+
+              <DialogFooter className="px-8 py-6 border-t bg-slate-50/50 flex justify-end gap-3">
+                <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="rounded-xl px-6">Cancel</Button>
+                <Button onClick={() => setIsDialogOpen(false)} className="bg-indigo-600 hover:bg-indigo-700 rounded-xl px-10 gap-2 font-bold shadow-lg shadow-indigo-500/20">
+                  <CreditCard className="h-4 w-4" /> Save Pricing
+                </Button>
+              </DialogFooter>
+            </div>
+          </DialogContent>
+        </Dialog>
       </main>
       
       <Footer />
