@@ -422,7 +422,7 @@ export default function SubmissionManagement() {
           <DialogHeader className="px-6 py-4 border-b">
             <DialogTitle className="flex items-center gap-2">
               {viewDialog.item?.title}
-              {viewDialog.item && getStatusBadge(viewDialog.item.status)}
+              {viewDialog.item && viewDialog.mode !== 'application' && getStatusBadge(viewDialog.item.status)}
             </DialogTitle>
             <DialogDescription>
               Submitted by {viewDialog.item?.provider} on {viewDialog.item?.submittedAt}
