@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { RESOURCES } from "@/lib/data";
-import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star, Activity, FileText, Database, Zap } from "lucide-react";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star, Activity, FileText, Database, Zap, Power } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
@@ -412,7 +412,7 @@ export default function MyPage() {
     toast.success("Hosting request cancelled successfully");
   };
 
-  const hostedDataApprovedMock = [
+  const [hostedServices, setHostedServices] = useState([
     {
       id: "ha1",
       title: "Global Weather Historical Data",
@@ -455,9 +455,17 @@ export default function MyPage() {
       type: "MCP",
       unreadReviews: 5
     }
-  ];
+  ]);
 
-  const hostedDataApproved: any[] = [];
+  const handleStopService = (id: string) => {
+    setHostedServices(hostedServices.map(service => 
+      service.id === id ? { ...service, status: "Stopped" } : service
+    ));
+    toast.success(t("Service stopped successfully", "서비스가 성공적으로 중지되었습니다"));
+  };
+
+  const activeHostedServices = hostedServices.filter(s => s.status === 'Active');
+  const stoppedHostedServices = hostedServices.filter(s => s.status === 'Stopped');
 
   // Calculate statistics
   const pendingRequestsCount = requestedData.filter(r => r.status === 'submitted' || r.status === 'verifying').length;
@@ -1454,14 +1462,20 @@ export default function MyPage() {
                   <p className="text-muted-foreground text-sm">{t("Manage your hosted data services and view request status.", "호스팅 데이터 서비스 및 요청 상태를 관리하세요.")}</p>
                 </div>
 
-                <Tabs defaultValue="request" className="w-full">
+                <Tabs defaultValue="active" className="w-full">
                   <div className="border-b border-slate-200 dark:border-slate-800 mb-6">
                     <TabsList className="w-full justify-start h-auto p-0 bg-transparent rounded-none">
                       <TabsTrigger 
-                        value="approved" 
+                        value="active" 
                         className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 font-semibold text-muted-foreground data-[state=active]:text-primary"
                       >
-                        {t("Approved", "승인됨")}
+                        {t("Active Services", "운영중인 서비스")}
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="stopped" 
+                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 font-semibold text-muted-foreground data-[state=active]:text-primary"
+                      >
+                        {t("Stopped Services", "중지된 서비스")}
                       </TabsTrigger>
                       <TabsTrigger 
                         value="request" 
@@ -1472,16 +1486,19 @@ export default function MyPage() {
                     </TabsList>
                   </div>
                   
-                  {/* Approved Tab Content */}
-                  <TabsContent value="approved" className="mt-0">
-                    <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700 mb-8">
-                      <Server className="mx-auto h-12 w-12 mb-4 opacity-20" />
-                      <h3 className="text-lg font-medium text-muted-foreground">{t("No active hosted services", "활성 호스팅 서비스가 없습니다")}</h3>
-                      <p className="text-sm text-muted-foreground mt-1">{t("Your approved hosted services will appear here.", "승인된 호스팅 서비스가 여기에 표시됩니다.")}</p>
-                    </div>
+                  {/* Active Tab Content */}
+                  <TabsContent value="active" className="mt-0">
+                    {activeHostedServices.length === 0 && (
+                      <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700 mb-8">
+                        <Server className="mx-auto h-12 w-12 mb-4 opacity-20" />
+                        <h3 className="text-lg font-medium text-muted-foreground">{t("No active hosted services", "활성 호스팅 서비스가 없습니다")}</h3>
+                        <p className="text-sm text-muted-foreground mt-1">{t("Your active hosted services will appear here.", "운영중인 호스팅 서비스가 여기에 표시됩니다.")}</p>
+                      </div>
+                    )}
 
-                    <div className="space-y-4 opacity-75">
-                      <div className="flex items-center gap-2 mb-2">
+                    <div className="space-y-4">
+                      {activeHostedServices.length > 0 && (
+                      <div className="flex items-center gap-2 mb-2 opacity-75">
                         <span className="text-xs font-bold px-2 py-1 bg-amber-100 text-amber-700 rounded rounded-md border border-amber-200">
                           DEV PREVIEW
                         </span>
@@ -1489,9 +1506,10 @@ export default function MyPage() {
                           These items are shown for design verification.
                         </span>
                       </div>
+                      )}
 
                       <div className="grid grid-cols-1 gap-4">
-                        {hostedDataApprovedMock.map((item) => (
+                        {activeHostedServices.map((item) => (
                           <Card key={item.id} className="overflow-hidden border-slate-200 dark:border-slate-800">
                             <div className="flex flex-col md:flex-row">
                               <div className="p-6 flex-grow">
@@ -1596,23 +1614,94 @@ export default function MyPage() {
                                   </DialogContent>
                                 </Dialog>
 
-                                <Dialog>
-                                  <DialogTrigger asChild>
-                                    <div className="relative w-full">
-                                      <Button variant="outline" size="sm" className="w-full">
-                                        Reviews
-                                      </Button>
-                                      {(item as any).unreadReviews > 0 && (
-                                        <span className="absolute -top-1.5 -right-1.5 h-4 w-4 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold border-2 border-white dark:border-slate-900 z-10">
-                                          {(item as any).unreadReviews}
-                                        </span>
-                                      )}
+                                <AlertDialog>
+                                  <AlertDialogTrigger asChild>
+                                    <Button variant="outline" size="sm" className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 border-red-200 dark:border-red-900/50">
+                                      <Power className="h-3 w-3 mr-2" />
+                                      {t("Stop", "중지")}
+                                    </Button>
+                                  </AlertDialogTrigger>
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                      <AlertDialogTitle>{t("Stop Service?", "서비스를 중지하시겠습니까?")}</AlertDialogTitle>
+                                      <AlertDialogDescription>
+                                        {t("This will stop the service and move it to the Stopped Services tab. You can restart it later.", "서비스가 중지되고 중지된 서비스 탭으로 이동합니다. 나중에 다시 시작할 수 있습니다.")}
+                                      </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                      <AlertDialogCancel>{t("Cancel", "취소")}</AlertDialogCancel>
+                                      <AlertDialogAction onClick={() => handleStopService(item.id)} className="bg-red-600 hover:bg-red-700">
+                                        {t("Stop Service", "서비스 중지")}
+                                      </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialog>
+                              </div>
+                            </div>
+                          </Card>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  {/* Stopped Tab Content */}
+                  <TabsContent value="stopped" className="mt-0">
+                    {stoppedHostedServices.length === 0 && (
+                      <div className="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700 mb-8">
+                        <XCircle className="mx-auto h-12 w-12 mb-4 opacity-20" />
+                        <h3 className="text-lg font-medium text-muted-foreground">{t("No stopped services", "중지된 서비스가 없습니다")}</h3>
+                        <p className="text-sm text-muted-foreground mt-1">{t("Services you stop will appear here.", "중지한 서비스가 여기에 표시됩니다.")}</p>
+                      </div>
+                    )}
+
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 gap-4">
+                        {stoppedHostedServices.map((item) => (
+                          <Card key={item.id} className="overflow-hidden border-slate-200 dark:border-slate-800 opacity-75 grayscale hover:grayscale-0 transition-all duration-300">
+                            <div className="flex flex-col md:flex-row">
+                              <div className="p-6 flex-grow">
+                                <div className="flex justify-between items-start mb-2">
+                                  <div className="flex items-center gap-2">
+                                    <h3 className="text-lg font-bold">{item.title}</h3>
+                                    {item.type && (
+                                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold border bg-slate-100 text-slate-600 border-slate-200`}>
+                                        {item.type}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-400">
+                                    {item.status}
+                                  </span>
+                                </div>
+                                <p className="text-muted-foreground text-sm mb-4">{item.description}</p>
+
+                                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+                                  <div className="space-y-1">
+                                    <p className="text-xs text-muted-foreground">Endpoint</p>
+                                    <div className="flex items-center gap-1 font-mono text-xs bg-slate-100 dark:bg-slate-900 px-2 py-1 rounded max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground">
+                                      {item.endpoint}
                                     </div>
-                                  </DialogTrigger>
-                                  <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
-                                    <HostedServiceReviews />
-                                  </DialogContent>
-                                </Dialog>
+                                  </div>
+                                  <div className="space-y-1">
+                                    <p className="text-xs text-muted-foreground">Region</p>
+                                    <p className="font-medium text-muted-foreground">{item.region}</p>
+                                  </div>
+                                  <div className="space-y-1">
+                                    <p className="text-xs text-muted-foreground">Pricing</p>
+                                    <p className="font-medium text-muted-foreground">{(item as any).pricingType}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l min-w-[160px]">
+                                <Button variant="outline" size="sm" className="w-full" disabled>
+                                  Manage
+                                </Button>
+                                <Button variant="outline" size="sm" className="w-full" disabled>
+                                  View Logs
+                                </Button>
+                                <Button variant="outline" size="sm" className="w-full" disabled>
+                                  {t("Edit", "편집")}
+                                </Button>
                               </div>
                             </div>
                           </Card>
