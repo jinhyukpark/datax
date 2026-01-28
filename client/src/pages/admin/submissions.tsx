@@ -242,11 +242,32 @@ export default function SubmissionManagement() {
     }
   };
 
-  const handleStopService = (id: string) => {
-    setHostedServices(hostedServices.map(service => 
-      service.id === id ? { ...service, status: "Stopped" } : service
-    ));
-    toast.success("Service stopped successfully");
+  const handleStopSubmission = (id: number) => {
+    const submission = submissions.find(s => s.id === id);
+    if (!submission) return;
+
+    // Add to hostedServices as Stopped
+    const newService = {
+      id: `stopped-${submission.id}`,
+      title: submission.title,
+      description: submission.description,
+      status: "Stopped",
+      endpoint: "https://api.platform.com/v1/stopped", // Mock
+      region: "Unknown",
+      pricing: submission.pricing || "Paid",
+      uptime: "0%",
+      nextBilling: "-",
+      type: "DATA", // Default mapping
+      owner: submission.provider,
+      ownerEmail: submission.contactEmail || "unknown@example.com"
+    };
+    
+    setHostedServices([...hostedServices, newService]);
+    
+    // Remove from submissions list
+    setSubmissions(submissions.filter(s => s.id !== id));
+    
+    toast.success("Service stopped and moved to Stopped Services tab");
   };
 
   const activeServices = hostedServices.filter(s => s.status === 'Active');
@@ -391,6 +412,15 @@ export default function SubmissionManagement() {
       title: "Approve Submission",
       description: "Are you sure you want to approve this submission? This action will make the resource publicly available.",
       action: () => handleStatusChange(id, 'Approved')
+    });
+    setAlertOpen(true);
+  };
+
+  const confirmStopHosted = (id: number) => {
+    setAlertConfig({
+      title: "Stop Hosted Service",
+      description: "호스티드 서비스를 중지할 경우에는 시스템 호스팅 되어 있는 그 서버에 대한 영향을 서버가 서버와 연결이 끊길 수 있어서 신중하게 선택하시기 바랍니다.",
+      action: () => handleStopSubmission(id)
     });
     setAlertOpen(true);
   };
@@ -580,16 +610,29 @@ export default function SubmissionManagement() {
                         >
                           <CheckCircle className="h-4 w-4" />
                         </Button>
-                        <Button 
-                          size="sm" 
-                          variant="destructive" 
-                          className="h-8 w-8 p-0"
-                          onClick={() => setRejectDialog({ open: true, id: item.id })}
-                          disabled={item.status === 'Rejected'}
-                          title="Reject"
-                        >
-                          <XCircle className="h-4 w-4" />
-                        </Button>
+                        
+                        {item.serviceType === 'Hosted' ? (
+                          <Button 
+                            size="sm" 
+                            variant="destructive" 
+                            className="h-8 w-8 p-0"
+                            onClick={() => confirmStopHosted(item.id)}
+                            title="Stop Service"
+                          >
+                            <Power className="h-4 w-4" />
+                          </Button>
+                        ) : (
+                          <Button 
+                            size="sm" 
+                            variant="destructive" 
+                            className="h-8 w-8 p-0"
+                            onClick={() => setRejectDialog({ open: true, id: item.id })}
+                            disabled={item.status === 'Rejected'}
+                            title="Reject"
+                          >
+                            <XCircle className="h-4 w-4" />
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
