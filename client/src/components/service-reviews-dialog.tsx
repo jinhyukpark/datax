@@ -5,6 +5,8 @@ import { Star, MessageSquare, ThumbsUp } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Review {
   id: string;
@@ -21,7 +23,7 @@ interface Review {
   };
 }
 
-const MOCK_REVIEWS: Review[] = [
+const INITIAL_REVIEWS: Review[] = [
   {
     id: "r1",
     user: "User 1",
@@ -68,6 +70,42 @@ interface ServiceReviewsDialogProps {
 }
 
 export function ServiceReviewsDialog({ isOpen, onOpenChange, serviceTitle }: ServiceReviewsDialogProps) {
+  const [reviews, setReviews] = useState<Review[]>(INITIAL_REVIEWS);
+  const [replyingToId, setReplyingToId] = useState<string | null>(null);
+  const [replyContent, setReplyContent] = useState("");
+
+  const handleReplyClick = (reviewId: string) => {
+    setReplyingToId(reviewId);
+    setReplyContent("");
+  };
+
+  const handleCancelReply = () => {
+    setReplyingToId(null);
+    setReplyContent("");
+  };
+
+  const handleSubmitReply = (reviewId: string) => {
+    if (!replyContent.trim()) return;
+
+    const updatedReviews = reviews.map(review => {
+      if (review.id === reviewId) {
+        return {
+          ...review,
+          response: {
+            author: "Response from Developer",
+            date: "Just now",
+            content: replyContent
+          }
+        };
+      }
+      return review;
+    });
+
+    setReviews(updatedReviews);
+    setReplyingToId(null);
+    setReplyContent("");
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col p-0 gap-0">
@@ -103,7 +141,7 @@ export function ServiceReviewsDialog({ isOpen, onOpenChange, serviceTitle }: Ser
         
         <ScrollArea className="flex-1 p-6 pt-0">
           <div className="space-y-4">
-            {MOCK_REVIEWS.map((review) => (
+            {reviews.map((review) => (
               <div key={review.id} className="border rounded-xl p-4 space-y-3 bg-white dark:bg-slate-950">
                 <div className="flex justify-between items-start">
                   <div className="flex gap-3">
@@ -133,11 +171,33 @@ export function ServiceReviewsDialog({ isOpen, onOpenChange, serviceTitle }: Ser
                 </p>
                 
                 <div className="flex items-center gap-4 pt-1">
-                  <Button variant="ghost" size="sm" className="h-6 px-0 text-slate-400 hover:text-slate-600 gap-1.5 text-xs">
-                    <MessageSquare className="w-3 h-3" />
-                    Reply
-                  </Button>
+                  {!review.response && replyingToId !== review.id && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-6 px-0 text-slate-400 hover:text-slate-600 gap-1.5 text-xs"
+                      onClick={() => handleReplyClick(review.id)}
+                    >
+                      <MessageSquare className="w-3 h-3" />
+                      Reply
+                    </Button>
+                  )}
                 </div>
+
+                {replyingToId === review.id && (
+                  <div className="mt-3 space-y-2 animate-in fade-in zoom-in-95 duration-200">
+                    <Textarea
+                      value={replyContent}
+                      onChange={(e) => setReplyContent(e.target.value)}
+                      placeholder="Type your response here..."
+                      className="min-h-[80px] text-sm"
+                    />
+                    <div className="flex justify-end gap-2">
+                      <Button variant="ghost" size="sm" onClick={handleCancelReply}>Cancel</Button>
+                      <Button size="sm" onClick={() => handleSubmitReply(review.id)}>Submit Response</Button>
+                    </div>
+                  </div>
+                )}
 
                 {review.response && (
                   <div className="mt-3 bg-indigo-50 dark:bg-indigo-950/30 p-3 rounded-lg border-l-2 border-indigo-500">
