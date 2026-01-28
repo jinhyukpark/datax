@@ -119,8 +119,7 @@ export default function ResourceDetail() {
                 <Badge variant="outline" className={cn(
                   "border-blue-200 dark:border-blue-800",
                   resource.price === 'Paid' ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300" : 
-                  resource.price === 'Free' ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300" :
-                  "bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300"
+                  "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300 border-emerald-200"
                 )}>
                   {resource.price === 'Paid' ? (
                     <>
@@ -128,7 +127,10 @@ export default function ResourceDetail() {
                       {t("Hosting", "Hosting")}
                     </>
                   ) : (
-                    resource.price
+                    <>
+                      <LinkIcon className="mr-1 h-3 w-3" />
+                      {t("Linked", "Linked")}
+                    </>
                   )}
                 </Badge>
                 <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-300 dark:border-slate-700">
@@ -277,7 +279,7 @@ export default function ResourceDetail() {
                   value="terms-pricing" 
                   className="rounded-none border-b-2 border-transparent px-6 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400"
                 >
-                  {resource.price === 'Paid' ? t("Terms & Policies", "이용약관 및 정책") : t("Pricing", "요금")}
+                  {t("Terms & Policies", "이용약관 및 정책")}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="reviews" 
