@@ -127,8 +127,60 @@ export function ContractDetailsDialog({ open, onOpenChange, service }: ContractD
                   </div>
 
                   {/* Contract Content */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="md:col-span-2 space-y-6">
+                  <div className="flex flex-col gap-6">
+                    <div className="w-full">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base flex items-center gap-2">
+                            <Building className="h-4 w-4" />
+                            Parties Involved
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                              <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-3 flex justify-between">
+                                Service Provider
+                                <Badge variant="secondary" className="text-[10px] h-5">Counterparty</Badge>
+                              </h4>
+                              <div className="flex items-start gap-3 bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg">
+                                <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold shrink-0">
+                                  {contract.manager.charAt(0)}
+                                </div>
+                                <div className="overflow-hidden">
+                                  <p className="font-medium text-sm truncate" title={service.owner}>{service.owner}</p>
+                                  <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1 truncate">
+                                    <User className="h-3 w-3" />
+                                    {contract.manager}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div>
+                              <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-3 flex justify-between">
+                                Illunex Platform
+                                <Badge className="text-[10px] h-5 bg-indigo-100 text-indigo-800 hover:bg-indigo-100 border-none">Our Side</Badge>
+                              </h4>
+                              <div className="flex items-start gap-3 bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg border border-indigo-100 dark:border-indigo-900">
+                                <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold shrink-0">
+                                  {contract.illunexManager.charAt(0)}
+                                </div>
+                                <div className="overflow-hidden">
+                                  <p className="font-medium text-sm">Illunex Corp.</p>
+                                  <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1 truncate">
+                                    <User className="h-3 w-3" />
+                                    {contract.illunexManager}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    <div className="w-full">
                       <Card>
                         <CardHeader>
                           <CardTitle className="text-base flex items-center gap-2">
@@ -150,58 +202,6 @@ export function ContractDetailsDialog({ open, onOpenChange, service }: ContractD
                                   <li key={i}>{term}</li>
                                 ))}
                               </ul>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-
-                    <div className="space-y-6">
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="text-base flex items-center gap-2">
-                            <Building className="h-4 w-4" />
-                            Parties Involved
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                          <div>
-                            <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-3 flex justify-between">
-                              Service Provider
-                              <Badge variant="secondary" className="text-[10px] h-5">Counterparty</Badge>
-                            </h4>
-                            <div className="flex items-start gap-3 bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg">
-                              <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold shrink-0">
-                                {contract.manager.charAt(0)}
-                              </div>
-                              <div className="overflow-hidden">
-                                <p className="font-medium text-sm truncate" title={service.owner}>{service.owner}</p>
-                                <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1 truncate">
-                                  <User className="h-3 w-3" />
-                                  {contract.manager}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <Separator />
-                          
-                          <div>
-                            <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-3 flex justify-between">
-                              Illunex Platform
-                              <Badge className="text-[10px] h-5 bg-indigo-100 text-indigo-800 hover:bg-indigo-100 border-none">Our Side</Badge>
-                            </h4>
-                            <div className="flex items-start gap-3 bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg border border-indigo-100 dark:border-indigo-900">
-                              <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold shrink-0">
-                                {contract.illunexManager.charAt(0)}
-                              </div>
-                              <div className="overflow-hidden">
-                                <p className="font-medium text-sm">Illunex Corp.</p>
-                                <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1 truncate">
-                                  <User className="h-3 w-3" />
-                                  {contract.illunexManager}
-                                </p>
-                              </div>
                             </div>
                           </div>
                         </CardContent>
