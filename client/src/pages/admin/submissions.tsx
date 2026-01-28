@@ -307,38 +307,36 @@ export default function SubmissionManagement() {
                           </Button>
                         )}
                         
-                        {item.status !== 'Rejected' && (
-                          <>
-                            <Button 
-                              size="sm" 
-                              variant="outline"
-                              className="text-blue-600 border-blue-200 hover:bg-blue-50 h-8 w-8 p-0"
-                              onClick={() => handleStatusChange(item.id, 'Reviewing')}
-                              disabled={item.status === 'Reviewing'}
-                              title="Set to Reviewing"
-                            >
-                              <Clock className="h-4 w-4" />
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              className="bg-green-600 hover:bg-green-700 h-8 w-8 p-0"
-                              onClick={() => handleApproveClick(item.id)}
-                              disabled={item.status === 'Approved'}
-                              title="Approve"
-                            >
-                              <CheckCircle className="h-4 w-4" />
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="destructive" 
-                              className="h-8 w-8 p-0"
-                              onClick={() => setRejectDialog({ open: true, id: item.id })}
-                              title="Reject"
-                            >
-                              <XCircle className="h-4 w-4" />
-                            </Button>
-                          </>
-                        )}
+                        {/* Actions for all statuses including Rejected */}
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          className="text-blue-600 border-blue-200 hover:bg-blue-50 h-8 w-8 p-0"
+                          onClick={() => handleStatusChange(item.id, 'Reviewing')}
+                          disabled={item.status === 'Reviewing'}
+                          title="Set to Reviewing"
+                        >
+                          <Clock className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          className="bg-green-600 hover:bg-green-700 h-8 w-8 p-0"
+                          onClick={() => handleApproveClick(item.id)}
+                          disabled={item.status === 'Approved'}
+                          title="Approve"
+                        >
+                          <CheckCircle className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="destructive" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => setRejectDialog({ open: true, id: item.id })}
+                          disabled={item.status === 'Rejected'}
+                          title="Reject"
+                        >
+                          <XCircle className="h-4 w-4" />
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -433,7 +431,7 @@ export default function SubmissionManagement() {
             </ScrollArea>
           )}
 
-          {viewDialog.item && viewDialog.item.status !== 'Rejected' && (
+          {viewDialog.item && (
             <div className="p-4 border-t flex justify-end gap-2 bg-slate-50 dark:bg-slate-900/50">
               {viewDialog.mode === 'application' ? (
                 <Button 
@@ -468,6 +466,7 @@ export default function SubmissionManagement() {
                       variant="outline" 
                       className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
                       onClick={() => setRejectDialog({ open: true, id: viewDialog.item!.id })}
+                      disabled={viewDialog.item.status === 'Rejected'}
                     >
                       Reject
                     </Button>
