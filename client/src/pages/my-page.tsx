@@ -1575,7 +1575,7 @@ export default function MyPage() {
                                     </Button>
                                   </DialogTrigger>
                                   <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
-                                    <HostedRequestDetails data={item} isEditable={true} />
+                                    <HostedRequestDetails data={item} isEditable={true} mode="details" />
                                   </DialogContent>
                                 </Dialog>
 
