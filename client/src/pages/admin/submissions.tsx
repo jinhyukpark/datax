@@ -620,7 +620,7 @@ export default function SubmissionManagement() {
                                id={`status-${item.id}`}
                                checked={true}
                                onCheckedChange={(checked) => !checked && confirmStopHosted(item.id)}
-                               className="data-[state=checked]:bg-green-600"
+                               className="data-[state=checked]:bg-blue-600"
                              />
                           </div>
                         ) : (
