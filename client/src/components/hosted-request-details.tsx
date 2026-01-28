@@ -171,38 +171,40 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
       )}
 
       <Tabs defaultValue={mode === 'details' ? 'details' : 'application'} className="w-full">
-        <TabsList className={`grid w-full ${mode === 'application' ? 'grid-cols-1' : mode === 'details' ? 'grid-cols-3' : 'grid-cols-4'} mb-8 h-auto p-0 bg-transparent gap-0`}>
-          {(mode === 'all' || mode === 'application') && (
-            <TabsTrigger 
-              value="application" 
-              className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-            >
-              Application Form
-            </TabsTrigger>
-          )}
-          {(mode === 'all' || mode === 'details') && (
-            <>
+        {mode !== 'application' && (
+          <TabsList className={`grid w-full ${mode === 'details' ? 'grid-cols-3' : 'grid-cols-4'} mb-8 h-auto p-0 bg-transparent gap-0`}>
+            {mode === 'all' && (
               <TabsTrigger 
-                value="details" 
+                value="application" 
                 className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
               >
-                Data Details
+                Application Form
               </TabsTrigger>
-              <TabsTrigger 
-                value="documentation" 
-                className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-              >
-                Documentation
-              </TabsTrigger>
-              <TabsTrigger 
-                value="pricing" 
-                className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-              >
-                Pricing
-              </TabsTrigger>
-            </>
-          )}
-        </TabsList>
+            )}
+            {(mode === 'all' || mode === 'details') && (
+              <>
+                <TabsTrigger 
+                  value="details" 
+                  className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+                >
+                  Data Details
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="documentation" 
+                  className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+                >
+                  Documentation
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="pricing" 
+                  className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+                >
+                  Pricing
+                </TabsTrigger>
+              </>
+            )}
+          </TabsList>
+        )}
 
         {(mode === 'all' || mode === 'application') && (
           <TabsContent value="application" className="space-y-8">
