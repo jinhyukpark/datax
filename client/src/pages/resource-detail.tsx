@@ -122,8 +122,14 @@ export default function ResourceDetail() {
                   resource.price === 'Free' ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300" :
                   "bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300"
                 )}>
-                  {resource.price === 'Paid' ? <CreditCard className="mr-1 h-3 w-3" /> : null}
-                  {resource.price}
+                  {resource.price === 'Paid' ? (
+                    <>
+                      <Server className="mr-1 h-3 w-3" />
+                      {t("Hosting", "Hosting")}
+                    </>
+                  ) : (
+                    resource.price
+                  )}
                 </Badge>
                 <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-300 dark:border-slate-700">
                   {resource.type.toUpperCase()}
