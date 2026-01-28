@@ -59,6 +59,7 @@ const MOCK_SUBMISSIONS = [
     founder: "Tech Manufacturing Inc.",
     website: "https://techmfg.example.com",
     newReviews: 2,
+    pricing: "Free",
   },
   { 
     id: 102, 
@@ -93,6 +94,7 @@ const MOCK_SUBMISSIONS = [
     contactPhone: "+1-555-0103",
     organization: "Green Energy Research",
     newReviews: 5,
+    pricing: "Paid",
   },
   { 
     id: 104, 
@@ -125,6 +127,7 @@ const MOCK_SUBMISSIONS = [
     contactEmail: "data@climate.example.org",
     contactPhone: "+1-555-0105",
     organization: "Climate Data Org",
+    pricing: "Paid",
   },
   {
     id: 106,
@@ -280,6 +283,7 @@ export default function SubmissionManagement() {
                 <TableHead>Resource Title</TableHead>
                 <TableHead>Provider</TableHead>
                 <TableHead>Type</TableHead>
+                {serviceType === 'Hosted' && <TableHead>Pricing</TableHead>}
                 <TableHead>Submitted Date</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
@@ -298,6 +302,13 @@ export default function SubmissionManagement() {
                     <TableCell className="font-medium">{item.title}</TableCell>
                     <TableCell>{item.provider}</TableCell>
                     <TableCell>{item.type}</TableCell>
+                    {serviceType === 'Hosted' && (
+                      <TableCell>
+                        <span className={`font-medium ${item.pricing === 'Free' ? 'text-green-600' : ''}`}>
+                          {item.pricing || 'Paid'}
+                        </span>
+                      </TableCell>
+                    )}
                     <TableCell>{item.submittedAt}</TableCell>
                     <TableCell>{getStatusBadge(item.status)}</TableCell>
                     <TableCell className="text-right">
