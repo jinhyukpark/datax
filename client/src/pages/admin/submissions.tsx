@@ -1,15 +1,4 @@
-import AdminLayout from "./admin-layout";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -34,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { GeneralRequestDetails } from "@/components/general-request-details";
 import { HostedRequestDetails } from "@/components/hosted-request-details";
+import { ReviewsDialog } from "@/components/reviews-dialog";
 
 // Mock Submissions with detailed data
 const MOCK_SUBMISSIONS = [
@@ -42,98 +32,79 @@ const MOCK_SUBMISSIONS = [
     title: "Smart Factory Sensor Data Set A", 
     provider: "Tech Manufacturing", 
     submittedAt: "2025-12-15", 
-    status: "Reviewing", 
+    status: "Pending", 
     type: "Dataset",
-    serviceType: "Hosted",
-    // Detailed fields
-    description: "This dataset contains over 1TB of sensor readings from varying assembly line robots, including temperature, vibration, and power consumption metrics suitable for predictive maintenance models.",
-    capacity: "1TB",
-    updateFreq: "realtime",
-    contactPerson: "John Tech",
-    contactEmail: "contact@techmfg.example.com",
-    contactPhone: "+1-555-0101",
-    organization: "Tech Manufacturing Inc.",
-    
-    // Extra fields for compatibility if needed
-    founder: "Tech Manufacturing Inc.",
-    website: "https://techmfg.example.com",
+    serviceType: "Hosted", // Hosted or Linked
+    description: "IoT sensor data from assembly line robots including temperature, vibration, and operation cycles.",
+    contactEmail: "data@techmfg.com",
+    documentationUrl: "https://docs.techmfg.com/sensor-data",
+    pricing: "Paid",
+    tags: ["IoT", "Manufacturing", "Sensor"],
+    region: "Asia-Pacific (Seoul)",
+    storage: "50GB"
   },
   { 
     id: 102, 
-    title: "Logistics Optimization API", 
-    provider: "LogiTech Solutions", 
+    title: "Financial Market Sentiment Analysis API", 
+    provider: "FinTech Solutions", 
     submittedAt: "2025-12-14", 
-    status: "Submitted", 
+    status: "Approved", 
     type: "API",
     serviceType: "Linked",
-    description: "A powerful REST API that calculates the most efficient delivery routes considering traffic, vehicle capacity, and delivery windows.",
-    founder: "LogiTech Team",
-    website: "https://logitech.example.io",
-    demoUrl: "",
-    docUrl: "https://api.logitech.example.io",
-    contactEmail: "dev@logitech.example.io",
-    contactPhone: "+1-555-0102",
+    description: "Real-time sentiment analysis of global financial news and social media feeds.",
+    contactEmail: "api@fintechsol.com",
+    documentationUrl: "https://api.fintechsol.com/docs",
+    pricing: "Subscription",
+    tags: ["Finance", "NLP", "Sentiment"],
+    endpoint: "https://api.fintechsol.com/v1/sentiment"
   },
   { 
     id: 103, 
-    title: "Energy Consumption Patterns 2024", 
-    provider: "Green Energy Co", 
+    title: "Medical Image Diagnostic AI Agent", 
+    provider: "MedAI Corp", 
     submittedAt: "2025-12-10", 
-    status: "Approved", 
-    type: "Report",
+    status: "Rejected", 
+    type: "AI Agent",
     serviceType: "Hosted",
-    description: "Annual report detailing energy consumption patterns across major industrial sectors in 2024, with a focus on renewable energy adoption.",
-    capacity: "500MB",
-    updateFreq: "yearly",
-    contactPerson: "Sarah Green",
-    contactEmail: "research@greenenergy.example.org",
-    contactPhone: "+1-555-0103",
-    organization: "Green Energy Research",
+    description: "AI agent specialized in early detection of anomalies in X-ray and MRI scans.",
+    contactEmail: "support@medai.com",
+    documentationUrl: "https://medai.com/agent-docs",
+    pricing: "Per Request",
+    tags: ["Medical", "Healthcare", "AI"],
+    rejectionReason: "Insufficient privacy compliance documentation.",
+    region: "US-East (N. Virginia)",
+    storage: "2TB"
   },
   { 
     id: 104, 
-    title: "Defect Detection AI Model", 
-    provider: "Vision AI Labs", 
+    title: "Urban Traffic Flow Optimization MCP", 
+    provider: "SmartCity Systems", 
     submittedAt: "2025-12-08", 
-    status: "Rejected", 
-    type: "AI Model", 
+    status: "Pending", 
+    type: "MCP",
     serviceType: "Linked",
-    description: "Pre-trained YOLOv8 model fine-tuned on 50,000 images of printed circuit boards to detect common manufacturing defects.",
-    founder: "Vision AI Labs",
-    website: "https://visionai.example.net",
-    demoUrl: "https://visionai.example.net/demo",
-    docUrl: "",
-    contactEmail: "support@visionai.example.net",
-    reason: "Insufficient documentation provided.",
+    description: "Model Context Protocol server for optimizing traffic signal timings based on real-time flow.",
+    contactEmail: "partners@smartcity.com",
+    documentationUrl: "https://smartcity.com/mcp/traffic",
+    pricing: "Free",
+    tags: ["Smart City", "Traffic", "Optimization"],
+    endpoint: "wss://mcp.smartcity.com/traffic"
   },
   {
     id: 105,
-    title: "Global Weather Historical Data",
-    provider: "Climate Data Org",
-    submittedAt: "2025-12-16",
-    status: "Reviewing",
-    type: "Dataset",
-    serviceType: "Hosted",
-    description: "Hosting request for 50TB of historical weather data from 1950-2024.",
-    capacity: "50TB",
-    updateFreq: "daily",
-    contactPerson: "Dr. Climate",
-    contactEmail: "data@climate.example.org",
-    contactPhone: "+1-555-0105",
-    organization: "Climate Data Org",
-  },
-  {
-    id: 106,
-    title: "Medical Image Diagnostic Helper",
-    provider: "MedAI Systems",
-    submittedAt: "2025-12-10",
-    status: "Submitted",
+    title: "Legal Contract Review Assistant",
+    provider: "LegalTech AI",
+    submittedAt: "2025-12-18",
+    status: "Pending",
     type: "AI Agent",
-    serviceType: "Linked",
-    description: "AI agent that helps radiologists by pre-screening X-ray images for common abnormalities.",
-    founder: "MedAI Systems",
-    website: "https://medai.example.com",
-    contactEmail: "contact@medai.example.com",
+    serviceType: "Hosted",
+    description: "AI assistant for reviewing standard business contracts and highlighting potential risks.",
+    contactEmail: "legal@techai.com",
+    documentationUrl: "https://legaltech.ai/docs",
+    pricing: "Paid",
+    tags: ["Legal", "Contract", "NLP"],
+    region: "Europe (Frankfurt)",
+    storage: "100GB"
   }
 ];
 
@@ -142,204 +113,172 @@ export default function SubmissionManagement() {
   const [rejectDialog, setRejectDialog] = useState<{open: boolean, id: number | null}>({ open: false, id: null });
   const [rejectReason, setRejectReason] = useState("");
   const [viewDialog, setViewDialog] = useState<{open: boolean, item: typeof MOCK_SUBMISSIONS[0] | null, mode: 'all' | 'application' | 'details'}>({ open: false, item: null, mode: 'all' });
-  
+  const [reviewsOpen, setReviewsOpen] = useState(false);
+  const [selectedReviewItem, setSelectedReviewItem] = useState<{title: string} | null>(null);
+
   // Alert Dialog State
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertConfig, setAlertConfig] = useState<{title: string, description: string, action: () => void}>({
     title: "", description: "", action: () => {}
   });
 
-  const handleStatusChange = (id: number, status: string, reason?: string) => {
-    setSubmissions(submissions.map(item => 
-      item.id === id ? { ...item, status, reason } : item
-    ));
-    
-    if (status === 'Approved') toast.success(`Submission #${id} Approved`);
-    if (status === 'Rejected') toast.success(`Submission #${id} Rejected`);
-    
-    // Close dialog if open
-    if (viewDialog.open && viewDialog.item?.id === id) {
-      setViewDialog({ open: false, item: null, mode: 'all' });
-    }
-  };
-
   const handleApproveClick = (id: number) => {
     setAlertConfig({
       title: "Approve Submission",
-      description: "Are you sure you want to approve this submission? This action will make the resource publicly available.",
-      action: () => handleStatusChange(id, 'Approved')
+      description: "Are you sure you want to approve this submission? This will make the service live.",
+      action: () => handleApprove(id)
     });
     setAlertOpen(true);
   };
 
-  const confirmReject = () => {
-    if (rejectDialog.id && rejectReason) {
-      setAlertConfig({
-        title: "Reject Submission",
-        description: "Are you sure you want to reject this submission? The provider will be notified with the rejection reason.",
-        action: () => {
-          handleStatusChange(rejectDialog.id!, 'Rejected', rejectReason);
-          setRejectDialog({ open: false, id: null });
-          setRejectReason("");
-        }
-      });
-      setAlertOpen(true);
-    } else {
-      toast.error("Please provide a rejection reason");
-    }
+  const handleRejectClick = (id: number) => {
+    setRejectDialog({ open: true, id });
+    setRejectReason("");
+  };
+
+  const handleApprove = (id: number) => {
+    setSubmissions(submissions.map(s => 
+      s.id === id ? { ...s, status: "Approved" } : s
+    ));
+    toast.success("Submission approved successfully");
+    setAlertOpen(false);
+  };
+
+  const handleReject = () => {
+    if (!rejectDialog.id) return;
+    setSubmissions(submissions.map(s => 
+      s.id === rejectDialog.id ? { ...s, status: "Rejected", rejectionReason: rejectReason } : s
+    ));
+    setRejectDialog({ open: false, id: null });
+    toast.error("Submission rejected");
   };
 
   const getStatusBadge = (status: string) => {
-    switch(status) {
-      case 'Approved': return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Approved</Badge>;
-      case 'Rejected': return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Rejected</Badge>;
-      case 'Reviewing': return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Reviewing</Badge>;
-      default: return <Badge variant="secondary">Submitted</Badge>;
+    switch (status) {
+      case "Approved":
+        return <div className="inline-flex items-center text-green-600 bg-green-50 px-2.5 py-0.5 rounded-full text-xs font-medium border border-green-100"><CheckCircle className="w-3 h-3 mr-1.5" /> Approved</div>;
+      case "Rejected":
+        return <div className="inline-flex items-center text-red-600 bg-red-50 px-2.5 py-0.5 rounded-full text-xs font-medium border border-red-100"><XCircle className="w-3 h-3 mr-1.5" /> Rejected</div>;
+      default:
+        return <div className="inline-flex items-center text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full text-xs font-medium border border-amber-100"><Clock className="w-3 h-3 mr-1.5" /> Pending</div>;
     }
   };
 
-  const renderDashboard = (serviceType: string) => {
-    const filteredSubmissions = submissions.filter(s => s.serviceType === serviceType);
-    
-    // Metrics
-    const totalSubmissions = filteredSubmissions.length;
-    const pendingReviews = filteredSubmissions.filter(s => s.status === 'Submitted' || s.status === 'Reviewing').length;
-    const approved = filteredSubmissions.filter(s => s.status === 'Approved').length;
-    const rejected = filteredSubmissions.filter(s => s.status === 'Rejected').length;
-
-    return (
-      <div className="space-y-6">
-        {/* Metrics Section */}
-        <div className="grid gap-4 md:grid-cols-4">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Submissions</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{totalSubmissions}</div>
-              <p className="text-xs text-muted-foreground">For {serviceType} Service</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending Review</CardTitle>
-              <Clock className="h-4 w-4 text-orange-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{pendingReviews}</div>
-              <p className="text-xs text-muted-foreground">Requires attention</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Approved</CardTitle>
-              <CheckCircle className="h-4 w-4 text-green-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{approved}</div>
-              <p className="text-xs text-muted-foreground">High quality assets</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Rejected</CardTitle>
-              <XCircle className="h-4 w-4 text-red-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{rejected}</div>
-              <p className="text-xs text-muted-foreground">Did not meet criteria</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Submissions Table */}
-        <div className="rounded-md border bg-white dark:bg-slate-900">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Resource Title</TableHead>
-                <TableHead>Provider</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Submitted Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredSubmissions.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                    No submissions found for {serviceType} service.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                filteredSubmissions.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell className="font-medium">{item.title}</TableCell>
-                    <TableCell>{item.provider}</TableCell>
-                    <TableCell>{item.type}</TableCell>
-                    <TableCell>{item.submittedAt}</TableCell>
-                    <TableCell>{getStatusBadge(item.status)}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item, mode: 'application' })}>
-                          <Eye className="h-4 w-4" />
-                        </Button>
-
-                        {item.serviceType === 'Hosted' && (
+  const renderDashboard = (type: "Hosted" | "Linked") => (
+    <div className="rounded-md border">
+      <div className="p-4">
+        <h3 className="text-lg font-medium mb-4">{type} Service Requests</h3>
+        <ScrollArea className="h-[600px]">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="h-12 px-4 text-left font-medium text-muted-foreground w-[250px]">Title</th>
+                <th className="h-12 px-4 text-left font-medium text-muted-foreground">Provider</th>
+                <th className="h-12 px-4 text-left font-medium text-muted-foreground">Type</th>
+                <th className="h-12 px-4 text-left font-medium text-muted-foreground">Date</th>
+                <th className="h-12 px-4 text-left font-medium text-muted-foreground">Status</th>
+                <th className="h-12 px-4 text-right font-medium text-muted-foreground">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {submissions.filter(s => s.serviceType === type).map((item) => (
+                <tr key={item.id} className="border-b hover:bg-muted/50 transition-colors">
+                  <TableCell className="font-medium">{item.title}</TableCell>
+                  <TableCell>{item.provider}</TableCell>
+                  <TableCell>{item.type}</TableCell>
+                  <TableCell>{item.submittedAt}</TableCell>
+                  <TableCell>{getStatusBadge(item.status)}</TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      {item.serviceType === 'Hosted' ? (
+                        <>
+                          <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item, mode: 'application' })}>
+                            <Eye className="h-4 w-4" />
+                          </Button>
                           <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item, mode: 'details' })}>
                             <Edit className="h-4 w-4" />
                           </Button>
-                        )}
-                        
-                        {item.status !== 'Approved' && item.status !== 'Rejected' && (
-                          <>
-                            <Button 
-                              size="sm" 
-                              className="bg-green-600 hover:bg-green-700 h-8 w-8 p-0"
-                              onClick={() => handleApproveClick(item.id)}
-                              title="Approve"
-                            >
-                              <CheckCircle className="h-4 w-4" />
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="destructive" 
-                              className="h-8 w-8 p-0"
-                              onClick={() => setRejectDialog({ open: true, id: item.id })}
-                              title="Reject"
-                            >
-                              <XCircle className="h-4 w-4" />
-                            </Button>
-                          </>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
+                        </>
+                      ) : (
+                        <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item, mode: 'application' })}>
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      )}
+
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => {
+                          setSelectedReviewItem({ title: item.title });
+                          setReviewsOpen(true);
+                        }}
+                      >
+                        <MessageSquare className="h-4 w-4" />
+                      </Button>
+                      
+                      {item.status !== 'Approved' && item.status !== 'Rejected' && (
+                        <>
+                          <Button 
+                            size="sm" 
+                            className="bg-green-600 hover:bg-green-700 h-8 w-8 p-0"
+                            onClick={() => handleApproveClick(item.id)}
+                          >
+                            <CheckCircle className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="destructive"
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleRejectClick(item.id)}
+                          >
+                            <XCircle className="h-4 w-4" />
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  </TableCell>
+                </tr>
+              ))}
+              {submissions.filter(s => s.serviceType === type).length === 0 && (
+                <tr>
+                  <td colSpan={6} className="h-24 text-center text-muted-foreground">
+                    No submissions found
+                  </td>
+                </tr>
               )}
-            </TableBody>
-          </Table>
-        </div>
+            </tbody>
+          </table>
+        </ScrollArea>
       </div>
-    );
-  };
+    </div>
+  );
 
   return (
-    <AdminLayout title="Submission Management">
+    <div className="p-8 space-y-8 bg-slate-50 min-h-screen">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Submission Management</h1>
+        <p className="text-muted-foreground mt-2">Review and manage service listing requests.</p>
+      </div>
+
       <Tabs defaultValue="hosted" className="space-y-6">
-        <TabsList className="grid w-full md:w-[400px] grid-cols-2">
+        <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
           <TabsTrigger value="hosted">Hosted Service</TabsTrigger>
-          <TabsTrigger value="linked">Link External Service</TabsTrigger>
+          <TabsTrigger value="linked">Linked Service</TabsTrigger>
         </TabsList>
-        <TabsContent value="hosted" className="mt-6">
+        <TabsContent value="hosted" className="space-y-6">
           {renderDashboard("Hosted")}
         </TabsContent>
-        <TabsContent value="linked" className="mt-6">
+        <TabsContent value="linked" className="space-y-6">
           {renderDashboard("Linked")}
         </TabsContent>
       </Tabs>
+
+      {/* Reviews Dialog */}
+      <ReviewsDialog 
+        open={reviewsOpen} 
+        onOpenChange={setReviewsOpen} 
+        resourceTitle={selectedReviewItem?.title || ""} 
+      />
 
       {/* Confirmation Alert Dialog */}
       <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
@@ -352,12 +291,7 @@ export default function SubmissionManagement() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => {
-              alertConfig.action();
-              setAlertOpen(false);
-            }}>
-              Confirm
-            </AlertDialogAction>
+            <AlertDialogAction onClick={alertConfig.action}>Confirm</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -367,66 +301,46 @@ export default function SubmissionManagement() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Reject Submission</DialogTitle>
-            <DialogDescription>Please provide a reason for rejecting this submission. This will be visible to the user.</DialogDescription>
+            <DialogDescription>
+              Please provide a reason for rejecting this submission. This will be sent to the provider.
+            </DialogDescription>
           </DialogHeader>
           <div className="py-4">
-            <Label className="mb-2 block">Rejection Reason</Label>
-            <Textarea 
-              placeholder="e.g. Incomplete documentation, Data quality issues..." 
+            <Label htmlFor="reason" className="mb-2 block">Rejection Reason</Label>
+            <textarea 
+              id="reason"
+              className="w-full min-h-[100px] p-3 border rounded-md text-sm"
+              placeholder="e.g., Incomplete documentation, Security vulnerability found..."
               value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
-              rows={4}
             />
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setRejectDialog({ open: false, id: null })}>Cancel</Button>
-            <Button variant="destructive" onClick={confirmReject}>Reject Submission</Button>
+            <Button variant="destructive" onClick={handleReject}>Reject Submission</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* View Detail Dialog */}
+      {/* View Details Dialog */}
       <Dialog open={viewDialog.open} onOpenChange={(open) => !open && setViewDialog({ open: false, item: null, mode: 'all' })}>
-        <DialogContent className="max-w-3xl h-[80vh] flex flex-col p-0">
-          <DialogHeader className="px-6 py-4 border-b">
-            <DialogTitle className="flex items-center gap-2">
-              {viewDialog.item?.title}
-              {viewDialog.item && getStatusBadge(viewDialog.item.status)}
-            </DialogTitle>
-            <DialogDescription>
-              Submitted by {viewDialog.item?.provider} on {viewDialog.item?.submittedAt}
-            </DialogDescription>
-          </DialogHeader>
-          
-          {viewDialog.item && (
-            <ScrollArea className="flex-1 px-6 py-6">
-              {viewDialog.item.serviceType === 'Hosted' ? (
-                <HostedRequestDetails data={viewDialog.item} isEditable={false} mode={viewDialog.mode} />
-              ) : (
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+           {viewDialog.item && (
+             viewDialog.item.serviceType === 'Hosted' ? (
+                <HostedRequestDetails 
+                  data={viewDialog.item} 
+                  mode={viewDialog.mode}
+                />
+             ) : (
                 <GeneralRequestDetails data={viewDialog.item} />
-              )}
-            </ScrollArea>
-          )}
-
-          {viewDialog.item && viewDialog.item.status !== 'Approved' && viewDialog.item.status !== 'Rejected' && (
-            <div className="p-4 border-t flex justify-end gap-2 bg-slate-50 dark:bg-slate-900/50">
-              <Button 
-                variant="outline" 
-                className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
-                onClick={() => setRejectDialog({ open: true, id: viewDialog.item!.id })}
-              >
-                Reject
-              </Button>
-              <Button 
-                className="bg-green-600 hover:bg-green-700"
-                onClick={() => handleApproveClick(viewDialog.item!.id)}
-              >
-                Approve Submission
-              </Button>
-            </div>
-          )}
+             )
+           )}
         </DialogContent>
       </Dialog>
-    </AdminLayout>
+    </div>
   );
+}
+
+function TableCell({ children, className = "" }: { children: React.ReactNode, className?: string }) {
+  return <td className={`p-4 align-middle [&:has([role=checkbox])]:pr-0 ${className}`}>{children}</td>;
 }
