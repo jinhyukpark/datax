@@ -314,7 +314,8 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
   );
 
   const GeneralForm = () => (
-    <form onSubmit={handleGeneralSubmit} className="space-y-6">
+    <form onSubmit={handleGeneralSubmit} className="flex flex-col h-full overflow-hidden">
+        <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-6">
         <div className="space-y-8">
             {/* Section Header */}
             <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
@@ -857,8 +858,9 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
             </div>
             </div>
         </div>
+        </div>
 
-        <div className="mt-8 pt-4 pb-2 flex justify-end gap-3 border-t border-slate-100 dark:border-slate-800">
+        <div className="mt-0 pt-4 pb-2 flex justify-end gap-3 border-t border-slate-100 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-950 z-10">
             <Button type="button" variant="outline" onClick={() => {}}>Cancel</Button>
             <Button type="submit" disabled={isSubmitting} className="min-w-[120px] bg-blue-600 hover:bg-blue-700">
             {isSubmitting ? (
@@ -1502,7 +1504,7 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
           </Button>
       )}
 
-      <div className="mb-8 text-center">
+      <div className="mb-6 text-center px-6 pt-6 shrink-0">
         {mode === 'create' && (
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-xs font-bold text-green-600 mb-4">
               <ShieldCheck className="h-3 w-3" /> 59 CERTIFIED DOMAIN RATING
@@ -1525,15 +1527,18 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
       </div>
 
       {mode === 'edit-approved' ? (
-        <Tabs defaultValue={defaultTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+        <Tabs defaultValue={defaultTab} className="flex flex-col h-full overflow-hidden w-full">
+          <div className="px-6 shrink-0">
+          <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="overview">{t("Overview", "기본 정보")}</TabsTrigger>
             <TabsTrigger value="documentation">{t("Documentation", "문서")}</TabsTrigger>
             <TabsTrigger value="pricing">{t("Pricing", "가격")}</TabsTrigger>
           </TabsList>
+          </div>
 
-          <TabsContent value="overview">
-            <Alert className="mb-6 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200">
+          <TabsContent value="overview" className="flex-1 overflow-hidden flex flex-col h-full mt-0">
+            <div className="flex-1 overflow-hidden flex flex-col">
+            <Alert className="mb-6 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200 shrink-0 mx-6">
               <AlertTitle>{t("Info", "안내")}</AlertTitle>
               <AlertDescription>
                 {t(
@@ -1543,13 +1548,14 @@ export function SubmitForm({ onSuccess, className, initialData, mode = 'create',
               </AlertDescription>
             </Alert>
             <GeneralForm />
+            </div>
           </TabsContent>
 
-          <TabsContent value="documentation">
+          <TabsContent value="documentation" className="flex-1 overflow-y-auto mt-0">
             <DocumentationForm />
           </TabsContent>
 
-          <TabsContent value="pricing">
+          <TabsContent value="pricing" className="flex-1 overflow-y-auto mt-0">
             <PricingForm />
           </TabsContent>
         </Tabs>

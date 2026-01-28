@@ -1147,12 +1147,13 @@ export default function MyPage() {
                                   <DialogTrigger asChild>
                                     <h3 className="text-lg font-bold hover:text-primary cursor-pointer">{item.title}</h3>
                                   </DialogTrigger>
-                                  <DialogContent className="sm:max-w-[900px] h-[90vh] overflow-y-auto">
+                                  <DialogContent className="sm:max-w-[900px] h-[90vh] p-0 gap-0 overflow-hidden flex flex-col">
                                     <SubmitForm 
                                       initialData={item as Resource} 
                                       mode="edit-approved" 
                                       defaultTab="overview"
                                       onSuccess={() => {}}
+                                      className="h-full flex flex-col"
                                     />
                                   </DialogContent>
                                 </Dialog>
@@ -1574,8 +1575,10 @@ export default function MyPage() {
                                       {t("Edit", "편집")}
                                     </Button>
                                   </DialogTrigger>
-                                  <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
-                                    <HostedRequestDetails data={item} isEditable={true} mode="details" />
+                                  <DialogContent className="max-w-3xl h-[85vh] p-0 gap-0 overflow-hidden flex flex-col">
+                                    <div className="h-full flex flex-col">
+                                      <HostedRequestDetails data={item} isEditable={true} mode="details" />
+                                    </div>
                                   </DialogContent>
                                 </Dialog>
 

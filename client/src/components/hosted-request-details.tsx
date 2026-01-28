@@ -137,10 +137,10 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header Section with Hosted Service Indicator */}
-      <div className="flex flex-col items-center justify-center pb-6 border-b border-slate-100 dark:border-slate-800">
-        <div className="flex items-center gap-3 mb-2">
+    <div className="flex flex-col h-full overflow-hidden bg-white dark:bg-slate-950">
+      {/* Header Section with Hosted Service Indicator - Fixed */}
+      <div className="flex flex-col items-center justify-center p-6 border-b border-slate-100 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-950 z-10">
+        <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold text-center">Manage <span className="text-indigo-600 dark:text-indigo-400">{detailsData.title}</span></h1>
           <Badge variant="outline" className="bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:border-indigo-800 px-2 py-0.5 text-xs">
             Hosted Service
@@ -148,62 +148,64 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
         </div>
       </div>
 
-      {/* Status Banners for Non-Editable States */}
-      {!isEditable && data.status && data.status !== 'submitted' && (
-        <div className="animate-in fade-in slide-in-from-top-2 mb-6">
-          {data.status === 'verifying' && (
-            <Alert className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-900">
-              <Info className="h-4 w-4 text-blue-600" />
-              <AlertTitle className="text-blue-800 dark:text-blue-300">Under Review</AlertTitle>
-              <AlertDescription className="text-blue-700 dark:text-blue-400">
-                This request is currently being verified by our team. You cannot make changes at this time.
-              </AlertDescription>
-            </Alert>
-          )}
-          {data.status === 'rejected' && (
-            <Alert variant="destructive" className="bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Submission Rejected</AlertTitle>
-              <AlertDescription>
-                {data.rejectionReason || "This request was rejected. Please check your notifications for details."}
-              </AlertDescription>
-            </Alert>
-          )}
-          {data.status === 'verified' && (
-            <Alert className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-900">
-              <CheckCircle2 className="h-4 w-4 text-green-600" />
-              <AlertTitle className="text-green-800 dark:text-green-300">Approved</AlertTitle>
-              <AlertDescription className="text-green-700 dark:text-green-400">
-                This request has been approved and published.
-              </AlertDescription>
-            </Alert>
-          )}
-        </div>
-      )}
+      {/* Scrollable Content Area */}
+      <div className="flex-1 overflow-y-auto p-6">
+        {/* Status Banners for Non-Editable States */}
+        {!isEditable && data.status && data.status !== 'submitted' && (
+          <div className="animate-in fade-in slide-in-from-top-2 mb-6">
+            {data.status === 'verifying' && (
+              <Alert className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-900">
+                <Info className="h-4 w-4 text-blue-600" />
+                <AlertTitle className="text-blue-800 dark:text-blue-300">Under Review</AlertTitle>
+                <AlertDescription className="text-blue-700 dark:text-blue-400">
+                  This request is currently being verified by our team. You cannot make changes at this time.
+                </AlertDescription>
+              </Alert>
+            )}
+            {data.status === 'rejected' && (
+              <Alert variant="destructive" className="bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Submission Rejected</AlertTitle>
+                <AlertDescription>
+                  {data.rejectionReason || "This request was rejected. Please check your notifications for details."}
+                </AlertDescription>
+              </Alert>
+            )}
+            {data.status === 'verified' && (
+              <Alert className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-900">
+                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <AlertTitle className="text-green-800 dark:text-green-300">Approved</AlertTitle>
+                <AlertDescription className="text-green-700 dark:text-green-400">
+                  This request has been approved and published.
+                </AlertDescription>
+              </Alert>
+            )}
+          </div>
+        )}
 
-      <Tabs defaultValue={mode === 'details' ? 'overview' : 'overview'} className="w-full">
-        <TabsList className={`grid w-full grid-cols-3 mb-8 h-auto p-0 bg-transparent gap-0`}>
-          <TabsTrigger 
-            value="overview" 
-            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-          >
-            Overview
-          </TabsTrigger>
-          <TabsTrigger 
-            value="documentation" 
-            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-          >
-            Documentation
-          </TabsTrigger>
-          <TabsTrigger 
-            value="pricing" 
-            className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
-          >
-            Pricing
-          </TabsTrigger>
-        </TabsList>
+        <Tabs defaultValue={mode === 'details' ? 'overview' : 'overview'} className="w-full">
+          <TabsList className={`grid w-full grid-cols-3 mb-8 h-auto p-0 bg-transparent gap-0`}>
+            <TabsTrigger 
+              value="overview" 
+              className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+            >
+              Overview
+            </TabsTrigger>
+            <TabsTrigger 
+              value="documentation" 
+              className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+            >
+              Documentation
+            </TabsTrigger>
+            <TabsTrigger 
+              value="pricing" 
+              className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+            >
+              Pricing
+            </TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="overview" className="space-y-8">
+          <TabsContent value="overview" className="space-y-8">
           {/* Info Banner */}
           <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900 rounded-lg p-4 mb-6">
             <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-300 mb-1">Info</h4>
@@ -679,9 +681,10 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
           </div>
         </TabsContent>
       </Tabs>
-      
+      </div>
+
       {isEditable && (
-        <div className="flex justify-end pt-4 border-t border-slate-100 dark:border-slate-800 gap-3">
+        <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 shrink-0 flex justify-end gap-3 z-10">
           <Button variant="outline" onClick={() => {}}>
             Cancel
           </Button>
