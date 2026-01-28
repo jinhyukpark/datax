@@ -287,7 +287,7 @@ export default function SubmissionManagement() {
                       <div className="flex justify-end gap-2">
                         {item.serviceType === 'Hosted' ? (
                           <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item, mode: 'application' })}>
-                            <Eye className="h-4 w-4" />
+                            <FileText className="h-4 w-4" />
                           </Button>
                         ) : (
                            <Button variant="ghost" size="sm" onClick={() => setViewDialog({ open: true, item: item, mode: 'all' })}>
