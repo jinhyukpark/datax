@@ -17,12 +17,14 @@ import {
   Eye, 
   Activity,
   Terminal,
-  Settings
+  Settings,
+  FileSignature
 } from "lucide-react";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { HostedServiceManage } from "@/components/hosted-service-manage";
 import { HostedServiceLogs } from "@/components/hosted-service-logs";
+import { ContractDetailsDialog } from "@/components/contract-details-dialog";
 
 // Mock Approved Hosted Services with Owner info
 const HOSTED_SERVICES_MOCK = [
@@ -87,8 +89,9 @@ const HOSTED_SERVICES_MOCK = [
 export default function HostedServicesManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [services, setServices] = useState(HOSTED_SERVICES_MOCK);
+  const [contractDialog, setContractDialog] = useState<{open: boolean, service: typeof HOSTED_SERVICES_MOCK[0] | null}>({ open: false, service: null });
 
-  const filteredServices = services.filter(service => 
+  const filteredServices = services.filter(service =>  
     service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     service.owner.toLowerCase().includes(searchQuery.toLowerCase()) ||
     service.ownerEmail.toLowerCase().includes(searchQuery.toLowerCase())
@@ -201,6 +204,16 @@ export default function HostedServicesManagement() {
                       </DialogContent>
                     </Dialog>
 
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full gap-2"
+                      onClick={() => setContractDialog({ open: true, service: service })}
+                    >
+                      <FileSignature className="h-4 w-4" />
+                      Contract
+                    </Button>
+
                     <Dialog>
                       <DialogTrigger asChild>
                         <Button variant="outline" size="sm" className="w-full gap-2">
@@ -223,6 +236,14 @@ export default function HostedServicesManagement() {
           )}
         </div>
       </div>
+
+      {contractDialog.service && (
+        <ContractDetailsDialog 
+          open={contractDialog.open} 
+          onOpenChange={(open) => !open && setContractDialog({ open: false, service: null })}
+          service={contractDialog.service}
+        />
+      )}
     </AdminLayout>
   );
 }
