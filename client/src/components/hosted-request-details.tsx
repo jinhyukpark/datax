@@ -208,12 +208,12 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
 
         {(mode === 'all' || mode === 'application') && (
           <TabsContent value="application" className="space-y-4">
-            {/* Section Header */}
-            <div className="flex items-center justify-between gap-4 pb-2 border-b border-slate-100 dark:border-slate-800">
-            </div>
+            {/* Section Header - Hidden for cleaner look as per request */}
+            {/* <div className="flex items-center justify-between gap-4 pb-2 border-b border-slate-100 dark:border-slate-800">
+            </div> */}
 
           {/* Basic Info Fields */}
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 gap-6 pt-0">
             <div className="space-y-3">
               <Label htmlFor="data-name" className="flex justify-between font-semibold text-sm">
                  <span>Data Name <span className="text-red-500">*</span></span>

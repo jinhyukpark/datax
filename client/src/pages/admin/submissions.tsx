@@ -424,19 +424,30 @@ export default function SubmissionManagement() {
 
           {viewDialog.item && viewDialog.item.status !== 'Approved' && viewDialog.item.status !== 'Rejected' && (
             <div className="p-4 border-t flex justify-end gap-2 bg-slate-50 dark:bg-slate-900/50">
-              <Button 
-                variant="outline" 
-                className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
-                onClick={() => setRejectDialog({ open: true, id: viewDialog.item!.id })}
-              >
-                Reject
-              </Button>
-              <Button 
-                className="bg-green-600 hover:bg-green-700"
-                onClick={() => handleApproveClick(viewDialog.item!.id)}
-              >
-                Approve Submission
-              </Button>
+              {viewDialog.mode === 'application' ? (
+                <Button 
+                  variant="outline"
+                  onClick={() => setViewDialog({ open: false, item: null, mode: 'all' })}
+                >
+                  Confirm
+                </Button>
+              ) : (
+                <>
+                  <Button 
+                    variant="outline" 
+                    className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+                    onClick={() => setRejectDialog({ open: true, id: viewDialog.item!.id })}
+                  >
+                    Reject
+                  </Button>
+                  <Button 
+                    className="bg-green-600 hover:bg-green-700"
+                    onClick={() => handleApproveClick(viewDialog.item!.id)}
+                  >
+                    Approve Submission
+                  </Button>
+                </>
+              )}
             </div>
           )}
         </DialogContent>
