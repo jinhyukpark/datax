@@ -38,8 +38,6 @@ import {
 import { toast } from "sonner";
 import { format, differenceInDays } from "date-fns";
 
-import { ReviewsDialog } from "@/components/reviews-dialog";
-
 export default function MyPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
@@ -55,9 +53,6 @@ export default function MyPage() {
     cvc: "",
     cardholderName: ""
   });
-
-  const [reviewsOpen, setReviewsOpen] = useState(false);
-  const [selectedReviewItem, setSelectedReviewItem] = useState<{title: string} | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem('my_purchases');
@@ -1179,23 +1174,29 @@ export default function MyPage() {
                                   <Download className="h-4 w-4" />
                                   <span>{item.downloads} downloads</span>
                                 </div>
-                                <div 
-                                  className={`flex items-center gap-1 font-medium cursor-pointer hover:underline transition-colors ${
-                                    (item as any).unreadReviews > 0 ? "text-red-600" : "text-muted-foreground hover:text-primary"
-                                  }`}
-                                  onClick={() => {
-                                    setSelectedReviewItem({ title: item.title });
-                                    setReviewsOpen(true);
-                                  }}
-                                >
-                                  <MessageSquare className="h-4 w-4" />
-                                  <span>
-                                    {(item as any).unreadReviews > 0 
-                                      ? `${(item as any).unreadReviews} unread of ${(item as any).totalReviews || 0} messages`
-                                      : `${(item as any).totalReviews || 0} messages`
-                                    }
-                                  </span>
-                                </div>
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <div className={`flex items-center gap-1 font-medium cursor-pointer hover:underline transition-colors ${
+                                      (item as any).unreadReviews > 0 ? "text-red-600" : "text-muted-foreground hover:text-primary"
+                                    }`}>
+                                      <MessageSquare className="h-4 w-4" />
+                                      <span>
+                                        {(item as any).unreadReviews > 0 
+                                          ? `${(item as any).unreadReviews} unread of ${(item as any).totalReviews || 0} messages`
+                                          : `${(item as any).totalReviews || 0} messages`
+                                        }
+                                      </span>
+                                    </div>
+                                  </DialogTrigger>
+                                  <DialogContent className="sm:max-w-[900px] h-[90vh] overflow-y-auto">
+                                    <SubmitForm 
+                                      initialData={item as Resource} 
+                                      mode="edit-approved" 
+                                      defaultTab="reviews"
+                                      onSuccess={() => {}}
+                                    />
+                                  </DialogContent>
+                                </Dialog>
                               </div>
                             </div>
                             <div className="bg-slate-50 dark:bg-slate-900 p-6 flex flex-row md:flex-col justify-center gap-2 border-t md:border-t-0 md:border-l min-w-[140px]">
@@ -1218,24 +1219,23 @@ export default function MyPage() {
                                 </DialogContent>
                               </Dialog>
                               
-                            <div className="relative w-full">
-                              <Button 
-                                variant="outline" 
-                                size="sm" 
-                                className="w-full"
-                                onClick={() => {
-                                  setSelectedReviewItem({ title: item.title });
-                                  setReviewsOpen(true);
-                                }}
-                              >
-                                Reviews
-                              </Button>
-                              {(item as any).unreadReviews > 0 && (
-                                <span className="absolute -top-1.5 -right-1.5 h-4 w-4 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold border-2 border-white dark:border-slate-900 z-10 pointer-events-none">
-                                  {(item as any).unreadReviews}
-                                </span>
-                              )}
-                            </div>
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <div className="relative w-full">
+                                    <Button variant="outline" size="sm" className="w-full">
+                                      Reviews
+                                    </Button>
+                                    {(item as any).unreadReviews > 0 && (
+                                      <span className="absolute -top-1.5 -right-1.5 h-4 w-4 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold border-2 border-white dark:border-slate-900 z-10">
+                                        {(item as any).unreadReviews}
+                                      </span>
+                                    )}
+                                  </div>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+                                  <HostedServiceReviews />
+                                </DialogContent>
+                              </Dialog>
                             </div>
                           </div>
                         </Card>
@@ -1807,12 +1807,6 @@ export default function MyPage() {
         </div>
       </main>
       
-      <ReviewsDialog 
-        open={reviewsOpen} 
-        onOpenChange={setReviewsOpen} 
-        resourceTitle={selectedReviewItem?.title || ""} 
-      />
-
       <Footer />
     </div>
   );
