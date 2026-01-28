@@ -39,7 +39,9 @@ import {
   Check,
   ShoppingCart,
   CreditCard,
-  Heart
+  Heart,
+  Info,
+  FileText
 } from "lucide-react";
 import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
 import { useLanguage } from "@/lib/language-context";
@@ -252,10 +254,10 @@ export default function ResourceDetail() {
                   {t("Documentation", "문서")}
                 </TabsTrigger>
                 <TabsTrigger 
-                  value="pricing" 
+                  value="terms" 
                   className="rounded-none border-b-2 border-transparent px-6 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400"
                 >
-                  {resource.accessModel === "AI Agent" ? t("Terms & Policies", "이용약관 및 정책") : t("Pricing", "요금")}
+                  {t("Terms & Policies", "이용약관 및 정책")}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="reviews" 
