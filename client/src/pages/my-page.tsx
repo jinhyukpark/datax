@@ -43,6 +43,7 @@ import { format, differenceInDays } from "date-fns";
 export default function MyPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
+  const [myPurchases, setMyPurchases] = useState<any[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingPlatform, setEditingPlatform] = useState<any>(null);
   const [pricingType, setPricingType] = useState<"Paid" | "Free">("Paid");
