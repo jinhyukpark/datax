@@ -35,7 +35,7 @@ const HOSTED_SERVICES_MOCK = [
     status: "Active",
     endpoint: "https://api.platform.com/v1/weather",
     region: "US-East (N. Virginia)",
-    tier: "Pro Plan",
+    pricing: "Paid",
     uptime: "99.99%",
     nextBilling: "2026-01-20",
     type: "DATA",
@@ -49,7 +49,7 @@ const HOSTED_SERVICES_MOCK = [
     status: "Active",
     endpoint: "https://api.platform.com/v1/biomed",
     region: "Asia-Pacific (Seoul)",
-    tier: "Enterprise",
+    pricing: "Paid",
     uptime: "99.95%",
     nextBilling: "2026-01-15",
     type: "AGENT",
@@ -63,7 +63,7 @@ const HOSTED_SERVICES_MOCK = [
     status: "Active",
     endpoint: "wss://api.platform.com/v1/stream",
     region: "US-West (Oregon)",
-    tier: "Enterprise",
+    pricing: "Paid",
     uptime: "99.99%",
     nextBilling: "2026-01-25",
     type: "MCP",
@@ -77,7 +77,7 @@ const HOSTED_SERVICES_MOCK = [
     status: "Active",
     endpoint: "https://api.platform.com/v1/sensors",
     region: "Europe (Frankfurt)",
-    tier: "Pro Plan",
+    pricing: "Free",
     uptime: "99.90%",
     nextBilling: "2026-02-01",
     type: "DATA",
@@ -178,8 +178,8 @@ export default function HostedServicesManagement() {
                         <p className="font-medium">{service.region}</p>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">Plan Tier</p>
-                        <p className="font-medium">{service.tier}</p>
+                        <p className="text-xs text-muted-foreground">Pricing</p>
+                        <p className={`font-medium ${service.pricing === 'Free' ? 'text-green-600' : ''}`}>{service.pricing}</p>
                       </div>
                       <div className="space-y-1">
                         <p className="text-xs text-muted-foreground">Uptime (30d)</p>
