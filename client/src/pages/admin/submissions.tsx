@@ -307,12 +307,13 @@ export default function SubmissionManagement() {
                           </Button>
                         )}
                         
-                        {item.status !== 'Approved' && item.status !== 'Rejected' && (
+                        {item.status !== 'Rejected' && (
                           <>
                             <Button 
                               size="sm" 
                               className="bg-green-600 hover:bg-green-700 h-8 w-8 p-0"
                               onClick={() => handleApproveClick(item.id)}
+                              disabled={item.status === 'Approved'}
                               title="Approve"
                             >
                               <CheckCircle className="h-4 w-4" />
