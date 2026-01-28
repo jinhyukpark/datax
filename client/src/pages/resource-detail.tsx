@@ -136,6 +136,18 @@ export default function ResourceDetail() {
                   <Star className="h-3.5 w-3.5 fill-current" />
                   <span>4.8</span>
                   <span className="text-muted-foreground font-normal">(124 reviews)</span>
+                  <button 
+                    onClick={toggleFavorite}
+                    className={cn(
+                      "ml-2 p-1.5 rounded-full transition-all duration-300",
+                      isFavorite 
+                        ? "bg-pink-50 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400" 
+                        : "text-slate-300 hover:text-pink-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    )}
+                    aria-label={t("Toggle Favorite", "즐겨찾기 토글")}
+                  >
+                    <Heart className={cn("h-4 w-4", isFavorite && "fill-current")} />
+                  </button>
                 </div>
               </div>
 
@@ -192,18 +204,6 @@ export default function ResourceDetail() {
                 </Button>
               )}
               
-              <Button 
-                variant="outline" 
-                className={cn(
-                  "border-slate-200 dark:border-slate-800 transition-colors",
-                  isFavorite && "border-pink-200 bg-pink-50 text-pink-600 hover:bg-pink-100 hover:text-pink-700 dark:bg-pink-900/20 dark:border-pink-800 dark:text-pink-400"
-                )}
-                onClick={toggleFavorite}
-              >
-                <Heart className={cn("mr-2 h-4 w-4", isFavorite && "fill-current")} />
-                {isFavorite ? t("Saved", "저장됨") : t("Favorite", "즐겨찾기")}
-              </Button>
-
               <div className="flex items-center justify-center gap-2 rounded-md border border-green-200 bg-green-50 py-2.5 text-sm font-medium text-green-700 dark:border-green-900/30 dark:bg-green-900/20 dark:text-green-400">
                 <ShieldCheck className="h-4 w-4" />
                 {t("Verified Provider", "인증된 제공자")}
