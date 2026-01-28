@@ -436,6 +436,14 @@ export default function SubmissionManagement() {
                 <>
                   <Button 
                     variant="outline" 
+                    className="mr-auto"
+                    onClick={() => setReviewsDialog({ open: true, item: viewDialog.item })}
+                  >
+                    <MessageSquare className="h-4 w-4 mr-2" />
+                    Reviews
+                  </Button>
+                  <Button 
+                    variant="outline" 
                     className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
                     onClick={() => setRejectDialog({ open: true, id: viewDialog.item!.id })}
                   >
