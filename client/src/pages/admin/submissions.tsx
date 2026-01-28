@@ -442,17 +442,7 @@ export default function SubmissionManagement() {
                 </Button>
               ) : (
                 <>
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    className="mr-auto text-muted-foreground"
-                    onClick={() => setReviewsDialog({ open: true, item: viewDialog.item })}
-                  >
-                    <MessageSquare className="h-4 w-4 mr-2" />
-                    Reviews
-                  </Button>
-                  
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 ml-auto">
                     <Button 
                       variant="outline" 
                       className="text-blue-600 border-blue-200 hover:bg-blue-50"
