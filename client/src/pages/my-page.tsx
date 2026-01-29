@@ -26,6 +26,7 @@ import { HostedServiceManage } from "@/components/hosted-service-manage";
 import { HostedServiceLogs } from "@/components/hosted-service-logs";
 import { HostedServiceReviews } from "@/components/hosted-service-reviews";
 import { GeneralRequestDetails } from "@/components/general-request-details";
+import { ContractDetailsDialog } from "@/components/contract-details-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -1844,8 +1845,13 @@ export default function MyPage() {
                                       {t("View Details", "상세 보기")}
                                     </Button>
                                   </DialogTrigger>
-                                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                                     <HostedRequestDetails data={item} isEditable={item.status === 'submitted'} />
+                                  <DialogContent className="max-w-4xl p-0 overflow-hidden">
+                                     <ContractDetailsDialog 
+                                       isOpen={false} 
+                                       onClose={() => {}} 
+                                       resourceName={item.title} 
+                                       resourceType="Hosted" 
+                                     />
                                   </DialogContent>
                                 </Dialog>
 
