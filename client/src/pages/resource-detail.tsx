@@ -90,8 +90,6 @@ export default function ResourceDetail() {
     id: review.id.toString(),
   }));
 
-  const providerName = resource.provider;
-
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
     toast.success(isFavorite ? t("Removed from favorites", "즐겨찾기에서 제거되었습니다") : t("Added to favorites", "즐겨찾기에 추가되었습니다"));
@@ -99,6 +97,8 @@ export default function ResourceDetail() {
 
   if (isLoading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   if (!resource) return <div className="flex items-center justify-center min-h-screen">Resource not found</div>;
+
+  const providerName = resource.provider;
 
   const displayTitle = language === '한국어' && resource.titleKo ? resource.titleKo : resource.title;
   const displayDesc = language === '한국어' && resource.descriptionKo ? resource.descriptionKo : resource.description;
