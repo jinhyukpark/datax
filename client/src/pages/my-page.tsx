@@ -1327,7 +1327,7 @@ export default function MyPage() {
                                 </div>
                                 <p className="text-muted-foreground text-sm mb-6">{item.description}</p>
                                 
-                                {/* Progress Bar */}
+                                {/* Progress Bar - Linked Service */}
                                 <div className="relative pb-10">
                                   {/* Line - positioned at center of h-8 (32px) circle. Top should be 14px (16px center - 2px half height) */}
                                   <div className="absolute top-[14px] left-0 w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full" />
@@ -1473,7 +1473,7 @@ export default function MyPage() {
                                     </Button>
                                   </DialogTrigger>
                                   <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                                    <GeneralRequestDetails data={item} status={item.step === 1 ? "submitted" : undefined} />
+                                    <GeneralRequestDetails data={item} status={item.step === 1 ? "submitted" : undefined} serviceType="linked" />
                                   </DialogContent>
                                 </Dialog>
 
@@ -1701,7 +1701,7 @@ export default function MyPage() {
                                 </div>
                                 <p className="text-muted-foreground text-sm mb-6">{item.description}</p>
                                 
-                                {/* Progress Bar */}
+                                {/* Progress Bar - Hosted Service */}
                                 <div className="relative pb-10">
                                   {/* Line */}
                                   <div className="absolute top-[14px] left-0 w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full" />
@@ -1846,7 +1846,7 @@ export default function MyPage() {
                                     </Button>
                                   </DialogTrigger>
                                   <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                                    <GeneralRequestDetails data={item} status={item.step === 1 ? "submitted" : undefined} />
+                                    <GeneralRequestDetails data={item} status={item.step === 1 ? "submitted" : undefined} serviceType="hosted" />
                                   </DialogContent>
                                 </Dialog>
 

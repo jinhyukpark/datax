@@ -3,16 +3,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useLanguage } from "@/lib/language-context";
-import { ShieldCheck, Upload, Paperclip, Save } from "lucide-react";
+import { ShieldCheck, Upload, Paperclip, Save, Link2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
 interface GeneralRequestDetailsProps {
   data: any;
   status?: string;
+  serviceType?: 'hosted' | 'linked';
 }
 
-export function GeneralRequestDetails({ data, status }: GeneralRequestDetailsProps) {
+export function GeneralRequestDetails({ data, status, serviceType }: GeneralRequestDetailsProps) {
   const { t } = useLanguage();
   const isEditable = status === "submitted";
   
@@ -51,6 +52,30 @@ export function GeneralRequestDetails({ data, status }: GeneralRequestDetailsPro
 
   return (
     <div className="space-y-8">
+      {/* Service Type Header */}
+      {serviceType && (
+        <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+          <h2 className="text-xl font-bold">
+            {t("Request Details", "신청 상세")}
+          </h2>
+          <div className={`text-white text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 uppercase tracking-wider ${
+            serviceType === 'hosted' ? 'bg-indigo-600' : 'bg-emerald-600'
+          }`}>
+            {serviceType === 'hosted' ? (
+              <>
+                <ShieldCheck className="h-3 w-3" />
+                {t("Hosted Service", "호스티드 서비스")}
+              </>
+            ) : (
+              <>
+                <Link2 className="h-3 w-3" />
+                {t("Linked Service", "연동 서비스")}
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Section 1: Basic Information */}
       <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
         <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
