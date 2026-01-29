@@ -1472,7 +1472,7 @@ export default function MyPage() {
                                       {t("View Details", "상세 보기")}
                                     </Button>
                                   </DialogTrigger>
-                                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden p-6">
                                     <GeneralRequestDetails data={item} status={item.step === 1 ? "submitted" : undefined} serviceType="linked" />
                                   </DialogContent>
                                 </Dialog>
@@ -1845,7 +1845,7 @@ export default function MyPage() {
                                       {t("View Details", "상세 보기")}
                                     </Button>
                                   </DialogTrigger>
-                                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden p-6">
                                     <GeneralRequestDetails data={item} status={item.step === 1 ? "submitted" : undefined} serviceType="hosted" />
                                   </DialogContent>
                                 </Dialog>
