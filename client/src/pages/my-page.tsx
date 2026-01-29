@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { RESOURCES } from "@/lib/data";
-import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star, Activity, FileText, Database, Zap, Power, Plus, ShieldCheck, Link2 } from "lucide-react";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star, Activity, FileText, Database, Zap, Power, Plus, ShieldCheck, Link2, Shield, Calendar } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
@@ -72,6 +72,81 @@ export default function MyPage() {
     }
   ]);
   const [freePricingText, setFreePricingText] = useState("This resource is part of our open data initiative and is free to use for both personal and commercial projects.");
+
+  // Terms & Policies State
+  const [termsLastUpdated, setTermsLastUpdated] = useState("June 2025");
+  const [termsDescription, setTermsDescription] = useState("By using this service, you agree to our terms and conditions. We reserve the right to modify these terms at any time. This agreement outlines the terms and conditions for the provision of hosted data services on the Illunex Platform.");
+  const [providedServices, setProvidedServices] = useState([
+    "Real-time sentiment analysis",
+    "Multi-platform data aggregation",
+    "Customizable reporting dashboards",
+    "Trend forecasting algorithms",
+    "API integration support"
+  ]);
+  const [servicePeriod, setServicePeriod] = useState([
+    "Monthly subscription with automatic renewal",
+    "Service available immediately upon payment"
+  ]);
+  const [licensePricing, setLicensePricing] = useState([
+    "Commercial License: Business use permitted",
+    "Monthly Fee: $78.00 (Billed monthly)"
+  ]);
+  const [refundPolicy, setRefundPolicy] = useState([
+    "Full refund within 7 days if service not accessed",
+    "Pro-rated refund available for annual plans"
+  ]);
+
+  // Terms & Policies Functions
+  const addTermItem = (category: "providedServices" | "servicePeriod" | "licensePricing" | "refundPolicy") => {
+    switch (category) {
+      case "providedServices":
+        setProvidedServices([...providedServices, ""]);
+        break;
+      case "servicePeriod":
+        setServicePeriod([...servicePeriod, ""]);
+        break;
+      case "licensePricing":
+        setLicensePricing([...licensePricing, ""]);
+        break;
+      case "refundPolicy":
+        setRefundPolicy([...refundPolicy, ""]);
+        break;
+    }
+  };
+
+  const updateTermItem = (category: "providedServices" | "servicePeriod" | "licensePricing" | "refundPolicy", index: number, value: string) => {
+    switch (category) {
+      case "providedServices":
+        setProvidedServices(providedServices.map((item, i) => i === index ? value : item));
+        break;
+      case "servicePeriod":
+        setServicePeriod(servicePeriod.map((item, i) => i === index ? value : item));
+        break;
+      case "licensePricing":
+        setLicensePricing(licensePricing.map((item, i) => i === index ? value : item));
+        break;
+      case "refundPolicy":
+        setRefundPolicy(refundPolicy.map((item, i) => i === index ? value : item));
+        break;
+    }
+  };
+
+  const removeTermItem = (category: "providedServices" | "servicePeriod" | "licensePricing" | "refundPolicy", index: number) => {
+    switch (category) {
+      case "providedServices":
+        setProvidedServices(providedServices.filter((_, i) => i !== index));
+        break;
+      case "servicePeriod":
+        setServicePeriod(servicePeriod.filter((_, i) => i !== index));
+        break;
+      case "licensePricing":
+        setLicensePricing(licensePricing.filter((_, i) => i !== index));
+        break;
+      case "refundPolicy":
+        setRefundPolicy(refundPolicy.filter((_, i) => i !== index));
+        break;
+    }
+  };
 
   const addPlan = () => {
     const newId = `p${Date.now()}`;
@@ -1926,17 +2001,212 @@ export default function MyPage() {
                     <TabsTrigger value="overview" className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Overview</TabsTrigger>
                     <TabsTrigger value="documentation" className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Documentation</TabsTrigger>
                     <TabsTrigger value="pricing" className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Pricing</TabsTrigger>
+                    <TabsTrigger value="terms-policies" className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Terms & Policies</TabsTrigger>
                   </TabsList>
-                </Tabs>
-              </div>
 
-              <ScrollArea className="flex-1">
-                <div className="p-8 space-y-8">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Pricing Policy</h3>
-                      <p className="text-sm text-slate-500">Choose between paid plans or a free service model.</p>
-                    </div>
+                  <TabsContent value="terms-policies" className="mt-0">
+                    <ScrollArea className="h-[60vh]">
+                      <div className="p-8 space-y-6">
+                        <div className="rounded-2xl bg-gradient-to-br from-indigo-50 to-slate-50 p-6 border border-indigo-100">
+                          <div className="flex items-start gap-4 mb-4">
+                            <div className="h-12 w-12 rounded-xl bg-indigo-100 flex items-center justify-center">
+                              <Shield className="h-6 w-6 text-indigo-600" />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="text-xl font-bold text-slate-900">Detailed Terms of Service</h3>
+                              <div className="flex items-center gap-2 mt-1">
+                                <Label className="text-xs text-slate-500">Last updated:</Label>
+                                <Input 
+                                  value={termsLastUpdated} 
+                                  onChange={(e) => setTermsLastUpdated(e.target.value)}
+                                  className="h-7 w-32 text-xs border-indigo-200 bg-white"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <Textarea 
+                            value={termsDescription}
+                            onChange={(e) => setTermsDescription(e.target.value)}
+                            className="min-h-[80px] bg-white/80 border-slate-200 text-sm italic text-slate-600 rounded-xl"
+                            placeholder="Enter terms description..."
+                          />
+                        </div>
+
+                        <div className="text-center">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Service Guidelines</span>
+                        </div>
+
+                        <div className="rounded-2xl border border-slate-200 p-6 bg-white">
+                          <div className="flex items-start gap-4 mb-4">
+                            <div className="h-10 w-10 rounded-xl bg-indigo-100 flex items-center justify-center shrink-0">
+                              <Zap className="h-5 w-5 text-indigo-600" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between">
+                                <h4 className="font-bold text-slate-900">Provided Services</h4>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  onClick={() => addTermItem("providedServices")}
+                                  className="text-indigo-600 hover:text-indigo-700 h-8"
+                                >
+                                  <Plus className="h-4 w-4 mr-1" /> Add
+                                </Button>
+                              </div>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
+                                {providedServices.map((item, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 group">
+                                    <div className="h-2 w-2 rounded-full bg-indigo-400 shrink-0" />
+                                    <Input 
+                                      value={item}
+                                      onChange={(e) => updateTermItem("providedServices", idx, e.target.value)}
+                                      className="h-8 text-sm border-slate-100 flex-1"
+                                      placeholder="Enter service..."
+                                    />
+                                    <button 
+                                      onClick={() => removeTermItem("providedServices", idx)}
+                                      className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all"
+                                    >
+                                      <XCircle className="h-4 w-4" />
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="rounded-2xl border border-slate-200 p-6 bg-white">
+                          <div className="flex items-start gap-4 mb-4">
+                            <div className="h-10 w-10 rounded-xl bg-cyan-100 flex items-center justify-center shrink-0">
+                              <Calendar className="h-5 w-5 text-cyan-600" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between">
+                                <h4 className="font-bold text-slate-900">Service Period</h4>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  onClick={() => addTermItem("servicePeriod")}
+                                  className="text-cyan-600 hover:text-cyan-700 h-8"
+                                >
+                                  <Plus className="h-4 w-4 mr-1" /> Add
+                                </Button>
+                              </div>
+                              <div className="space-y-2 mt-3">
+                                {servicePeriod.map((item, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 group">
+                                    <div className="h-2 w-2 rounded-full bg-cyan-400 shrink-0" />
+                                    <Input 
+                                      value={item}
+                                      onChange={(e) => updateTermItem("servicePeriod", idx, e.target.value)}
+                                      className="h-8 text-sm border-slate-100 flex-1"
+                                      placeholder="Enter period info..."
+                                    />
+                                    <button 
+                                      onClick={() => removeTermItem("servicePeriod", idx)}
+                                      className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all"
+                                    >
+                                      <XCircle className="h-4 w-4" />
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="rounded-2xl border-2 border-amber-200 p-6 bg-amber-50/30">
+                          <div className="flex items-start gap-4 mb-4">
+                            <div className="h-10 w-10 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
+                              <CreditCard className="h-5 w-5 text-amber-600" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between">
+                                <h4 className="font-bold text-slate-900">License & Pricing</h4>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  onClick={() => addTermItem("licensePricing")}
+                                  className="text-amber-600 hover:text-amber-700 h-8"
+                                >
+                                  <Plus className="h-4 w-4 mr-1" /> Add
+                                </Button>
+                              </div>
+                              <div className="space-y-2 mt-3">
+                                {licensePricing.map((item, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 group">
+                                    <div className="h-2 w-2 rounded-full bg-amber-400 shrink-0" />
+                                    <Input 
+                                      value={item}
+                                      onChange={(e) => updateTermItem("licensePricing", idx, e.target.value)}
+                                      className="h-8 text-sm border-amber-200 bg-white flex-1"
+                                      placeholder="Enter license/pricing info..."
+                                    />
+                                    <button 
+                                      onClick={() => removeTermItem("licensePricing", idx)}
+                                      className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all"
+                                    >
+                                      <XCircle className="h-4 w-4" />
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="rounded-2xl border border-slate-200 p-6 bg-white">
+                          <div className="flex items-start gap-4 mb-4">
+                            <div className="h-10 w-10 rounded-xl bg-green-100 flex items-center justify-center shrink-0">
+                              <CheckCircle2 className="h-5 w-5 text-green-600" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between">
+                                <h4 className="font-bold text-slate-900">Refund Policy</h4>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  onClick={() => addTermItem("refundPolicy")}
+                                  className="text-green-600 hover:text-green-700 h-8"
+                                >
+                                  <Plus className="h-4 w-4 mr-1" /> Add
+                                </Button>
+                              </div>
+                              <div className="space-y-2 mt-3">
+                                {refundPolicy.map((item, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 group">
+                                    <div className="h-2 w-2 rounded-full bg-green-400 shrink-0" />
+                                    <Input 
+                                      value={item}
+                                      onChange={(e) => updateTermItem("refundPolicy", idx, e.target.value)}
+                                      className="h-8 text-sm border-slate-100 flex-1"
+                                      placeholder="Enter refund policy..."
+                                    />
+                                    <button 
+                                      onClick={() => removeTermItem("refundPolicy", idx)}
+                                      className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all"
+                                    >
+                                      <XCircle className="h-4 w-4" />
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
+
+                  <TabsContent value="pricing" className="mt-0">
+                    <ScrollArea className="h-[60vh]">
+                      <div className="p-8 space-y-8">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                          <div>
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Pricing Policy</h3>
+                            <p className="text-sm text-slate-500">Choose between paid plans or a free service model.</p>
+                          </div>
                     <div className="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-xl w-fit">
                       <button
                         onClick={() => setPricingType("Paid")}
@@ -2083,13 +2353,16 @@ export default function MyPage() {
                       </div>
                     </div>
                   )}
-                </div>
-              </ScrollArea>
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
+                </Tabs>
+              </div>
 
               <DialogFooter className="px-8 py-6 border-t bg-slate-50/50 flex justify-end gap-3">
                 <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="rounded-xl px-6">Cancel</Button>
                 <Button onClick={() => setIsDialogOpen(false)} className="bg-indigo-600 hover:bg-indigo-700 rounded-xl px-10 gap-2 font-bold shadow-lg shadow-indigo-500/20">
-                  <CreditCard className="h-4 w-4" /> Save Pricing
+                  <CreditCard className="h-4 w-4" /> Save Changes
                 </Button>
               </DialogFooter>
             </div>
