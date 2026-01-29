@@ -50,7 +50,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Send, Reply, User, ChevronDown } from "lucide-react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import type { Resource, Review } from "@shared/schema";
+import type { Review } from "@shared/schema";
+import { RESOURCES, type Resource } from "@/lib/data";
 
 // Import generated images
 import aiAgentIcon from "@assets/generated_images/ai_agent_icon_abstract.png";
@@ -75,20 +76,25 @@ export default function ResourceDetail() {
   const { language, t } = useLanguage();
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const { data: resource, isLoading } = useQuery<Resource>({
+  // Try to fetch from API, but fall back to mock data
+  const { data: apiResource, isLoading } = useQuery<Resource>({
     queryKey: [`/api/resources/${params?.id}`],
     enabled: !!params?.id,
   });
+
+  // Fall back to mock data if API returns nothing
+  const resource = apiResource || RESOURCES.find(r => r.id === params?.id);
 
   const { data: reviews = [] } = useQuery<Review[]>({
     queryKey: [`/api/resources/${params?.id}/reviews`],
     enabled: !!params?.id,
   });
 
-  const displayReviews = (reviews || []).map(review => ({
-    ...review,
-    id: review.id.toString(),
-  }));
+  // Use mock reviews from resource if available, or API reviews
+  const mockReviews = resource?.reviews || [];
+  const displayReviews = reviews.length > 0 
+    ? reviews.map(review => ({ ...review, id: review.id.toString() }))
+    : mockReviews;
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
