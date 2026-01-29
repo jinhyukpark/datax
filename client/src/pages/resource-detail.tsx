@@ -617,21 +617,21 @@ export default function ResourceDetail() {
 
               <TabsContent value="reviews" className="space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-500">
                 {/* Header Section */}
-                <div className="flex flex-col gap-2 max-w-4xl">
-                  <div className="flex items-end gap-3">
-                    <span className="text-5xl font-bold text-slate-900 dark:text-white">4.8</span>
-                    <div className="flex flex-col pb-1">
-                      <div className="flex items-center gap-0.5 text-amber-400 mb-0.5">
-                        {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-4 w-4 fill-current" />)}
+                <div className="flex flex-col gap-1 max-w-4xl">
+                  <div className="flex items-center gap-2">
+                    <span className="text-4xl font-bold text-slate-900 dark:text-white">4.8</span>
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-0.5 text-amber-400">
+                        {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-3.5 w-3.5 fill-current" />)}
                       </div>
-                      <span className="text-sm text-slate-500 font-medium">out of 5</span>
+                      <span className="text-[10px] text-slate-500 font-medium">out of 5</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4 mt-2">
-                    <div className="relative h-1.5 flex-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                  <div className="flex items-center gap-3 mt-1">
+                    <div className="relative h-1 flex-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                       <div className="absolute left-0 top-0 h-full bg-amber-400 rounded-full" style={{ width: '96%' }}></div>
                     </div>
-                    <span className="text-sm text-slate-400 font-medium whitespace-nowrap">124 ratings</span>
+                    <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap">124 ratings</span>
                   </div>
                 </div>
 
