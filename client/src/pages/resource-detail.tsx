@@ -636,7 +636,7 @@ export default function ResourceDetail() {
                 </div>
 
                 {/* Write Review Section */}
-                <div className="p-6 rounded-[24px] bg-slate-50/50 border border-slate-100 dark:bg-slate-900/20 dark:border-slate-800">
+                <div className="p-6 rounded-[24px] bg-slate-50/80 border border-slate-200 shadow-sm dark:bg-slate-900/40 dark:border-slate-800">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400">
                       <User className="h-5 w-5" />
