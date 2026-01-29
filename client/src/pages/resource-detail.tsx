@@ -184,7 +184,7 @@ export default function ResourceDetail() {
                     </div>
                     <div className="flex items-baseline gap-1">
                       <span className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">
-                        {resource.priceValue || "$78.00"}
+                        {resource.priceAmount || "$78.00"}
                       </span>
                       <span className="text-sm text-indigo-600/60 dark:text-indigo-400/60">/mo</span>
                     </div>
@@ -554,7 +554,7 @@ export default function ResourceDetail() {
                                 <div className="h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
                                 <div className="flex items-baseline gap-2">
                                   <span className="font-bold text-indigo-700 dark:text-indigo-300">
-                                    {t("Monthly Fee", "월 이용료")}: {resource.priceValue || "$78.00"}
+                                    {t("Monthly Fee", "월 이용료")}: {resource.priceAmount || "$78.00"}
                                   </span>
                                   <span className="text-xs text-slate-400">(Billed monthly)</span>
                                 </div>

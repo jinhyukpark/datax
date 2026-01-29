@@ -72,6 +72,11 @@ export interface Resource {
     reply?: string;
     replyDate?: string;
   }[];
+  termsOfService?: string;
+  providedServices?: string[];
+  servicePeriod?: string;
+  licensePricing?: string;
+  refundPolicy?: string;
 }
 
 export const RESOURCES: Resource[] = [
