@@ -72,13 +72,22 @@ export function ContractDetailsDialog({
               </div>
             </div>
 
+            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 flex items-start gap-4 mb-8">
+              <div className="space-y-1">
+                <h4 className="font-bold text-slate-900 text-sm">Info</h4>
+                <p className="text-xs text-indigo-600 leading-relaxed">
+                  Changes to basic information will require re-approval from the administration team.
+                </p>
+              </div>
+            </div>
+
             <div className="flex items-center gap-4 pb-6 border-b border-slate-100">
-              <div className="h-12 w-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm border border-indigo-100">
-                <FileText className="h-6 w-6" />
+              <div className="h-10 w-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold border border-indigo-100">
+                1
               </div>
               <div>
-                <h3 className="font-bold text-xl text-slate-900">Basic Information</h3>
-                <p className="text-sm text-slate-500">Tell us about your AI Agent</p>
+                <h3 className="font-bold text-lg text-slate-900">Basic Information</h3>
+                <p className="text-xs text-slate-500">Tell us about your AI Agent</p>
               </div>
             </div>
 
