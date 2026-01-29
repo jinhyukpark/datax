@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { RESOURCES } from "@/lib/data";
 import { useRoute, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -49,6 +48,9 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { Send, Reply, User, ChevronDown } from "lucide-react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import type { Resource, Review } from "@shared/schema";
 
 // Import generated images
 import aiAgentIcon from "@assets/generated_images/ai_agent_icon_abstract.png";
@@ -70,16 +72,26 @@ function cn(...inputs: ClassValue[]) {
 
 export default function ResourceDetail() {
   const [, params] = useRoute("/resource/:id");
-  const resource = RESOURCES.find(r => r.id === params?.id);
   const { language, t } = useLanguage();
   const [isFavorite, setIsFavorite] = useState(false);
+
+  const { data: resource, isLoading } = useQuery<Resource>({
+    queryKey: [`/api/resources/${params?.id}`],
+    enabled: !!params?.id,
+  });
+
+  const { data: reviews = [] } = useQuery<Review[]>({
+    queryKey: [`/api/resources/${params?.id}/reviews`],
+    enabled: !!params?.id,
+  });
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
     toast.success(isFavorite ? t("Removed from favorites", "즐겨찾기에서 제거되었습니다") : t("Added to favorites", "즐겨찾기에 추가되었습니다"));
   };
 
-  if (!resource) return <div>Resource not found</div>;
+  if (isLoading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  if (!resource) return <div className="flex items-center justify-center min-h-screen">Resource not found</div>;
 
   const displayTitle = language === '한국어' && resource.titleKo ? resource.titleKo : resource.title;
   const displayDesc = language === '한국어' && resource.descriptionKo ? resource.descriptionKo : resource.description;
