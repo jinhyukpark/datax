@@ -61,30 +61,7 @@ export function ContractDetailsDialog({
   );
 
   if (!isOpen) {
-    return (
-      <div className="flex flex-col h-full">
-        <DialogHeader className="p-6 pb-2">
-          <div className="flex items-center justify-between px-2">
-            <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-              Manage <span className="text-indigo-600">{resourceName}</span>
-            </DialogTitle>
-            <div className="bg-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider">
-              <ShieldCheck className="h-3 w-3" />
-              Hosted Service
-            </div>
-          </div>
-        </DialogHeader>
-        {content}
-        <DialogFooter className="p-6 border-t bg-slate-50/50 mt-auto">
-          <Button variant="outline" onClick={onClose} className="rounded-xl">
-            Cancel
-          </Button>
-          <Button onClick={onClose} className="bg-indigo-600 hover:bg-indigo-700 rounded-xl px-8">
-            Submit Agent
-          </Button>
-        </DialogFooter>
-      </div>
-    );
+    return null;
   }
 
   return (
