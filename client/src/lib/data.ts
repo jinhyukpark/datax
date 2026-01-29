@@ -68,7 +68,9 @@ export interface Resource {
     rating: number;
     date: string;
     comment: string;
+    role?: string;
     reply?: string;
+    replyDate?: string;
   }[];
 }
 
@@ -124,11 +126,34 @@ export const RESOURCES: Resource[] = [
       "경쟁사 분석",
       "위기 관리"
     ],
-    socialLinks: {
-      linkedin: "https://linkedin.com",
-      twitter: "https://twitter.com",
-      github: "https://github.com"
-    }
+    reviews: [
+      {
+        id: "r1",
+        user: "Sarah Johnson",
+        role: "CTO, DataVision Inc.",
+        rating: 5,
+        date: "June 12, 2025",
+        comment: "The accuracy of the AI agents' responses is impressive. We've integrated this into our customer support workflow and seen a 40% reduction in resolution time. Highly recommended for scaling businesses.",
+        reply: "Thank you for your kind review! We're thrilled to hear that the integration was smooth. Let us know if you need any further assistance.",
+        replyDate: "June 13, 2025"
+      },
+      {
+        id: "r2",
+        user: "Michael Chen",
+        role: "Senior Data Analyst",
+        rating: 5,
+        date: "June 5, 2025",
+        comment: "Excellent documentation and easy integration. We were up and running in less than an hour. The real-time updates are truly real-time, which was critical for our use case.",
+      },
+      {
+        id: "r3",
+        user: "Sarah Lee",
+        role: "Product Manager",
+        rating: 4,
+        date: "May 28, 2025",
+        comment: "Great product overall. The API is well-designed and the response times are impressive. Would love to see more documentation on advanced use cases.",
+      }
+    ]
   },
   {
     id: "101",
