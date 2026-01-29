@@ -8,10 +8,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, ShieldCheck, Zap, Calendar, CreditCard, CheckCircle2, Info } from "lucide-react";
+import { ShieldCheck, Info } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 
 interface ContractDetailsDialogProps {
@@ -28,20 +26,6 @@ export function ContractDetailsDialog({
   resourceType,
 }: ContractDetailsDialogProps) {
   const { t } = useLanguage();
-  const [formData, setFormData] = useState({
-    termsOfService: "By using this service, you agree to our terms and conditions. We reserve the right to modify these terms at any time.",
-    providedServices: "Enterprise-grade data analysis, REST API access",
-    servicePeriod: "Monthly subscription with automatic renewal",
-    licensePricing: "Commercial License: Business use permitted. Monthly Fee: $78.00",
-    refundPolicy: "Full refund within 7 days if service not accessed",
-    providedServicesRaw: "Enterprise-grade data analysis\nREST API access\nReal-time monitoring\n24/7 Priority support",
-    servicePeriodRaw: "Monthly subscription\nAutomatic renewal\nCancel anytime",
-    licensePricingRaw: "Commercial License\nBusiness use permitted\nMonthly Fee: $78.00\nNo hidden costs",
-  });
-
-  const handleChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
