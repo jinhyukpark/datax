@@ -1845,14 +1845,8 @@ export default function MyPage() {
                                       {t("View Details", "상세 보기")}
                                     </Button>
                                   </DialogTrigger>
-                                  <DialogContent className="max-w-4xl p-0 overflow-hidden">
-                                     <ContractDetailsDialog 
-                                       isOpen={false} 
-                                       onClose={() => {}} 
-                                       resourceName={item.title} 
-                                       resourceType="Hosted" 
-                                       data={item}
-                                     />
+                                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                                    <GeneralRequestDetails data={item} status={item.step === 1 ? "submitted" : undefined} />
                                   </DialogContent>
                                 </Dialog>
 
