@@ -85,6 +85,13 @@ export default function ResourceDetail() {
     enabled: !!params?.id,
   });
 
+  const displayReviews = (reviews || []).map(review => ({
+    ...review,
+    id: review.id.toString(),
+  }));
+
+  const providerName = resource.provider;
+
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
     toast.success(isFavorite ? t("Removed from favorites", "즐겨찾기에서 제거되었습니다") : t("Added to favorites", "즐겨찾기에 추가되었습니다"));
@@ -96,14 +103,14 @@ export default function ResourceDetail() {
   const displayTitle = language === '한국어' && resource.titleKo ? resource.titleKo : resource.title;
   const displayDesc = language === '한국어' && resource.descriptionKo ? resource.descriptionKo : resource.description;
   const displayTagline = language === '한국어' && resource.taglineKo ? resource.taglineKo : resource.tagline;
-  const displayFeatures = language === '한국어' && resource.featuresKo ? resource.featuresKo : resource.features;
-  const displayUseCases = language === '한국어' && resource.useCasesKo ? resource.useCasesKo : resource.useCases;
+  const displayFeatures = language === '한국어' && resource.featuresKo ? (resource.featuresKo as string[]) : (resource.features as string[] || []);
+  const displayUseCases = language === '한국어' && resource.useCasesKo ? (resource.useCasesKo as string[]) : (resource.useCases as string[] || []);
 
   const previewImages = [
-    { src: heroBg, label: "Interactive Dashboard View", views: resource.views },
-    { src: heroBg, label: "Data Analytics Panel", views: Math.floor(resource.views * 0.85) },
-    { src: heroBg, label: "API Integration Topology", views: Math.floor(resource.views * 0.7) },
-    { src: heroBg, label: "Real-time Monitoring", views: Math.floor(resource.views * 0.6) },
+    { src: heroBg, label: "Interactive Dashboard View", views: resource.views || 0 },
+    { src: heroBg, label: "Data Analytics Panel", views: Math.floor((resource.views || 0) * 0.85) },
+    { src: heroBg, label: "API Integration Topology", views: Math.floor((resource.views || 0) * 0.7) },
+    { src: heroBg, label: "Real-time Monitoring", views: Math.floor((resource.views || 0) * 0.6) },
   ];
 
   return (
@@ -681,7 +688,7 @@ export default function ResourceDetail() {
 
                 {/* Reviews List */}
                 <div className="space-y-8 mt-12">
-                  {resource.reviews?.map((review) => (
+                  {displayReviews.map((review) => (
                     <div key={review.id} className="space-y-3">
                       <div className="flex justify-between items-start">
                         <div className="flex items-center gap-3">
@@ -711,7 +718,7 @@ export default function ResourceDetail() {
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
                               <Reply className="h-3 w-3 text-indigo-500 rotate-180" />
-                              <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">{resource.provider}</span>
+                              <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">{providerName}</span>
                               <Badge className="bg-indigo-100 text-indigo-700 text-[8px] h-3.5 px-1 dark:bg-indigo-900/40 dark:text-indigo-300">Publisher</Badge>
                               <span className="text-[10px] text-slate-400">{review.replyDate || '1 day ago'}</span>
                             </div>
