@@ -634,24 +634,25 @@ export default function ResourceDetail() {
 
                 {/* Write Review Section */}
                 <div className="p-6 rounded-[24px] bg-slate-50/80 border border-slate-200 shadow-sm dark:bg-slate-900/40 dark:border-slate-800">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400">
-                      <User className="h-5 w-5" />
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400">
+                        <User className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-slate-900 dark:text-white text-base">Write a Review</h4>
+                        <p className="text-xs text-slate-500">Share your experience with this resource</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-slate-900 dark:text-white text-base">Write a Review</h4>
-                      <p className="text-xs text-slate-500">Share your experience with this resource</p>
+                    <div className="flex flex-col items-end gap-1">
+                      <div className="flex items-center gap-1 text-slate-200">
+                        {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-5 w-5 hover:text-amber-400 cursor-pointer transition-colors" />)}
+                      </div>
+                      <span className="text-[10px] text-slate-400 font-medium mr-1">Click to rate</span>
                     </div>
                   </div>
                   
                   <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-1 text-slate-200">
-                        {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-5 w-5 hover:text-amber-400 cursor-pointer transition-colors" />)}
-                      </div>
-                      <span className="text-xs text-slate-400 font-medium">Click to rate</span>
-                    </div>
-                    
                     <Textarea 
                       placeholder="Write your review here..." 
                       className="min-h-[100px] rounded-xl border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-800 dark:bg-slate-950 text-sm" 
