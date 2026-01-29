@@ -1604,7 +1604,7 @@ export default function MyPage() {
                   <p className="text-muted-foreground text-sm">{t("Manage your hosted data services and view request status.", "호스팅 데이터 서비스 및 요청 상태를 관리하세요.")}</p>
                 </div>
 
-                <Tabs defaultValue="request" className="w-full">
+                <Tabs defaultValue="approved" className="w-full">
                   <div className="border-b border-slate-200 dark:border-slate-800 mb-6">
                     <TabsList className="w-full justify-start h-auto p-0 bg-transparent rounded-none">
                       <TabsTrigger 
