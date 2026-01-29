@@ -46,89 +46,98 @@ export function ContractDetailsDialog({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0 gap-0">
-        <DialogHeader className="p-6 pb-2">
-          <div className="flex items-center justify-between px-2">
-            <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-              Manage <span className="text-indigo-600">{resourceName}</span>
+        <DialogHeader className="p-8 pb-4">
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-3xl font-bold tracking-tight text-[#1a1c2d] flex items-center gap-2">
+              Manage <span className="text-[#5542f6]">{resourceName}</span>
             </DialogTitle>
-            <div className="bg-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider">
-              <ShieldCheck className="h-3 w-3" />
+            <div className="bg-[#5542f6] text-white text-[11px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 uppercase tracking-wider">
+              <ShieldCheck className="h-3.5 w-3.5" />
               Hosted Service
             </div>
           </div>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto">
-          <div className="p-8 space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-5 flex items-start gap-4 mb-8">
-              <div className="h-10 w-10 rounded-xl bg-white flex items-center justify-center text-blue-600 shadow-sm border border-blue-50 shrink-0">
+        <div className="flex-1 overflow-y-auto px-8">
+          <div className="space-y-6 pb-8">
+            <div className="bg-[#f0f7ff] border border-[#e1effe] rounded-xl p-4 flex items-start gap-4">
+              <div className="h-5 w-5 mt-0.5 text-[#1c64f2] shrink-0">
                 <Info className="h-5 w-5" />
               </div>
               <div className="space-y-1">
-                <h4 className="font-bold text-blue-900 text-sm">Under Review</h4>
-                <p className="text-xs text-blue-700/70 leading-relaxed">
+                <h4 className="font-bold text-[#1e429f] text-[15px]">Under Review</h4>
+                <p className="text-[14px] text-[#1e429f] leading-normal">
                   This request is currently being verified by our team. You cannot make changes at this time.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 pb-6 border-b border-slate-100">
-              <div className="h-12 w-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm border border-indigo-100">
-                <FileText className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-bold text-xl text-slate-900">Basic Information</h3>
-                <p className="text-sm text-slate-500">Tell us about your AI Agent</p>
+            <div className="bg-[#f0f7ff] border border-[#e1effe] rounded-xl p-5 flex items-start gap-4">
+              <div className="space-y-1">
+                <h4 className="font-bold text-[#1e429f] text-[15px]">Info</h4>
+                <p className="text-[14px] text-[#1e429f] leading-normal opacity-80">
+                  Changes to basic information will require re-approval from the administration team.
+                </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-6">
+            <div className="flex items-center gap-3 pt-4">
+              <div className="h-8 w-8 rounded-full bg-[#e1effe] flex items-center justify-center text-[#1c64f2] font-bold text-sm">
+                1
+              </div>
+              <div>
+                <h3 className="font-bold text-xl text-[#1a1c2d]">Basic Information</h3>
+                <p className="text-[14px] text-slate-500">Tell us about your AI Agent</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 pt-2">
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <Label className="text-sm font-bold text-slate-700">AI Agent Name <span className="text-red-500">*</span></Label>
-                  <span className="text-[10px] text-slate-400">30/35</span>
+                  <Label className="text-[15px] font-bold text-[#1a1c2d]">AI Agent Name <span className="text-red-500">*</span></Label>
+                  <span className="text-[12px] text-slate-400">30/35</span>
                 </div>
-                <Input value={resourceName} disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
+                <Input value={resourceName} disabled className="bg-white border-slate-200 rounded-xl h-12 text-slate-600 font-medium px-4" />
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <Label className="text-sm font-bold text-slate-700">Founders / Company Name</Label>
-                  <span className="text-[10px] text-slate-400">0/50</span>
+                  <Label className="text-[15px] font-bold text-[#1a1c2d]">Founders / Company Name</Label>
+                  <span className="text-[12px] text-slate-400">0/50</span>
                 </div>
-                <Input placeholder="e.g. OpenAI" disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
+                <Input placeholder="e.g. OpenAI" disabled className="bg-white border-slate-200 rounded-xl h-12 text-slate-600 font-medium px-4" />
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <Label className="text-sm font-bold text-slate-700">Website URL <span className="text-red-500">*</span></Label>
-                  <span className="text-[10px] text-slate-400">0/100</span>
+                  <Label className="text-[15px] font-bold text-[#1a1c2d]">Website URL <span className="text-red-500">*</span></Label>
+                  <span className="text-[12px] text-slate-400">0/100</span>
                 </div>
-                <Input placeholder="https://" disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
+                <Input placeholder="https://" disabled className="bg-white border-slate-200 rounded-xl h-12 text-slate-600 font-medium px-4" />
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <Label className="text-sm font-bold text-slate-700">Affiliate Link</Label>
-                  <span className="text-[10px] text-slate-400">0/300</span>
+                  <Label className="text-[15px] font-bold text-[#1a1c2d]">Affiliate Link</Label>
+                  <span className="text-[12px] text-slate-400">0/300</span>
                 </div>
-                <Input placeholder="https://" disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
+                <Input placeholder="https://" disabled className="bg-white border-slate-200 rounded-xl h-12 text-slate-600 font-medium px-4" />
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <Label className="text-sm font-bold text-slate-700">Demo URL</Label>
-                  <span className="text-[10px] text-slate-400">0/200</span>
+                  <Label className="text-[15px] font-bold text-[#1a1c2d]">Demo URL</Label>
+                  <span className="text-[12px] text-slate-400">0/200</span>
                 </div>
-                <Input placeholder="https://youtube.com/..." disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
+                <Input placeholder="https://youtube.com/..." disabled className="bg-white border-slate-200 rounded-xl h-12 text-slate-600 font-medium px-4" />
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <Label className="text-sm font-bold text-slate-700">Documentation URL</Label>
-                  <span className="text-[10px] text-slate-400">0/200</span>
+                  <Label className="text-[15px] font-bold text-[#1a1c2d]">Documentation URL</Label>
+                  <span className="text-[12px] text-slate-400">0/200</span>
                 </div>
-                <Input placeholder="https://docs..." disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
+                <Input placeholder="https://docs..." disabled className="bg-white border-slate-200 rounded-xl h-12 text-slate-600 font-medium px-4" />
               </div>
             </div>
           </div>
