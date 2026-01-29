@@ -1928,6 +1928,111 @@ export default function MyPage() {
                     <TabsTrigger value="pricing" className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Pricing</TabsTrigger>
                   </TabsList>
 
+                  <TabsContent value="overview" className="mt-0">
+                    <ScrollArea className="h-[60vh]">
+                      <div className="p-8 space-y-8">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900 rounded-lg p-4 mb-6">
+                          <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-300 mb-1">Info</h4>
+                          <p className="text-sm text-blue-700 dark:text-blue-400">
+                            Changes to basic information will require re-approval from the administration team.
+                          </p>
+                        </div>
+
+                        <div className="space-y-6">
+                          <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                            <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold text-sm">1</div>
+                            <div>
+                              <h2 className="text-lg font-bold">Basic Information</h2>
+                              <p className="text-xs text-muted-foreground">Essential details about your resource</p>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                              <Label className="font-semibold text-sm">Title</Label>
+                              <Input value={editingPlatform?.title || ""} placeholder="Resource title" />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="font-semibold text-sm">Provider</Label>
+                              <Input value={editingPlatform?.provider || ""} placeholder="Provider name" />
+                            </div>
+                            <div className="space-y-2 md:col-span-2">
+                              <Label className="font-semibold text-sm">Tagline</Label>
+                              <Input value={editingPlatform?.tagline || ""} placeholder="Short description" />
+                            </div>
+                            <div className="space-y-2 md:col-span-2">
+                              <Label className="font-semibold text-sm">Description</Label>
+                              <Textarea value={editingPlatform?.description || ""} placeholder="Detailed description" className="min-h-[100px]" />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="space-y-6">
+                          <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                            <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold text-sm">2</div>
+                            <div>
+                              <h2 className="text-lg font-bold">Contact & Links</h2>
+                              <p className="text-xs text-muted-foreground">How users can reach you</p>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                              <Label className="font-semibold text-sm">Website URL</Label>
+                              <Input value={editingPlatform?.websiteUrl || ""} placeholder="https://example.com" />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="font-semibold text-sm">Contact Email</Label>
+                              <Input value={editingPlatform?.contactEmail || ""} placeholder="contact@example.com" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
+
+                  <TabsContent value="documentation" className="mt-0">
+                    <ScrollArea className="h-[60vh]">
+                      <div className="p-8 space-y-8">
+                        <div className="space-y-6">
+                          <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                            <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold text-sm">
+                              <FileText className="h-4 w-4" />
+                            </div>
+                            <div>
+                              <h2 className="text-lg font-bold">Documentation</h2>
+                              <p className="text-xs text-muted-foreground">API documentation and usage guides</p>
+                            </div>
+                          </div>
+
+                          <div className="space-y-4">
+                            <div className="space-y-2">
+                              <Label className="font-semibold text-sm">Documentation URL</Label>
+                              <Input value={editingPlatform?.docsUrl || ""} placeholder="https://docs.example.com" />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="font-semibold text-sm">Demo URL</Label>
+                              <Input value={editingPlatform?.demoUrl || ""} placeholder="https://demo.example.com" />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="font-semibold text-sm">Documentation Content</Label>
+                              <Textarea placeholder="Enter your API documentation, usage guides, and examples..." className="min-h-[200px]" />
+                            </div>
+                          </div>
+
+                          <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                              For complete API reference, guides, and tutorials, please visit our documentation portal.
+                            </p>
+                            <Button variant="outline" className="gap-2" onClick={() => window.open(editingPlatform?.docsUrl || "#", "_blank")}>
+                              View Documentation <ArrowRight className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
+
                   <TabsContent value="pricing" className="mt-0">
                     <ScrollArea className="h-[60vh]">
                       <div className="p-8 space-y-8">
