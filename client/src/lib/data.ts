@@ -126,24 +126,6 @@ export const RESOURCES: Resource[] = [
       "경쟁사 분석",
       "위기 관리"
     ],
-    pricingPlans: [
-      {
-        name: "Starter",
-        price: "$29",
-        features: ["1,000 Requests", "Standard Support", "Basic Analytics"],
-      },
-      {
-        name: "Pro",
-        price: "$78",
-        features: ["50,000 Requests", "Priority Support", "Advanced Analytics", "SLA Guarantee"],
-        recommended: true,
-      },
-      {
-        name: "Enterprise",
-        price: "$127",
-        features: ["Unlimited Requests", "Priority Support", "Advanced Analytics", "SLA Guarantee", "Custom Integration"],
-      }
-    ],
     reviews: [
       {
         id: "r1",
