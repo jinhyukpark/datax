@@ -7,16 +7,17 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { ShieldCheck, Info } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
+import { GeneralRequestDetails } from "./general-request-details";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ContractDetailsDialogProps {
   isOpen: boolean;
   onClose: () => void;
   resourceName: string;
   resourceType: string;
+  data?: any;
 }
 
 export function ContractDetailsDialog({
@@ -24,13 +25,14 @@ export function ContractDetailsDialog({
   onClose,
   resourceName,
   resourceType,
+  data,
 }: ContractDetailsDialogProps) {
   const { t } = useLanguage();
 
   const content = (
-    <div className="flex-1 overflow-y-auto">
-      <div className="p-8 space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-300">
-        <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-5 flex items-start gap-4 mb-8">
+    <div className="flex-1 overflow-hidden flex flex-col">
+      <div className="p-8 pb-4 space-y-6">
+        <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-5 flex items-start gap-4">
           <div className="h-10 w-10 rounded-xl bg-white flex items-center justify-center text-blue-600 shadow-sm border border-blue-50 shrink-0">
             <Info className="h-5 w-5" />
           </div>
@@ -42,7 +44,7 @@ export function ContractDetailsDialog({
           </div>
         </div>
 
-        <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 flex items-start gap-4 mb-8">
+        <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 flex items-start gap-4">
           <div className="space-y-1">
             <h4 className="font-bold text-slate-900 text-sm">Info</h4>
             <p className="text-xs text-indigo-600 leading-relaxed">
@@ -50,67 +52,11 @@ export function ContractDetailsDialog({
             </p>
           </div>
         </div>
-
-        <div className="flex items-center gap-4 pb-6 border-b border-slate-100">
-          <div className="h-10 w-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold border border-indigo-100">
-            1
-          </div>
-          <div>
-            <h3 className="font-bold text-lg text-slate-900">Basic Information</h3>
-            <p className="text-xs text-slate-500">Tell us about your AI Agent</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-6">
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <Label className="text-sm font-bold text-slate-700">AI Agent Name <span className="text-red-500">*</span></Label>
-              <span className="text-[10px] text-slate-400">30/35</span>
-            </div>
-            <Input value={resourceName} disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <Label className="text-sm font-bold text-slate-700">Founders / Company Name</Label>
-              <span className="text-[10px] text-slate-400">0/50</span>
-            </div>
-            <Input placeholder="e.g. OpenAI" disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <Label className="text-sm font-bold text-slate-700">Website URL <span className="text-red-500">*</span></Label>
-              <span className="text-[10px] text-slate-400">0/100</span>
-            </div>
-            <Input placeholder="https://" disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <Label className="text-sm font-bold text-slate-700">Affiliate Link</Label>
-              <span className="text-[10px] text-slate-400">0/300</span>
-            </div>
-            <Input placeholder="https://" disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <Label className="text-sm font-bold text-slate-700">Demo URL</Label>
-              <span className="text-[10px] text-slate-400">0/200</span>
-            </div>
-            <Input placeholder="https://youtube.com/..." disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <Label className="text-sm font-bold text-slate-700">Documentation URL</Label>
-              <span className="text-[10px] text-slate-400">0/200</span>
-            </div>
-            <Input placeholder="https://docs..." disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
-          </div>
-        </div>
       </div>
+
+      <ScrollArea className="flex-1 px-8 pb-8">
+        <GeneralRequestDetails data={data || { title: resourceName }} status="verifying" />
+      </ScrollArea>
     </div>
   );
 

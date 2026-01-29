@@ -1851,6 +1851,7 @@ export default function MyPage() {
                                        onClose={() => {}} 
                                        resourceName={item.title} 
                                        resourceType="Hosted" 
+                                       data={item}
                                      />
                                   </DialogContent>
                                 </Dialog>

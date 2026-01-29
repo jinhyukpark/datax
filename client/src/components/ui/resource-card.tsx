@@ -76,12 +76,10 @@ export function ResourceCard({ resource }: ResourceCardProps) {
             </Badge>
           </div>
         </div>
-        <Link href={`/resource/${resource.id}`}>
-          <a className="mt-4 block">
-            <h3 className="font-heading text-lg font-semibold leading-tight text-foreground group-hover:text-primary line-clamp-2">
-              {language === '한국어' && resource.titleKo ? resource.titleKo : resource.title}
-            </h3>
-          </a>
+        <Link href={`/resource/${resource.id}`} className="mt-4 block">
+          <h3 className="font-heading text-lg font-semibold leading-tight text-foreground group-hover:text-primary line-clamp-2">
+            {language === '한국어' && resource.titleKo ? resource.titleKo : resource.title}
+          </h3>
         </Link>
       </CardHeader>
       <CardContent className="flex-1 px-5 pb-2 pt-1">
