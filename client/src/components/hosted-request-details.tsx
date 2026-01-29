@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/lib/language-context";
-import { ShieldCheck, ArrowRight, Loader2, Save, Info, AlertCircle, CheckCircle2, Upload, Paperclip, Plus, Trash2, Zap, Star, Check, Terminal, Server, FileText } from "lucide-react";
+import { ShieldCheck, ArrowRight, Loader2, Save, Info, AlertCircle, CheckCircle2, Upload, Paperclip, Plus, Trash2, Zap, Star, Check, Terminal, Server, FileText, Shield, Calendar, XCircle, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useState } from "react";
@@ -69,6 +69,81 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
     refundPolicy: data.refundPolicy || "If you are not satisfied with our service, you can request a full refund within 14 days of your purchase. Please contact support for assistance.",
     termsOfService: data.termsOfService || "By using this service, you agree to our terms and conditions. We reserve the right to modify these terms at any time."
   });
+
+  // Terms & Policies State
+  const [termsLastUpdated, setTermsLastUpdated] = useState("June 2025");
+  const [termsDescription, setTermsDescription] = useState("By using this service, you agree to our terms and conditions. We reserve the right to modify these terms at any time. This agreement outlines the terms and conditions for the provision of hosted data services on the Illunex Platform.");
+  const [providedServices, setProvidedServices] = useState([
+    "Real-time sentiment analysis",
+    "Multi-platform data aggregation",
+    "Customizable reporting dashboards",
+    "Trend forecasting algorithms",
+    "API integration support"
+  ]);
+  const [servicePeriod, setServicePeriod] = useState([
+    "Monthly subscription with automatic renewal",
+    "Service available immediately upon payment"
+  ]);
+  const [licensePricing, setLicensePricing] = useState([
+    "Commercial License: Business use permitted",
+    "Monthly Fee: $78.00 (Billed monthly)"
+  ]);
+  const [refundPolicyItems, setRefundPolicyItems] = useState([
+    "Full refund within 7 days if service not accessed",
+    "Pro-rated refund available for annual plans"
+  ]);
+
+  // Terms & Policies Functions
+  const addTermItem = (category: "providedServices" | "servicePeriod" | "licensePricing" | "refundPolicyItems") => {
+    switch (category) {
+      case "providedServices":
+        setProvidedServices([...providedServices, ""]);
+        break;
+      case "servicePeriod":
+        setServicePeriod([...servicePeriod, ""]);
+        break;
+      case "licensePricing":
+        setLicensePricing([...licensePricing, ""]);
+        break;
+      case "refundPolicyItems":
+        setRefundPolicyItems([...refundPolicyItems, ""]);
+        break;
+    }
+  };
+
+  const updateTermItem = (category: "providedServices" | "servicePeriod" | "licensePricing" | "refundPolicyItems", index: number, value: string) => {
+    switch (category) {
+      case "providedServices":
+        setProvidedServices(providedServices.map((item, i) => i === index ? value : item));
+        break;
+      case "servicePeriod":
+        setServicePeriod(servicePeriod.map((item, i) => i === index ? value : item));
+        break;
+      case "licensePricing":
+        setLicensePricing(licensePricing.map((item, i) => i === index ? value : item));
+        break;
+      case "refundPolicyItems":
+        setRefundPolicyItems(refundPolicyItems.map((item, i) => i === index ? value : item));
+        break;
+    }
+  };
+
+  const removeTermItem = (category: "providedServices" | "servicePeriod" | "licensePricing" | "refundPolicyItems", index: number) => {
+    switch (category) {
+      case "providedServices":
+        setProvidedServices(providedServices.filter((_, i) => i !== index));
+        break;
+      case "servicePeriod":
+        setServicePeriod(servicePeriod.filter((_, i) => i !== index));
+        break;
+      case "licensePricing":
+        setLicensePricing(licensePricing.filter((_, i) => i !== index));
+        break;
+      case "refundPolicyItems":
+        setRefundPolicyItems(refundPolicyItems.filter((_, i) => i !== index));
+        break;
+    }
+  };
 
   const handleChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -632,53 +707,194 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
         </TabsContent>
 
         {/* Terms & Policies Tab */}
-        <TabsContent value="terms" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
-          <div className="space-y-6">
-            <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-              <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold text-sm">
-                <FileText className="h-4 w-4" />
+        <TabsContent value="terms" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="rounded-2xl bg-gradient-to-br from-indigo-50 to-slate-50 dark:from-indigo-950/30 dark:to-slate-900/50 p-6 border border-indigo-100 dark:border-indigo-900">
+            <div className="flex items-start gap-4 mb-4">
+              <div className="h-12 w-12 rounded-xl bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+                <Shield className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
               </div>
-              <div>
-                <h2 className="text-lg font-bold">Terms & Policies</h2>
-                <p className="text-xs text-muted-foreground">Define your service terms and refund policies</p>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Detailed Terms of Service</h3>
+                <div className="flex items-center gap-2 mt-1">
+                  <Label className="text-xs text-slate-500">Last updated:</Label>
+                  <Input 
+                    value={termsLastUpdated} 
+                    onChange={(e) => setTermsLastUpdated(e.target.value)}
+                    className="h-7 w-32 text-xs border-indigo-200 dark:border-indigo-800 bg-white dark:bg-slate-900"
+                  />
+                </div>
               </div>
             </div>
+            <Textarea 
+              value={termsDescription}
+              onChange={(e) => setTermsDescription(e.target.value)}
+              className="min-h-[80px] bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-700 text-sm italic text-slate-600 dark:text-slate-400 rounded-xl"
+              placeholder="Enter terms description..."
+            />
+          </div>
 
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <Label className="font-semibold text-sm">Terms of Service</Label>
-                <div className="text-xs text-muted-foreground mb-2">
-                  Please describe the terms and conditions for using your service.
-                </div>
-                <Textarea 
-                  value={detailsData.termsOfService} 
-                  onChange={(e) => handleDetailsChange('termsOfService', e.target.value)} 
-                  placeholder="Enter your terms of service here..." 
-                  className="min-h-[200px] font-normal leading-relaxed" 
-                />
+          <div className="text-center">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Service Guidelines</span>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-6 bg-white dark:bg-slate-900">
+            <div className="flex items-start gap-4 mb-4">
+              <div className="h-10 w-10 rounded-xl bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center shrink-0">
+                <Zap className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
               </div>
-
-              <div className="space-y-3">
-                <Label className="font-semibold text-sm">Refund Policy</Label>
-                <div className="text-xs text-muted-foreground mb-2">
-                  Explain your refund policy for users who purchase your service.
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-slate-900 dark:text-slate-100">Provided Services</h4>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => addTermItem("providedServices")}
+                    className="text-indigo-600 hover:text-indigo-700 h-8"
+                  >
+                    <Plus className="h-4 w-4 mr-1" /> Add
+                  </Button>
                 </div>
-                <Textarea 
-                  value={detailsData.refundPolicy} 
-                  onChange={(e) => handleDetailsChange('refundPolicy', e.target.value)} 
-                  placeholder="Enter your refund policy here..." 
-                  className="min-h-[150px] font-normal leading-relaxed" 
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
+                  {providedServices.map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-2 group">
+                      <div className="h-2 w-2 rounded-full bg-indigo-400 shrink-0" />
+                      <Input 
+                        value={item}
+                        onChange={(e) => updateTermItem("providedServices", idx, e.target.value)}
+                        className="h-8 text-sm border-slate-100 dark:border-slate-700 flex-1"
+                        placeholder="Enter service..."
+                      />
+                      <button 
+                        onClick={() => removeTermItem("providedServices", idx)}
+                        className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all"
+                      >
+                        <XCircle className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            
-            <Alert className="bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800">
-              <Info className="h-4 w-4 text-slate-500" />
-              <AlertTitle className="text-slate-700 dark:text-slate-300">Note</AlertTitle>
-              <AlertDescription className="text-slate-600 dark:text-slate-400 text-xs">
-                These terms will be displayed to users before they subscribe to your service. Ensure they comply with platform guidelines.
-              </AlertDescription>
-            </Alert>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-6 bg-white dark:bg-slate-900">
+            <div className="flex items-start gap-4 mb-4">
+              <div className="h-10 w-10 rounded-xl bg-cyan-100 dark:bg-cyan-900 flex items-center justify-center shrink-0">
+                <Calendar className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-slate-900 dark:text-slate-100">Service Period</h4>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => addTermItem("servicePeriod")}
+                    className="text-cyan-600 hover:text-cyan-700 h-8"
+                  >
+                    <Plus className="h-4 w-4 mr-1" /> Add
+                  </Button>
+                </div>
+                <div className="space-y-2 mt-3">
+                  {servicePeriod.map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-2 group">
+                      <div className="h-2 w-2 rounded-full bg-cyan-400 shrink-0" />
+                      <Input 
+                        value={item}
+                        onChange={(e) => updateTermItem("servicePeriod", idx, e.target.value)}
+                        className="h-8 text-sm border-slate-100 dark:border-slate-700 flex-1"
+                        placeholder="Enter period info..."
+                      />
+                      <button 
+                        onClick={() => removeTermItem("servicePeriod", idx)}
+                        className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all"
+                      >
+                        <XCircle className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border-2 border-amber-200 dark:border-amber-800 p-6 bg-amber-50/30 dark:bg-amber-950/20">
+            <div className="flex items-start gap-4 mb-4">
+              <div className="h-10 w-10 rounded-xl bg-amber-100 dark:bg-amber-900 flex items-center justify-center shrink-0">
+                <CreditCard className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-slate-900 dark:text-slate-100">License & Pricing</h4>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => addTermItem("licensePricing")}
+                    className="text-amber-600 hover:text-amber-700 h-8"
+                  >
+                    <Plus className="h-4 w-4 mr-1" /> Add
+                  </Button>
+                </div>
+                <div className="space-y-2 mt-3">
+                  {licensePricing.map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-2 group">
+                      <div className="h-2 w-2 rounded-full bg-amber-400 shrink-0" />
+                      <Input 
+                        value={item}
+                        onChange={(e) => updateTermItem("licensePricing", idx, e.target.value)}
+                        className="h-8 text-sm border-amber-200 dark:border-amber-800 bg-white dark:bg-slate-900 flex-1"
+                        placeholder="Enter license/pricing info..."
+                      />
+                      <button 
+                        onClick={() => removeTermItem("licensePricing", idx)}
+                        className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all"
+                      >
+                        <XCircle className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-6 bg-white dark:bg-slate-900">
+            <div className="flex items-start gap-4 mb-4">
+              <div className="h-10 w-10 rounded-xl bg-green-100 dark:bg-green-900 flex items-center justify-center shrink-0">
+                <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-slate-900 dark:text-slate-100">Refund Policy</h4>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => addTermItem("refundPolicyItems")}
+                    className="text-green-600 hover:text-green-700 h-8"
+                  >
+                    <Plus className="h-4 w-4 mr-1" /> Add
+                  </Button>
+                </div>
+                <div className="space-y-2 mt-3">
+                  {refundPolicyItems.map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-2 group">
+                      <div className="h-2 w-2 rounded-full bg-green-400 shrink-0" />
+                      <Input 
+                        value={item}
+                        onChange={(e) => updateTermItem("refundPolicyItems", idx, e.target.value)}
+                        className="h-8 text-sm border-slate-100 dark:border-slate-700 flex-1"
+                        placeholder="Enter refund policy..."
+                      />
+                      <button 
+                        onClick={() => removeTermItem("refundPolicyItems", idx)}
+                        className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all"
+                      >
+                        <XCircle className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </TabsContent>
       </Tabs>
