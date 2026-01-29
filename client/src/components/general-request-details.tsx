@@ -51,10 +51,10 @@ export function GeneralRequestDetails({ data, status, serviceType }: GeneralRequ
   ];
 
   return (
-    <div className="flex flex-col h-full max-h-[85vh]">
-      {/* Service Type Header - Fixed at top */}
+    <div className="space-y-8">
+      {/* Service Type Header */}
       {serviceType && (
-        <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-100 dark:border-slate-800 shrink-0 pr-8">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
           <h2 className="text-xl font-bold">
             {t("Request Details", "신청 상세")}
           </h2>
@@ -76,8 +76,6 @@ export function GeneralRequestDetails({ data, status, serviceType }: GeneralRequ
         </div>
       )}
 
-      {/* Scrollable Content Area */}
-      <div className="flex-1 overflow-y-auto space-y-8 pr-2">
       {/* Section 1: Basic Information */}
       <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
         <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
@@ -398,7 +396,6 @@ export function GeneralRequestDetails({ data, status, serviceType }: GeneralRequ
           </Button>
         </div>
       )}
-      </div>
     </div>
   );
 }
