@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { RESOURCES } from "@/lib/data";
-import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star, Activity, FileText, Database, Zap, Power, Plus } from "lucide-react";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star, Activity, FileText, Database, Zap, Power, Plus, ShieldCheck, Link2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
@@ -1472,8 +1472,19 @@ export default function MyPage() {
                                       {t("View Details", "상세 보기")}
                                     </Button>
                                   </DialogTrigger>
-                                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                                    <GeneralRequestDetails data={item} status={item.step === 1 ? "submitted" : undefined} serviceType="linked" />
+                                  <DialogContent className="max-w-3xl max-h-[90vh] p-0 flex flex-col overflow-hidden">
+                                    <div className="flex items-center justify-between px-6 py-4 border-b bg-white dark:bg-slate-950 shrink-0">
+                                      <DialogTitle className="text-xl font-bold">
+                                        {t("Request Details", "신청 상세")}
+                                      </DialogTitle>
+                                      <div className="bg-emerald-600 text-white text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 uppercase tracking-wider mr-6">
+                                        <Link2 className="h-3 w-3" />
+                                        {t("Linked Service", "연동 서비스")}
+                                      </div>
+                                    </div>
+                                    <div className="flex-1 overflow-y-auto p-6">
+                                      <GeneralRequestDetails data={item} status={item.step === 1 ? "submitted" : undefined} />
+                                    </div>
                                   </DialogContent>
                                 </Dialog>
 
@@ -1845,8 +1856,19 @@ export default function MyPage() {
                                       {t("View Details", "상세 보기")}
                                     </Button>
                                   </DialogTrigger>
-                                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                                    <GeneralRequestDetails data={item} status={item.step === 1 ? "submitted" : undefined} serviceType="hosted" />
+                                  <DialogContent className="max-w-3xl max-h-[90vh] p-0 flex flex-col overflow-hidden">
+                                    <div className="flex items-center justify-between px-6 py-4 border-b bg-white dark:bg-slate-950 shrink-0">
+                                      <DialogTitle className="text-xl font-bold">
+                                        {t("Request Details", "신청 상세")}
+                                      </DialogTitle>
+                                      <div className="bg-indigo-600 text-white text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 uppercase tracking-wider mr-6">
+                                        <ShieldCheck className="h-3 w-3" />
+                                        {t("Hosted Service", "호스티드 서비스")}
+                                      </div>
+                                    </div>
+                                    <div className="flex-1 overflow-y-auto p-6">
+                                      <GeneralRequestDetails data={item} status={item.step === 1 ? "submitted" : undefined} />
+                                    </div>
                                   </DialogContent>
                                 </Dialog>
 
