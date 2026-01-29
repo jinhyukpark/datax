@@ -712,10 +712,12 @@ export default function ResourceDetail() {
                         </div>
                       )}
 
-                      <div className="flex items-center gap-1.5 group cursor-pointer w-fit">
-                        <Reply className="h-3 w-3 text-slate-400 group-hover:text-indigo-600 transition-colors" />
-                        <span className="text-[11px] font-semibold text-slate-400 group-hover:text-indigo-600 transition-colors">Reply</span>
-                      </div>
+                      {!review.reply && (
+                        <div className="flex items-center gap-1.5 group cursor-pointer w-fit">
+                          <Reply className="h-3 w-3 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+                          <span className="text-[11px] font-semibold text-slate-400 group-hover:text-indigo-600 transition-colors">Reply</span>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
