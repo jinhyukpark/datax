@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { ShieldCheck, Info, Zap, Calendar, CreditCard, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, Info } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 
 interface ContractDetailsDialogProps {
@@ -42,115 +42,72 @@ export function ContractDetailsDialog({
           </div>
         </div>
 
-        {/* Terms of Service Section (Linked Service Request Style) */}
-        <div className="space-y-6">
-          <div className="p-8 rounded-[24px] bg-slate-50/80 border border-slate-200 shadow-sm relative overflow-hidden">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-10 w-10 rounded-xl bg-white flex items-center justify-center text-indigo-600 shadow-sm border border-slate-100">
-                <ShieldCheck className="h-5 w-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-slate-900 text-lg">Detailed Terms of Service</h4>
-                <p className="text-xs text-slate-500 font-medium">Last updated: June 2025</p>
-              </div>
+        <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 flex items-start gap-4 mb-8">
+          <div className="space-y-1">
+            <h4 className="font-bold text-slate-900 text-sm">Info</h4>
+            <p className="text-xs text-indigo-600 leading-relaxed">
+              Changes to basic information will require re-approval from the administration team.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4 pb-6 border-b border-slate-100">
+          <div className="h-10 w-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold border border-indigo-100">
+            1
+          </div>
+          <div>
+            <h3 className="font-bold text-lg text-slate-900">Basic Information</h3>
+            <p className="text-xs text-slate-500">Tell us about your AI Agent</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6">
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <Label className="text-sm font-bold text-slate-700">AI Agent Name <span className="text-red-500">*</span></Label>
+              <span className="text-[10px] text-slate-400">30/35</span>
             </div>
-            
-            <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-inner">
-              <p className="text-sm text-slate-600 leading-relaxed italic text-center px-4">
-                "By using this service, you agree to our terms and conditions. We reserve the right to modify these terms at any time. This agreement outlines the terms and conditions for the provision of hosted data services on the Illunex Platform."
-              </p>
-            </div>
+            <Input value={resourceName} disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
           </div>
 
-          <div className="relative py-4">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-slate-100"></span>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <Label className="text-sm font-bold text-slate-700">Founders / Company Name</Label>
+              <span className="text-[10px] text-slate-400">0/50</span>
             </div>
-            <div className="relative flex justify-center text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 bg-white px-4 mx-auto w-fit">
-              Service Guidelines
-            </div>
+            <Input placeholder="e.g. OpenAI" disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
           </div>
 
-          <div className="grid grid-cols-1 gap-4">
-            {/* Provided Services */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-start gap-4 transition-all hover:border-indigo-100">
-              <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
-                <Zap className="h-5 w-5" />
-              </div>
-              <div className="space-y-3 flex-1">
-                <h5 className="font-bold text-slate-900 text-sm">Provided Services</h5>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  <div className="flex items-center gap-2 text-xs text-slate-600">
-                    <div className="h-1 w-1 rounded-full bg-indigo-500" />
-                    Enterprise-grade data analysis
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-600">
-                    <div className="h-1 w-1 rounded-full bg-indigo-500" />
-                    REST API access
-                  </div>
-                </div>
-              </div>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <Label className="text-sm font-bold text-slate-700">Website URL <span className="text-red-500">*</span></Label>
+              <span className="text-[10px] text-slate-400">0/100</span>
             </div>
+            <Input placeholder="https://" disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
+          </div>
 
-            {/* Service Period */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-start gap-4 transition-all hover:border-indigo-100">
-              <div className="h-10 w-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600 shrink-0">
-                <Calendar className="h-5 w-5" />
-              </div>
-              <div className="space-y-3 flex-1">
-                <h5 className="font-bold text-slate-900 text-sm">Service Period</h5>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-xs text-slate-600">
-                    <div className="h-1 w-1 rounded-full bg-indigo-500" />
-                    Monthly subscription with automatic renewal
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-600">
-                    <div className="h-1 w-1 rounded-full bg-indigo-500" />
-                    Service available immediately upon payment
-                  </div>
-                </div>
-              </div>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <Label className="text-sm font-bold text-slate-700">Affiliate Link</Label>
+              <span className="text-[10px] text-slate-400">0/300</span>
             </div>
+            <Input placeholder="https://" disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
+          </div>
 
-            {/* License & Pricing */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-start gap-4 transition-all hover:border-indigo-100">
-              <div className="h-10 w-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 shrink-0">
-                <CreditCard className="h-5 w-5" />
-              </div>
-              <div className="space-y-3 flex-1">
-                <h5 className="font-bold text-slate-900 text-sm">License & Pricing</h5>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-xs text-slate-600">
-                    <div className="h-1 w-1 rounded-full bg-indigo-500" />
-                    Commercial License: Business use permitted
-                  </div>
-                  <div className="flex items-center gap-2 text-xs font-bold text-indigo-600">
-                    <div className="h-1 w-1 rounded-full bg-indigo-500" />
-                    Monthly Fee: $78.00 <span className="text-[10px] text-slate-400 font-normal ml-1">(Billed monthly)</span>
-                  </div>
-                </div>
-              </div>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <Label className="text-sm font-bold text-slate-700">Demo URL</Label>
+              <span className="text-[10px] text-slate-400">0/200</span>
             </div>
+            <Input placeholder="https://youtube.com/..." disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
+          </div>
 
-            {/* Refund Policy */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-start gap-4 transition-all hover:border-indigo-100">
-              <div className="h-10 w-10 rounded-xl bg-green-50 flex items-center justify-center text-green-600 shrink-0">
-                <CheckCircle2 className="h-5 w-5" />
-              </div>
-              <div className="space-y-3 flex-1">
-                <h5 className="font-bold text-slate-900 text-sm">Refund Policy</h5>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-xs text-slate-600">
-                    <div className="h-1 w-1 rounded-full bg-indigo-500" />
-                    Full refund within 7 days if service not accessed
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-600">
-                    <div className="h-1 w-1 rounded-full bg-indigo-500" />
-                    Pro-rated refund available for annual plans
-                  </div>
-                </div>
-              </div>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <Label className="text-sm font-bold text-slate-700">Documentation URL</Label>
+              <span className="text-[10px] text-slate-400">0/200</span>
             </div>
+            <Input placeholder="https://docs..." disabled className="bg-slate-50 border-slate-200 rounded-xl h-11" />
           </div>
         </div>
       </div>
@@ -186,7 +143,7 @@ export function ContractDetailsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0 gap-0 my-8">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0 gap-0">
         <DialogHeader className="p-6 pb-2">
           <div className="flex items-center justify-between px-2">
             <DialogTitle className="text-2xl font-bold flex items-center gap-2">
