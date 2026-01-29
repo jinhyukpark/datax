@@ -427,6 +427,13 @@ export default function SubmissionManagement() {
     setAlertOpen(true);
   };
 
+  const handleStopService = (serviceId: string) => {
+    setLinkedServices(prev => prev.map(s => 
+      s.id === serviceId ? { ...s, status: "Stopped" } : s
+    ));
+    toast.success("Service stopped successfully");
+  };
+
   const confirmReject = () => {
     if (rejectDialog.id && rejectReason) {
       setAlertConfig({
@@ -801,7 +808,7 @@ export default function SubmissionManagement() {
                       onClick={() => setRejectDialog({ open: true, id: viewDialog.item!.id })}
                       disabled={viewDialog.item.status === 'Rejected'}
                     >
-                      <Reject className="h-4 w-4 mr-2" />
+                      <XCircle className="h-4 w-4 mr-2" />
                       Reject
                     </Button>
                     <Button 
@@ -829,9 +836,10 @@ export default function SubmissionManagement() {
       {/* Contract Dialog (for Active/Stopped services) */}
       {contractDialog.service && (
         <ContractDetailsDialog 
-          open={contractDialog.open} 
-          onOpenChange={(open) => !open && setContractDialog({ open: false, service: null })}
-          service={contractDialog.service}
+          isOpen={contractDialog.open} 
+          onClose={() => setContractDialog({ open: false, service: null })}
+          resourceName={contractDialog.service.title}
+          resourceType={contractDialog.service.type}
         />
       )}
     </AdminLayout>
