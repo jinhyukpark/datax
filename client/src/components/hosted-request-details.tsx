@@ -215,15 +215,9 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
 
   return (
     <div className="flex flex-col h-full overflow-hidden bg-white dark:bg-slate-950">
-      {/* Header Section with Hosted Service Indicator - Fixed */}
-      <div className="flex flex-col items-center justify-center p-6 border-b border-slate-100 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-950 z-10">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold text-center">Manage <span className="text-indigo-600 dark:text-indigo-400">{detailsData.title}</span></h1>
-          <Badge className="bg-indigo-600 hover:bg-indigo-700 text-white border-transparent px-3 py-1 text-xs gap-1.5 shadow-sm">
-            <Server className="h-3.5 w-3.5" />
-            Hosted Service
-          </Badge>
-        </div>
+      {/* Header Section - Fixed */}
+      <div className="px-8 pt-8 pb-4 border-b border-slate-100 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-950 z-10">
+        <h1 className="text-2xl font-bold">Manage <span className="text-indigo-600 dark:text-indigo-400">{detailsData.title}</span></h1>
       </div>
 
       {/* Scrollable Content Area */}
@@ -262,22 +256,22 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
         )}
 
         <Tabs defaultValue={mode === 'details' ? 'overview' : 'overview'} className="w-full">
-          <TabsList className={`grid w-full grid-cols-3 mb-8 h-auto p-0 bg-transparent gap-0`}>
+          <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent gap-8 mb-6">
             <TabsTrigger 
               value="overview" 
-              className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+              className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-sm"
             >
               Overview
             </TabsTrigger>
             <TabsTrigger 
               value="documentation" 
-              className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+              className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-sm"
             >
               Documentation
             </TabsTrigger>
             <TabsTrigger 
               value="terms" 
-              className="rounded-none border-b-2 border-transparent px-2 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-xs sm:text-sm"
+              className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-sm"
             >
               Terms & Policies
             </TabsTrigger>
