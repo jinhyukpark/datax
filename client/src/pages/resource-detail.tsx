@@ -612,16 +612,6 @@ export default function ResourceDetail() {
                   </div>
                 ) : (
                   <div className="space-y-8">
-                    <div className="flex items-center gap-4 pb-2 border-b border-slate-100 dark:border-slate-800">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400">
-                        <Zap className="h-6 w-6" />
-                      </div>
-                      <div>
-                        <h2 className="text-2xl font-bold tracking-tight">{t("Pricing", "요금")}</h2>
-                        <p className="text-sm text-muted-foreground">{t("This resource is free for all users.", "이 리소스는 모든 사용자에게 무료로 제공됩니다.")}</p>
-                      </div>
-                    </div>
-
                     <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center dark:border-slate-800 dark:bg-slate-900/50">
                       <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-50 text-green-600 dark:bg-green-900/20 mb-6">
                         <CheckCircle2 className="h-10 w-10" />
