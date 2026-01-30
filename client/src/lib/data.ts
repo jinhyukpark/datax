@@ -169,6 +169,7 @@ export const RESOURCES: Resource[] = [
     provider: "소셜 트랜드 분석",
     type: "API",
     price: "Paid",
+    priceAmount: "Free",
     tags: ["Analysis", "Consumer", "Sentiment"],
     image: "abstract_pulse_signal_logo_icon",
     publishedDate: "2025-08-05",

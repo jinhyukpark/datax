@@ -205,19 +205,30 @@ export default function ResourceDetail() {
                 <div className="space-y-3">
                   <div className="p-4 rounded-xl bg-indigo-50 border border-indigo-100 dark:bg-indigo-900/20 dark:border-indigo-800">
                     <div className="text-xs font-semibold text-indigo-600/70 dark:text-indigo-400/70 uppercase tracking-wider mb-1">
-                      {t("Subscription", "구독 요금")}
+                      {resource.priceAmount === "Free" ? t("Price", "가격") : t("Subscription", "구독 요금")}
                     </div>
                     <div className="flex items-baseline gap-1">
                       <span className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">
-                        {resource.priceAmount || "$78.00"}
+                        {resource.priceAmount === "Free" ? t("Free", "무료") : (resource.priceAmount || "$78.00")}
                       </span>
-                      <span className="text-sm text-indigo-600/60 dark:text-indigo-400/60">/mo</span>
+                      {resource.priceAmount !== "Free" && (
+                        <span className="text-sm text-indigo-600/60 dark:text-indigo-400/60">/mo</span>
+                      )}
                     </div>
                   </div>
                   <Button size="lg" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
                     <a href={resource.websiteUrl || "#"} target="_blank" rel="noopener noreferrer">
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      {t("Purchase", "구매하기")}
+                      {resource.priceAmount === "Free" ? (
+                        <>
+                          <ExternalLink className="mr-2 h-4 w-4" />
+                          {t("Get Started", "시작하기")}
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart className="mr-2 h-4 w-4" />
+                          {t("Purchase", "구매하기")}
+                        </>
+                      )}
                     </a>
                   </Button>
                 </div>
