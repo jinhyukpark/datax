@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 // Mock Data for Data-X Platform
 
 export type ResourceType = "API" | "Agent" | "Dataset";
-export type PricingType = "Free" | "Paid" | "Freemium";
+export type PricingType = "Free" | "Paid";
 
 export interface Resource {
   id: string;
@@ -199,7 +199,7 @@ export const RESOURCES: Resource[] = [
     descriptionKo: "고급 필터링 옵션을 갖춘 국제 특허에 대한 포괄적인 검색 API",
     provider: "이미지 기반 특허 분석 서비스",
     type: "API",
-    price: "Freemium",
+    price: "Free",
     tags: ["Patent", "Search", "Global"],
     image: "abstract_eye_aperture_logo_icon",
     publishedDate: "2025-09-12",
@@ -349,7 +349,7 @@ export const RESOURCES: Resource[] = [
     descriptionKo: "기술 스타트업 생태계 및 투자 동향에 대한 실시간 모니터링",
     provider: "지역산업 생태계 분석",
     type: "Dataset",
-    price: "Freemium",
+    price: "Free",
     tags: ["Ecosystem", "Tech", "Startup"],
     image: "abstract_globe_earth_logo_icon",
     publishedDate: "2025-11-01",
@@ -545,7 +545,7 @@ export const RESOURCES: Resource[] = [
     descriptionKo: "입고/출고/반품 패턴 및 재고 배치 및 출고 작업 분석 등 물류센터 운영 및 관리 효율화에 활용할 수 있는 가시성 정보를 제공",
     provider: "이커머스 Warehouse&Delivery",
     type: "API",
-    price: "Freemium",
+    price: "Free",
     tags: ["Ecommerce", "Logistics", "Warehouse"],
     image: "abstract_globe_earth_logo_icon",
     publishedDate: "2025-08-15",
@@ -605,7 +605,7 @@ export const RESOURCES: Resource[] = [
     descriptionKo: "M&A 매도기업과 매수기업의 매칭, 통계 및 분석 등의 조회/시각화 서비스",
     provider: "M&A 시장통계분석 및 시각화",
     type: "API",
-    price: "Freemium",
+    price: "Free",
     tags: ["M&A", "Statistics", "Visualization"],
     image: "abstract_shield_security_logo_icon",
     publishedDate: "2025-10-01",
@@ -737,7 +737,7 @@ export const RESOURCES: Resource[] = [
     descriptionKo: "소재데이터의 통합관리를 위한 체계적인 AI플랫폼",
     provider: "한국세라믹기술원 koMap",
     type: "API",
-    price: "Freemium",
+    price: "Free",
     tags: ["Material", "AI", "Platform"],
     image: "abstract_cube_blockchain_logo_icon",
     publishedDate: "2025-10-08",
@@ -887,7 +887,7 @@ export const RESOURCES: Resource[] = [
     descriptionKo: "석유제품가격 조사·공개를 통한 거래의 투명성 및 소비자 가격 안정화를 위해 한국석유공사가 운영하고 있는 유가정보 사이트",
     provider: "오피넷(Opinet)",
     type: "API",
-    price: "Freemium",
+    price: "Free",
     tags: ["Oil", "Price", "Information"],
     image: "abstract_pulse_signal_logo_icon",
     publishedDate: "2025-11-10",

@@ -68,12 +68,12 @@ export function ResourceCard({ resource }: ResourceCardProps) {
               variant="outline"
               className={cn(
                 "font-medium h-fit text-[10px] px-1.5 py-0.5",
-                resource.priceAmount === "Free" || resource.price === "Free" || resource.price === "Freemium"
+                resource.priceAmount === "Free" || resource.price === "Free"
                   ? "border-green-200 bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300"
                   : "border-purple-200 bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-300"
               )}
             >
-              {resource.priceAmount === "Free" || resource.price === "Free" ? "Free" : resource.price === "Freemium" ? "Freemium" : "Paid"}
+              {resource.priceAmount === "Free" || resource.price === "Free" ? "Free" : "Paid"}
             </Badge>
             <Badge 
               variant="outline"
