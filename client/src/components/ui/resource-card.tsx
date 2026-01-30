@@ -59,7 +59,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
               getTypeIcon()
             )}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 flex-wrap justify-end">
             <div className="flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
               <Eye className="h-3 w-3" />
               {resource.views > 1000 ? `${(resource.views / 1000).toFixed(1)}k` : resource.views}
@@ -67,7 +67,18 @@ export function ResourceCard({ resource }: ResourceCardProps) {
             <Badge 
               variant="outline"
               className={cn(
-                "font-medium h-fit",
+                "font-medium h-fit text-[10px] px-1.5 py-0.5",
+                resource.priceAmount === "Free" || resource.price === "Free" || resource.price === "Freemium"
+                  ? "border-green-200 bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-300"
+                  : "border-purple-200 bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-300"
+              )}
+            >
+              {resource.priceAmount === "Free" || resource.price === "Free" ? "Free" : resource.price === "Freemium" ? "Freemium" : "Paid"}
+            </Badge>
+            <Badge 
+              variant="outline"
+              className={cn(
+                "font-medium h-fit text-[10px] px-1.5 py-0.5",
                 resource.price === "Paid" 
                   ? "border-indigo-200 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300"
                   : "border-emerald-200 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
