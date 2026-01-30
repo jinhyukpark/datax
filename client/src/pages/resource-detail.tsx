@@ -304,7 +304,7 @@ export default function ResourceDetail() {
                   value="terms-pricing" 
                   className="rounded-none border-b-2 border-transparent px-6 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400"
                 >
-                  {t("Terms & Policies", "이용약관 및 정책")}
+                  {resource.price === 'Paid' ? t("Terms & Policies", "이용약관 및 정책") : t("Pricing", "요금")}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="reviews" 
