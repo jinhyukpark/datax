@@ -2,7 +2,7 @@ import { Resource } from "@/lib/data";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Eye, Clock, Database, Bot, FileSpreadsheet } from "lucide-react";
+import { ExternalLink, Eye, Clock, Database, Bot, FileSpreadsheet, Server, Link as LinkIcon } from "lucide-react";
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/language-context";
@@ -65,14 +65,19 @@ export function ResourceCard({ resource }: ResourceCardProps) {
               {resource.views > 1000 ? `${(resource.views / 1000).toFixed(1)}k` : resource.views}
             </div>
             <Badge 
-              variant={resource.price === "Free" ? "secondary" : "outline"}
+              variant="outline"
               className={cn(
                 "font-medium h-fit",
-                resource.price === "Paid" && "border-purple-200 bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-300",
-                resource.price === "Freemium" && "border-orange-200 bg-orange-50 text-orange-700 dark:bg-orange-900/20 dark:text-orange-300"
+                resource.price === "Paid" 
+                  ? "border-indigo-200 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300"
+                  : "border-emerald-200 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
               )}
             >
-              {resource.price}
+              {resource.price === "Paid" ? (
+                <><Server className="h-3 w-3 mr-1" />Hosting</>
+              ) : (
+                <><LinkIcon className="h-3 w-3 mr-1" />Linked</>
+              )}
             </Badge>
           </div>
         </div>
