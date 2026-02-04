@@ -2519,19 +2519,30 @@ const client = new EMDataClient({
                         </div>
                         
                         {/* Full Documentation Section with Toggle */}
-                        <div className="rounded-xl border border-slate-200 bg-slate-100 p-6 space-y-4">
+                        <div className={cn(
+                          "rounded-xl border p-6 space-y-4",
+                          fullDocEnabled ? "border-slate-200 bg-slate-100" : "border-slate-200 bg-slate-50"
+                        )}>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">{linkedQuickStartItems.length + 1}</div>
-                              <h4 className="font-bold">Full Documentation</h4>
+                              <div className={cn(
+                                "h-8 w-8 rounded-full flex items-center justify-center font-bold text-sm",
+                                fullDocEnabled ? "bg-blue-100 text-blue-600" : "bg-slate-200 text-slate-400"
+                              )}>{linkedQuickStartItems.length + 1}</div>
+                              <h4 className={cn("font-bold", !fullDocEnabled && "text-slate-400")}>Full Documentation</h4>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <Label className="text-xs text-slate-500">Enable</Label>
+                            <div className="flex items-center gap-3">
+                              <span className={cn(
+                                "text-sm font-medium",
+                                fullDocEnabled ? "text-blue-600" : "text-slate-400"
+                              )}>
+                                {fullDocEnabled ? "Enabled" : "Disabled"}
+                              </span>
                               <Switch checked={fullDocEnabled} onCheckedChange={setFullDocEnabled} />
                             </div>
                           </div>
                           
-                          {fullDocEnabled && (
+                          {fullDocEnabled ? (
                             <div className="space-y-4 pt-2">
                               <div className="space-y-2">
                                 <Label className="text-xs text-slate-500">Description</Label>
@@ -2562,6 +2573,15 @@ const client = new EMDataClient({
                                   />
                                 </div>
                               </div>
+                            </div>
+                          ) : (
+                            <div className="py-4 text-center">
+                              <p className="text-sm text-slate-400">
+                                This section is disabled and will not be displayed in the documentation.
+                              </p>
+                              <p className="text-xs text-slate-300 mt-1">
+                                Enable to add a link to your full documentation portal.
+                              </p>
                             </div>
                           )}
                         </div>
