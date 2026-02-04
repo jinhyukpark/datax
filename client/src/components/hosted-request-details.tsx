@@ -1152,17 +1152,22 @@ const client = new EMDataClient({
       {/* Save Confirmation Dialog */}
       <AlertDialog open={showSaveConfirm} onOpenChange={setShowSaveConfirm}>
         <AlertDialogContent className="max-w-md">
-          <AlertDialogHeader className="text-center">
-            <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-indigo-100 flex items-center justify-center">
-              <ShieldCheck className="h-8 w-8 text-indigo-600" />
+          <AlertDialogHeader>
+            <div className="flex items-start gap-4">
+              <div className="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center shrink-0">
+                <ShieldCheck className="h-6 w-6 text-indigo-600" />
+              </div>
+              <div className="space-y-2">
+                <AlertDialogTitle className="text-lg">변경 사항 저장</AlertDialogTitle>
+                <AlertDialogDescription className="text-sm text-left">
+                  수정된 정보는 관리자의 확인 후 적용이 완료됩니다.
+                  <br />
+                  <span className="font-medium text-slate-700">그래도 변경사항을 적용하시겠습니까?</span>
+                </AlertDialogDescription>
+              </div>
             </div>
-            <AlertDialogTitle className="text-xl">변경 사항 저장</AlertDialogTitle>
-            <AlertDialogDescription className="text-base text-center space-y-2">
-              <p>수정된 정보는 관리자의 확인 후 적용이 완료됩니다.</p>
-              <p className="font-medium text-slate-700">그래도 변경사항을 적용하시겠습니까?</p>
-            </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="sm:justify-center gap-3 mt-2">
+          <AlertDialogFooter className="mt-4">
             <AlertDialogCancel className="px-6">취소</AlertDialogCancel>
             <AlertDialogAction 
               onClick={() => {
