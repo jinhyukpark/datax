@@ -1942,7 +1942,7 @@ export default function MyPage() {
 
                         {/* Section 1: Basic Information */}
                         <div className="space-y-6">
-                          <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                          <div className="flex items-center gap-4 pb-4 border-b border-slate-300 dark:border-slate-700">
                             <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
                             <div>
                               <h2 className="text-lg font-bold">Basic Information</h2>
@@ -2000,8 +2000,8 @@ export default function MyPage() {
                             </div>
 
                             {/* Contact Information Subsection */}
-                            <div className="mt-4 pt-6 border-t border-slate-100 dark:border-slate-800">
-                              <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+                            <div className="mt-4 pt-6 border-t border-slate-300 dark:border-slate-700">
+                              <div className="bg-slate-100 dark:bg-slate-800/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
                                 <div className="flex items-center gap-2 mb-4">
                                   <ShieldCheck className="h-4 w-4 text-blue-500" />
                                   <h3 className="font-semibold text-sm">Contact Information</h3>
@@ -2036,7 +2036,7 @@ export default function MyPage() {
 
                         {/* Section 2: Social Presence */}
                         <div className="space-y-6">
-                          <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                          <div className="flex items-center gap-4 pb-4 border-b border-slate-300 dark:border-slate-700">
                             <div className="h-8 w-8 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center font-bold text-sm">2</div>
                             <div>
                               <h2 className="text-lg font-bold">Social Presence</h2>
@@ -2044,7 +2044,7 @@ export default function MyPage() {
                             </div>
                           </div>
 
-                          <div className="bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                          <div className="bg-slate-100 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div className="space-y-2">
                                 <Label className="font-semibold text-sm">LinkedIn URL</Label>
@@ -2072,7 +2072,7 @@ export default function MyPage() {
 
                         {/* Section 3: Classification */}
                         <div className="space-y-6">
-                          <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                          <div className="flex items-center gap-4 pb-4 border-b border-slate-300 dark:border-slate-700">
                             <div className="h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 flex items-center justify-center font-bold text-sm">3</div>
                             <div>
                               <h2 className="text-lg font-bold">Classification</h2>
@@ -2080,7 +2080,7 @@ export default function MyPage() {
                             </div>
                           </div>
 
-                          <div className="space-y-3 bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                          <div className="space-y-3 bg-slate-100 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
                             <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Category <span className="text-red-500">*</span></Label>
                             <RadioGroup defaultValue={editingPlatform?.type?.toLowerCase() || "api"} className="w-full">
                               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-3">
@@ -2095,7 +2095,7 @@ export default function MyPage() {
                           </div>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+                            <div className="space-y-2 bg-slate-100 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
                               <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Delivery Type <span className="text-red-500">*</span></Label>
                               <RadioGroup defaultValue="api" className="gap-2">
                                 {["File", "API", "MCP", "AI Agent"].map((type) => (
@@ -2107,7 +2107,7 @@ export default function MyPage() {
                               </RadioGroup>
                             </div>
 
-                            <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+                            <div className="space-y-2 bg-slate-100 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
                               <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Pricing <span className="text-red-500">*</span></Label>
                               <RadioGroup defaultValue={editingPlatform?.price?.toLowerCase() || "free"} className="gap-2">
                                 {["Free", "Paid"].map((p) => (
@@ -2123,7 +2123,7 @@ export default function MyPage() {
 
                         {/* Section 4: Details & Assets */}
                         <div className="space-y-6">
-                          <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                          <div className="flex items-center gap-4 pb-4 border-b border-slate-300 dark:border-slate-700">
                             <div className="h-8 w-8 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 flex items-center justify-center font-bold text-sm">4</div>
                             <div>
                               <h2 className="text-lg font-bold">Details & Assets</h2>
@@ -2147,7 +2147,7 @@ export default function MyPage() {
                             </div>
                           </div>
 
-                          <div className="bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl border border-slate-100 dark:border-slate-800 space-y-4">
+                          <div className="bg-slate-100 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-4">
                             <div className="space-y-3">
                               <Label className="flex justify-between font-semibold text-sm">
                                 <span>Tagline <span className="text-red-500">*</span></span>
