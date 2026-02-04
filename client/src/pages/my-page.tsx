@@ -1931,7 +1931,7 @@ export default function MyPage() {
 
                   <TabsContent value="overview" className="mt-0">
                     <ScrollArea className="h-[60vh]">
-                      <div className="p-8 space-y-8">
+                      <div className="py-8 pr-8 space-y-8">
                         {/* Info Banner */}
                         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900 rounded-lg p-4 mb-6">
                           <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-300 mb-1">Info</h4>
@@ -2212,7 +2212,7 @@ export default function MyPage() {
 
                   <TabsContent value="documentation" className="mt-0">
                     <ScrollArea className="h-[60vh]">
-                      <div className="p-8 space-y-8">
+                      <div className="py-8 pr-8 space-y-8">
                         <div className="space-y-6">
                           <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
                             <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold text-sm">
@@ -2254,7 +2254,7 @@ export default function MyPage() {
 
                   <TabsContent value="pricing" className="mt-0">
                     <ScrollArea className="h-[60vh]">
-                      <div className="p-8 space-y-8">
+                      <div className="py-8 pr-8 space-y-8">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                           <div>
                             <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Pricing Policy</h3>
