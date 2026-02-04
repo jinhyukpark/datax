@@ -92,6 +92,7 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
     "Full refund within 7 days if service not accessed",
     "Pro-rated refund available for annual plans"
   ]);
+  const [expandedApiDoc, setExpandedApiDoc] = useState(false);
 
   // Terms & Policies Functions
   const addTermItem = (category: "providedServices" | "servicePeriod" | "licensePricing" | "refundPolicyItems") => {
@@ -747,8 +748,21 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
                     <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
                     <div className="flex-1">
                       <span className="text-slate-300 text-sm">무료 공연을 우선 검색합니다 (항상 오늘부터 30일 이내). 무료 공연이 5개 미만이면 저렴한 유료 공연으로 자동 보충합니다.</span>
-                      <span className="text-amber-400 text-xs ml-2">⚠️ startDate/endDate는 무시...</span>
-                      <button className="text-blue-400 text-xs ml-2 hover:underline">더 보기</button>
+                      <br />
+                      <span className="text-amber-400 text-sm">startDate/endDate는 무시...</span>
+                      <button 
+                        onClick={() => setExpandedApiDoc(!expandedApiDoc)}
+                        className="text-blue-400 text-xs ml-2 hover:underline"
+                      >
+                        {expandedApiDoc ? '접기' : '더 보기'}
+                      </button>
+                      {expandedApiDoc && (
+                        <div className="mt-3 p-3 bg-slate-800 rounded-lg text-slate-300 text-sm">
+                          이 함수는 항상 오늘 날짜부터 30일 이내의 무료 공연만 검색하므로, startDate와 endDate 파라미터는 무시됩니다. 
+                          검색 결과에서 무료 공연이 5개 미만인 경우, 자동으로 저렴한 유료 공연을 추가하여 최소 5개의 결과를 반환합니다.
+                          genreCode와 sidoCode를 활용하여 원하는 장르와 지역으로 필터링할 수 있습니다.
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="flex gap-3">
