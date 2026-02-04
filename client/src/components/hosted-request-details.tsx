@@ -94,6 +94,93 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
   ]);
   const [expandedApiDoc, setExpandedApiDoc] = useState(false);
 
+  // Quick Start Guide State
+  const [quickStartGuide, setQuickStartGuide] = useState({
+    installationCode: `# Using npm
+npm install @em-data/sdk
+
+# Using pip (Python)
+pip install em-data-sdk`,
+    installationDescription: "SDK를 설치하면 API 클라이언트와 필요한 모든 의존성이 함께 설치됩니다. Node.js 18+ 또는 Python 3.8+ 환경이 필요합니다.",
+    integrationCode: `import { EMDataClient } from '@em-data/sdk';
+
+// Initialize the client
+const client = new EMDataClient({
+  apiKey: process.env.EM_API_KEY,
+  baseUrl: '${detailsData.websiteUrl || "https://api.example.com"}'
+});`,
+    integrationDescription: "EMDataClient를 초기화할 때 API 키와 기본 URL을 설정합니다. API 키는 환경변수에서 가져오는 것을 권장합니다."
+  });
+
+  // API Definitions State
+  const [apiDefinitions, setApiDefinitions] = useState([
+    {
+      id: "1",
+      name: "get_genre_list",
+      description: "사용 가능한 모든 공연 장르 코드와 이름을 조회합니다. 연극, 뮤지컬, 무용, 클래식, 국악, 대중음악 등의 장르를 제공합니다.",
+      extendedDescription: "",
+      parameters: [] as string[]
+    },
+    {
+      id: "2",
+      name: "search_events_by_location",
+      description: "특정 지역과 기간의 공연을 검색합니다. 검색 결과가 없으면 자동으로 구/군 → 시/도 → 전국 순으로 범위를 확장합니다.",
+      extendedDescription: "",
+      parameters: ["genreCode: string", "startDate: string", "endDate: string", "sidoCode: string", "gugunCode: string", "limit: number"]
+    },
+    {
+      id: "3",
+      name: "filter_free_events",
+      description: "무료 공연을 우선 검색합니다 (항상 오늘부터 30일 이내). 무료 공연이 5개 미만이면 저렴한 유료 공연으로 자동 보충합니다.",
+      extendedDescription: "이 함수는 항상 오늘 날짜부터 30일 이내의 무료 공연만 검색하므로, startDate와 endDate 파라미터는 무시됩니다. 검색 결과에서 무료 공연이 5개 미만인 경우, 자동으로 저렴한 유료 공연을 추가하여 최소 5개의 결과를 반환합니다.",
+      parameters: ["genreCode: string", "startDate: string", "endDate: string", "sidoCode: string", "limit: number"]
+    }
+  ]);
+
+  const addApiDefinition = () => {
+    setApiDefinitions([...apiDefinitions, {
+      id: Date.now().toString(),
+      name: "",
+      description: "",
+      extendedDescription: "",
+      parameters: []
+    }]);
+  };
+
+  const updateApiDefinition = (id: string, field: string, value: any) => {
+    setApiDefinitions(apiDefinitions.map(api => 
+      api.id === id ? { ...api, [field]: value } : api
+    ));
+  };
+
+  const removeApiDefinition = (id: string) => {
+    setApiDefinitions(apiDefinitions.filter(api => api.id !== id));
+  };
+
+  const addParameter = (apiId: string) => {
+    setApiDefinitions(apiDefinitions.map(api => 
+      api.id === apiId ? { ...api, parameters: [...api.parameters, ""] } : api
+    ));
+  };
+
+  const updateParameter = (apiId: string, paramIndex: number, value: string) => {
+    setApiDefinitions(apiDefinitions.map(api => 
+      api.id === apiId ? { 
+        ...api, 
+        parameters: api.parameters.map((p, i) => i === paramIndex ? value : p) 
+      } : api
+    ));
+  };
+
+  const removeParameter = (apiId: string, paramIndex: number) => {
+    setApiDefinitions(apiDefinitions.map(api => 
+      api.id === apiId ? { 
+        ...api, 
+        parameters: api.parameters.filter((_, i) => i !== paramIndex) 
+      } : api
+    ));
+  };
+
   // Terms & Policies Functions
   const addTermItem = (category: "providedServices" | "servicePeriod" | "licensePricing" | "refundPolicyItems") => {
     switch (category) {
@@ -657,126 +744,135 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
               <Badge variant="outline">{detailsData.version || "v1.0.0"}</Badge>
             </div>
 
-            {/* Step 1: Installation */}
+            {/* Step 1: Installation - Editable */}
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-sm">1</div>
                 <h4 className="font-bold">Installation</h4>
               </div>
-              <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50">
-                <div className="absolute right-4 top-4 text-xs text-slate-400">BASH</div>
-                <p className="text-slate-400"># Using npm</p>
-                <p className="mb-3">npm install @em-data/sdk</p>
-                <p className="text-slate-400"># Using pip (Python)</p>
-                <p className="mb-3">pip install em-data-sdk</p>
+              <div className="space-y-2 mb-4">
+                <Label className="text-xs text-muted-foreground">Installation Code (BASH)</Label>
+                <Textarea 
+                  value={quickStartGuide.installationCode}
+                  onChange={(e) => setQuickStartGuide({...quickStartGuide, installationCode: e.target.value})}
+                  className="font-mono text-sm bg-slate-900 text-slate-50 border-slate-700 min-h-[100px]"
+                  placeholder="# Enter installation commands..."
+                />
               </div>
-              <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800">
-                <p className="text-sm text-blue-700 dark:text-blue-300">
-                  SDK를 설치하면 API 클라이언트와 필요한 모든 의존성이 함께 설치됩니다. Node.js 18+ 또는 Python 3.8+ 환경이 필요합니다.
-                </p>
+              <div className="space-y-2">
+                <Label className="text-xs text-muted-foreground">Description</Label>
+                <Textarea 
+                  value={quickStartGuide.installationDescription}
+                  onChange={(e) => setQuickStartGuide({...quickStartGuide, installationDescription: e.target.value})}
+                  className="text-sm bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800 min-h-[60px]"
+                  placeholder="Enter description for installation..."
+                />
               </div>
             </div>
 
-            {/* Step 2: Usage */}
+            {/* Step 2: Integration - Editable */}
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-8 w-8 rounded-full bg-yellow-100 dark:bg-yellow-900/50 flex items-center justify-center text-yellow-600 dark:text-yellow-400 font-bold text-sm">2</div>
                 <h4 className="font-bold">JavaScript / Node.js Integration</h4>
               </div>
-              <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
-                <div className="absolute right-4 top-4 text-xs text-slate-400">JAVASCRIPT</div>
-                <p><span className="text-purple-400">import</span> {"{"} EMDataClient {"}"} <span className="text-purple-400">from</span> <span className="text-green-400">'@em-data/sdk'</span>;</p>
-                <br/>
-                <p className="text-slate-400">// Initialize the client</p>
-                <p><span className="text-purple-400">const</span> client = <span className="text-blue-400">new</span> EMDataClient({"{"}</p>
-                <p>&nbsp;&nbsp;apiKey: process.env.<span className="text-orange-400">EM_API_KEY</span>,</p>
-                <p>&nbsp;&nbsp;baseUrl: <span className="text-green-400">'{detailsData.websiteUrl || "https://api.example.com"}'</span></p>
-                <p>{"}"});</p>
+              <div className="space-y-2 mb-4">
+                <Label className="text-xs text-muted-foreground">Integration Code (JavaScript)</Label>
+                <Textarea 
+                  value={quickStartGuide.integrationCode}
+                  onChange={(e) => setQuickStartGuide({...quickStartGuide, integrationCode: e.target.value})}
+                  className="font-mono text-sm bg-slate-900 text-slate-50 border-slate-700 min-h-[150px]"
+                  placeholder="// Enter integration code..."
+                />
               </div>
-              <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-100 dark:border-yellow-800">
-                <p className="text-sm text-yellow-700 dark:text-yellow-300">
-                  EMDataClient를 초기화할 때 API 키와 기본 URL을 설정합니다. API 키는 환경변수에서 가져오는 것을 권장합니다.
-                </p>
+              <div className="space-y-2">
+                <Label className="text-xs text-muted-foreground">Description</Label>
+                <Textarea 
+                  value={quickStartGuide.integrationDescription}
+                  onChange={(e) => setQuickStartGuide({...quickStartGuide, integrationDescription: e.target.value})}
+                  className="text-sm bg-yellow-50 dark:bg-yellow-900/20 border-yellow-100 dark:border-yellow-800 min-h-[60px]"
+                  placeholder="Enter description for integration..."
+                />
               </div>
             </div>
 
-            {/* API Definitions Section */}
+            {/* API Definitions Section - Editable */}
             <div className="space-y-4">
-              <h3 className="text-lg font-bold flex items-center gap-2">
-                <Database className="h-5 w-5" />
-                API Definitions
-              </h3>
-
-              {/* API Function 1 */}
-              <div className="rounded-xl border border-slate-200 bg-slate-900 p-6 dark:border-slate-700">
-                <h4 className="font-mono font-bold text-white mb-3">get_genre_list</h4>
-                <div className="space-y-3">
-                  <div className="flex gap-3">
-                    <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
-                    <span className="text-slate-300 text-sm">사용 가능한 모든 공연 장르 코드와 이름을 조회합니다. 연극, 뮤지컬, 무용, 클래식, 국악, 대중음악 등의 장르를 제공합니다.</span>
-                  </div>
-                </div>
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-bold flex items-center gap-2">
+                  <Database className="h-5 w-5" />
+                  API Definitions
+                </h3>
+                <Button variant="outline" size="sm" onClick={addApiDefinition} className="gap-1">
+                  <Plus className="h-4 w-4" /> Add API
+                </Button>
               </div>
 
-              {/* API Function 2 */}
-              <div className="rounded-xl border border-slate-200 bg-slate-900 p-6 dark:border-slate-700">
-                <h4 className="font-mono font-bold text-white mb-3">search_events_by_location</h4>
-                <div className="space-y-3">
-                  <div className="flex gap-3">
-                    <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
-                    <span className="text-slate-300 text-sm">특정 지역과 기간의 공연을 검색합니다. 검색 결과가 없으면 자동으로 구/군 → 시/도 → 전국 순으로 범위를 확장합니다.</span>
+              {apiDefinitions.map((api, index) => (
+                <div key={api.id} className="rounded-xl border border-slate-200 bg-slate-900 p-6 dark:border-slate-700 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <Input
+                      value={api.name}
+                      onChange={(e) => updateApiDefinition(api.id, 'name', e.target.value)}
+                      className="font-mono font-bold text-white bg-transparent border-slate-700 w-auto flex-1 mr-4"
+                      placeholder="function_name"
+                    />
+                    <Button variant="ghost" size="icon" onClick={() => removeApiDefinition(api.id)} className="text-slate-400 hover:text-red-400 h-8 w-8">
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
-                  <div className="flex gap-3">
-                    <span className="text-slate-400 text-sm w-16 shrink-0">파라미터</span>
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">genreCode: string</Badge>
-                      <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">startDate: string</Badge>
-                      <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">endDate: string</Badge>
-                      <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">sidoCode: string</Badge>
-                      <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">gugunCode: string</Badge>
-                      <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">limit: number</Badge>
+                  <div className="space-y-3">
+                    <div className="flex gap-3">
+                      <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
+                      <div className="flex-1 space-y-2">
+                        <Textarea 
+                          value={api.description}
+                          onChange={(e) => updateApiDefinition(api.id, 'description', e.target.value)}
+                          className="text-sm bg-slate-800 text-slate-300 border-slate-700 min-h-[60px]"
+                          placeholder="API 용도를 설명하세요..."
+                        />
+                        {api.extendedDescription && (
+                          <Textarea 
+                            value={api.extendedDescription}
+                            onChange={(e) => updateApiDefinition(api.id, 'extendedDescription', e.target.value)}
+                            className="text-sm bg-slate-800 text-slate-300 border-slate-700 min-h-[60px]"
+                            placeholder="추가 설명 (더 보기 클릭 시 표시)..."
+                          />
+                        )}
+                        <button 
+                          onClick={() => updateApiDefinition(api.id, 'extendedDescription', api.extendedDescription ? '' : ' ')}
+                          className="text-blue-400 text-xs hover:underline"
+                        >
+                          {api.extendedDescription ? '확장 설명 제거' : '+ 확장 설명 추가'}
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* API Function 3 */}
-              <div className="rounded-xl border border-slate-200 bg-slate-900 p-6 dark:border-slate-700">
-                <h4 className="font-mono font-bold text-white mb-3">filter_free_events</h4>
-                <div className="space-y-3">
-                  <div className="flex gap-3">
-                    <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
-                    <div className="flex-1">
-                      <span className="text-slate-300 text-sm">무료 공연을 우선 검색합니다 (항상 오늘부터 30일 이내). 무료 공연이 5개 미만이면 저렴한 유료 공연으로 자동 보충합니다.</span>
-                      <br />
-                      <span className="text-amber-400 text-sm">startDate/endDate는 무시...</span>
-                      <button 
-                        onClick={() => setExpandedApiDoc(!expandedApiDoc)}
-                        className="text-blue-400 text-xs ml-2 hover:underline"
-                      >
-                        {expandedApiDoc ? '접기' : '더 보기'}
-                      </button>
-                      {expandedApiDoc && (
-                        <div className="mt-3 p-3 bg-slate-800 rounded-lg text-slate-300 text-sm">
-                          이 함수는 항상 오늘 날짜부터 30일 이내의 무료 공연만 검색하므로, startDate와 endDate 파라미터는 무시됩니다. 
-                          검색 결과에서 무료 공연이 5개 미만인 경우, 자동으로 저렴한 유료 공연을 추가하여 최소 5개의 결과를 반환합니다.
-                          genreCode와 sidoCode를 활용하여 원하는 장르와 지역으로 필터링할 수 있습니다.
+                    <div className="flex gap-3">
+                      <span className="text-slate-400 text-sm w-16 shrink-0">파라미터</span>
+                      <div className="flex-1 space-y-2">
+                        <div className="flex flex-wrap gap-2">
+                          {api.parameters.map((param, paramIndex) => (
+                            <div key={paramIndex} className="flex items-center gap-1 bg-slate-800 rounded px-2 py-1">
+                              <Input
+                                value={param}
+                                onChange={(e) => updateParameter(api.id, paramIndex, e.target.value)}
+                                className="h-6 text-xs font-mono bg-transparent border-none text-slate-300 w-28 p-0"
+                                placeholder="name: type"
+                              />
+                              <button onClick={() => removeParameter(api.id, paramIndex)} className="text-slate-500 hover:text-red-400">
+                                <XCircle className="h-3 w-3" />
+                              </button>
+                            </div>
+                          ))}
                         </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex gap-3">
-                    <span className="text-slate-400 text-sm w-16 shrink-0">파라미터</span>
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">genreCode: string</Badge>
-                      <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">startDate: string</Badge>
-                      <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">endDate: string</Badge>
-                      <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">sidoCode: string</Badge>
-                      <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">limit: number</Badge>
+                        <button onClick={() => addParameter(api.id)} className="text-blue-400 text-xs hover:underline">
+                          + 파라미터 추가
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
             
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
