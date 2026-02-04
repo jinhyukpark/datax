@@ -2118,6 +2118,94 @@ export default function MyPage() {
                             </div>
                           </div>
                         </div>
+
+                        {/* Section 4: Details & Assets */}
+                        <div className="space-y-6">
+                          <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                            <div className="h-8 w-8 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 flex items-center justify-center font-bold text-sm">4</div>
+                            <div>
+                              <h2 className="text-lg font-bold">Details & Assets</h2>
+                              <p className="text-xs text-muted-foreground">Make your listing stand out</p>
+                            </div>
+                          </div>
+
+                          <div className="space-y-3">
+                            <Label className="font-semibold text-sm">Service Logo <span className="text-red-500">*</span></Label>
+                            <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900/80 transition-colors cursor-pointer">
+                              <div className="flex items-center gap-4">
+                                <div className="h-16 w-16 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                                  <Camera className="h-6 w-6 text-slate-400" />
+                                </div>
+                                <div>
+                                  <p className="font-medium text-sm">Click to upload service logo</p>
+                                  <p className="text-xs text-muted-foreground">Recommended: 512×512px (Square)</p>
+                                  <p className="text-xs text-muted-foreground">SVG, PNG, JPG, WEBP</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="space-y-3">
+                            <Label className="flex justify-between font-semibold text-sm">
+                              <span>Tagline <span className="text-red-500">*</span></span>
+                              <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{(editingPlatform?.tagline || "").length}/100</span>
+                            </Label>
+                            <Input value={editingPlatform?.tagline || ""} placeholder="A catchy one-liner for your service card" className="h-10" />
+                          </div>
+
+                          <div className="space-y-3">
+                            <Label className="flex justify-between font-semibold text-sm">
+                              <span>Description <span className="text-red-500">*</span></span>
+                              <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{(editingPlatform?.description || "").length}/750</span>
+                            </Label>
+                            <Textarea value={editingPlatform?.description || ""} placeholder="Describe your service in detail. What problem does it solve? Who is it for?" className="min-h-[100px] resize-y" />
+                          </div>
+
+                          <div className="space-y-3">
+                            <Label className="font-semibold text-sm">Tags</Label>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              {editingPlatform?.tags?.map((tag: string, i: number) => (
+                                <span key={i} className="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm">#{tag}</span>
+                              ))}
+                              <Button variant="outline" size="sm" className="h-8 rounded-full border-dashed border-slate-300 text-slate-500 hover:text-slate-700 hover:border-slate-400">
+                                <Plus className="h-3 w-3 mr-1" /> New Tag
+                              </Button>
+                            </div>
+                          </div>
+
+                          <div className="space-y-3">
+                            <Label className="flex justify-between font-semibold text-sm">
+                              <span>Key Features</span>
+                              <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/5</span>
+                            </Label>
+                            <div className="space-y-2">
+                              <Input placeholder="Feature 1" className="h-10" />
+                            </div>
+                            <div className="mt-2 w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg h-10 flex items-center justify-center text-sm text-muted-foreground cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all">
+                              <Plus className="h-4 w-4 mr-2" /> Add Feature
+                            </div>
+                            <p className="text-[10px] text-muted-foreground">Add up to 5 key features of your service.</p>
+                          </div>
+
+                          <div className="space-y-3">
+                            <Label className="flex justify-between font-semibold text-sm">
+                              <span>Use Cases</span>
+                              <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/5</span>
+                            </Label>
+                            <div className="mt-2 w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg h-10 flex items-center justify-center text-sm text-muted-foreground cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all">
+                              <Plus className="h-4 w-4 mr-2" /> Add Use Case
+                            </div>
+                          </div>
+
+                          <div className="space-y-3">
+                            <Label className="font-semibold text-sm">Featured Image</Label>
+                            <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-8 text-center bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900/80 transition-colors cursor-pointer">
+                              <Camera className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                              <p className="text-sm font-medium">Click to upload or drag and drop</p>
+                              <p className="text-xs text-muted-foreground">SVG, PNG, JPG (max. 800×400px)</p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </ScrollArea>
                   </TabsContent>
