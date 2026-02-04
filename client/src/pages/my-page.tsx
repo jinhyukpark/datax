@@ -18,6 +18,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { Resource } from "@/lib/data";
 import { SubmitForm } from "@/components/submit-form";
@@ -2017,6 +2018,15 @@ export default function MyPage() {
                                       placeholder="email@company.com"
                                       className="h-10 bg-white dark:bg-slate-900" 
                                     />
+                                    <div className="flex items-center space-x-2 mt-2">
+                                      <Checkbox id="linked-use-account-email" />
+                                      <label
+                                        htmlFor="linked-use-account-email"
+                                        className="text-xs text-muted-foreground"
+                                      >
+                                        Use account email (jh.park@illunex.com)
+                                      </label>
+                                    </div>
                                   </div>
                                   <div className="space-y-2">
                                     <Label className="font-semibold text-sm">Contact Phone</Label>
