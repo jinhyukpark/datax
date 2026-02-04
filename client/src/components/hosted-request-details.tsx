@@ -13,6 +13,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface HostedRequestDetailsProps {
   data: any;
@@ -23,6 +33,7 @@ interface HostedRequestDetailsProps {
 export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }: HostedRequestDetailsProps) {
   const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSaveConfirm, setShowSaveConfirm] = useState(false);
   
   // State for form fields (Application Form)
   const [formData, setFormData] = useState({
@@ -1123,7 +1134,7 @@ const client = new EMDataClient({
           <Button variant="outline" onClick={() => {}} className="rounded-xl px-6">
             Cancel
           </Button>
-          <Button onClick={handleUpdate} disabled={isSubmitting} className="bg-indigo-600 hover:bg-indigo-700 rounded-xl px-10 gap-2 font-bold shadow-lg shadow-indigo-500/20">
+          <Button onClick={() => setShowSaveConfirm(true)} disabled={isSubmitting} className="bg-indigo-600 hover:bg-indigo-700 rounded-xl px-10 gap-2 font-bold shadow-lg shadow-indigo-500/20">
             {isSubmitting ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -1137,6 +1148,30 @@ const client = new EMDataClient({
           </Button>
         </div>
       )}
+
+      {/* Save Confirmation Dialog */}
+      <AlertDialog open={showSaveConfirm} onOpenChange={setShowSaveConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>변경 사항 저장</AlertDialogTitle>
+            <AlertDialogDescription className="text-base">
+              수정된 정보는 관리자의 확인 후 적용이 완료됩니다.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>취소</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={() => {
+                setShowSaveConfirm(false);
+                handleUpdate();
+              }}
+              className="bg-indigo-600 hover:bg-indigo-700"
+            >
+              실행
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
