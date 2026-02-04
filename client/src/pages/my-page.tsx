@@ -17,6 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 import { Resource } from "@/lib/data";
 import { SubmitForm } from "@/components/submit-form";
@@ -1931,6 +1932,7 @@ export default function MyPage() {
                   <TabsContent value="overview" className="mt-0">
                     <ScrollArea className="h-[60vh]">
                       <div className="p-8 space-y-8">
+                        {/* Info Banner */}
                         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900 rounded-lg p-4 mb-6">
                           <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-300 mb-1">Info</h4>
                           <p className="text-sm text-blue-700 dark:text-blue-400">
@@ -1938,52 +1940,181 @@ export default function MyPage() {
                           </p>
                         </div>
 
+                        {/* Section 1: Basic Information */}
                         <div className="space-y-6">
                           <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-                            <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold text-sm">1</div>
+                            <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
                             <div>
                               <h2 className="text-lg font-bold">Basic Information</h2>
-                              <p className="text-xs text-muted-foreground">Essential details about your resource</p>
+                              <p className="text-xs text-muted-foreground">Tell us about your service</p>
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                              <Label className="font-semibold text-sm">Title</Label>
-                              <Input value={editingPlatform?.title || ""} placeholder="Resource title" />
+                          <div className="grid grid-cols-1 gap-6">
+                            <div className="space-y-3">
+                              <Label className="flex justify-between font-semibold text-sm">
+                                <span>Service Name <span className="text-red-500">*</span></span>
+                                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{(editingPlatform?.title || "").length}/35</span>
+                              </Label>
+                              <Input value={editingPlatform?.title || ""} placeholder="e.g. Data Analytics API" className="h-10" />
                             </div>
-                            <div className="space-y-2">
-                              <Label className="font-semibold text-sm">Provider</Label>
-                              <Input value={editingPlatform?.provider || ""} placeholder="Provider name" />
+
+                            <div className="space-y-3">
+                              <Label className="flex justify-between font-semibold text-sm">
+                                <span>Founders / Company Name</span>
+                                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{(editingPlatform?.provider || "").length}/50</span>
+                              </Label>
+                              <Input value={editingPlatform?.provider || ""} placeholder="e.g. Tech Corp" className="h-10" />
                             </div>
-                            <div className="space-y-2 md:col-span-2">
-                              <Label className="font-semibold text-sm">Tagline</Label>
-                              <Input value={editingPlatform?.tagline || ""} placeholder="Short description" />
+
+                            <div className="space-y-3">
+                              <Label className="flex justify-between font-semibold text-sm">
+                                <span>Website URL <span className="text-red-500">*</span></span>
+                                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{(editingPlatform?.websiteUrl || "").length}/100</span>
+                              </Label>
+                              <Input value={editingPlatform?.websiteUrl || ""} placeholder="https://" className="h-10" />
                             </div>
-                            <div className="space-y-2 md:col-span-2">
-                              <Label className="font-semibold text-sm">Description</Label>
-                              <Textarea value={editingPlatform?.description || ""} placeholder="Detailed description" className="min-h-[100px]" />
+
+                            <div className="space-y-3">
+                              <Label className="flex justify-between font-semibold text-sm">
+                                <span>Affiliate Link</span>
+                                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/300</span>
+                              </Label>
+                              <Input placeholder="https://" className="h-10" />
+                            </div>
+
+                            <div className="space-y-3">
+                              <Label className="flex justify-between font-semibold text-sm">
+                                <span>Demo URL</span>
+                                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{(editingPlatform?.demoUrl || "").length}/200</span>
+                              </Label>
+                              <Input value={editingPlatform?.demoUrl || ""} placeholder="https://youtube.com/..." className="h-10" />
+                            </div>
+
+                            <div className="space-y-3">
+                              <Label className="flex justify-between font-semibold text-sm">
+                                <span>Documentation URL</span>
+                                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{(editingPlatform?.docsUrl || "").length}/200</span>
+                              </Label>
+                              <Input value={editingPlatform?.docsUrl || ""} placeholder="https://docs..." className="h-10" />
+                            </div>
+
+                            {/* Contact Information Subsection */}
+                            <div className="mt-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+                              <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+                                <div className="flex items-center gap-2 mb-4">
+                                  <ShieldCheck className="h-4 w-4 text-blue-500" />
+                                  <h3 className="font-semibold text-sm">Contact Information</h3>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  <div className="space-y-2">
+                                    <Label className="flex justify-between items-center font-semibold text-sm">
+                                      <span>Contact Email <span className="text-red-500">*</span></span>
+                                    </Label>
+                                    <Input 
+                                      value={editingPlatform?.contactEmail || ""}
+                                      placeholder="email@company.com"
+                                      className="h-10 bg-white dark:bg-slate-900" 
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label className="font-semibold text-sm">Contact Phone</Label>
+                                    <Input 
+                                      placeholder="+82 10-1234-5678"
+                                      className="h-10 bg-white dark:bg-slate-900" 
+                                    />
+                                  </div>
+                                </div>
+                                <p className="text-[10px] text-muted-foreground mt-4">
+                                  Important notifications about your service will be sent to these contact details.
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
 
+                        {/* Section 2: Social Presence */}
                         <div className="space-y-6">
                           <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-                            <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold text-sm">2</div>
+                            <div className="h-8 w-8 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center font-bold text-sm">2</div>
                             <div>
-                              <h2 className="text-lg font-bold">Contact & Links</h2>
-                              <p className="text-xs text-muted-foreground">How users can reach you</p>
+                              <h2 className="text-lg font-bold">Social Presence</h2>
+                              <p className="text-xs text-muted-foreground">Where can users find you?</p>
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                              <Label className="font-semibold text-sm">Website URL</Label>
-                              <Input value={editingPlatform?.websiteUrl || ""} placeholder="https://example.com" />
+                              <Label className="font-semibold text-sm">LinkedIn URL</Label>
+                              <Input placeholder="https://linkedin.com/in/..." className="h-10" />
                             </div>
                             <div className="space-y-2">
-                              <Label className="font-semibold text-sm">Contact Email</Label>
-                              <Input value={editingPlatform?.contactEmail || ""} placeholder="contact@example.com" />
+                              <Label className="font-semibold text-sm">Twitter URL</Label>
+                              <Input placeholder="https://twitter.com/..." className="h-10" />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="font-semibold text-sm">GitHub URL</Label>
+                              <Input placeholder="https://github.com/..." className="h-10" />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="font-semibold text-sm">Discord URL</Label>
+                              <Input placeholder="https://discord.gg/..." className="h-10" />
+                            </div>
+                            <div className="space-y-2 md:col-span-2">
+                              <Label className="font-semibold text-sm">Telegram URL</Label>
+                              <Input placeholder="https://t.me/..." className="h-10" />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Section 3: Classification */}
+                        <div className="space-y-6">
+                          <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                            <div className="h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 flex items-center justify-center font-bold text-sm">3</div>
+                            <div>
+                              <h2 className="text-lg font-bold">Classification</h2>
+                              <p className="text-xs text-muted-foreground">Help users find your service</p>
+                            </div>
+                          </div>
+
+                          <div className="space-y-3 bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                            <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Category <span className="text-red-500">*</span></Label>
+                            <RadioGroup defaultValue={editingPlatform?.type?.toLowerCase() || "api"} className="w-full">
+                              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-3">
+                                {["Analysis", "Patent", "Science", "Growth", "Network", "Market", "Other"].map((cat) => (
+                                  <div key={cat} className="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors">
+                                    <RadioGroupItem value={cat.toLowerCase()} id={`linked-cat-${cat.toLowerCase()}`} className="shrink-0" />
+                                    <Label htmlFor={`linked-cat-${cat.toLowerCase()}`} className="font-medium text-sm cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis">{cat}</Label>
+                                  </div>
+                                ))}
+                              </div>
+                            </RadioGroup>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+                              <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Delivery Type <span className="text-red-500">*</span></Label>
+                              <RadioGroup defaultValue="api" className="gap-2">
+                                {["File", "API", "MCP", "AI Agent"].map((type) => (
+                                  <div key={type} className="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800">
+                                    <RadioGroupItem value={type.toLowerCase().replace(' ', '-')} id={`linked-delivery-${type.toLowerCase()}`} />
+                                    <Label htmlFor={`linked-delivery-${type.toLowerCase()}`} className="font-medium text-sm cursor-pointer">{type}</Label>
+                                  </div>
+                                ))}
+                              </RadioGroup>
+                            </div>
+
+                            <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+                              <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Pricing <span className="text-red-500">*</span></Label>
+                              <RadioGroup defaultValue={editingPlatform?.price?.toLowerCase() || "free"} className="gap-2">
+                                {["Free", "Paid"].map((p) => (
+                                  <div key={p} className="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800">
+                                    <RadioGroupItem value={p.toLowerCase()} id={`linked-pricing-${p.toLowerCase()}`} />
+                                    <Label htmlFor={`linked-pricing-${p.toLowerCase()}`} className="font-medium text-sm cursor-pointer">{p}</Label>
+                                  </div>
+                                ))}
+                              </RadioGroup>
                             </div>
                           </div>
                         </div>
