@@ -10,7 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { RESOURCES } from "@/lib/data";
-import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star, Activity, FileText, Database, Zap, Power, Plus, ShieldCheck, Link2, Shield, Calendar, Upload, Paperclip } from "lucide-react";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star, Activity, FileText, Database, Zap, Power, Plus, ShieldCheck, Link2, Shield, Calendar, Upload, Paperclip, Terminal } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
@@ -2264,41 +2265,60 @@ export default function MyPage() {
 
                   <TabsContent value="documentation" className="mt-0">
                     <ScrollArea className="h-[60vh]">
-                      <div className="py-8 pr-8 space-y-8">
-                        <div className="space-y-6">
-                          <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-                            <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold text-sm">
-                              <FileText className="h-4 w-4" />
-                            </div>
-                            <div>
-                              <h2 className="text-lg font-bold">Documentation</h2>
-                              <p className="text-xs text-muted-foreground">API documentation and usage guides</p>
-                            </div>
-                          </div>
+                      <div className="py-8 pr-8 space-y-6">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-xl font-bold flex items-center gap-2">
+                            <Terminal className="h-5 w-5" />
+                            Quick Start Guide
+                          </h3>
+                          <Badge variant="outline">v1.0.0</Badge>
+                        </div>
 
-                          <div className="space-y-4">
-                            <div className="space-y-2">
-                              <Label className="font-semibold text-sm">Documentation URL</Label>
-                              <Input value={editingPlatform?.docsUrl || ""} placeholder="https://docs.example.com" />
-                            </div>
-                            <div className="space-y-2">
-                              <Label className="font-semibold text-sm">Demo URL</Label>
-                              <Input value={editingPlatform?.demoUrl || ""} placeholder="https://demo.example.com" />
-                            </div>
-                            <div className="space-y-2">
-                              <Label className="font-semibold text-sm">Documentation Content</Label>
-                              <Textarea placeholder="Enter your API documentation, usage guides, and examples..." className="min-h-[200px]" />
-                            </div>
+                        {/* Step 1: Installation */}
+                        <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-sm">1</div>
+                            <h4 className="font-bold">Installation</h4>
                           </div>
+                          <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50">
+                            <div className="absolute right-4 top-4 text-xs text-slate-400">BASH</div>
+                            <p className="text-slate-400"># Using npm</p>
+                            <p className="mb-3">npm install @em-data/sdk</p>
+                            <p className="text-slate-400"># Using pip (Python)</p>
+                            <p className="mb-3">pip install em-data-sdk</p>
+                          </div>
+                        </div>
 
-                          <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
-                            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                              For complete API reference, guides, and tutorials, please visit our documentation portal.
-                            </p>
-                            <Button variant="outline" className="gap-2" onClick={() => window.open(editingPlatform?.docsUrl || "#", "_blank")}>
-                              View Documentation <ArrowRight className="h-4 w-4" />
-                            </Button>
+                        {/* Step 2: Usage */}
+                        <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="h-8 w-8 rounded-full bg-yellow-100 dark:bg-yellow-900/50 flex items-center justify-center text-yellow-600 dark:text-yellow-400 font-bold text-sm">2</div>
+                            <h4 className="font-bold">JavaScript / Node.js Integration</h4>
                           </div>
+                          <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
+                            <div className="absolute right-4 top-4 text-xs text-slate-400">JAVASCRIPT</div>
+                            <p><span className="text-purple-400">import</span> {"{"} EMDataClient {"}"} <span className="text-purple-400">from</span> <span className="text-green-400">'@em-data/sdk'</span>;</p>
+                            <br/>
+                            <p className="text-slate-400">// Initialize the client</p>
+                            <p><span className="text-purple-400">const</span> client = <span className="text-blue-400">new</span> EMDataClient({"{"}</p>
+                            <p>&nbsp;&nbsp;apiKey: process.env.<span className="text-orange-400">EM_API_KEY</span>,</p>
+                            <p>&nbsp;&nbsp;baseUrl: <span className="text-green-400">'{editingPlatform?.websiteUrl || "https://api.example.com"}'</span></p>
+                            <p>{"}"});</p>
+                          </div>
+                        </div>
+                        
+                        {/* Step 3: Full Documentation */}
+                        <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">3</div>
+                            <h4 className="font-bold">Full Documentation</h4>
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            For complete API reference, guides, and tutorials, please visit our documentation portal.
+                          </p>
+                          <Button variant="outline" className="gap-2" onClick={() => window.open(editingPlatform?.docsUrl || "#", "_blank")}>
+                            View Documentation <ArrowRight className="h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
                     </ScrollArea>
