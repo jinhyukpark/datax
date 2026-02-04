@@ -94,23 +94,53 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
   ]);
   const [expandedApiDoc, setExpandedApiDoc] = useState(false);
 
-  // Quick Start Guide State
-  const [quickStartGuide, setQuickStartGuide] = useState({
-    installationCode: `# Using npm
+  // Quick Start Guide State - Dynamic Items
+  const [quickStartItems, setQuickStartItems] = useState([
+    {
+      id: 'qs1',
+      title: 'Installation',
+      codeLanguage: 'BASH',
+      code: `# Using npm
 npm install @em-data/sdk
 
 # Using pip (Python)
 pip install em-data-sdk`,
-    installationDescription: "SDK를 설치하면 API 클라이언트와 필요한 모든 의존성이 함께 설치됩니다. Node.js 18+ 또는 Python 3.8+ 환경이 필요합니다.",
-    integrationCode: `import { EMDataClient } from '@em-data/sdk';
+      description: "SDK를 설치하면 API 클라이언트와 필요한 모든 의존성이 함께 설치됩니다. Node.js 18+ 또는 Python 3.8+ 환경이 필요합니다."
+    },
+    {
+      id: 'qs2',
+      title: 'JavaScript / Node.js Integration',
+      codeLanguage: 'JAVASCRIPT',
+      code: `import { EMDataClient } from '@em-data/sdk';
 
 // Initialize the client
 const client = new EMDataClient({
   apiKey: process.env.EM_API_KEY,
   baseUrl: '${detailsData.websiteUrl || "https://api.example.com"}'
 });`,
-    integrationDescription: "EMDataClient를 초기화할 때 API 키와 기본 URL을 설정합니다. API 키는 환경변수에서 가져오는 것을 권장합니다."
-  });
+      description: "EMDataClient를 초기화할 때 API 키와 기본 URL을 설정합니다. API 키는 환경변수에서 가져오는 것을 권장합니다."
+    }
+  ]);
+
+  const addQuickStartItem = () => {
+    setQuickStartItems([...quickStartItems, {
+      id: `qs${Date.now()}`,
+      title: 'New Step',
+      codeLanguage: 'BASH',
+      code: '',
+      description: ''
+    }]);
+  };
+
+  const removeQuickStartItem = (id: string) => {
+    setQuickStartItems(quickStartItems.filter(item => item.id !== id));
+  };
+
+  const updateQuickStartItem = (id: string, field: string, value: string) => {
+    setQuickStartItems(quickStartItems.map(item =>
+      item.id === id ? { ...item, [field]: value } : item
+    ));
+  };
 
   // API Definitions State
   const [apiDefinitions, setApiDefinitions] = useState([
@@ -741,60 +771,70 @@ const client = new EMDataClient({
                 <Terminal className="h-5 w-5" />
                 Quick Start Guide
               </h3>
-              <Badge variant="outline">{detailsData.version || "v1.0.0"}</Badge>
-            </div>
-
-            {/* Step 1: Installation - Editable */}
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-sm">1</div>
-                <h4 className="font-bold">Installation</h4>
-              </div>
-              <div className="space-y-2 mb-4">
-                <Label className="text-xs text-muted-foreground">Installation Code (BASH)</Label>
-                <Textarea 
-                  value={quickStartGuide.installationCode}
-                  onChange={(e) => setQuickStartGuide({...quickStartGuide, installationCode: e.target.value})}
-                  className="font-mono text-sm bg-slate-900 text-slate-50 border-slate-700 min-h-[100px]"
-                  placeholder="# Enter installation commands..."
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Description</Label>
-                <Textarea 
-                  value={quickStartGuide.installationDescription}
-                  onChange={(e) => setQuickStartGuide({...quickStartGuide, installationDescription: e.target.value})}
-                  className="text-sm bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800 min-h-[60px]"
-                  placeholder="Enter description for installation..."
-                />
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={addQuickStartItem} className="gap-1">
+                  <Plus className="h-4 w-4" /> Add Step
+                </Button>
+                <Badge variant="outline">{detailsData.version || "v1.0.0"}</Badge>
               </div>
             </div>
 
-            {/* Step 2: Integration - Editable */}
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-8 w-8 rounded-full bg-yellow-100 dark:bg-yellow-900/50 flex items-center justify-center text-yellow-600 dark:text-yellow-400 font-bold text-sm">2</div>
-                <h4 className="font-bold">JavaScript / Node.js Integration</h4>
-              </div>
-              <div className="space-y-2 mb-4">
-                <Label className="text-xs text-muted-foreground">Integration Code (JavaScript)</Label>
-                <Textarea 
-                  value={quickStartGuide.integrationCode}
-                  onChange={(e) => setQuickStartGuide({...quickStartGuide, integrationCode: e.target.value})}
-                  className="font-mono text-sm bg-slate-900 text-slate-50 border-slate-700 min-h-[150px]"
-                  placeholder="// Enter integration code..."
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Description</Label>
-                <Textarea 
-                  value={quickStartGuide.integrationDescription}
-                  onChange={(e) => setQuickStartGuide({...quickStartGuide, integrationDescription: e.target.value})}
-                  className="text-sm bg-yellow-50 dark:bg-yellow-900/20 border-yellow-100 dark:border-yellow-800 min-h-[60px]"
-                  placeholder="Enter description for integration..."
-                />
-              </div>
-            </div>
+            {/* Dynamic Quick Start Items */}
+            {quickStartItems.map((item, index) => {
+              const colors = [
+                { bg: 'bg-indigo-100', text: 'text-indigo-600' },
+                { bg: 'bg-yellow-100', text: 'text-yellow-600' },
+                { bg: 'bg-green-100', text: 'text-green-600' },
+                { bg: 'bg-blue-100', text: 'text-blue-600' },
+                { bg: 'bg-purple-100', text: 'text-purple-600' },
+              ];
+              const color = colors[index % colors.length];
+              
+              return (
+                <div key={item.id} className="rounded-xl border border-slate-200 bg-slate-100 p-6 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className={`h-8 w-8 rounded-full ${color.bg} flex items-center justify-center ${color.text} font-bold text-sm shrink-0`}>{index + 1}</div>
+                      <Input
+                        value={item.title}
+                        onChange={(e) => updateQuickStartItem(item.id, 'title', e.target.value)}
+                        className="font-bold bg-white border-slate-300"
+                        placeholder="Step title..."
+                      />
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => removeQuickStartItem(item.id)} className="text-slate-400 hover:text-red-400 h-8 w-8 ml-2">
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-xs text-slate-500">Code Language:</Label>
+                      <Input
+                        value={item.codeLanguage}
+                        onChange={(e) => updateQuickStartItem(item.id, 'codeLanguage', e.target.value.toUpperCase())}
+                        className="h-7 text-xs w-24 bg-white border-slate-300"
+                        placeholder="BASH"
+                      />
+                    </div>
+                    <Textarea 
+                      value={item.code}
+                      onChange={(e) => updateQuickStartItem(item.id, 'code', e.target.value)}
+                      className="font-mono text-sm bg-slate-900 text-slate-50 border-slate-700 min-h-[100px]"
+                      placeholder="# Code..."
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs text-slate-500">Description</Label>
+                    <Textarea 
+                      value={item.description}
+                      onChange={(e) => updateQuickStartItem(item.id, 'description', e.target.value)}
+                      className="text-sm bg-white border-slate-300 min-h-[60px]"
+                      placeholder="Step description..."
+                    />
+                  </div>
+                </div>
+              );
+            })}
 
             {/* API Definitions Section - Editable */}
             <div className="space-y-4">
