@@ -2167,10 +2167,10 @@ export default function MyPage() {
 
                           <div className="space-y-3">
                             <Label className="font-semibold text-sm">Service Logo <span className="text-red-500">*</span></Label>
-                            <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900/80 transition-colors cursor-pointer">
+                            <div className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-6 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer">
                               <div className="flex items-center gap-4">
-                                <div className="h-16 w-16 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                                  <Camera className="h-6 w-6 text-slate-400" />
+                                <div className="h-16 w-16 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center">
+                                  <Upload className="h-6 w-6 text-slate-400" />
                                 </div>
                                 <div>
                                   <p className="font-medium text-sm">Click to upload service logo</p>
@@ -2237,7 +2237,7 @@ export default function MyPage() {
 
                           <div className="space-y-3">
                             <Label className="font-semibold text-sm">Featured Image</Label>
-                            <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-8 text-center bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900/80 transition-colors cursor-pointer mb-4">
+                            <div className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-8 text-center bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer mb-4">
                               <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
                               <p className="text-sm font-medium">Click to upload or drag and drop</p>
                               <p className="text-xs text-muted-foreground">SVG, PNG, JPG (max. 800×400px)</p>

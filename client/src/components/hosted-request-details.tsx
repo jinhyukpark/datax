@@ -290,7 +290,7 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
           
           {/* Section 1: Basic Information */}
           <div className="space-y-6">
-                <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                <div className="flex items-center gap-4 pb-4 border-b border-slate-300 dark:border-slate-700">
                   <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
                   <div>
                     <h2 className="text-lg font-bold">Basic Information</h2>
@@ -348,8 +348,8 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
               </div>
 
               {/* Contact Information Subsection */}
-              <div className="mt-4 pt-6 border-t border-slate-100 dark:border-slate-800">
-                <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+              <div className="mt-4 pt-6 border-t border-slate-300 dark:border-slate-700">
+                <div className="bg-slate-100 dark:bg-slate-800/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
                     <div className="flex items-center gap-2 mb-4">
                         <ShieldCheck className="h-4 w-4 text-blue-500" />
                         <h3 className="font-semibold text-sm">Contact Information</h3>
@@ -401,7 +401,7 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
 
           {/* Section 2: Social Presence */}
           <div className="space-y-6">
-            <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+            <div className="flex items-center gap-4 pb-4 border-b border-slate-300 dark:border-slate-700">
               <div className="h-8 w-8 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center font-bold text-sm">2</div>
               <div>
                 <h2 className="text-lg font-bold">Social Presence</h2>
@@ -409,33 +409,35 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label className="font-semibold text-sm">LinkedIn URL</Label>
-                <Input value={detailsData.linkedinUrl} onChange={(e) => handleDetailsChange('linkedinUrl', e.target.value)} placeholder="https://linkedin.com/in/..." className="h-10" />
-              </div>
-              <div className="space-y-2">
-                <Label className="font-semibold text-sm">Twitter URL</Label>
-                <Input value={detailsData.twitterUrl} onChange={(e) => handleDetailsChange('twitterUrl', e.target.value)} placeholder="https://twitter.com/..." className="h-10" />
-              </div>
-              <div className="space-y-2">
-                <Label className="font-semibold text-sm">GitHub URL</Label>
-                <Input value={detailsData.githubUrl} onChange={(e) => handleDetailsChange('githubUrl', e.target.value)} placeholder="https://github.com/..." className="h-10" />
-              </div>
-              <div className="space-y-2">
-                <Label className="font-semibold text-sm">Discord URL</Label>
-                <Input value={detailsData.discordUrl} onChange={(e) => handleDetailsChange('discordUrl', e.target.value)} placeholder="https://discord.gg/..." className="h-10" />
-              </div>
-              <div className="space-y-2 md:col-span-2">
-                <Label className="font-semibold text-sm">Telegram URL</Label>
-                <Input value={detailsData.telegramUrl} onChange={(e) => handleDetailsChange('telegramUrl', e.target.value)} placeholder="https://t.me/..." className="h-10" />
+            <div className="bg-slate-100 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="font-semibold text-sm">LinkedIn URL</Label>
+                  <Input value={detailsData.linkedinUrl} onChange={(e) => handleDetailsChange('linkedinUrl', e.target.value)} placeholder="https://linkedin.com/in/..." className="h-10 bg-white dark:bg-slate-900" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="font-semibold text-sm">Twitter URL</Label>
+                  <Input value={detailsData.twitterUrl} onChange={(e) => handleDetailsChange('twitterUrl', e.target.value)} placeholder="https://twitter.com/..." className="h-10 bg-white dark:bg-slate-900" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="font-semibold text-sm">GitHub URL</Label>
+                  <Input value={detailsData.githubUrl} onChange={(e) => handleDetailsChange('githubUrl', e.target.value)} placeholder="https://github.com/..." className="h-10 bg-white dark:bg-slate-900" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="font-semibold text-sm">Discord URL</Label>
+                  <Input value={detailsData.discordUrl} onChange={(e) => handleDetailsChange('discordUrl', e.target.value)} placeholder="https://discord.gg/..." className="h-10 bg-white dark:bg-slate-900" />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label className="font-semibold text-sm">Telegram URL</Label>
+                  <Input value={detailsData.telegramUrl} onChange={(e) => handleDetailsChange('telegramUrl', e.target.value)} placeholder="https://t.me/..." className="h-10 bg-white dark:bg-slate-900" />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Section 3: Classification */}
           <div className="space-y-6">
-            <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+            <div className="flex items-center gap-4 pb-4 border-b border-slate-300 dark:border-slate-700">
               <div className="h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 flex items-center justify-center font-bold text-sm">3</div>
               <div>
                 <h2 className="text-lg font-bold">Classification</h2>
@@ -443,7 +445,7 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
               </div>
             </div>
 
-            <div className="space-y-3 bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+            <div className="space-y-3 bg-slate-100 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
               <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Category <span className="text-red-500">*</span></Label>
               <RadioGroup value={detailsData.category.toLowerCase()} onValueChange={(val) => handleDetailsChange('category', val)} className="w-full">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-3">
@@ -461,7 +463,7 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+              <div className="space-y-2 bg-slate-100 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
                 <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Delivery Type <span className="text-red-500">*</span></Label>
                 <RadioGroup value={detailsData.accessModel.toLowerCase().replace(' ', '-')} onValueChange={(val) => handleDetailsChange('accessModel', val)} className="gap-2">
                   {["File", "API", "MCP", "AI Agent"].map((type) => (
@@ -473,7 +475,7 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
                 </RadioGroup>
               </div>
 
-              <div className="space-y-2 bg-slate-50 dark:bg-slate-900/30 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+              <div className="space-y-2 bg-slate-100 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
                 <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Pricing <span className="text-red-500">*</span></Label>
                 <RadioGroup value={detailsData.price.toLowerCase()} onValueChange={(val) => handleDetailsChange('price', val === 'free' ? 'Free' : 'Paid')} className="gap-2">
                   {["Free", "Paid"].map((p) => (
@@ -527,7 +529,7 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
 
           {/* Section 4: Details & Assets */}
           <div className="space-y-6">
-            <div className="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+            <div className="flex items-center gap-4 pb-4 border-b border-slate-300 dark:border-slate-700">
               <div className="h-8 w-8 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 flex items-center justify-center font-bold text-sm">4</div>
               <div>
                 <h2 className="text-lg font-bold">Details & Assets</h2>
@@ -537,9 +539,9 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
 
             <div className="space-y-3">
               <Label className="font-semibold text-sm">Agent Logo <span className="text-red-500">*</span></Label>
-              <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900/80 transition-colors cursor-pointer">
+              <div className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-6 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer">
                 <div className="flex items-center gap-4">
-                  <div className="h-16 w-16 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                  <div className="h-16 w-16 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center">
                     <Upload className="h-6 w-6 text-slate-400" />
                   </div>
                   <div>
@@ -551,92 +553,94 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
               </div>
             </div>
 
-            <div className="space-y-3">
-              <Label className="flex justify-between font-semibold text-sm">
-                <span>Tagline <span className="text-red-500">*</span></span>
-                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{detailsData.tagline.length}/100</span>
-              </Label>
-              <Input value={detailsData.tagline} onChange={(e) => handleDetailsChange('tagline', e.target.value)} placeholder="A catchy one-liner for your AI Agent card" className="h-10" />
-            </div>
-
-            <div className="space-y-3">
-              <Label className="flex justify-between font-semibold text-sm">
-                <span>Description <span className="text-red-500">*</span></span>
-                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{detailsData.longDescription.length}/750</span>
-              </Label>
-              <Textarea value={detailsData.longDescription} onChange={(e) => handleDetailsChange('longDescription', e.target.value)} placeholder="Describe your AI Agent in detail. What problem does it solve? Who is it for?" className="min-h-[100px] resize-y" />
-            </div>
-
-            <div className="space-y-3">
-                <Label className="font-semibold text-sm">Tags</Label>
-                <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="h-8 rounded-full border-dashed border-slate-300 text-slate-500 hover:text-slate-700 hover:border-slate-400">
-                        <Plus className="h-3 w-3 mr-1" /> New Tag
-                    </Button>
-                </div>
-            </div>
-
-            <div className="space-y-3">
-              <Label className="flex justify-between font-semibold text-sm">
-                <span>Key Features</span>
-                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{detailsData.features.length}/5</span>
-              </Label>
-              <div className="space-y-2">
-                {detailsData.features.map((feature, i) => (
-                  <div key={i} className="flex gap-2">
-                    <Input value={feature} onChange={(e) => updateFeature(i, e.target.value)} placeholder={`Feature ${i + 1}`} className="h-10" />
-                  </div>
-                ))}
-              </div>
-              {detailsData.features.length < 5 && (
-                <div onClick={addFeature} className="mt-2 w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg h-10 flex items-center justify-center text-sm text-muted-foreground cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all">
-                  <Plus className="h-4 w-4 mr-2" /> Add Feature
-                </div>
-              )}
-              <p className="text-[10px] text-muted-foreground">Add up to 5 key features of your AI Agent.</p>
-            </div>
-
-            <div className="space-y-3">
-              <Label className="flex justify-between font-semibold text-sm">
-                <span>Use Cases</span>
-                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{detailsData.useCases.length}/5</span>
-              </Label>
+            <div className="bg-slate-100 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-4">
               <div className="space-y-3">
-                {detailsData.useCases.map((useCase, i) => (
-                  <div key={i} className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 space-y-2 bg-slate-50/50 dark:bg-slate-900/50">
-                    <Input value={useCase.title} onChange={(e) => updateUseCase(i, 'title', e.target.value)} placeholder={`Use Case Title ${i + 1}`} className="h-10 font-medium" />
-                    <Textarea value={useCase.content} onChange={(e) => updateUseCase(i, 'content', e.target.value)} placeholder="Describe this use case..." className="min-h-[60px]" />
-                  </div>
-                ))}
+                <Label className="flex justify-between font-semibold text-sm">
+                  <span>Tagline <span className="text-red-500">*</span></span>
+                  <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{detailsData.tagline.length}/100</span>
+                </Label>
+                <Input value={detailsData.tagline} onChange={(e) => handleDetailsChange('tagline', e.target.value)} placeholder="A catchy one-liner for your AI Agent card" className="h-10 bg-white dark:bg-slate-900" />
               </div>
-              {detailsData.useCases.length < 5 && (
-                <div onClick={addUseCase} className="mt-2 w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg h-10 flex items-center justify-center text-sm text-muted-foreground cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all">
-                  <Plus className="h-4 w-4 mr-2" /> Add Use Case
+
+              <div className="space-y-3">
+                <Label className="flex justify-between font-semibold text-sm">
+                  <span>Description <span className="text-red-500">*</span></span>
+                  <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{detailsData.longDescription.length}/750</span>
+                </Label>
+                <Textarea value={detailsData.longDescription} onChange={(e) => handleDetailsChange('longDescription', e.target.value)} placeholder="Describe your AI Agent in detail. What problem does it solve? Who is it for?" className="min-h-[100px] resize-y bg-white dark:bg-slate-900" />
+              </div>
+
+              <div className="space-y-3">
+                <Label className="font-semibold text-sm">Tags</Label>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Button variant="outline" size="sm" className="h-8 rounded-full border-dashed border-slate-300 text-slate-500 hover:text-slate-700 hover:border-slate-400 bg-white dark:bg-slate-900">
+                    <Plus className="h-3 w-3 mr-1" /> New Tag
+                  </Button>
                 </div>
-              )}
+              </div>
+
+              <div className="space-y-3">
+                <Label className="flex justify-between font-semibold text-sm">
+                  <span>Key Features</span>
+                  <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{detailsData.features.length}/5</span>
+                </Label>
+                <div className="space-y-2">
+                  {detailsData.features.map((feature, i) => (
+                    <div key={i} className="flex gap-2">
+                      <Input value={feature} onChange={(e) => updateFeature(i, e.target.value)} placeholder={`Feature ${i + 1}`} className="h-10 bg-white dark:bg-slate-900" />
+                    </div>
+                  ))}
+                </div>
+                {detailsData.features.length < 5 && (
+                  <div onClick={addFeature} className="mt-2 w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg h-10 flex items-center justify-center text-sm text-muted-foreground cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-white dark:hover:bg-slate-900 transition-all bg-white dark:bg-slate-900">
+                    <Plus className="h-4 w-4 mr-2" /> Add Feature
+                  </div>
+                )}
+                <p className="text-[10px] text-muted-foreground">Add up to 5 key features of your AI Agent.</p>
+              </div>
+
+              <div className="space-y-3">
+                <Label className="flex justify-between font-semibold text-sm">
+                  <span>Use Cases</span>
+                  <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{detailsData.useCases.length}/5</span>
+                </Label>
+                <div className="space-y-3">
+                  {detailsData.useCases.map((useCase, i) => (
+                    <div key={i} className="p-4 rounded-lg border border-slate-200 dark:border-slate-700 space-y-2 bg-white dark:bg-slate-900">
+                      <Input value={useCase.title} onChange={(e) => updateUseCase(i, 'title', e.target.value)} placeholder={`Use Case Title ${i + 1}`} className="h-10 font-medium bg-white dark:bg-slate-900" />
+                      <Textarea value={useCase.content} onChange={(e) => updateUseCase(i, 'content', e.target.value)} placeholder="Describe this use case..." className="min-h-[60px] bg-white dark:bg-slate-900" />
+                    </div>
+                  ))}
+                </div>
+                {detailsData.useCases.length < 5 && (
+                  <div onClick={addUseCase} className="mt-2 w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg h-10 flex items-center justify-center text-sm text-muted-foreground cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-white dark:hover:bg-slate-900 transition-all bg-white dark:bg-slate-900">
+                    <Plus className="h-4 w-4 mr-2" /> Add Use Case
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="space-y-3">
-                <Label className="font-semibold text-sm">Featured Image</Label>
-                <div className="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-8 text-center bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900/80 transition-colors cursor-pointer mb-4">
-                    <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
-                    <p className="text-sm font-medium">Click to upload or drag and drop</p>
-                    <p className="text-xs text-muted-foreground">SVG, PNG, JPG (max. 800×400px)</p>
-                </div>
-                
-                <div className="space-y-2">
-                    {detailsData.featuredImages.map((img, i) => (
-                        <div key={i} className="flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
-                            <div className="flex items-center gap-2 overflow-hidden">
-                                <Paperclip className="h-4 w-4 text-slate-400 flex-shrink-0" />
-                                <span className="text-sm text-slate-600 dark:text-slate-300 truncate">{img}</span>
-                            </div>
-                            <Button variant="ghost" size="icon" onClick={() => removeImage(i)} className="h-8 w-8 text-muted-foreground hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <Trash2 className="h-4 w-4" />
-                            </Button>
-                        </div>
-                    ))}
-                </div>
+              <Label className="font-semibold text-sm">Featured Image</Label>
+              <div className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-8 text-center bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer mb-4">
+                <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                <p className="text-sm font-medium">Click to upload or drag and drop</p>
+                <p className="text-xs text-muted-foreground">SVG, PNG, JPG (max. 800×400px)</p>
+              </div>
+              
+              <div className="space-y-2">
+                {detailsData.featuredImages.map((img, i) => (
+                  <div key={i} className="flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
+                    <div className="flex items-center gap-2 overflow-hidden">
+                      <Paperclip className="h-4 w-4 text-slate-400 flex-shrink-0" />
+                      <span className="text-sm text-slate-600 dark:text-slate-300 truncate">{img}</span>
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => removeImage(i)} className="h-8 w-8 text-muted-foreground hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </TabsContent>
