@@ -2044,26 +2044,28 @@ export default function MyPage() {
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label className="font-semibold text-sm">LinkedIn URL</Label>
-                              <Input placeholder="https://linkedin.com/in/..." className="h-10" />
-                            </div>
-                            <div className="space-y-2">
-                              <Label className="font-semibold text-sm">Twitter URL</Label>
-                              <Input placeholder="https://twitter.com/..." className="h-10" />
-                            </div>
-                            <div className="space-y-2">
-                              <Label className="font-semibold text-sm">GitHub URL</Label>
-                              <Input placeholder="https://github.com/..." className="h-10" />
-                            </div>
-                            <div className="space-y-2">
-                              <Label className="font-semibold text-sm">Discord URL</Label>
-                              <Input placeholder="https://discord.gg/..." className="h-10" />
-                            </div>
-                            <div className="space-y-2 md:col-span-2">
-                              <Label className="font-semibold text-sm">Telegram URL</Label>
-                              <Input placeholder="https://t.me/..." className="h-10" />
+                          <div className="bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <Label className="font-semibold text-sm">LinkedIn URL</Label>
+                                <Input placeholder="https://linkedin.com/in/..." className="h-10 bg-white dark:bg-slate-900" />
+                              </div>
+                              <div className="space-y-2">
+                                <Label className="font-semibold text-sm">Twitter URL</Label>
+                                <Input placeholder="https://twitter.com/..." className="h-10 bg-white dark:bg-slate-900" />
+                              </div>
+                              <div className="space-y-2">
+                                <Label className="font-semibold text-sm">GitHub URL</Label>
+                                <Input placeholder="https://github.com/..." className="h-10 bg-white dark:bg-slate-900" />
+                              </div>
+                              <div className="space-y-2">
+                                <Label className="font-semibold text-sm">Discord URL</Label>
+                                <Input placeholder="https://discord.gg/..." className="h-10 bg-white dark:bg-slate-900" />
+                              </div>
+                              <div className="space-y-2 md:col-span-2">
+                                <Label className="font-semibold text-sm">Telegram URL</Label>
+                                <Input placeholder="https://t.me/..." className="h-10 bg-white dark:bg-slate-900" />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -2145,55 +2147,57 @@ export default function MyPage() {
                             </div>
                           </div>
 
-                          <div className="space-y-3">
-                            <Label className="flex justify-between font-semibold text-sm">
-                              <span>Tagline <span className="text-red-500">*</span></span>
-                              <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{(editingPlatform?.tagline || "").length}/100</span>
-                            </Label>
-                            <Input value={editingPlatform?.tagline || ""} placeholder="A catchy one-liner for your service card" className="h-10" />
-                          </div>
-
-                          <div className="space-y-3">
-                            <Label className="flex justify-between font-semibold text-sm">
-                              <span>Description <span className="text-red-500">*</span></span>
-                              <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{(editingPlatform?.description || "").length}/750</span>
-                            </Label>
-                            <Textarea value={editingPlatform?.description || ""} placeholder="Describe your service in detail. What problem does it solve? Who is it for?" className="min-h-[100px] resize-y" />
-                          </div>
-
-                          <div className="space-y-3">
-                            <Label className="font-semibold text-sm">Tags</Label>
-                            <div className="flex items-center gap-2 flex-wrap">
-                              {editingPlatform?.tags?.map((tag: string, i: number) => (
-                                <span key={i} className="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm">#{tag}</span>
-                              ))}
-                              <Button variant="outline" size="sm" className="h-8 rounded-full border-dashed border-slate-300 text-slate-500 hover:text-slate-700 hover:border-slate-400">
-                                <Plus className="h-3 w-3 mr-1" /> New Tag
-                              </Button>
+                          <div className="bg-slate-50 dark:bg-slate-900/30 p-4 rounded-xl border border-slate-100 dark:border-slate-800 space-y-4">
+                            <div className="space-y-3">
+                              <Label className="flex justify-between font-semibold text-sm">
+                                <span>Tagline <span className="text-red-500">*</span></span>
+                                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{(editingPlatform?.tagline || "").length}/100</span>
+                              </Label>
+                              <Input value={editingPlatform?.tagline || ""} placeholder="A catchy one-liner for your service card" className="h-10 bg-white dark:bg-slate-900" />
                             </div>
-                          </div>
 
-                          <div className="space-y-3">
-                            <Label className="flex justify-between font-semibold text-sm">
-                              <span>Key Features</span>
-                              <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/5</span>
-                            </Label>
-                            <div className="space-y-2">
-                              <Input placeholder="Feature 1" className="h-10" />
+                            <div className="space-y-3">
+                              <Label className="flex justify-between font-semibold text-sm">
+                                <span>Description <span className="text-red-500">*</span></span>
+                                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">{(editingPlatform?.description || "").length}/750</span>
+                              </Label>
+                              <Textarea value={editingPlatform?.description || ""} placeholder="Describe your service in detail. What problem does it solve? Who is it for?" className="min-h-[100px] resize-y bg-white dark:bg-slate-900" />
                             </div>
-                            <div className="mt-2 w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg h-10 flex items-center justify-center text-sm text-muted-foreground cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all">
-                              <Plus className="h-4 w-4 mr-2" /> Add Feature
-                            </div>
-                            <p className="text-[10px] text-muted-foreground">Add up to 5 key features of your service.</p>
-                          </div>
 
-                          <div className="space-y-3">
-                            <Label className="flex justify-between font-semibold text-sm">
-                              <span>Use Cases</span>
-                              <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/5</span>
-                            </Label>
-                            <div className="mt-2 w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg h-10 flex items-center justify-center text-sm text-muted-foreground cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all">
-                              <Plus className="h-4 w-4 mr-2" /> Add Use Case
+                            <div className="space-y-3">
+                              <Label className="font-semibold text-sm">Tags</Label>
+                              <div className="flex items-center gap-2 flex-wrap">
+                                {editingPlatform?.tags?.map((tag: string, i: number) => (
+                                  <span key={i} className="px-3 py-1 bg-white dark:bg-slate-800 rounded-full text-sm border border-slate-200 dark:border-slate-700">#{tag}</span>
+                                ))}
+                                <Button variant="outline" size="sm" className="h-8 rounded-full border-dashed border-slate-300 text-slate-500 hover:text-slate-700 hover:border-slate-400 bg-white dark:bg-slate-900">
+                                  <Plus className="h-3 w-3 mr-1" /> New Tag
+                                </Button>
+                              </div>
+                            </div>
+
+                            <div className="space-y-3">
+                              <Label className="flex justify-between font-semibold text-sm">
+                                <span>Key Features</span>
+                                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/5</span>
+                              </Label>
+                              <div className="space-y-2">
+                                <Input placeholder="Feature 1" className="h-10 bg-white dark:bg-slate-900" />
+                              </div>
+                              <div className="mt-2 w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg h-10 flex items-center justify-center text-sm text-muted-foreground cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-white dark:hover:bg-slate-900 transition-all bg-white dark:bg-slate-900">
+                                <Plus className="h-4 w-4 mr-2" /> Add Feature
+                              </div>
+                              <p className="text-[10px] text-muted-foreground">Add up to 5 key features of your service.</p>
+                            </div>
+
+                            <div className="space-y-3">
+                              <Label className="flex justify-between font-semibold text-sm">
+                                <span>Use Cases</span>
+                                <span className="text-[10px] text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">0/5</span>
+                              </Label>
+                              <div className="mt-2 w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg h-10 flex items-center justify-center text-sm text-muted-foreground cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-white dark:hover:bg-slate-900 transition-all bg-white dark:bg-slate-900">
+                                <Plus className="h-4 w-4 mr-2" /> Add Use Case
+                              </div>
                             </div>
                           </div>
 
