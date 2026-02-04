@@ -20,6 +20,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Resource } from "@/lib/data";
@@ -183,6 +184,15 @@ const client = new EMDataClient({
       api.id === apiId ? { ...api, parameters: api.parameters.map((p, i) => i === paramIndex ? value : p) } : api
     ));
   };
+
+  // Full Documentation State
+  const [fullDocEnabled, setFullDocEnabled] = useState(true);
+  const [fullDocData, setFullDocData] = useState({
+    description: "For complete API reference, guides, and tutorials, please visit our documentation portal.",
+    buttonText: "View Documentation",
+    url: ""
+  });
+  const [docPreviewOpen, setDocPreviewOpen] = useState(false);
 
   const addPlan = () => {
     const newId = `p${Date.now()}`;
@@ -2508,21 +2518,155 @@ const client = new EMDataClient({
                           ))}
                         </div>
                         
-                        {/* Step 3: Full Documentation */}
-                        <div className="rounded-xl border border-slate-200 bg-slate-100 p-6">
-                          <div className="flex items-center gap-3 mb-4">
-                            <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">3</div>
-                            <h4 className="font-bold">Full Documentation</h4>
+                        {/* Full Documentation Section with Toggle */}
+                        <div className="rounded-xl border border-slate-200 bg-slate-100 p-6 space-y-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">{linkedQuickStartItems.length + 1}</div>
+                              <h4 className="font-bold">Full Documentation</h4>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Label className="text-xs text-slate-500">Enable</Label>
+                              <Switch checked={fullDocEnabled} onCheckedChange={setFullDocEnabled} />
+                            </div>
                           </div>
-                          <p className="text-sm text-muted-foreground mb-4">
-                            For complete API reference, guides, and tutorials, please visit our documentation portal.
-                          </p>
-                          <Button variant="outline" className="gap-2" onClick={() => window.open(editingPlatform?.docsUrl || "#", "_blank")}>
-                            View Documentation <ArrowRight className="h-4 w-4" />
+                          
+                          {fullDocEnabled && (
+                            <div className="space-y-4 pt-2">
+                              <div className="space-y-2">
+                                <Label className="text-xs text-slate-500">Description</Label>
+                                <Textarea
+                                  value={fullDocData.description}
+                                  onChange={(e) => setFullDocData(prev => ({ ...prev, description: e.target.value }))}
+                                  className="text-sm bg-white border-slate-300 min-h-[60px]"
+                                  placeholder="Documentation description..."
+                                />
+                              </div>
+                              <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                  <Label className="text-xs text-slate-500">Button Text</Label>
+                                  <Input
+                                    value={fullDocData.buttonText}
+                                    onChange={(e) => setFullDocData(prev => ({ ...prev, buttonText: e.target.value }))}
+                                    className="bg-white border-slate-300"
+                                    placeholder="View Documentation"
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-xs text-slate-500">Documentation URL</Label>
+                                  <Input
+                                    value={fullDocData.url}
+                                    onChange={(e) => setFullDocData(prev => ({ ...prev, url: e.target.value }))}
+                                    className="bg-white border-slate-300"
+                                    placeholder="https://docs.example.com"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* Preview Button */}
+                        <div className="flex justify-center pt-4">
+                          <Button variant="outline" onClick={() => setDocPreviewOpen(true)} className="gap-2">
+                            <Eye className="h-4 w-4" /> Preview Documentation
                           </Button>
                         </div>
                       </div>
                     </ScrollArea>
+                    
+                    {/* Documentation Preview Dialog */}
+                    <Dialog open={docPreviewOpen} onOpenChange={setDocPreviewOpen}>
+                      <DialogContent className="max-w-4xl max-h-[85vh] overflow-hidden">
+                        <DialogHeader>
+                          <DialogTitle>Documentation Preview</DialogTitle>
+                        </DialogHeader>
+                        <ScrollArea className="h-[65vh] pr-4">
+                          <div className="space-y-6 py-4">
+                            <div className="flex items-center justify-between">
+                              <h3 className="text-xl font-bold flex items-center gap-2">
+                                <Terminal className="h-5 w-5" />
+                                Quick Start Guide
+                              </h3>
+                              <Badge variant="outline">v1.0.0</Badge>
+                            </div>
+
+                            {/* Preview Quick Start Items */}
+                            {linkedQuickStartItems.map((item, index) => {
+                              const colors = [
+                                { bg: 'bg-indigo-100', text: 'text-indigo-600', descBg: 'bg-blue-50', descBorder: 'border-blue-100', descText: 'text-blue-700' },
+                                { bg: 'bg-yellow-100', text: 'text-yellow-600', descBg: 'bg-yellow-50', descBorder: 'border-yellow-100', descText: 'text-yellow-700' },
+                                { bg: 'bg-green-100', text: 'text-green-600', descBg: 'bg-green-50', descBorder: 'border-green-100', descText: 'text-green-700' },
+                                { bg: 'bg-blue-100', text: 'text-blue-600', descBg: 'bg-blue-50', descBorder: 'border-blue-100', descText: 'text-blue-700' },
+                                { bg: 'bg-purple-100', text: 'text-purple-600', descBg: 'bg-purple-50', descBorder: 'border-purple-100', descText: 'text-purple-700' },
+                              ];
+                              const color = colors[index % colors.length];
+                              
+                              return (
+                                <div key={item.id} className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+                                  <div className="flex items-center gap-3 mb-4">
+                                    <div className={`h-8 w-8 rounded-full ${color.bg} flex items-center justify-center ${color.text} font-bold text-sm`}>{index + 1}</div>
+                                    <h4 className="font-bold">{item.title}</h4>
+                                  </div>
+                                  <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
+                                    <div className="absolute right-4 top-4 text-xs text-slate-400">{item.codeLanguage}</div>
+                                    <pre className="whitespace-pre-wrap">{item.code}</pre>
+                                  </div>
+                                  {item.description && (
+                                    <div className={`mt-4 p-3 ${color.descBg} rounded-lg border ${color.descBorder}`}>
+                                      <p className={`text-sm ${color.descText}`}>{item.description}</p>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+
+                            {/* Preview API Definitions */}
+                            <div className="space-y-4">
+                              <h3 className="text-lg font-bold flex items-center gap-2">
+                                <Database className="h-5 w-5" />
+                                API Definitions
+                              </h3>
+                              {linkedApiDefinitions.map((api) => (
+                                <div key={api.id} className="rounded-xl border border-slate-200 bg-slate-900 p-6">
+                                  <h4 className="font-mono font-bold text-white mb-3">{api.name}</h4>
+                                  <div className="space-y-3">
+                                    <div className="flex gap-3">
+                                      <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
+                                      <span className="text-slate-300 text-sm">{api.description}</span>
+                                    </div>
+                                    {api.parameters.length > 0 && (
+                                      <div className="flex gap-3">
+                                        <span className="text-slate-400 text-sm w-16 shrink-0">파라미터</span>
+                                        <div className="flex flex-wrap gap-2">
+                                          {api.parameters.map((param, i) => (
+                                            <Badge key={i} variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">{param}</Badge>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Preview Full Documentation */}
+                            {fullDocEnabled && (
+                              <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+                                <div className="flex items-center gap-3 mb-4">
+                                  <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">{linkedQuickStartItems.length + 1}</div>
+                                  <h4 className="font-bold">Full Documentation</h4>
+                                </div>
+                                <p className="text-sm text-muted-foreground mb-4">{fullDocData.description}</p>
+                                <Button variant="outline" className="gap-2" onClick={() => fullDocData.url && window.open(fullDocData.url, "_blank")}>
+                                  {fullDocData.buttonText} <ArrowRight className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        </ScrollArea>
+                      </DialogContent>
+                    </Dialog>
                   </TabsContent>
 
                   <TabsContent value="pricing" className="mt-0">
