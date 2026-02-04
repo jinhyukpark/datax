@@ -895,19 +895,19 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
       </div>
 
       {isEditable && (
-        <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 shrink-0 flex justify-end gap-3 z-10">
-          <Button variant="outline" onClick={() => {}}>
+        <div className="px-8 py-6 border-t bg-slate-50/50 shrink-0 flex justify-end gap-3 z-10">
+          <Button variant="outline" onClick={() => {}} className="rounded-xl px-6">
             Cancel
           </Button>
-          <Button onClick={handleUpdate} disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button onClick={handleUpdate} disabled={isSubmitting} className="bg-indigo-600 hover:bg-indigo-700 rounded-xl px-10 gap-2 font-bold shadow-lg shadow-indigo-500/20">
             {isSubmitting ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
                 Updating...
               </>
             ) : (
               <>
-                Submit Agent
+                <CreditCard className="h-4 w-4" /> Save Changes
               </>
             )}
           </Button>
