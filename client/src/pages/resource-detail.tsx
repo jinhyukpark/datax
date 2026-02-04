@@ -326,6 +326,43 @@ export default function ResourceDetail() {
               </TabsList>
 
               <TabsContent value="overview" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                {/* MCP Sample Prompts Section */}
+                {resource.type === "Agent" && (
+                  <div className="not-prose mb-8">
+                    <div className="rounded-2xl bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/40 dark:via-purple-950/40 dark:to-pink-950/40 border border-indigo-100 dark:border-indigo-900/50 p-6 shadow-sm">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-md">
+                          <MessageSquare className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">{t("Try asking...", "이렇게 물어보세요...")}</h3>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">{t("Example conversations with this MCP", "이 MCP와의 대화 예시")}</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {(language === '한국어' && resource.samplePromptsKo ? resource.samplePromptsKo : resource.samplePrompts || [
+                          t("How can you help me?", "어떻게 도와줄 수 있어?"),
+                          t("What are your main capabilities?", "주요 기능이 뭐야?"),
+                          t("Show me an example", "예시를 보여줘"),
+                          t("Get started with a demo", "데모로 시작하기")
+                        ]).slice(0, 5).map((prompt, idx) => (
+                          <button
+                            key={idx}
+                            className="group flex items-center gap-3 p-4 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-700/50 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md transition-all text-left"
+                          >
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-colors">
+                              <span className="text-sm font-bold">{idx + 1}</span>
+                            </div>
+                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                              "{prompt}"
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <div className="prose prose-slate max-w-none dark:prose-invert">
                   <h3>About this resource</h3>
                   <p>

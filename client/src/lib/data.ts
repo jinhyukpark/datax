@@ -77,6 +77,8 @@ export interface Resource {
   servicePeriod?: string;
   licensePricing?: string;
   refundPolicy?: string;
+  samplePrompts?: string[];
+  samplePromptsKo?: string[];
 }
 
 export const RESOURCES: Resource[] = [
@@ -219,7 +221,19 @@ export const RESOURCES: Resource[] = [
     tags: ["Science", "Matching", "Press"],
     image: "abstract_atom_science_logo_icon",
     publishedDate: "2025-09-10",
-    views: 377
+    views: 377,
+    samplePrompts: [
+      "Find researchers specializing in renewable energy",
+      "Who are the top AI researchers in Korea?",
+      "Match me with experts in quantum computing",
+      "Show scientists working on climate change solutions"
+    ],
+    samplePromptsKo: [
+      "신재생 에너지 전문 연구자 찾아줘",
+      "한국의 AI 분야 최고 연구자는 누구야?",
+      "양자 컴퓨팅 전문가와 매칭해줘",
+      "기후변화 해결책을 연구하는 과학자를 보여줘"
+    ]
   },
   {
     id: "301",
@@ -233,7 +247,19 @@ export const RESOURCES: Resource[] = [
     tags: ["Science", "Research", "Summary"],
     image: "abstract_atom_science_logo_icon",
     publishedDate: "2025-10-01",
-    views: 210
+    views: 210,
+    samplePrompts: [
+      "Summarize this paper on machine learning",
+      "What are the key findings of this research?",
+      "Explain the methodology in simple terms",
+      "Compare this paper with related work"
+    ],
+    samplePromptsKo: [
+      "이 머신러닝 논문을 요약해줘",
+      "이 연구의 핵심 발견은 무엇이야?",
+      "방법론을 쉬운 말로 설명해줘",
+      "이 논문을 관련 연구와 비교해줘"
+    ]
   },
 
   // Growth
@@ -293,7 +319,19 @@ export const RESOURCES: Resource[] = [
     tags: ["Consulting", "Strategy", "Business"],
     image: "abstract_network_nodes_logo_icon",
     publishedDate: "2025-10-15",
-    views: 450
+    views: 450,
+    samplePrompts: [
+      "Analyze our competitive landscape",
+      "What growth strategies suit our business?",
+      "Help me create a 5-year business plan",
+      "Identify potential market opportunities"
+    ],
+    samplePromptsKo: [
+      "우리 경쟁 환경을 분석해줘",
+      "우리 비즈니스에 맞는 성장 전략은?",
+      "5개년 사업 계획 수립을 도와줘",
+      "잠재적인 시장 기회를 찾아줘"
+    ]
   },
 
   // Network
