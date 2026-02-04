@@ -19,6 +19,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Resource } from "@/lib/data";
 import { SubmitForm } from "@/components/submit-form";
@@ -2092,9 +2093,9 @@ export default function MyPage() {
 
                           <div className="space-y-3 bg-slate-100 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
                             <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">Category <span className="text-red-500">*</span></Label>
-                            <RadioGroup defaultValue={editingPlatform?.type?.toLowerCase() || "api"} className="w-full">
+                            <RadioGroup defaultValue={editingPlatform?.type?.toLowerCase() || "analysis"} className="w-full">
                               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-3">
-                                {["Analysis", "Patent", "Science", "Growth", "Network", "Market", "Other"].map((cat) => (
+                                {["Analysis", "News", "Finance", "Space", "Patent", "Science", "Equipment", "Energy", "Waste", "Growth", "Startup", "Transaction", "Oil", "Consulting", "Investment", "Power", "Network", "Innovation", "Materials", "Enterprise", "Ecosystem", "E-commerce", "Robot", "M&A", "R&D"].map((cat) => (
                                   <div key={cat} className="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors">
                                     <RadioGroupItem value={cat.toLowerCase()} id={`linked-cat-${cat.toLowerCase()}`} className="shrink-0" />
                                     <Label htmlFor={`linked-cat-${cat.toLowerCase()}`} className="font-medium text-sm cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis">{cat}</Label>
@@ -2102,6 +2103,9 @@ export default function MyPage() {
                                 ))}
                               </div>
                             </RadioGroup>
+                            <div className="mt-2">
+                              <Input placeholder="Enter custom category" className="h-10 bg-white dark:bg-slate-900" />
+                            </div>
                           </div>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2127,6 +2131,26 @@ export default function MyPage() {
                                   </div>
                                 ))}
                               </RadioGroup>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label className="font-semibold text-sm">License</Label>
+                              <Select defaultValue="commercial">
+                                <SelectTrigger className="h-10">
+                                  <SelectValue placeholder="Select license" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="commercial">Commercial</SelectItem>
+                                  <SelectItem value="open-source">Open Source</SelectItem>
+                                  <SelectItem value="mit">MIT</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="font-semibold text-sm">Version</Label>
+                              <Input placeholder="e.g., v2.4.1" className="h-10" />
                             </div>
                           </div>
                         </div>
