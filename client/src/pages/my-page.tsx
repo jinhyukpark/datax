@@ -2287,6 +2287,11 @@ export default function MyPage() {
                             <p className="text-slate-400"># Using pip (Python)</p>
                             <p className="mb-3">pip install em-data-sdk</p>
                           </div>
+                          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800">
+                            <p className="text-sm text-blue-700 dark:text-blue-300">
+                              SDK를 설치하면 API 클라이언트와 필요한 모든 의존성이 함께 설치됩니다. Node.js 18+ 또는 Python 3.8+ 환경이 필요합니다.
+                            </p>
+                          </div>
                         </div>
 
                         {/* Step 2: Usage */}
@@ -2304,6 +2309,77 @@ export default function MyPage() {
                             <p>&nbsp;&nbsp;apiKey: process.env.<span className="text-orange-400">EM_API_KEY</span>,</p>
                             <p>&nbsp;&nbsp;baseUrl: <span className="text-green-400">'{editingPlatform?.websiteUrl || "https://api.example.com"}'</span></p>
                             <p>{"}"});</p>
+                          </div>
+                          <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-100 dark:border-yellow-800">
+                            <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                              EMDataClient를 초기화할 때 API 키와 기본 URL을 설정합니다. API 키는 환경변수에서 가져오는 것을 권장합니다.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* API Definitions Section */}
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-bold flex items-center gap-2">
+                            <Database className="h-5 w-5" />
+                            API Definitions
+                          </h3>
+
+                          {/* API Function 1 */}
+                          <div className="rounded-xl border border-slate-200 bg-slate-900 p-6 dark:border-slate-700">
+                            <h4 className="font-mono font-bold text-white mb-3">get_genre_list</h4>
+                            <div className="space-y-3">
+                              <div className="flex gap-3">
+                                <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
+                                <span className="text-slate-300 text-sm">사용 가능한 모든 공연 장르 코드와 이름을 조회합니다. 연극, 뮤지컬, 무용, 클래식, 국악, 대중음악 등의 장르를 제공합니다.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* API Function 2 */}
+                          <div className="rounded-xl border border-slate-200 bg-slate-900 p-6 dark:border-slate-700">
+                            <h4 className="font-mono font-bold text-white mb-3">search_events_by_location</h4>
+                            <div className="space-y-3">
+                              <div className="flex gap-3">
+                                <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
+                                <span className="text-slate-300 text-sm">특정 지역과 기간의 공연을 검색합니다. 검색 결과가 없으면 자동으로 구/군 → 시/도 → 전국 순으로 범위를 확장합니다.</span>
+                              </div>
+                              <div className="flex gap-3">
+                                <span className="text-slate-400 text-sm w-16 shrink-0">파라미터</span>
+                                <div className="flex flex-wrap gap-2">
+                                  <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">genreCode: string</Badge>
+                                  <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">startDate: string</Badge>
+                                  <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">endDate: string</Badge>
+                                  <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">sidoCode: string</Badge>
+                                  <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">gugunCode: string</Badge>
+                                  <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">limit: number</Badge>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* API Function 3 */}
+                          <div className="rounded-xl border border-slate-200 bg-slate-900 p-6 dark:border-slate-700">
+                            <h4 className="font-mono font-bold text-white mb-3">filter_free_events</h4>
+                            <div className="space-y-3">
+                              <div className="flex gap-3">
+                                <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
+                                <div className="flex-1">
+                                  <span className="text-slate-300 text-sm">무료 공연을 우선 검색합니다 (항상 오늘부터 30일 이내). 무료 공연이 5개 미만이면 저렴한 유료 공연으로 자동 보충합니다.</span>
+                                  <span className="text-amber-400 text-xs ml-2">⚠️ startDate/endDate는 무시...</span>
+                                  <button className="text-blue-400 text-xs ml-2 hover:underline">더 보기</button>
+                                </div>
+                              </div>
+                              <div className="flex gap-3">
+                                <span className="text-slate-400 text-sm w-16 shrink-0">파라미터</span>
+                                <div className="flex flex-wrap gap-2">
+                                  <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">genreCode: string</Badge>
+                                  <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">startDate: string</Badge>
+                                  <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">endDate: string</Badge>
+                                  <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">sidoCode: string</Badge>
+                                  <Badge variant="secondary" className="bg-slate-800 text-slate-300 font-mono text-xs">limit: number</Badge>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         
