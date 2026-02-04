@@ -824,27 +824,21 @@ const client = new EMDataClient({
                   <div className="space-y-3">
                     <div className="flex gap-3">
                       <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
-                      <div className="flex-1 space-y-2">
+                      <div className="flex-1">
                         <Textarea 
-                          value={api.description}
-                          onChange={(e) => updateApiDefinition(api.id, 'description', e.target.value)}
-                          className="text-sm bg-slate-800 text-slate-300 border-slate-700 min-h-[60px]"
-                          placeholder="API 용도를 설명하세요..."
+                          value={api.description + (api.extendedDescription ? '\n' + api.extendedDescription : '')}
+                          onChange={(e) => {
+                            const lines = e.target.value.split('\n');
+                            const firstLine = lines[0] || '';
+                            const rest = lines.slice(1).join('\n');
+                            updateApiDefinition(api.id, 'description', firstLine);
+                            if (rest) {
+                              updateApiDefinition(api.id, 'extendedDescription', rest);
+                            }
+                          }}
+                          className="text-sm bg-slate-800 text-slate-300 border-slate-700 min-h-[80px]"
+                          placeholder="API 용도를 설명하세요... (긴 내용은 여러 줄로 작성)"
                         />
-                        {api.extendedDescription && (
-                          <Textarea 
-                            value={api.extendedDescription}
-                            onChange={(e) => updateApiDefinition(api.id, 'extendedDescription', e.target.value)}
-                            className="text-sm bg-slate-800 text-slate-300 border-slate-700 min-h-[60px]"
-                            placeholder="추가 설명 (더 보기 클릭 시 표시)..."
-                          />
-                        )}
-                        <button 
-                          onClick={() => updateApiDefinition(api.id, 'extendedDescription', api.extendedDescription ? '' : ' ')}
-                          className="text-blue-400 text-xs hover:underline"
-                        >
-                          {api.extendedDescription ? '확장 설명 제거' : '+ 확장 설명 추가'}
-                        </button>
                       </div>
                     </div>
                     <div className="flex gap-3">

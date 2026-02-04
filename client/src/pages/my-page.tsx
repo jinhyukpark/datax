@@ -2365,22 +2365,34 @@ export default function MyPage() {
                               <div className="flex gap-3">
                                 <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
                                 <div className="flex-1">
-                                  <span className="text-slate-300 text-sm">무료 공연을 우선 검색합니다 (항상 오늘부터 30일 이내). 무료 공연이 5개 미만이면 저렴한 유료 공연으로 자동 보충합니다.</span>
-                                  <br />
-                                  <span className="text-amber-400 text-sm">startDate/endDate는 무시...</span>
-                                  <button 
-                                    onClick={() => setExpandedApiDocs(prev => ({ ...prev, filter_free_events: !prev.filter_free_events }))}
-                                    className="text-blue-400 text-xs ml-2 hover:underline"
-                                  >
-                                    {expandedApiDocs.filter_free_events ? '접기' : '더 보기'}
-                                  </button>
-                                  {expandedApiDocs.filter_free_events && (
-                                    <div className="mt-3 p-3 bg-slate-800 rounded-lg text-slate-300 text-sm">
-                                      이 함수는 항상 오늘 날짜부터 30일 이내의 무료 공연만 검색하므로, startDate와 endDate 파라미터는 무시됩니다. 
-                                      검색 결과에서 무료 공연이 5개 미만인 경우, 자동으로 저렴한 유료 공연을 추가하여 최소 5개의 결과를 반환합니다.
-                                      genreCode와 sidoCode를 활용하여 원하는 장르와 지역으로 필터링할 수 있습니다.
-                                    </div>
-                                  )}
+                                  <span className="text-slate-300 text-sm">
+                                    무료 공연을 우선 검색합니다 (항상 오늘부터 30일 이내). 무료 공연이 5개 미만이면 저렴한 유료 공연으로 자동 보충합니다.
+                                    {!expandedApiDocs.filter_free_events && (
+                                      <>
+                                        {' '}
+                                        <span className="text-amber-400">startDate/endDate는 무시...</span>
+                                        <button 
+                                          onClick={() => setExpandedApiDocs(prev => ({ ...prev, filter_free_events: true }))}
+                                          className="text-blue-400 text-xs ml-1 hover:underline"
+                                        >
+                                          더 보기
+                                        </button>
+                                      </>
+                                    )}
+                                    {expandedApiDocs.filter_free_events && (
+                                      <>
+                                        {' '}이 함수는 항상 오늘 날짜부터 30일 이내의 무료 공연만 검색하므로, startDate와 endDate 파라미터는 무시됩니다. 
+                                        검색 결과에서 무료 공연이 5개 미만인 경우, 자동으로 저렴한 유료 공연을 추가하여 최소 5개의 결과를 반환합니다.
+                                        genreCode와 sidoCode를 활용하여 원하는 장르와 지역으로 필터링할 수 있습니다.
+                                        <button 
+                                          onClick={() => setExpandedApiDocs(prev => ({ ...prev, filter_free_events: false }))}
+                                          className="text-blue-400 text-xs ml-1 hover:underline"
+                                        >
+                                          접기
+                                        </button>
+                                      </>
+                                    )}
+                                  </span>
                                 </div>
                               </div>
                               <div className="flex gap-3">
