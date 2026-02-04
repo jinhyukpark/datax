@@ -193,6 +193,7 @@ const client = new EMDataClient({
     url: ""
   });
   const [docPreviewOpen, setDocPreviewOpen] = useState(false);
+  const [pricingPreviewOpen, setPricingPreviewOpen] = useState(false);
 
   const addPlan = () => {
     const newId = `p${Date.now()}`;
@@ -2843,8 +2844,92 @@ const client = new EMDataClient({
                       </div>
                     </div>
                   )}
+                        
+                        {/* Preview Button */}
+                        <div className="flex justify-center pt-4">
+                          <Button variant="outline" onClick={() => setPricingPreviewOpen(true)} className="gap-2">
+                            <Eye className="h-4 w-4" /> Preview Pricing
+                          </Button>
+                        </div>
                       </div>
                     </ScrollArea>
+                    
+                    {/* Pricing Preview Dialog */}
+                    <Dialog open={pricingPreviewOpen} onOpenChange={setPricingPreviewOpen}>
+                      <DialogContent className="max-w-4xl max-h-[85vh] overflow-hidden">
+                        <DialogHeader>
+                          <DialogTitle>Pricing Preview</DialogTitle>
+                        </DialogHeader>
+                        <ScrollArea className="h-[65vh] pr-4">
+                          <div className="py-4">
+                            {pricingType === "Paid" ? (
+                              <div className="space-y-6">
+                                <div className="text-center mb-8">
+                                  <h3 className="text-2xl font-bold">Choose Your Plan</h3>
+                                  <p className="text-sm text-slate-500 mt-2">Select the plan that best fits your needs</p>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                  {pricingPlans.map((plan) => (
+                                    <div 
+                                      key={plan.id}
+                                      className={cn(
+                                        "relative flex flex-col p-6 rounded-2xl border transition-all",
+                                        plan.recommended 
+                                          ? "border-indigo-600 ring-2 ring-indigo-600 bg-indigo-50/30 scale-105" 
+                                          : "border-slate-200 bg-white"
+                                      )}
+                                    >
+                                      {plan.recommended && (
+                                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                          Most Popular
+                                        </div>
+                                      )}
+                                      <div className="text-center mb-4">
+                                        <h4 className="text-lg font-bold">{plan.name}</h4>
+                                        <div className="mt-2">
+                                          <span className="text-3xl font-bold">${plan.price}</span>
+                                          <span className="text-slate-500">/mo</span>
+                                        </div>
+                                      </div>
+                                      <div className="space-y-3 flex-1">
+                                        {plan.features.map((feature, idx) => (
+                                          <div key={idx} className="flex items-center gap-2">
+                                            <CheckCircle2 className="h-4 w-4 text-green-600 shrink-0" />
+                                            <span className="text-sm">{feature}</span>
+                                          </div>
+                                        ))}
+                                      </div>
+                                      <Button 
+                                        className={cn(
+                                          "mt-6 w-full",
+                                          plan.recommended ? "bg-indigo-600 hover:bg-indigo-700" : ""
+                                        )}
+                                        variant={plan.recommended ? "default" : "outline"}
+                                      >
+                                        Get Started
+                                      </Button>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="max-w-xl mx-auto text-center space-y-6 py-8">
+                                <div className="mx-auto h-20 w-20 rounded-2xl bg-green-100 flex items-center justify-center text-green-600">
+                                  <Zap className="h-10 w-10" />
+                                </div>
+                                <div>
+                                  <h3 className="text-2xl font-bold text-green-600">Free Forever</h3>
+                                  <p className="text-slate-600 mt-4 leading-relaxed">{freePricingText}</p>
+                                </div>
+                                <Button className="bg-green-600 hover:bg-green-700">
+                                  Get Started for Free
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        </ScrollArea>
+                      </DialogContent>
+                    </Dialog>
                   </TabsContent>
                 </Tabs>
               </div>
