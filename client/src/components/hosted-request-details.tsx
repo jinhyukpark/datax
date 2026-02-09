@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/lib/language-context";
-import { ShieldCheck, ArrowRight, Loader2, Save, Info, AlertCircle, CheckCircle2, Upload, Paperclip, Plus, Trash2, Zap, Star, Check, Terminal, Server, FileText, Shield, Calendar, XCircle, CreditCard, Database, Eye } from "lucide-react";
+import { ShieldCheck, ArrowRight, Loader2, Save, Info, AlertCircle, CheckCircle2, Upload, Paperclip, Plus, Trash2, Zap, Star, Check, Terminal, Server, FileText, Shield, Calendar, XCircle, CreditCard, Database, Eye, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useState } from "react";
@@ -37,6 +37,12 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSaveConfirm, setShowSaveConfirm] = useState(false);
   const [docPreviewOpen, setDocPreviewOpen] = useState(false);
+  const [hostedTryAskingQuestions, setHostedTryAskingQuestions] = useState<string[]>([
+    "Find researchers specializing in renewable energy",
+    "Who are the top AI researchers in Korea?",
+    "Match me with experts in quantum computing",
+    "Show scientists working on climate change solutions"
+  ]);
   
   // State for form fields (Application Form)
   const [formData, setFormData] = useState({
@@ -400,6 +406,12 @@ const client = new EMDataClient({
               className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-sm"
             >
               Documentation
+            </TabsTrigger>
+            <TabsTrigger 
+              value="try-asking" 
+              className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:text-indigo-400 text-sm"
+            >
+              Try Asking
             </TabsTrigger>
             <TabsTrigger 
               value="terms" 
@@ -1034,6 +1046,98 @@ const client = new EMDataClient({
               </ScrollArea>
             </DialogContent>
           </Dialog>
+        </TabsContent>
+
+        {/* Try Asking Tab */}
+        <TabsContent value="try-asking" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900 rounded-lg p-4 mb-2">
+            <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-300 mb-1">Info</h4>
+            <p className="text-sm text-blue-700 dark:text-blue-400">
+              Configure example questions that users can try with your AI Agent or MCP. These will be displayed on the service detail page to help users understand what your service can do.
+            </p>
+          </div>
+
+          <div className="space-y-1 mb-4">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-slate-700 dark:text-slate-300" />
+              <h3 className="font-bold text-base">Try Asking Questions</h3>
+            </div>
+            <p className="text-sm text-muted-foreground ml-7">Add example prompts users can try (max 5)</p>
+          </div>
+
+          {/* Preview */}
+          <div className="rounded-2xl bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/40 dark:via-purple-950/40 dark:to-pink-950/40 border border-indigo-100 dark:border-indigo-900/50 p-5">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Preview</p>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-md">
+                <MessageSquare className="h-4 w-4" />
+              </div>
+              <div>
+                <h3 className="font-bold text-sm">Try asking...</h3>
+                <p className="text-[10px] text-slate-500">Example conversations with this service</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              {hostedTryAskingQuestions.filter(q => q.trim()).map((question, idx) => (
+                <div key={idx} className="flex items-center gap-3 p-3 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-700/50">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400">
+                    <span className="text-xs font-bold">{idx + 1}</span>
+                  </div>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300">"{question}"</span>
+                </div>
+              ))}
+              {hostedTryAskingQuestions.filter(q => q.trim()).length === 0 && (
+                <p className="text-xs text-slate-400 italic col-span-2 text-center py-4">No questions added yet</p>
+              )}
+            </div>
+          </div>
+
+          {/* Editable List */}
+          <div className="space-y-3">
+            {hostedTryAskingQuestions.map((question, idx) => (
+              <div key={idx} className="flex items-center gap-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 font-bold text-sm">
+                  {idx + 1}
+                </div>
+                <Input
+                  value={question}
+                  onChange={(e) => {
+                    const updated = [...hostedTryAskingQuestions];
+                    updated[idx] = e.target.value;
+                    setHostedTryAskingQuestions(updated);
+                  }}
+                  placeholder={`Enter example question ${idx + 1}`}
+                  className="flex-1 h-10"
+                  disabled={!isEditable}
+                  data-testid={`input-hosted-edit-try-asking-${idx}`}
+                />
+                {isEditable && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50 shrink-0"
+                    onClick={() => {
+                      setHostedTryAskingQuestions(hostedTryAskingQuestions.filter((_, i) => i !== idx));
+                    }}
+                    data-testid={`btn-remove-hosted-edit-try-asking-${idx}`}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {isEditable && hostedTryAskingQuestions.length < 5 && (
+            <Button
+              variant="outline"
+              className="w-full border-dashed gap-2"
+              onClick={() => setHostedTryAskingQuestions([...hostedTryAskingQuestions, ""])}
+              data-testid="btn-add-hosted-edit-try-asking"
+            >
+              <Plus className="h-4 w-4" /> Add Question
+            </Button>
+          )}
         </TabsContent>
 
         {/* Terms & Policies Tab */}
