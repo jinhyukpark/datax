@@ -13,7 +13,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Plus, Trash2, Edit, X, Mail } from "lucide-react";
+import { Plus, Trash2, Edit, X, Mail, AlertTriangle } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -48,6 +49,12 @@ const MOCK_ADMINS = [
 export default function AdminManagement() {
   const [admins, setAdmins] = useState(MOCK_ADMINS);
   const [newAdminOpen, setNewAdminOpen] = useState(false);
+
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editingAdmin, setEditingAdmin] = useState<{ id: number; name: string; email: string; role: string } | null>(null);
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deletingAdmin, setDeletingAdmin] = useState<typeof MOCK_ADMINS[0] | null>(null);
   
   // Registration Form State
   const [registerRows, setRegisterRows] = useState([
@@ -333,10 +340,28 @@ export default function AdminManagement() {
                   <TableCell className="text-right">
                     {admin.role !== 'Super Admin' && (
                       <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-slate-900">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-8 w-8 text-slate-500 hover:text-slate-900"
+                          onClick={() => {
+                            setEditingAdmin({ id: admin.id, name: admin.name, email: admin.email, role: admin.role });
+                            setEditDialogOpen(true);
+                          }}
+                          data-testid={`button-edit-admin-${admin.id}`}
+                        >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-red-600">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-8 w-8 text-slate-500 hover:text-red-600"
+                          onClick={() => {
+                            setDeletingAdmin(admin);
+                            setDeleteDialogOpen(true);
+                          }}
+                          data-testid={`button-delete-admin-${admin.id}`}
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -347,6 +372,113 @@ export default function AdminManagement() {
             </TableBody>
           </Table>
         </div>
+
+        {/* Edit Admin Dialog */}
+        <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+          <DialogContent className="sm:max-w-[450px]">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Edit className="h-5 w-5" />
+                Edit Admin Information
+              </DialogTitle>
+              <DialogDescription>Update the admin's details below.</DialogDescription>
+            </DialogHeader>
+            {editingAdmin && (
+              <div className="space-y-4 py-2">
+                <div className="space-y-2">
+                  <Label>Name</Label>
+                  <Input 
+                    value={editingAdmin.name}
+                    onChange={(e) => setEditingAdmin({ ...editingAdmin, name: e.target.value })}
+                    data-testid="input-edit-admin-name"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Email</Label>
+                  <Input 
+                    value={editingAdmin.email}
+                    onChange={(e) => setEditingAdmin({ ...editingAdmin, email: e.target.value })}
+                    data-testid="input-edit-admin-email"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Role</Label>
+                  <Select value={editingAdmin.role} onValueChange={(val) => setEditingAdmin({ ...editingAdmin, role: val })}>
+                    <SelectTrigger data-testid="select-edit-admin-role">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Manager">Manager</SelectItem>
+                      <SelectItem value="Analyst">Analyst</SelectItem>
+                      <SelectItem value="Editor">Editor</SelectItem>
+                      <SelectItem value="Viewer">Viewer</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            )}
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setEditDialogOpen(false)}>Cancel</Button>
+              <Button 
+                onClick={() => {
+                  if (editingAdmin) {
+                    setAdmins(admins.map(a => 
+                      a.id === editingAdmin.id 
+                        ? { ...a, name: editingAdmin.name, email: editingAdmin.email, role: editingAdmin.role }
+                        : a
+                    ));
+                    setEditDialogOpen(false);
+                    toast.success("Admin information updated successfully");
+                  }
+                }}
+                data-testid="button-save-edit-admin"
+              >
+                Save Changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Delete Admin Confirmation Dialog */}
+        <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <DialogContent className="sm:max-w-[420px]">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-red-600">
+                <div className="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center">
+                  <AlertTriangle className="h-5 w-5 text-red-600" />
+                </div>
+                Delete Admin
+              </DialogTitle>
+              <DialogDescription className="pt-2">
+                Are you sure you want to delete this admin account? This action cannot be undone.
+              </DialogDescription>
+            </DialogHeader>
+            {deletingAdmin && (
+              <div className="p-4 bg-slate-50 rounded-lg border space-y-1">
+                <p className="font-medium">{deletingAdmin.name}</p>
+                <p className="text-sm text-muted-foreground">{deletingAdmin.email}</p>
+                <Badge variant="outline" className="mt-1">{deletingAdmin.role}</Badge>
+              </div>
+            )}
+            <DialogFooter className="gap-2 sm:gap-0">
+              <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+              <Button 
+                variant="destructive"
+                onClick={() => {
+                  if (deletingAdmin) {
+                    setAdmins(admins.filter(a => a.id !== deletingAdmin.id));
+                    setDeleteDialogOpen(false);
+                    setDeletingAdmin(null);
+                    toast.success(`"${deletingAdmin.name}" has been removed`);
+                  }
+                }}
+                data-testid="button-confirm-delete-admin"
+              >
+                Delete Admin
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </AdminLayout>
   );
