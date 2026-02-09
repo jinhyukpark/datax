@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import { Search, MoreHorizontal, Filter, UserPlus } from "lucide-react";
+import { Search, MoreHorizontal, Filter, UserPlus, Eye, Pencil, Ban, CheckCircle2, Building2, Globe, Mail, Phone, Shield, KeyRound, Shuffle, User, FileText, AlertTriangle } from "lucide-react";
 import { useState } from "react";
 import {
   Popover,
@@ -42,16 +42,42 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
-// Mock User Data
-const MOCK_USERS = [
-  { id: 1, name: "Kim Min-su", email: "minsu@example.com", type: "Individual", status: "Active", joined: "2024-10-15", dataPurchases: 5, adPurchases: 1 },
-  { id: 2, name: "Lee Ji-won", email: "jiwon@techcorp.com", type: "Corporate", status: "Active", joined: "2024-11-02", dataPurchases: 12, adPurchases: 4 },
-  { id: 3, name: "Park Sung-hoon", email: "park.sh@data.io", type: "Corporate", status: "Suspended", joined: "2024-09-20", dataPurchases: 0, adPurchases: 0 },
-  { id: 4, name: "Choi Yu-jin", email: "yujin@example.com", type: "Individual", status: "Active", joined: "2024-12-05", dataPurchases: 2, adPurchases: 0 },
-  { id: 5, name: "Global Systems Inc.", email: "contact@globalsys.com", type: "Corporate", status: "Active", joined: "2024-08-10", dataPurchases: 25, adPurchases: 8 },
+interface UserData {
+  id: number;
+  name: string;
+  email: string;
+  type: string;
+  status: string;
+  joined: string;
+  dataPurchases: number;
+  adPurchases: number;
+  department: string;
+  role: string;
+  companyName: string;
+  companyEmail: string;
+  companyUrl: string;
+  companyDescription: string;
+}
+
+const MOCK_USERS: UserData[] = [
+  { id: 1, name: "Kim Min-su", email: "minsu@example.com", type: "Individual", status: "Active", joined: "2024-10-15", dataPurchases: 5, adPurchases: 1, department: "Data Team", role: "Data Analyst", companyName: "", companyEmail: "", companyUrl: "", companyDescription: "" },
+  { id: 2, name: "Lee Ji-won", email: "jiwon@techcorp.com", type: "Corporate", status: "Active", joined: "2024-11-02", dataPurchases: 12, adPurchases: 4, department: "Engineering", role: "Lead Engineer", companyName: "TechCorp Inc.", companyEmail: "info@techcorp.com", companyUrl: "https://techcorp.com", companyDescription: "Leading technology solutions provider" },
+  { id: 3, name: "Park Sung-hoon", email: "park.sh@data.io", type: "Corporate", status: "Suspended", joined: "2024-09-20", dataPurchases: 0, adPurchases: 0, department: "Sales", role: "Sales Manager", companyName: "DataIO Corp", companyEmail: "sales@data.io", companyUrl: "https://data.io", companyDescription: "Data infrastructure company" },
+  { id: 4, name: "Choi Yu-jin", email: "yujin@example.com", type: "Individual", status: "Active", joined: "2024-12-05", dataPurchases: 2, adPurchases: 0, department: "", role: "Researcher", companyName: "", companyEmail: "", companyUrl: "", companyDescription: "" },
+  { id: 5, name: "Global Systems Inc.", email: "contact@globalsys.com", type: "Corporate", status: "Active", joined: "2024-08-10", dataPurchases: 25, adPurchases: 8, department: "Operations", role: "Platform Admin", companyName: "Global Systems Inc.", companyEmail: "admin@globalsys.com", companyUrl: "https://globalsys.com", companyDescription: "Enterprise data solutions and analytics platform" },
 ];
+
+const generateRandomPassword = () => {
+  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%";
+  let password = "";
+  for (let i = 0; i < 12; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return password;
+};
 
 export default function UserManagement() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -64,7 +90,17 @@ export default function UserManagement() {
     type: "Individual",
     status: "Active"
   });
-  const [users, setUsers] = useState(MOCK_USERS);
+  const [users, setUsers] = useState<UserData[]>(MOCK_USERS);
+
+  const [viewUser, setViewUser] = useState<UserData | null>(null);
+  const [isViewOpen, setIsViewOpen] = useState(false);
+
+  const [editUser, setEditUser] = useState<UserData | null>(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editPassword, setEditPassword] = useState({ newPassword: "", confirmPassword: "" });
+
+  const [suspendUser, setSuspendUser] = useState<UserData | null>(null);
+  const [isSuspendOpen, setIsSuspendOpen] = useState(false);
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -81,7 +117,7 @@ export default function UserManagement() {
       return;
     }
 
-    const newUserEntry = {
+    const newUserEntry: UserData = {
       id: users.length + 1,
       name: newUser.name,
       email: newUser.email,
@@ -89,13 +125,60 @@ export default function UserManagement() {
       status: newUser.status,
       joined: new Date().toISOString().split('T')[0],
       dataPurchases: 0,
-      adPurchases: 0
+      adPurchases: 0,
+      department: "",
+      role: "",
+      companyName: "",
+      companyEmail: "",
+      companyUrl: "",
+      companyDescription: ""
     };
 
     setUsers([newUserEntry, ...users]);
     setAddUserOpen(false);
     setNewUser({ name: "", email: "", type: "Individual", status: "Active" });
     toast.success("User added successfully");
+  };
+
+  const handleViewDetails = (user: UserData) => {
+    setViewUser(user);
+    setIsViewOpen(true);
+  };
+
+  const handleEditUser = (user: UserData) => {
+    setEditUser({ ...user });
+    setEditPassword({ newPassword: "", confirmPassword: "" });
+    setIsEditOpen(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editUser) return;
+    if (!editUser.name || !editUser.email) {
+      toast.error("Name and Email are required");
+      return;
+    }
+    if (editPassword.newPassword && editPassword.newPassword !== editPassword.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    setUsers(users.map(u => u.id === editUser.id ? editUser : u));
+    setIsEditOpen(false);
+    setEditUser(null);
+    toast.success("User updated successfully");
+  };
+
+  const handleSuspendToggle = (user: UserData) => {
+    setSuspendUser(user);
+    setIsSuspendOpen(true);
+  };
+
+  const confirmSuspendToggle = () => {
+    if (!suspendUser) return;
+    const newStatus = suspendUser.status === "Active" ? "Suspended" : "Active";
+    setUsers(users.map(u => u.id === suspendUser.id ? { ...u, status: newStatus } : u));
+    setIsSuspendOpen(false);
+    setSuspendUser(null);
+    toast.success(newStatus === "Suspended" ? "User suspended successfully" : "User activated successfully");
   };
 
   return (
@@ -288,16 +371,32 @@ export default function UserManagement() {
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
+                          <Button variant="ghost" className="h-8 w-8 p-0" data-testid={`btn-actions-user-${user.id}`}>
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem>View Details</DropdownMenuItem>
-                          <DropdownMenuItem>Edit User</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleViewDetails(user)} data-testid={`btn-view-user-${user.id}`}>
+                            <Eye className="h-4 w-4 mr-2" />
+                            View Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditUser(user)} data-testid={`btn-edit-user-${user.id}`}>
+                            <Pencil className="h-4 w-4 mr-2" />
+                            Edit User
+                          </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-600">Suspend User</DropdownMenuItem>
+                          <DropdownMenuItem 
+                            onClick={() => handleSuspendToggle(user)} 
+                            className={user.status === "Active" ? "text-red-600" : "text-green-600"}
+                            data-testid={`btn-suspend-user-${user.id}`}
+                          >
+                            {user.status === "Active" ? (
+                              <><Ban className="h-4 w-4 mr-2" />Suspend User</>
+                            ) : (
+                              <><CheckCircle2 className="h-4 w-4 mr-2" />Activate User</>
+                            )}
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
@@ -314,6 +413,364 @@ export default function UserManagement() {
           </Table>
         </div>
       </div>
+
+      {/* View Details Dialog */}
+      <Dialog open={isViewOpen} onOpenChange={setIsViewOpen}>
+        <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Eye className="h-5 w-5" />
+              User Details
+            </DialogTitle>
+            <DialogDescription>
+              Full profile information for this user.
+            </DialogDescription>
+          </DialogHeader>
+          {viewUser && (
+            <div className="space-y-6 py-2">
+              {/* Account Information */}
+              <div className="space-y-3">
+                <h4 className="font-semibold flex items-center gap-2 text-sm">
+                  <User className="h-4 w-4" />
+                  Account Information
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-lg border p-3">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Full Name</p>
+                    <p className="text-sm font-medium mt-0.5">{viewUser.name}</p>
+                  </div>
+                  <div className="rounded-lg border p-3">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Email</p>
+                    <p className="text-sm font-medium mt-0.5">{viewUser.email}</p>
+                  </div>
+                  <div className="rounded-lg border p-3">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Department</p>
+                    <p className="text-sm font-medium mt-0.5">{viewUser.department || "—"}</p>
+                  </div>
+                  <div className="rounded-lg border p-3">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Role</p>
+                    <p className="text-sm font-medium mt-0.5">{viewUser.role || "—"}</p>
+                  </div>
+                  <div className="rounded-lg border p-3">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Type</p>
+                    <Badge variant="secondary" className="mt-0.5">{viewUser.type}</Badge>
+                  </div>
+                  <div className="rounded-lg border p-3">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Status</p>
+                    <Badge className={`mt-0.5 ${viewUser.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`} variant="outline">
+                      {viewUser.status}
+                    </Badge>
+                  </div>
+                  <div className="rounded-lg border p-3">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Joined Date</p>
+                    <p className="text-sm font-medium mt-0.5">{viewUser.joined}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Organization Information */}
+              <div className="space-y-3">
+                <h4 className="font-semibold flex items-center gap-2 text-sm">
+                  <Building2 className="h-4 w-4" />
+                  Organization Information
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-lg border p-3">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Company Name</p>
+                    <p className="text-sm font-medium mt-0.5">{viewUser.companyName || "—"}</p>
+                  </div>
+                  <div className="rounded-lg border p-3">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Representative Email</p>
+                    <p className="text-sm font-medium mt-0.5">{viewUser.companyEmail || "—"}</p>
+                  </div>
+                  <div className="rounded-lg border p-3 col-span-2">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Company Website URL</p>
+                    <p className="text-sm font-medium mt-0.5">{viewUser.companyUrl || "—"}</p>
+                  </div>
+                  <div className="rounded-lg border p-3 col-span-2">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Company Description</p>
+                    <p className="text-sm font-medium mt-0.5">{viewUser.companyDescription || "—"}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Usage Statistics */}
+              <div className="space-y-3">
+                <h4 className="font-semibold flex items-center gap-2 text-sm">
+                  <FileText className="h-4 w-4" />
+                  Usage Statistics
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-lg border p-3 bg-blue-50 dark:bg-blue-900/20">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Data Purchases</p>
+                    <p className="text-2xl font-bold text-blue-600 mt-1">{viewUser.dataPurchases}</p>
+                  </div>
+                  <div className="rounded-lg border p-3 bg-purple-50 dark:bg-purple-900/20">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase">Ad Purchases</p>
+                    <p className="text-2xl font-bold text-purple-600 mt-1">{viewUser.adPurchases}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsViewOpen(false)}>Close</Button>
+            <Button onClick={() => {
+              setIsViewOpen(false);
+              if (viewUser) handleEditUser(viewUser);
+            }}>
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit User
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit User Dialog */}
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Pencil className="h-5 w-5" />
+              Edit User
+            </DialogTitle>
+            <DialogDescription>
+              Modify user profile information, organization details, and password.
+            </DialogDescription>
+          </DialogHeader>
+          {editUser && (
+            <div className="space-y-6 py-2">
+              {/* Account Information */}
+              <div className="space-y-3">
+                <h4 className="font-semibold flex items-center gap-2 text-sm">
+                  <User className="h-4 w-4" />
+                  Account Information
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Full Name</Label>
+                    <Input
+                      value={editUser.name}
+                      onChange={(e) => setEditUser({ ...editUser, name: e.target.value })}
+                      data-testid="input-edit-name"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Email</Label>
+                    <Input
+                      type="email"
+                      value={editUser.email}
+                      onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
+                      data-testid="input-edit-email"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Department</Label>
+                    <Input
+                      value={editUser.department}
+                      onChange={(e) => setEditUser({ ...editUser, department: e.target.value })}
+                      placeholder="Enter department"
+                      data-testid="input-edit-department"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Role</Label>
+                    <Input
+                      value={editUser.role}
+                      onChange={(e) => setEditUser({ ...editUser, role: e.target.value })}
+                      placeholder="Enter role"
+                      data-testid="input-edit-role"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Type</Label>
+                    <Select value={editUser.type} onValueChange={(value) => setEditUser({ ...editUser, type: value })}>
+                      <SelectTrigger data-testid="select-edit-type">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Individual">Individual</SelectItem>
+                        <SelectItem value="Corporate">Corporate</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Status</Label>
+                    <Select value={editUser.status} onValueChange={(value) => setEditUser({ ...editUser, status: value })}>
+                      <SelectTrigger data-testid="select-edit-status">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Active">Active</SelectItem>
+                        <SelectItem value="Suspended">Suspended</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Organization Information */}
+              <div className="space-y-3">
+                <h4 className="font-semibold flex items-center gap-2 text-sm">
+                  <Building2 className="h-4 w-4" />
+                  Organization Information
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Company Name</Label>
+                    <Input
+                      value={editUser.companyName}
+                      onChange={(e) => setEditUser({ ...editUser, companyName: e.target.value })}
+                      placeholder="Enter company name"
+                      data-testid="input-edit-company-name"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Representative Email</Label>
+                    <Input
+                      type="email"
+                      value={editUser.companyEmail}
+                      onChange={(e) => setEditUser({ ...editUser, companyEmail: e.target.value })}
+                      placeholder="Enter representative email"
+                      data-testid="input-edit-company-email"
+                    />
+                  </div>
+                  <div className="space-y-1.5 col-span-2">
+                    <Label className="text-xs">Company Website URL</Label>
+                    <Input
+                      value={editUser.companyUrl}
+                      onChange={(e) => setEditUser({ ...editUser, companyUrl: e.target.value })}
+                      placeholder="https://www.example.com"
+                      data-testid="input-edit-company-url"
+                    />
+                  </div>
+                  <div className="space-y-1.5 col-span-2">
+                    <Label className="text-xs">Company Description</Label>
+                    <Textarea
+                      value={editUser.companyDescription}
+                      onChange={(e) => setEditUser({ ...editUser, companyDescription: e.target.value })}
+                      placeholder="Briefly describe your company"
+                      rows={3}
+                      data-testid="input-edit-company-desc"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Security / Password */}
+              <div className="space-y-3">
+                <h4 className="font-semibold flex items-center gap-2 text-sm">
+                  <Shield className="h-4 w-4" />
+                  Security
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">New Password</Label>
+                    <div className="relative">
+                      <Input
+                        type="text"
+                        value={editPassword.newPassword}
+                        onChange={(e) => setEditPassword({ ...editPassword, newPassword: e.target.value })}
+                        placeholder="Enter new password"
+                        className="pr-9"
+                        data-testid="input-edit-new-password"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const pw = generateRandomPassword();
+                          setEditPassword({ newPassword: pw, confirmPassword: pw });
+                        }}
+                        className="absolute right-2 top-2 text-muted-foreground hover:text-foreground"
+                        title="Generate random password"
+                      >
+                        <Shuffle className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-xs">Confirm Password</Label>
+                    <Input
+                      type="text"
+                      value={editPassword.confirmPassword}
+                      onChange={(e) => setEditPassword({ ...editPassword, confirmPassword: e.target.value })}
+                      placeholder="Confirm password"
+                      data-testid="input-edit-confirm-password"
+                    />
+                  </div>
+                </div>
+                {editPassword.newPassword && editPassword.confirmPassword && editPassword.newPassword !== editPassword.confirmPassword && (
+                  <p className="text-xs text-red-500 flex items-center gap-1">
+                    <AlertTriangle className="h-3 w-3" /> Passwords do not match
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEditOpen(false)}>Cancel</Button>
+            <Button onClick={handleSaveEdit} className="bg-indigo-600 hover:bg-indigo-700" data-testid="btn-save-edit-user">
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Suspend / Activate Confirmation Dialog */}
+      <Dialog open={isSuspendOpen} onOpenChange={setIsSuspendOpen}>
+        <DialogContent className="sm:max-w-[420px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              {suspendUser?.status === "Active" ? (
+                <><Ban className="h-5 w-5 text-red-500" />Suspend User</>
+              ) : (
+                <><CheckCircle2 className="h-5 w-5 text-green-500" />Activate User</>
+              )}
+            </DialogTitle>
+            <DialogDescription>
+              {suspendUser?.status === "Active"
+                ? "This will suspend the user and prevent them from accessing the platform."
+                : "This will reactivate the user and restore their access to the platform."
+              }
+            </DialogDescription>
+          </DialogHeader>
+          {suspendUser && (
+            <div className="py-4">
+              <div className={`rounded-lg p-4 ${suspendUser.status === "Active" ? "bg-red-50 border border-red-100 dark:bg-red-900/20 dark:border-red-800" : "bg-green-50 border border-green-100 dark:bg-green-900/20 dark:border-green-800"}`}>
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-sm font-bold">
+                    {suspendUser.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-medium">{suspendUser.name}</p>
+                    <p className="text-xs text-muted-foreground">{suspendUser.email}</p>
+                  </div>
+                </div>
+                <div className="mt-3 flex items-center gap-2 text-sm">
+                  <span className="text-muted-foreground">Current Status:</span>
+                  <Badge className={suspendUser.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'} variant="outline">
+                    {suspendUser.status}
+                  </Badge>
+                  <span className="text-muted-foreground">→</span>
+                  <Badge className={suspendUser.status === 'Active' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'} variant="outline">
+                    {suspendUser.status === "Active" ? "Suspended" : "Active"}
+                  </Badge>
+                </div>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsSuspendOpen(false)}>Cancel</Button>
+            <Button
+              onClick={confirmSuspendToggle}
+              className={suspendUser?.status === "Active" ? "bg-red-600 hover:bg-red-700" : "bg-green-600 hover:bg-green-700"}
+              data-testid="btn-confirm-suspend"
+            >
+              {suspendUser?.status === "Active" ? "Suspend" : "Activate"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AdminLayout>
   );
 }
