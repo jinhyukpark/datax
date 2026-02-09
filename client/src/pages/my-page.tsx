@@ -836,8 +836,8 @@ const client = new EMDataClient({
                         <Input id="email" defaultValue={user.email} />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="company">{t("Company", "회사/소속")}</Label>
-                        <Input id="company" defaultValue={user.company} />
+                        <Label htmlFor="department">{t("Department", "부서")}</Label>
+                        <Input id="department" defaultValue="" placeholder={t("Enter your department", "부서를 입력하세요")} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="role">{t("Role", "직책")}</Label>
