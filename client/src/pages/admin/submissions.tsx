@@ -148,21 +148,9 @@ function LinkedDocumentationTab() {
 
       {/* API Definitions Section */}
       <div className="space-y-4 mt-8">
-        <div className="flex items-center justify-between pb-3 border-b">
-          <div className="flex items-center gap-3">
-            <Code className="h-5 w-5 text-slate-700" />
-            <h3 className="font-bold text-lg">API Definitions</h3>
-          </div>
-          <Button
-            variant="outline"
-            className="gap-2"
-            onClick={() => {
-              setApiDefinitions([...apiDefinitions, { id: nextApiId, name: "new_api_function", description: "", params: [] }]);
-              setNextApiId(nextApiId + 1);
-            }}
-          >
-            <Plus className="h-4 w-4" /> Add API
-          </Button>
+        <div className="flex items-center gap-3 pb-3 border-b">
+          <Code className="h-5 w-5 text-slate-700" />
+          <h3 className="font-bold text-lg">API Definitions</h3>
         </div>
 
         {apiDefinitions.map((api) => (
@@ -231,6 +219,17 @@ function LinkedDocumentationTab() {
             </div>
           </div>
         ))}
+
+        <Button
+          variant="outline"
+          className="w-full border-dashed gap-2"
+          onClick={() => {
+            setApiDefinitions([...apiDefinitions, { id: nextApiId, name: "new_api_function", description: "", params: [] }]);
+            setNextApiId(nextApiId + 1);
+          }}
+        >
+          <Plus className="h-4 w-4" /> Add API
+        </Button>
       </div>
 
       <div className="border rounded-xl p-4 space-y-3 mt-6">
