@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { RESOURCES } from "@/lib/data";
-import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star, Activity, FileText, Database, Zap, Power, Plus, ShieldCheck, Link2, Shield, Calendar, Upload, Paperclip, Terminal } from "lucide-react";
+import { ArrowRight, Camera, CreditCard, Download, Eye, Heart, History, Key, Package, Share2, User, CheckCircle2, Circle, Loader2, BarChart2, Clock, XCircle, AlertCircle, MessageSquare, Send, ShoppingCart, Server, Trash2, Megaphone, Layout, PanelRight, Star, Activity, FileText, Database, Zap, Power, Plus, ShieldCheck, Link2, Shield, Calendar, Upload, Paperclip, Terminal, Building2, Globe, Mail, ImagePlus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
@@ -847,6 +847,62 @@ const client = new EMDataClient({
                   </CardContent>
                   <CardFooter className="flex justify-end">
                     <Button>{t("Save Changes", "변경사항 저장")}</Button>
+                  </CardFooter>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Building2 className="h-5 w-5" />
+                      {t("Organization Information", "조직 정보")}
+                    </CardTitle>
+                    <CardDescription>
+                      {t("Register and manage your organization details.", "조직 정보를 등록하고 관리하세요.")}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-start gap-6">
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="relative h-24 w-24 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center bg-slate-50 overflow-hidden group cursor-pointer hover:border-indigo-400 transition-colors">
+                          <ImagePlus className="h-8 w-8 text-slate-400 group-hover:text-indigo-500 transition-colors" />
+                          <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer" data-testid="input-org-thumbnail" />
+                        </div>
+                        <span className="text-xs text-muted-foreground">{t("Org Thumbnail", "조직 썸네일")}</span>
+                      </div>
+                      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="org-name" className="flex items-center gap-1.5">
+                            <Building2 className="h-3.5 w-3.5 text-slate-500" />
+                            {t("Company Name", "기업명")}
+                          </Label>
+                          <Input id="org-name" placeholder={t("Enter company name", "기업명을 입력하세요")} data-testid="input-org-name" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="org-email" className="flex items-center gap-1.5">
+                            <Mail className="h-3.5 w-3.5 text-slate-500" />
+                            {t("Representative Email", "대표 이메일")}
+                          </Label>
+                          <Input id="org-email" type="email" placeholder={t("Enter representative email", "대표 이메일을 입력하세요")} data-testid="input-org-email" />
+                        </div>
+                        <div className="space-y-2 md:col-span-2">
+                          <Label htmlFor="org-website" className="flex items-center gap-1.5">
+                            <Globe className="h-3.5 w-3.5 text-slate-500" />
+                            {t("Company Website URL", "기업 홈페이지 URL")}
+                          </Label>
+                          <Input id="org-website" type="url" placeholder="https://www.example.com" data-testid="input-org-website" />
+                        </div>
+                        <div className="space-y-2 md:col-span-2">
+                          <Label htmlFor="org-description" className="flex items-center gap-1.5">
+                            <FileText className="h-3.5 w-3.5 text-slate-500" />
+                            {t("Company Description", "기업 설명")}
+                          </Label>
+                          <Textarea id="org-description" placeholder={t("Briefly describe your company", "기업에 대해 간략히 설명해주세요")} className="min-h-[80px]" data-testid="textarea-org-description" />
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-end">
+                    <Button data-testid="button-save-org">{t("Save Organization Info", "조직 정보 저장")}</Button>
                   </CardFooter>
                 </Card>
 
