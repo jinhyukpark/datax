@@ -13,7 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Plus, Trash2, Edit, X, Mail, AlertTriangle } from "lucide-react";
+import { Plus, Trash2, Edit, X, Mail, AlertTriangle, Zap, CheckCircle2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -64,6 +64,10 @@ export default function AdminManagement() {
   // Invitation Form State
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
   const [emailInput, setEmailInput] = useState("");
+  const [inviteRole, setInviteRole] = useState("");
+  const [invitePassword, setInvitePassword] = useState("");
+  const [inviteConfirmOpen, setInviteConfirmOpen] = useState(false);
+  const [pendingInviteData, setPendingInviteData] = useState<{ emails: string[]; role: string; password: string } | null>(null);
 
   const togglePermission = (adminId: number, perm: keyof typeof MOCK_ADMINS[0]['permissions']) => {
     setAdmins(admins.map(admin => {
@@ -134,6 +138,16 @@ export default function AdminManagement() {
     setInviteEmails(inviteEmails.filter(email => email !== emailToRemove));
   };
 
+  const generateRandomPassword = () => {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%';
+    let password = '';
+    for (let i = 0; i < 12; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    setInvitePassword(password);
+    toast.success("Random password generated");
+  };
+
   const handleInviteSubmit = () => {
     const emails = [...inviteEmails];
     if (emailInput.trim()) {
@@ -144,12 +158,28 @@ export default function AdminManagement() {
       toast.error("Please enter at least one email address");
       return;
     }
+    if (!inviteRole) {
+      toast.error("Please select a role");
+      return;
+    }
+    if (!invitePassword) {
+      toast.error("Please enter a password or generate one");
+      return;
+    }
 
-    // Mock invite logic
+    setPendingInviteData({ emails, role: inviteRole, password: invitePassword });
+    setInviteConfirmOpen(true);
+  };
+
+  const handleInviteConfirm = () => {
+    setInviteConfirmOpen(false);
     setNewAdminOpen(false);
     setInviteEmails([]);
     setEmailInput("");
-    toast.success(`Invitations sent to ${emails.length} recipients`);
+    setInviteRole("");
+    setInvitePassword("");
+    setPendingInviteData(null);
+    toast.success("Invitation emails have been sent successfully!");
   };
 
   return (
@@ -269,6 +299,44 @@ export default function AdminManagement() {
                       </div>
                       <p className="text-xs text-muted-foreground">
                         Type email addresses and press Enter or Comma to add them as tags.
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Role</Label>
+                      <Select value={inviteRole} onValueChange={setInviteRole}>
+                        <SelectTrigger data-testid="select-invite-role">
+                          <SelectValue placeholder="Select a role..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Manager">Manager</SelectItem>
+                          <SelectItem value="Analyst">Analyst</SelectItem>
+                          <SelectItem value="Editor">Editor</SelectItem>
+                          <SelectItem value="Viewer">Viewer</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Password</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          value={invitePassword}
+                          onChange={(e) => setInvitePassword(e.target.value)}
+                          placeholder="Enter password"
+                          data-testid="input-invite-password"
+                        />
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          onClick={generateRandomPassword}
+                          className="shrink-0 gap-1.5"
+                          data-testid="button-random-password"
+                        >
+                          <Zap className="h-4 w-4" />
+                          Random
+                        </Button>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Enter a password manually or click Random to generate one automatically.
                       </p>
                     </div>
                   </div>
@@ -475,6 +543,54 @@ export default function AdminManagement() {
                 data-testid="button-confirm-delete-admin"
               >
                 Delete Admin
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Invite Confirmation Dialog */}
+        <Dialog open={inviteConfirmOpen} onOpenChange={setInviteConfirmOpen}>
+          <DialogContent className="sm:max-w-[450px]">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Mail className="h-5 w-5 text-blue-600" />
+                </div>
+                Confirm Invitation
+              </DialogTitle>
+              <DialogDescription>
+                Please review the invitation details before sending.
+              </DialogDescription>
+            </DialogHeader>
+            {pendingInviteData && (
+              <div className="space-y-3 py-2">
+                <div className="p-4 bg-slate-50 rounded-lg border space-y-3">
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Recipients</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {pendingInviteData.emails.map((email) => (
+                        <Badge key={email} variant="secondary" className="text-xs">{email}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-1">Role</p>
+                      <Badge variant="outline">{pendingInviteData.role}</Badge>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-1">Password</p>
+                      <code className="text-xs bg-slate-200 px-2 py-1 rounded">{pendingInviteData.password}</code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setInviteConfirmOpen(false)}>Cancel</Button>
+              <Button onClick={handleInviteConfirm} className="gap-2" data-testid="button-confirm-invite">
+                <CheckCircle2 className="h-4 w-4" />
+                Confirm & Send
               </Button>
             </DialogFooter>
           </DialogContent>
