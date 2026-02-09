@@ -51,7 +51,7 @@ export default function AdminManagement() {
   const [newAdminOpen, setNewAdminOpen] = useState(false);
 
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [editingAdmin, setEditingAdmin] = useState<{ id: number; name: string; email: string; role: string } | null>(null);
+  const [editingAdmin, setEditingAdmin] = useState<{ id: number; name: string; email: string; role: string; password: string } | null>(null);
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deletingAdmin, setDeletingAdmin] = useState<typeof MOCK_ADMINS[0] | null>(null);
@@ -413,7 +413,7 @@ export default function AdminManagement() {
                           size="icon" 
                           className="h-8 w-8 text-slate-500 hover:text-slate-900"
                           onClick={() => {
-                            setEditingAdmin({ id: admin.id, name: admin.name, email: admin.email, role: admin.role });
+                            setEditingAdmin({ id: admin.id, name: admin.name, email: admin.email, role: admin.role, password: '' });
                             setEditDialogOpen(true);
                           }}
                           data-testid={`button-edit-admin-${admin.id}`}
@@ -482,6 +482,35 @@ export default function AdminManagement() {
                       <SelectItem value="Viewer">Viewer</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>New Password</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      type="password"
+                      value={editingAdmin.password}
+                      onChange={(e) => setEditingAdmin({ ...editingAdmin, password: e.target.value })}
+                      placeholder="Leave blank to keep current"
+                      data-testid="input-edit-admin-password"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="shrink-0 gap-1.5"
+                      onClick={() => {
+                        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%';
+                        let pw = '';
+                        for (let i = 0; i < 12; i++) pw += chars.charAt(Math.floor(Math.random() * chars.length));
+                        setEditingAdmin({ ...editingAdmin, password: pw });
+                        toast.success("Random password generated");
+                      }}
+                      data-testid="button-edit-random-password"
+                    >
+                      <Zap className="h-4 w-4" />
+                      Random
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Leave blank to keep the current password.</p>
                 </div>
               </div>
             )}
