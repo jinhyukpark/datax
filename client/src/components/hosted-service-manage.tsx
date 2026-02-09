@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Activity, Server, Key, Shield, RefreshCw, Power, Settings, Globe, Database, Copy, Check } from "lucide-react";
+import { Activity, Server, Key, Shield, RefreshCw, Power, Settings, Globe, Database, Copy, Check, MessageSquare, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -20,6 +20,12 @@ export function HostedServiceManage({ data }: HostedServiceManageProps) {
   const [copiedKey, setCopiedKey] = useState(false);
   const [isRunning, setIsRunning] = useState(true);
   const [timeRange, setTimeRange] = useState("7d");
+  const [hostedTryAskingQuestions, setHostedTryAskingQuestions] = useState<string[]>([
+    "Analyze the latest stock market trends",
+    "What are the top performing sectors today?",
+    "Show me real-time price data for AAPL",
+    "Compare quarterly earnings of tech companies"
+  ]);
 
   const generateMockData = (range: string) => {
     const data = [];
@@ -111,9 +117,10 @@ export function HostedServiceManage({ data }: HostedServiceManageProps) {
       </div>
 
       <Tabs defaultValue="overview" className="flex-1">
-        <TabsList className="grid w-full grid-cols-4 lg:w-[400px]">
+        <TabsList className="grid w-full grid-cols-5 lg:w-[500px]">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="config">Configuration</TabsTrigger>
+          <TabsTrigger value="try-asking">Try Asking</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="system">System</TabsTrigger>
         </TabsList>
@@ -242,6 +249,101 @@ export function HostedServiceManage({ data }: HostedServiceManageProps) {
                   <p className="text-sm text-muted-foreground">Allow system updates during off-peak hours</p>
                 </div>
                 <Switch defaultChecked />
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="try-asking" className="space-y-4 mt-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5 text-indigo-600" />
+                Try Asking Questions
+              </CardTitle>
+              <CardDescription>
+                Configure example questions that users can try with your service. These will be displayed on the detail page to help users understand your service capabilities.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Preview */}
+              <div className="rounded-2xl bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/40 dark:via-purple-950/40 dark:to-pink-950/40 border border-indigo-100 dark:border-indigo-900/50 p-5">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Preview</p>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-md">
+                    <MessageSquare className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm">Try asking...</h3>
+                    <p className="text-[10px] text-slate-500">Example conversations with this service</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {hostedTryAskingQuestions.filter(q => q.trim()).map((question, idx) => (
+                    <div key={idx} className="flex items-center gap-3 p-3 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-700/50">
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400">
+                        <span className="text-xs font-bold">{idx + 1}</span>
+                      </div>
+                      <span className="text-xs font-medium text-slate-700 dark:text-slate-300">"{question}"</span>
+                    </div>
+                  ))}
+                  {hostedTryAskingQuestions.filter(q => q.trim()).length === 0 && (
+                    <p className="text-xs text-slate-400 italic col-span-2 text-center py-4">No questions added yet</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Editable List */}
+              <div className="space-y-3">
+                {hostedTryAskingQuestions.map((question, idx) => (
+                  <div key={idx} className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 font-bold text-sm">
+                      {idx + 1}
+                    </div>
+                    <Input
+                      value={question}
+                      onChange={(e) => {
+                        const updated = [...hostedTryAskingQuestions];
+                        updated[idx] = e.target.value;
+                        setHostedTryAskingQuestions(updated);
+                      }}
+                      placeholder={`Enter example question ${idx + 1}`}
+                      className="flex-1 h-10"
+                      data-testid={`input-hosted-try-asking-${idx}`}
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50 shrink-0"
+                      onClick={() => {
+                        setHostedTryAskingQuestions(hostedTryAskingQuestions.filter((_, i) => i !== idx));
+                      }}
+                      data-testid={`btn-remove-hosted-try-asking-${idx}`}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+
+              {hostedTryAskingQuestions.length < 5 && (
+                <Button
+                  variant="outline"
+                  className="w-full border-dashed gap-2"
+                  onClick={() => setHostedTryAskingQuestions([...hostedTryAskingQuestions, ""])}
+                  data-testid="btn-add-hosted-try-asking"
+                >
+                  <Plus className="h-4 w-4" /> Add Question
+                </Button>
+              )}
+
+              <div className="flex justify-end">
+                <Button
+                  className="bg-indigo-600 hover:bg-indigo-700 gap-2"
+                  onClick={() => toast.success("Try Asking questions saved successfully")}
+                >
+                  Save Changes
+                </Button>
               </div>
             </CardContent>
           </Card>

@@ -54,6 +54,12 @@ export default function MyPage() {
   const [editingPlatform, setEditingPlatform] = useState<any>(null);
   const [pricingType, setPricingType] = useState<"Paid" | "Free">("Paid");
   const [expandedApiDocs, setExpandedApiDocs] = useState<{ filter_free_events: boolean }>({ filter_free_events: false });
+  const [tryAskingQuestions, setTryAskingQuestions] = useState<string[]>([
+    "Find researchers specializing in renewable energy",
+    "Who are the top AI researchers in Korea?",
+    "Match me with experts in quantum computing",
+    "Show scientists working on climate change solutions"
+  ]);
   const [pricingPlans, setPricingPlans] = useState([
     {
       id: "p1",
@@ -2103,6 +2109,7 @@ const client = new EMDataClient({
                   <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent gap-8">
                     <TabsTrigger value="overview" className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Overview</TabsTrigger>
                     <TabsTrigger value="documentation" className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Documentation</TabsTrigger>
+                    <TabsTrigger value="try-asking" className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Try Asking</TabsTrigger>
                     <TabsTrigger value="pricing" className="rounded-none border-b-2 border-transparent px-4 py-4 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Pricing</TabsTrigger>
                   </TabsList>
 
@@ -2744,6 +2751,102 @@ const client = new EMDataClient({
                         </ScrollArea>
                       </DialogContent>
                     </Dialog>
+                  </TabsContent>
+
+                  <TabsContent value="try-asking" className="mt-0">
+                    <ScrollArea className="h-[60vh]">
+                      <div className="py-8 pr-8 space-y-8">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900 rounded-lg p-4 mb-2">
+                          <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-300 mb-1">Info</h4>
+                          <p className="text-sm text-blue-700 dark:text-blue-400">
+                            Configure example questions that users can try with your AI Agent or MCP. These will be displayed on the service detail page to help users understand what your service can do.
+                          </p>
+                        </div>
+
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3 pb-4 border-b border-slate-300 dark:border-slate-700">
+                            <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 flex items-center justify-center">
+                              <MessageSquare className="h-4 w-4" />
+                            </div>
+                            <div>
+                              <h2 className="text-lg font-bold">Try Asking Questions</h2>
+                              <p className="text-xs text-muted-foreground">Add example prompts users can try (max 5)</p>
+                            </div>
+                          </div>
+
+                          {/* Preview */}
+                          <div className="rounded-2xl bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/40 dark:via-purple-950/40 dark:to-pink-950/40 border border-indigo-100 dark:border-indigo-900/50 p-5">
+                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Preview</p>
+                            <div className="flex items-center gap-3 mb-4">
+                              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-md">
+                                <MessageSquare className="h-4 w-4" />
+                              </div>
+                              <div>
+                                <h3 className="font-bold text-sm">Try asking...</h3>
+                                <p className="text-[10px] text-slate-500">Example conversations with this service</p>
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                              {tryAskingQuestions.filter(q => q.trim()).map((question, idx) => (
+                                <div key={idx} className="flex items-center gap-3 p-3 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-700/50">
+                                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400">
+                                    <span className="text-xs font-bold">{idx + 1}</span>
+                                  </div>
+                                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300">"{question}"</span>
+                                </div>
+                              ))}
+                              {tryAskingQuestions.filter(q => q.trim()).length === 0 && (
+                                <p className="text-xs text-slate-400 italic col-span-2 text-center py-4">No questions added yet</p>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Editable List */}
+                          <div className="space-y-3">
+                            {tryAskingQuestions.map((question, idx) => (
+                              <div key={idx} className="flex items-center gap-3">
+                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 font-bold text-sm">
+                                  {idx + 1}
+                                </div>
+                                <Input
+                                  value={question}
+                                  onChange={(e) => {
+                                    const updated = [...tryAskingQuestions];
+                                    updated[idx] = e.target.value;
+                                    setTryAskingQuestions(updated);
+                                  }}
+                                  placeholder={`Enter example question ${idx + 1}`}
+                                  className="flex-1 h-10"
+                                  data-testid={`input-try-asking-${idx}`}
+                                />
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50 shrink-0"
+                                  onClick={() => {
+                                    setTryAskingQuestions(tryAskingQuestions.filter((_, i) => i !== idx));
+                                  }}
+                                  data-testid={`btn-remove-try-asking-${idx}`}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            ))}
+                          </div>
+
+                          {tryAskingQuestions.length < 5 && (
+                            <Button
+                              variant="outline"
+                              className="w-full border-dashed gap-2"
+                              onClick={() => setTryAskingQuestions([...tryAskingQuestions, ""])}
+                              data-testid="btn-add-try-asking"
+                            >
+                              <Plus className="h-4 w-4" /> Add Question
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </ScrollArea>
                   </TabsContent>
 
                   <TabsContent value="pricing" className="mt-0">
