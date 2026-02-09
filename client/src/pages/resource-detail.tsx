@@ -526,6 +526,97 @@ export default function ResourceDetail() {
                   </div>
                 </div>
 
+                {/* API Definitions Section */}
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3">
+                    <Code className="h-5 w-5 text-slate-700" />
+                    <h3 className="text-xl font-bold">API Definitions</h3>
+                  </div>
+
+                  <div className="space-y-4">
+                    {/* API 1 */}
+                    <div className="rounded-xl bg-slate-900 p-5 space-y-4">
+                      <h4 className="font-mono font-bold text-white text-base">get_genre_list</h4>
+                      <div>
+                        <p className="text-xs text-slate-400 mb-1">용도</p>
+                        <p className="text-sm text-slate-200 leading-relaxed">사용 가능한 모든 공연 장르 코드와 이름을 조회합니다. 연극, 뮤지컬, 무용, 클래식, 국악, 대중음악 등의 장르를 제공합니다.</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-400 mb-2">파라미터</p>
+                        <p className="text-xs text-slate-500 italic">No parameters required</p>
+                      </div>
+                    </div>
+
+                    {/* API 2 */}
+                    <div className="rounded-xl bg-slate-900 p-5 space-y-4">
+                      <h4 className="font-mono font-bold text-white text-base">search_events_by_location</h4>
+                      <div>
+                        <p className="text-xs text-slate-400 mb-1">용도</p>
+                        <p className="text-sm text-slate-200 leading-relaxed">특정 지역과 기간의 공연을 검색합니다. 검색 결과가 없으면 자동으로 구/군 → 시/도 → 전국 순으로 범위를 확장합니다.</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-400 mb-2">파라미터</p>
+                        <div className="flex flex-wrap gap-2">
+                          {[
+                            { name: "genreCode", type: "string" },
+                            { name: "startDate", type: "string" },
+                            { name: "endDate", type: "string" },
+                            { name: "sidoCode", type: "string" },
+                            { name: "gugunCode", type: "string" },
+                            { name: "limit", type: "number" },
+                          ].map((p, i) => (
+                            <span key={i} className="inline-flex items-center px-3 py-1.5 bg-slate-700 rounded-full text-xs font-mono text-slate-300">
+                              {p.name}: {p.type}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* API 3 */}
+                    <div className="rounded-xl bg-slate-900 p-5 space-y-4">
+                      <h4 className="font-mono font-bold text-white text-base">filter_free_events</h4>
+                      <div>
+                        <p className="text-xs text-slate-400 mb-1">용도</p>
+                        <p className="text-sm text-slate-200 leading-relaxed">무료 공연을 우선 검색합니다 (항상 오늘부터 30일 이내). 무료 공연이 5개 미만이면 저렴한 유료 공연으로 자동 보충합니다.</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-400 mb-2">파라미터</p>
+                        <div className="flex flex-wrap gap-2">
+                          {[
+                            { name: "genreCode", type: "string" },
+                            { name: "sidoCode", type: "string" },
+                            { name: "limit", type: "number" },
+                          ].map((p, i) => (
+                            <span key={i} className="inline-flex items-center px-3 py-1.5 bg-slate-700 rounded-full text-xs font-mono text-slate-300">
+                              {p.name}: {p.type}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Full Documentation Section */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <FileText className="h-5 w-5 text-indigo-600" />
+                    <h3 className="text-xl font-bold">Full Documentation</h3>
+                  </div>
+                  <div className="rounded-xl border border-slate-200 bg-gradient-to-br from-indigo-50/50 to-white p-6 dark:border-slate-800 dark:from-slate-900/50 dark:to-slate-950">
+                    <p className="text-sm text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
+                      Complete API reference and integration guides are available. Access comprehensive documentation including endpoint details, request/response examples, error handling, and best practices.
+                    </p>
+                    <a href="https://docs.example.com" target="_blank" rel="noopener noreferrer">
+                      <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700">
+                        <ExternalLink className="h-4 w-4" />
+                        View Documentation
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Button variant="outline" className="flex items-center gap-2 h-auto py-4 px-6 justify-start border-slate-200 dark:border-slate-800">
                     <FileText className="h-5 w-5 text-indigo-500" />
