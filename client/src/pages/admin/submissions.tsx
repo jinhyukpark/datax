@@ -52,6 +52,14 @@ function LinkedDocumentationTab() {
     { id: 2, title: "Initialize Client", codeLanguage: "javascript", code: "import { DataX } from '@data-x/sdk';\nconst client = new DataX({ apiKey: 'YOUR_API_KEY' });", description: "Import and initialize the client with your API key." },
     { id: 3, title: "Make Your First Request", codeLanguage: "javascript", code: "const result = await client.query({\n  dataset: 'sample',\n  limit: 10\n});", description: "Query the dataset and get results." },
   ]);
+  const [apiDefinitions, setApiDefinitions] = useState([
+    { id: 1, name: "get_genre_list", description: "사용 가능한 모든 공연 장르 코드와 이름을 조회합니다.", params: [] as { name: string; type: string }[] },
+    { id: 2, name: "search_events_by_location", description: "특정 지역과 기간의 공연을 검색합니다.", params: [
+      { name: "genreCode", type: "string" }, { name: "startDate", type: "string" }, { name: "endDate", type: "string" },
+      { name: "sidoCode", type: "string" }, { name: "gugunCode", type: "string" }, { name: "limit", type: "number" }
+    ] },
+  ]);
+  const [nextApiId, setNextApiId] = useState(3);
   const [fullDocEnabled, setFullDocEnabled] = useState(true);
   const [fullDocDescription, setFullDocDescription] = useState("Complete API reference and integration guides.");
   const [fullDocButtonText, setFullDocButtonText] = useState("View Documentation");
@@ -136,6 +144,93 @@ function LinkedDocumentationTab() {
         >
           <Plus className="h-4 w-4" /> Add Step
         </Button>
+      </div>
+
+      {/* API Definitions Section */}
+      <div className="space-y-4 mt-8">
+        <div className="flex items-center justify-between pb-3 border-b">
+          <div className="flex items-center gap-3">
+            <Code className="h-5 w-5 text-slate-700" />
+            <h3 className="font-bold text-lg">API Definitions</h3>
+          </div>
+          <Button
+            variant="outline"
+            className="gap-2"
+            onClick={() => {
+              setApiDefinitions([...apiDefinitions, { id: nextApiId, name: "new_api_function", description: "", params: [] }]);
+              setNextApiId(nextApiId + 1);
+            }}
+          >
+            <Plus className="h-4 w-4" /> Add API
+          </Button>
+        </div>
+
+        {apiDefinitions.map((api) => (
+          <div key={api.id} className="bg-slate-900 rounded-xl p-5 space-y-4 text-white">
+            <div className="flex items-center justify-between">
+              <Input
+                value={api.name}
+                onChange={(e) => setApiDefinitions(defs => defs.map(d => d.id === api.id ? { ...d, name: e.target.value } : d))}
+                className="font-mono font-bold text-white bg-transparent border-slate-700 text-base"
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-slate-400 hover:text-red-400"
+                onClick={() => setApiDefinitions(defs => defs.filter(d => d.id !== api.id))}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs text-slate-400 font-medium">용도</Label>
+              <Textarea
+                value={api.description}
+                onChange={(e) => setApiDefinitions(defs => defs.map(d => d.id === api.id ? { ...d, description: e.target.value } : d))}
+                placeholder="API 용도를 설명하세요..."
+                className="bg-slate-800 border-slate-700 text-slate-200 min-h-[80px]"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs text-slate-400 font-medium">파라미터</Label>
+              <div className="flex flex-wrap gap-2">
+                {api.params.map((param, pIdx) => (
+                  <span key={pIdx} className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-700 rounded-full text-xs font-mono">
+                    {param.name}: {param.type}
+                    <button
+                      className="ml-1 hover:text-red-400"
+                      onClick={() => setApiDefinitions(defs => defs.map(d => {
+                        if (d.id === api.id) {
+                          return { ...d, params: d.params.filter((_, i) => i !== pIdx) };
+                        }
+                        return d;
+                      }))}
+                    >
+                      <XCircle className="h-3.5 w-3.5" />
+                    </button>
+                  </span>
+                ))}
+                <button
+                  className="inline-flex items-center gap-1 px-3 py-1.5 text-xs text-slate-400 hover:text-white"
+                  onClick={() => {
+                    const paramName = prompt("Parameter name:");
+                    if (paramName) {
+                      const paramType = prompt("Parameter type (string, number, boolean):", "string") || "string";
+                      setApiDefinitions(defs => defs.map(d => {
+                        if (d.id === api.id) {
+                          return { ...d, params: [...d.params, { name: paramName, type: paramType }] };
+                        }
+                        return d;
+                      }));
+                    }
+                  }}
+                >
+                  <Plus className="h-3.5 w-3.5" /> Add Param
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       <div className="border rounded-xl p-4 space-y-3 mt-6">
