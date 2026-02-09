@@ -16,8 +16,10 @@ import { Label } from "@/components/ui/label";
 import { 
   Eye, CheckCircle, XCircle, Clock, FileText, AlertCircle, 
   ExternalLink, Github, Linkedin, Twitter, MessageSquare, Send, Globe, Edit,
-  Server, Activity, Terminal, Settings, FileSignature, Power
+  Server, Activity, Terminal, Settings, FileSignature, Power,
+  Plus, Trash2, BookOpen, DollarSign, Code, ChevronDown, ChevronUp
 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -42,6 +44,275 @@ import { HostedServiceLogs } from "@/components/hosted-service-logs";
 import { ContractDetailsDialog } from "@/components/contract-details-dialog";
 
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+function LinkedDocumentationTab() {
+  const [quickStartItems, setQuickStartItems] = useState([
+    { id: 1, title: "Install SDK", codeLanguage: "bash", code: "npm install @data-x/sdk", description: "Install the SDK package using npm or yarn." },
+    { id: 2, title: "Initialize Client", codeLanguage: "javascript", code: "import { DataX } from '@data-x/sdk';\nconst client = new DataX({ apiKey: 'YOUR_API_KEY' });", description: "Import and initialize the client with your API key." },
+    { id: 3, title: "Make Your First Request", codeLanguage: "javascript", code: "const result = await client.query({\n  dataset: 'sample',\n  limit: 10\n});", description: "Query the dataset and get results." },
+  ]);
+  const [fullDocEnabled, setFullDocEnabled] = useState(true);
+  const [fullDocDescription, setFullDocDescription] = useState("Complete API reference and integration guides.");
+  const [fullDocButtonText, setFullDocButtonText] = useState("View Documentation");
+  const [fullDocUrl, setFullDocUrl] = useState("https://docs.example.com");
+  const [nextId, setNextId] = useState(4);
+
+  const stepColors = ["bg-indigo-100 text-indigo-600", "bg-yellow-100 text-yellow-700", "bg-green-100 text-green-600", "bg-blue-100 text-blue-600", "bg-purple-100 text-purple-600"];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center gap-3 pb-3 border-b">
+        <BookOpen className="h-5 w-5 text-indigo-600" />
+        <div>
+          <h3 className="font-bold text-lg">Quick Start Guide</h3>
+          <p className="text-xs text-muted-foreground">Define the steps users should follow to get started.</p>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        {quickStartItems.map((item, index) => (
+          <div key={item.id} className="border rounded-xl p-4 space-y-3 bg-white dark:bg-slate-900/50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className={`h-8 w-8 rounded-full flex items-center justify-center font-bold text-sm ${stepColors[index % stepColors.length]}`}>
+                  {index + 1}
+                </div>
+                <Input 
+                  value={item.title} 
+                  onChange={(e) => setQuickStartItems(items => items.map(i => i.id === item.id ? { ...i, title: e.target.value } : i))}
+                  className="font-semibold border-none shadow-none p-0 h-auto text-base focus-visible:ring-0"
+                  data-testid={`input-admin-qs-title-${item.id}`}
+                />
+              </div>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-7 w-7 text-red-400 hover:text-red-600"
+                onClick={() => setQuickStartItems(items => items.filter(i => i.id !== item.id))}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="flex gap-2 items-center">
+              <Select value={item.codeLanguage} onValueChange={(val) => setQuickStartItems(items => items.map(i => i.id === item.id ? { ...i, codeLanguage: val } : i))}>
+                <SelectTrigger className="w-[140px] h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="bash">Bash</SelectItem>
+                  <SelectItem value="javascript">JavaScript</SelectItem>
+                  <SelectItem value="python">Python</SelectItem>
+                  <SelectItem value="curl">cURL</SelectItem>
+                  <SelectItem value="json">JSON</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="bg-slate-900 rounded-lg p-3">
+              <Textarea
+                value={item.code}
+                onChange={(e) => setQuickStartItems(items => items.map(i => i.id === item.id ? { ...i, code: e.target.value } : i))}
+                className="font-mono text-xs text-green-400 bg-transparent border-none resize-none min-h-[60px] focus-visible:ring-0"
+                data-testid={`textarea-admin-qs-code-${item.id}`}
+              />
+            </div>
+            <Textarea
+              value={item.description}
+              onChange={(e) => setQuickStartItems(items => items.map(i => i.id === item.id ? { ...i, description: e.target.value } : i))}
+              placeholder="Description for this step..."
+              className="text-sm min-h-[50px]"
+              data-testid={`textarea-admin-qs-desc-${item.id}`}
+            />
+          </div>
+        ))}
+
+        <Button
+          variant="outline"
+          className="w-full border-dashed gap-2"
+          onClick={() => {
+            setQuickStartItems([...quickStartItems, { id: nextId, title: "New Step", codeLanguage: "javascript", code: "", description: "" }]);
+            setNextId(nextId + 1);
+          }}
+        >
+          <Plus className="h-4 w-4" /> Add Step
+        </Button>
+      </div>
+
+      <div className="border rounded-xl p-4 space-y-3 mt-6">
+        <div className="flex items-center justify-between">
+          <h4 className="font-bold">Full Documentation</h4>
+          <div className="flex items-center gap-2">
+            <span className={`text-xs ${fullDocEnabled ? 'text-green-600' : 'text-slate-400'}`}>
+              {fullDocEnabled ? 'Enabled' : 'Disabled'}
+            </span>
+            <Switch checked={fullDocEnabled} onCheckedChange={setFullDocEnabled} />
+          </div>
+        </div>
+        {fullDocEnabled ? (
+          <div className="space-y-3">
+            <div className="space-y-2">
+              <Label className="text-xs text-slate-500">Description</Label>
+              <Textarea value={fullDocDescription} onChange={(e) => setFullDocDescription(e.target.value)} className="min-h-[60px]" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label className="text-xs text-slate-500">Button Text</Label>
+                <Input value={fullDocButtonText} onChange={(e) => setFullDocButtonText(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs text-slate-500">Documentation URL</Label>
+                <Input value={fullDocUrl} onChange={(e) => setFullDocUrl(e.target.value)} />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground italic">Full documentation is disabled.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function LinkedPricingTab() {
+  const [pricingType, setPricingType] = useState<"Paid" | "Free">("Paid");
+  const [plans, setPlans] = useState([
+    { id: 1, name: "Starter", price: "29", features: ["1,000 Requests", "Standard Support", "Basic Analytics"], recommended: false },
+    { id: 2, name: "Pro", price: "78", features: ["50,000 Requests", "Priority Support", "Advanced Analytics", "SLA Guarantee"], recommended: true },
+    { id: 3, name: "Enterprise", price: "127", features: ["Unlimited Requests", "Priority Support", "Advanced Analytics", "SLA Guarantee", "Custom Integration"], recommended: false },
+  ]);
+  const [nextPlanId, setNextPlanId] = useState(4);
+
+  const addPlan = () => {
+    setPlans([...plans, { id: nextPlanId, name: "New Plan", price: "0", features: ["Feature 1"], recommended: false }]);
+    setNextPlanId(nextPlanId + 1);
+  };
+
+  const removePlan = (id: number) => setPlans(plans.filter(p => p.id !== id));
+
+  const updatePlan = (id: number, field: string, value: any) => setPlans(plans.map(p => p.id === id ? { ...p, [field]: value } : p));
+
+  const addFeature = (planId: number) => {
+    setPlans(plans.map(p => p.id === planId ? { ...p, features: [...p.features, ""] } : p));
+  };
+
+  const updateFeature = (planId: number, fIdx: number, value: string) => {
+    setPlans(plans.map(p => {
+      if (p.id === planId) {
+        const newFeatures = [...p.features];
+        newFeatures[fIdx] = value;
+        return { ...p, features: newFeatures };
+      }
+      return p;
+    }));
+  };
+
+  const removeFeature = (planId: number, fIdx: number) => {
+    setPlans(plans.map(p => {
+      if (p.id === planId) {
+        return { ...p, features: p.features.filter((_, i) => i !== fIdx) };
+      }
+      return p;
+    }));
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="font-bold text-lg">Pricing Policy</h3>
+          <p className="text-sm text-muted-foreground">Choose between paid plans or a free service model.</p>
+        </div>
+        <div className="flex rounded-lg border overflow-hidden">
+          <button
+            className={`px-4 py-2 text-sm font-medium transition-colors ${pricingType === 'Paid' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}
+            onClick={() => setPricingType('Paid')}
+          >
+            Paid Plans
+          </button>
+          <button
+            className={`px-4 py-2 text-sm font-medium transition-colors ${pricingType === 'Free' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}
+            onClick={() => setPricingType('Free')}
+          >
+            Free Forever
+          </button>
+        </div>
+      </div>
+
+      {pricingType === 'Paid' ? (
+        <>
+          <div className="flex justify-end">
+            <Button variant="outline" className="gap-2" onClick={addPlan}>
+              <Plus className="h-4 w-4" /> Add Plan
+            </Button>
+          </div>
+          <p className="text-sm text-indigo-600 italic">Define your pricing plans. You can add or remove plans as needed.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {plans.map((plan) => (
+              <div key={plan.id} className={`border-2 rounded-xl p-4 space-y-4 relative ${plan.recommended ? 'border-indigo-500' : 'border-slate-200'}`}>
+                {plan.recommended && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <Badge className="bg-indigo-600 text-white text-xs">MOST POPULAR</Badge>
+                  </div>
+                )}
+                <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-6 w-6 text-slate-400 hover:text-red-500" onClick={() => removePlan(plan.id)}>
+                  <Trash2 className="h-3.5 w-3.5" />
+                </Button>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Plan Name</Label>
+                  <Input value={plan.name} onChange={(e) => updatePlan(plan.id, 'name', e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Monthly Price ($)</Label>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold text-slate-400">$</span>
+                    <Input value={plan.price} onChange={(e) => updatePlan(plan.id, 'price', e.target.value)} className="text-lg font-bold" />
+                    <span className="text-sm text-muted-foreground">/mo</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Features</Label>
+                  {plan.features.map((feature, fIdx) => (
+                    <div key={fIdx} className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
+                      <Input 
+                        value={feature} 
+                        onChange={(e) => updateFeature(plan.id, fIdx, e.target.value)}
+                        className="h-8 text-sm"
+                      />
+                      <Button variant="ghost" size="icon" className="h-6 w-6 shrink-0 text-slate-400 hover:text-red-500" onClick={() => removeFeature(plan.id, fIdx)}>
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  ))}
+                  <button className="text-xs text-indigo-600 font-medium hover:underline" onClick={() => addFeature(plan.id)}>
+                    + Add Feature
+                  </button>
+                </div>
+                <div className="flex items-center gap-2 pt-2 border-t">
+                  <Checkbox 
+                    checked={plan.recommended} 
+                    onCheckedChange={(checked) => updatePlan(plan.id, 'recommended', !!checked)}
+                  />
+                  <Label className="text-sm">Recommended Plan</Label>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className="border-2 border-dashed border-green-300 rounded-xl p-8 text-center space-y-3 bg-green-50/50">
+          <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+            <CheckCircle className="h-6 w-6 text-green-600" />
+          </div>
+          <h4 className="font-bold text-lg text-green-800">Free Forever</h4>
+          <p className="text-sm text-green-700 max-w-md mx-auto">
+            This resource is part of the open data initiative and is free to use for both personal and commercial projects.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // Mock Approved Hosted Services with Owner info (from hosted-services.tsx)
 const HOSTED_SERVICES_MOCK = [
@@ -772,13 +1043,47 @@ export default function SubmissionManagement() {
           </DialogHeader>
           
           {viewDialog.item && (
-            <ScrollArea className="flex-1 px-6 py-6">
-              {viewDialog.item.serviceType === 'Hosted' ? (
+            viewDialog.item.serviceType === 'Hosted' ? (
+              <ScrollArea className="flex-1 px-6 py-6">
                 <HostedRequestDetails data={viewDialog.item} isEditable={false} mode={viewDialog.mode} />
-              ) : (
-                <GeneralRequestDetails data={viewDialog.item} />
-              )}
-            </ScrollArea>
+              </ScrollArea>
+            ) : (
+              <div className="flex-1 overflow-hidden flex flex-col">
+                <div className="px-6 border-b">
+                  <Tabs defaultValue="overview" className="w-full">
+                    <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent gap-6">
+                      <TabsTrigger value="overview" className="rounded-none border-b-2 border-transparent px-3 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Overview</TabsTrigger>
+                      <TabsTrigger value="documentation" className="rounded-none border-b-2 border-transparent px-3 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Documentation</TabsTrigger>
+                      <TabsTrigger value="pricing" className="rounded-none border-b-2 border-transparent px-3 py-3 font-medium data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 text-sm">Pricing</TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="overview" className="mt-0">
+                      <ScrollArea className="h-[55vh]">
+                        <div className="py-6 pr-4">
+                          <GeneralRequestDetails data={viewDialog.item} />
+                        </div>
+                      </ScrollArea>
+                    </TabsContent>
+
+                    <TabsContent value="documentation" className="mt-0">
+                      <ScrollArea className="h-[55vh]">
+                        <div className="py-6 pr-4 space-y-6">
+                          <LinkedDocumentationTab />
+                        </div>
+                      </ScrollArea>
+                    </TabsContent>
+
+                    <TabsContent value="pricing" className="mt-0">
+                      <ScrollArea className="h-[55vh]">
+                        <div className="py-6 pr-4 space-y-6">
+                          <LinkedPricingTab />
+                        </div>
+                      </ScrollArea>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+              </div>
+            )
           )}
 
           {viewDialog.item && (
