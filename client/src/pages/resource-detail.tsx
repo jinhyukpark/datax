@@ -6,6 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Carousel, 
   CarouselContent, 
@@ -47,7 +52,6 @@ import heroBg from "@assets/generated_images/hero_background_with_connecting_dat
 import { useLanguage } from "@/lib/language-context";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Textarea } from "@/components/ui/textarea";
 import { Send, Reply, User, ChevronDown } from "lucide-react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -76,6 +80,14 @@ export default function ResourceDetail() {
   const [, params] = useRoute("/resource/:id");
   const { language, t } = useLanguage();
   const [isFavorite, setIsFavorite] = useState(false);
+  const [supportDialogOpen, setSupportDialogOpen] = useState(false);
+  const [supportForm, setSupportForm] = useState({
+    title: '',
+    type: '',
+    content: '',
+    contact: ''
+  });
+  const [supportSubmitting, setSupportSubmitting] = useState(false);
 
   // Try to fetch from API, but fall back to mock data
   const { data: apiResource, isLoading } = useQuery<Resource>({
@@ -907,10 +919,91 @@ export default function ResourceDetail() {
               <p className="text-sm text-indigo-100 mb-4 leading-relaxed">
                 Our support team is available 24/7 to help you with any integration issues.
               </p>
-              <Button className="w-full bg-white text-indigo-600 hover:bg-indigo-50 font-bold border-none">
+              <Button 
+                className="w-full bg-white text-indigo-600 hover:bg-indigo-50 font-bold border-none"
+                onClick={() => setSupportDialogOpen(true)}
+              >
                 Contact Support
               </Button>
             </div>
+
+            {/* Contact Support Dialog */}
+            <Dialog open={supportDialogOpen} onOpenChange={setSupportDialogOpen}>
+              <DialogContent className="max-w-lg">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-3 text-xl">
+                    <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                      <Mail className="h-5 w-5 text-indigo-600" />
+                    </div>
+                    관리자에게 도움 요청
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 py-2">
+                  <div className="space-y-2">
+                    <Label className="font-medium">제목 <span className="text-red-500">*</span></Label>
+                    <Input
+                      value={supportForm.title}
+                      onChange={(e) => setSupportForm(prev => ({ ...prev, title: e.target.value }))}
+                      placeholder="요청 제목을 입력하세요"
+                      data-testid="input-support-title"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="font-medium">도움 요청 타입 <span className="text-red-500">*</span></Label>
+                    <Select value={supportForm.type} onValueChange={(val) => setSupportForm(prev => ({ ...prev, type: val }))}>
+                      <SelectTrigger data-testid="select-support-type">
+                        <SelectValue placeholder="요청 타입을 선택하세요" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="integration">Integration 문의</SelectItem>
+                        <SelectItem value="bug">버그 리포트</SelectItem>
+                        <SelectItem value="billing">결제 / 구독 문의</SelectItem>
+                        <SelectItem value="feature">기능 요청</SelectItem>
+                        <SelectItem value="general">일반 문의</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="font-medium">내용 <span className="text-red-500">*</span></Label>
+                    <Textarea
+                      value={supportForm.content}
+                      onChange={(e) => setSupportForm(prev => ({ ...prev, content: e.target.value }))}
+                      placeholder="도움이 필요한 내용을 상세히 작성해주세요"
+                      className="min-h-[120px]"
+                      data-testid="textarea-support-content"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="font-medium">연락받을 이메일 또는 연락처 <span className="text-red-500">*</span></Label>
+                    <Input
+                      value={supportForm.contact}
+                      onChange={(e) => setSupportForm(prev => ({ ...prev, contact: e.target.value }))}
+                      placeholder="이메일 또는 전화번호를 입력하세요"
+                      data-testid="input-support-contact"
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setSupportDialogOpen(false)}>취소</Button>
+                  <Button 
+                    disabled={!supportForm.title || !supportForm.type || !supportForm.content || !supportForm.contact || supportSubmitting}
+                    onClick={() => {
+                      setSupportSubmitting(true);
+                      setTimeout(() => {
+                        setSupportSubmitting(false);
+                        setSupportDialogOpen(false);
+                        setSupportForm({ title: '', type: '', content: '', contact: '' });
+                        toast.success('도움 요청이 성공적으로 전송되었습니다. 관리자가 확인 후 연락드리겠습니다.');
+                      }, 1000);
+                    }}
+                    className="bg-indigo-600 hover:bg-indigo-700 gap-2"
+                    data-testid="button-support-submit"
+                  >
+                    {supportSubmitting ? "전송 중..." : "Submit"}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </div>
