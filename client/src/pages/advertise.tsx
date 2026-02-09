@@ -2,7 +2,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle2, Target, Award, Rocket, Megaphone, Layout, Star, PanelRight, Calendar as CalendarIcon, ShoppingCart, Send, User, Mail, Phone } from "lucide-react";
+import { CheckCircle2, Target, Award, Rocket, Megaphone, Layout, Star, PanelRight, Calendar as CalendarIcon, ShoppingCart, Send, User, Mail, Phone, Eye, Monitor, ArrowDown, MousePointerClick } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/lib/language-context";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
@@ -26,7 +27,9 @@ export default function Advertise() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentStep, setPaymentStep] = useState<'dates' | 'inquiry'>('dates');
 
-  // Inquiry Form State
+  const [detailProduct, setDetailProduct] = useState<any>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+
   const [inquiryInfo, setInquiryInfo] = useState({
     name: "",
     email: "",
@@ -64,7 +67,25 @@ export default function Advertise() {
       icon: Megaphone,
       color: "text-green-500",
       bgColor: "bg-green-100 dark:bg-green-900/30",
-      borderColor: "border-green-500/20"
+      borderColor: "border-green-500/20",
+      placementDetails: {
+        position: t("Below the navigation header, above main content", "네비게이션 헤더 아래, 메인 콘텐츠 위"),
+        size: t("Full width, 90px height", "전체 너비, 90px 높이"),
+        format: t("Image banner with clickable link", "클릭 가능한 이미지 배너"),
+        pages: t("All pages (Home, Marketplace, Detail, etc.)", "모든 페이지 (홈, 마켓플레이스, 상세 등)"),
+        impressions: t("~5,000 daily impressions", "일 약 5,000 노출"),
+        specs: [
+          t("Recommended image: 1200×90px (PNG/JPG)", "권장 이미지: 1200×90px (PNG/JPG)"),
+          t("Max file size: 500KB", "최대 파일 크기: 500KB"),
+          t("Clickable with external URL", "외부 URL로 클릭 연결 가능"),
+        ],
+        layoutSections: [
+          { label: t("Navigation Bar", "네비게이션 바"), highlight: false },
+          { label: t("Banner Ad Area", "배너 광고 영역"), highlight: true },
+          { label: t("Main Content", "메인 콘텐츠"), highlight: false },
+          { label: t("Footer", "푸터"), highlight: false },
+        ]
+      }
     },
     {
       id: "listing",
@@ -85,7 +106,25 @@ export default function Advertise() {
       icon: Layout,
       color: "text-blue-500",
       bgColor: "bg-blue-100 dark:bg-blue-900/30",
-      borderColor: "border-blue-500/20"
+      borderColor: "border-blue-500/20",
+      placementDetails: {
+        position: t("Within the listing grid, between resource cards", "리소스 카드 사이, 목록 그리드 내"),
+        size: t("Card size (same as listing items), ~300×200px", "카드 크기 (목록 항목과 동일), 약 300×200px"),
+        format: t("Sponsored card with logo and link", "로고와 링크가 포함된 스폰서 카드"),
+        pages: t("Marketplace listing pages, category pages, search results", "마켓플레이스 목록, 카테고리, 검색 결과 페이지"),
+        impressions: t("~3,500 daily impressions", "일 약 3,500 노출"),
+        specs: [
+          t("Logo image: 300×200px (PNG/JPG)", "로고 이미지: 300×200px (PNG/JPG)"),
+          t("Max file size: 300KB", "최대 파일 크기: 300KB"),
+          t("'Sponsored' badge displayed", "'Sponsored' 뱃지 표시"),
+        ],
+        layoutSections: [
+          { label: t("Navigation Bar", "네비게이션 바"), highlight: false },
+          { label: t("Search & Filters", "검색 및 필터"), highlight: false },
+          { label: t("Listing Ad Card", "리스팅 광고 카드"), highlight: true },
+          { label: t("Resource Cards Grid", "리소스 카드 그리드"), highlight: false },
+        ]
+      }
     },
     {
       id: "sidebar",
@@ -106,7 +145,25 @@ export default function Advertise() {
       icon: PanelRight,
       color: "text-pink-500",
       bgColor: "bg-pink-100 dark:bg-pink-900/30",
-      borderColor: "border-pink-500/20"
+      borderColor: "border-pink-500/20",
+      placementDetails: {
+        position: t("Right sidebar of agent/resource detail pages", "에이전트/리소스 상세 페이지 우측 사이드바"),
+        size: t("Sidebar width, ~280×250px", "사이드바 너비, 약 280×250px"),
+        format: t("Logo with company name and link", "로고, 회사명, 링크 포함"),
+        pages: t("All individual agent/resource detail pages", "모든 개별 에이전트/리소스 상세 페이지"),
+        impressions: t("~2,000 daily impressions", "일 약 2,000 노출"),
+        specs: [
+          t("Logo image: 280×250px (PNG/JPG)", "로고 이미지: 280×250px (PNG/JPG)"),
+          t("Max file size: 200KB", "최대 파일 크기: 200KB"),
+          t("Displayed alongside resource details", "리소스 상세 정보와 함께 표시"),
+        ],
+        layoutSections: [
+          { label: t("Navigation Bar", "네비게이션 바"), highlight: false },
+          { label: t("Resource Detail (Left)", "리소스 상세 (좌측)"), highlight: false, half: "left" as const },
+          { label: t("Sidebar Ad (Right)", "사이드바 광고 (우측)"), highlight: true, half: "right" as const },
+          { label: t("Footer", "푸터"), highlight: false },
+        ]
+      }
     },
     {
       id: "sponsor",
@@ -127,7 +184,25 @@ export default function Advertise() {
       icon: Star,
       color: "text-amber-500",
       bgColor: "bg-amber-100 dark:bg-amber-900/30",
-      borderColor: "border-amber-500/20"
+      borderColor: "border-amber-500/20",
+      placementDetails: {
+        position: t("Sponsors section near the bottom of the homepage", "홈페이지 하단 스폰서 섹션"),
+        size: t("Logo size, ~120×60px", "로고 크기, 약 120×60px"),
+        format: t("Logo image with clickable link", "클릭 가능한 로고 이미지"),
+        pages: t("Homepage only", "홈페이지에만 표시"),
+        impressions: t("~4,000 daily impressions", "일 약 4,000 노출"),
+        specs: [
+          t("Logo image: 120×60px (PNG/SVG)", "로고 이미지: 120×60px (PNG/SVG)"),
+          t("Max file size: 100KB", "최대 파일 크기: 100KB"),
+          t("Displayed alongside other sponsor logos", "다른 스폰서 로고와 함께 표시"),
+        ],
+        layoutSections: [
+          { label: t("Hero Section", "히어로 섹션"), highlight: false },
+          { label: t("Featured Resources", "추천 리소스"), highlight: false },
+          { label: t("Sponsor Logo Section", "스폰서 로고 섹션"), highlight: true },
+          { label: t("Footer", "푸터"), highlight: false },
+        ]
+      }
     }
   ];
 
@@ -238,10 +313,18 @@ export default function Advertise() {
                   <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg ${product.bgColor}`}>
                     <product.icon className={`h-6 w-6 ${product.color}`} />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h3 className="font-bold text-xl">{product.title}</h3>
                     <p className="text-sm text-muted-foreground">{product.subtitle}</p>
                   </div>
+                  <button
+                    data-testid={`btn-detail-${product.id}`}
+                    onClick={() => { setDetailProduct(product); setIsDetailOpen(true); }}
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors"
+                    title={t("View placement details", "배치 상세보기")}
+                  >
+                    <Eye className="h-4 w-4 text-slate-500" />
+                  </button>
                 </div>
 
                 <p className="text-muted-foreground mb-8 min-h-[3rem]">
@@ -449,6 +532,159 @@ export default function Advertise() {
                 </Button>
               </>
             )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Placement Detail Dialog */}
+      <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3">
+              {detailProduct && (
+                <>
+                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${detailProduct.bgColor}`}>
+                    <detailProduct.icon className={`h-5 w-5 ${detailProduct.color}`} />
+                  </div>
+                  <div>
+                    <span>{detailProduct.title}</span>
+                    <p className="text-sm font-normal text-muted-foreground mt-0.5">{detailProduct.subtitle}</p>
+                  </div>
+                </>
+              )}
+            </DialogTitle>
+            <DialogDescription>
+              {t("See where your ad will be displayed on the page.", "페이지에서 광고가 표시되는 위치를 확인하세요.")}
+            </DialogDescription>
+          </DialogHeader>
+
+          {detailProduct?.placementDetails && (
+            <div className="space-y-5 py-2">
+              {/* Page Layout Preview */}
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                  {t("Page Layout Preview", "페이지 레이아웃 미리보기")}
+                </p>
+                <div className="border rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-900">
+                  <div className="bg-slate-800 h-6 flex items-center px-3 gap-1.5">
+                    <div className="h-2 w-2 rounded-full bg-red-400" />
+                    <div className="h-2 w-2 rounded-full bg-yellow-400" />
+                    <div className="h-2 w-2 rounded-full bg-green-400" />
+                    <span className="ml-2 text-[10px] text-slate-400">www.data-x.io</span>
+                  </div>
+                  <div className="p-3 space-y-2">
+                    {detailProduct.placementDetails.layoutSections.some((s: any) => s.half) ? (
+                      detailProduct.placementDetails.layoutSections.map((section: any, i: number) => {
+                        if (section.half === "left") {
+                          const rightSection = detailProduct.placementDetails.layoutSections[i + 1];
+                          return (
+                            <div key={i} className="flex gap-2">
+                              <div className={`flex-1 rounded-lg px-3 py-3 text-xs font-medium text-center ${
+                                section.highlight
+                                  ? `${detailProduct.bgColor} ${detailProduct.color} border-2 border-dashed border-current ring-2 ring-current/20`
+                                  : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
+                              }`}>
+                                {section.highlight && <MousePointerClick className="h-3.5 w-3.5 mx-auto mb-1" />}
+                                {section.label}
+                              </div>
+                              {rightSection && (
+                                <div className={`w-28 rounded-lg px-3 py-3 text-xs font-medium text-center ${
+                                  rightSection.highlight
+                                    ? `${detailProduct.bgColor} ${detailProduct.color} border-2 border-dashed border-current ring-2 ring-current/20`
+                                    : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
+                                }`}>
+                                  {rightSection.highlight && <MousePointerClick className="h-3.5 w-3.5 mx-auto mb-1" />}
+                                  {rightSection.label}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        }
+                        if (section.half === "right") return null;
+                        return (
+                          <div key={i} className={`rounded-lg px-3 py-3 text-xs font-medium text-center ${
+                            section.highlight
+                              ? `${detailProduct.bgColor} ${detailProduct.color} border-2 border-dashed border-current ring-2 ring-current/20`
+                              : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
+                          }`}>
+                            {section.highlight && <MousePointerClick className="h-3.5 w-3.5 mx-auto mb-1" />}
+                            {section.label}
+                          </div>
+                        );
+                      })
+                    ) : (
+                      detailProduct.placementDetails.layoutSections.map((section: any, i: number) => (
+                        <div key={i} className={`rounded-lg px-3 py-3 text-xs font-medium text-center transition-all ${
+                          section.highlight
+                            ? `${detailProduct.bgColor} ${detailProduct.color} border-2 border-dashed border-current ring-2 ring-current/20`
+                            : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
+                        }`}>
+                          {section.highlight && <MousePointerClick className="h-3.5 w-3.5 mx-auto mb-1" />}
+                          {section.label}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Placement Info */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-lg border p-3 space-y-1">
+                  <p className="text-[10px] font-semibold text-muted-foreground uppercase">{t("Position", "위치")}</p>
+                  <p className="text-xs font-medium">{detailProduct.placementDetails.position}</p>
+                </div>
+                <div className="rounded-lg border p-3 space-y-1">
+                  <p className="text-[10px] font-semibold text-muted-foreground uppercase">{t("Size", "크기")}</p>
+                  <p className="text-xs font-medium">{detailProduct.placementDetails.size}</p>
+                </div>
+                <div className="rounded-lg border p-3 space-y-1">
+                  <p className="text-[10px] font-semibold text-muted-foreground uppercase">{t("Format", "형식")}</p>
+                  <p className="text-xs font-medium">{detailProduct.placementDetails.format}</p>
+                </div>
+                <div className="rounded-lg border p-3 space-y-1">
+                  <p className="text-[10px] font-semibold text-muted-foreground uppercase">{t("Pages", "노출 페이지")}</p>
+                  <p className="text-xs font-medium">{detailProduct.placementDetails.pages}</p>
+                </div>
+              </div>
+
+              {/* Estimated Impressions */}
+              <div className="rounded-lg bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800 p-3 flex items-center gap-3">
+                <Monitor className="h-5 w-5 text-indigo-500 shrink-0" />
+                <div>
+                  <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300">{t("Estimated Impressions", "예상 노출 수")}</p>
+                  <p className="text-sm font-bold text-indigo-600 dark:text-indigo-400">{detailProduct.placementDetails.impressions}</p>
+                </div>
+              </div>
+
+              {/* Image Specifications */}
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                  {t("Image Specifications", "이미지 사양")}
+                </p>
+                <ul className="space-y-1.5">
+                  {detailProduct.placementDetails.specs.map((spec: string, i: number) => (
+                    <li key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />
+                      {spec}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDetailOpen(false)}>
+              {t("Close", "닫기")}
+            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-700" onClick={() => {
+              setIsDetailOpen(false);
+              if (detailProduct) handleSelectDates(detailProduct);
+            }}>
+              <CalendarIcon className="h-4 w-4 mr-2" />
+              {t("Select Dates", "날짜 선택")}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
