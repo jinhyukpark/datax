@@ -21,7 +21,8 @@ import {
   ShieldCheck, 
   Zap, 
   Tag, 
-  Building2, 
+  Building2,
+  Mail, 
   Globe, 
   Star, 
   Code, 
@@ -887,8 +888,8 @@ export default function ResourceDetail() {
                       socialtrend.com
                     </div>
                     <div className="flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400">
-                      <Building2 className="h-3.5 w-3.5 text-slate-400" />
-                      San Francisco, CA
+                      <Mail className="h-3.5 w-3.5 text-slate-400" />
+                      contact@socialtrend.com
                     </div>
                   </div>
                   <Button variant="outline" className="w-full border-slate-200 dark:border-slate-800" asChild>
