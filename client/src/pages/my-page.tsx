@@ -193,6 +193,8 @@ const client = new EMDataClient({
 
   // Full Documentation State
   const [fullDocEnabled, setFullDocEnabled] = useState(true);
+  const [quickStartEnabled, setQuickStartEnabled] = useState(true);
+  const [apiDefEnabled, setApiDefEnabled] = useState(true);
   const [fullDocData, setFullDocData] = useState({
     description: "For complete API reference, guides, and tutorials, please visit our documentation portal.",
     buttonText: "View Documentation",
@@ -2447,153 +2449,202 @@ const client = new EMDataClient({
                   <TabsContent value="documentation" className="mt-0">
                     <ScrollArea className="h-[60vh]">
                       <div className="py-8 pr-8 space-y-6">
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-xl font-bold flex items-center gap-2">
-                            <Terminal className="h-5 w-5" />
-                            Quick Start Guide
-                          </h3>
-                          <div className="flex items-center gap-2">
-                            <Button variant="outline" size="sm" onClick={addLinkedQuickStartItem} className="gap-1">
-                              <Plus className="h-4 w-4" /> Add Step
-                            </Button>
-                            <Badge variant="outline">v1.0.0</Badge>
+                        {/* Quick Start Guide Section with Toggle */}
+                        <div className={cn(
+                          "rounded-xl border p-6 space-y-4",
+                          quickStartEnabled ? "border-slate-200 bg-white dark:bg-slate-950" : "border-slate-200 bg-slate-50 dark:bg-slate-900/50"
+                        )}>
+                          <div className="flex items-center justify-between">
+                            <h3 className={cn("text-xl font-bold flex items-center gap-2", !quickStartEnabled && "text-slate-400")}>
+                              <Terminal className={cn("h-5 w-5", !quickStartEnabled && "text-slate-400")} />
+                              Quick Start Guide
+                            </h3>
+                            <div className="flex items-center gap-3">
+                              <Badge variant="outline">v1.0.0</Badge>
+                              <span className={cn(
+                                "text-sm font-medium",
+                                quickStartEnabled ? "text-blue-600" : "text-slate-400"
+                              )}>
+                                {quickStartEnabled ? "Enabled" : "Disabled"}
+                              </span>
+                              <Switch checked={quickStartEnabled} onCheckedChange={setQuickStartEnabled} />
+                            </div>
                           </div>
+
+                          {quickStartEnabled ? (
+                            <>
+                              {linkedQuickStartItems.map((item, index) => {
+                                const colors = [
+                                  { bg: 'bg-indigo-100', text: 'text-indigo-600' },
+                                  { bg: 'bg-yellow-100', text: 'text-yellow-600' },
+                                  { bg: 'bg-green-100', text: 'text-green-600' },
+                                  { bg: 'bg-blue-100', text: 'text-blue-600' },
+                                  { bg: 'bg-purple-100', text: 'text-purple-600' },
+                                ];
+                                const color = colors[index % colors.length];
+                                
+                                return (
+                                  <div key={item.id} className="rounded-xl border border-slate-200 bg-slate-100 dark:bg-slate-900 p-6 space-y-4">
+                                    <div className="flex items-center justify-between">
+                                      <div className="flex items-center gap-3 flex-1">
+                                        <div className={`h-8 w-8 rounded-full ${color.bg} flex items-center justify-center ${color.text} font-bold text-sm shrink-0`}>{index + 1}</div>
+                                        <Input
+                                          value={item.title}
+                                          onChange={(e) => updateLinkedQuickStartItem(item.id, 'title', e.target.value)}
+                                          className="font-bold bg-white border-slate-300"
+                                          placeholder="Step title..."
+                                        />
+                                      </div>
+                                      <Button variant="ghost" size="icon" onClick={() => removeLinkedQuickStartItem(item.id)} className="text-slate-400 hover:text-red-400 h-8 w-8 ml-2">
+                                        <Trash2 className="h-4 w-4" />
+                                      </Button>
+                                    </div>
+                                    <div className="space-y-2">
+                                      <div className="flex items-center gap-2">
+                                        <Label className="text-xs text-slate-500">Code Language:</Label>
+                                        <Input
+                                          value={item.codeLanguage}
+                                          onChange={(e) => updateLinkedQuickStartItem(item.id, 'codeLanguage', e.target.value.toUpperCase())}
+                                          className="h-7 text-xs w-24 bg-white border-slate-300"
+                                          placeholder="BASH"
+                                        />
+                                      </div>
+                                      <Textarea 
+                                        value={item.code}
+                                        onChange={(e) => updateLinkedQuickStartItem(item.id, 'code', e.target.value)}
+                                        className="font-mono text-sm bg-slate-900 text-slate-50 border-slate-700 min-h-[100px]"
+                                        placeholder="# Code..."
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label className="text-xs text-slate-500">Description</Label>
+                                      <Textarea 
+                                        value={item.description}
+                                        onChange={(e) => updateLinkedQuickStartItem(item.id, 'description', e.target.value)}
+                                        className="text-sm bg-white border-slate-300 min-h-[60px]"
+                                        placeholder="Step description..."
+                                      />
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                              <Button variant="outline" size="sm" onClick={addLinkedQuickStartItem} className="w-full gap-1 border-dashed">
+                                <Plus className="h-4 w-4" /> Add Step
+                              </Button>
+                            </>
+                          ) : (
+                            <div className="py-4 text-center">
+                              <p className="text-sm text-slate-400">
+                                This section is disabled and will not be displayed in the documentation.
+                              </p>
+                              <p className="text-xs text-slate-300 mt-1">
+                                Enable to show the Quick Start Guide on your service page.
+                              </p>
+                            </div>
+                          )}
                         </div>
 
-                        {/* Dynamic Quick Start Items */}
-                        {linkedQuickStartItems.map((item, index) => {
-                          const colors = [
-                            { bg: 'bg-indigo-100', text: 'text-indigo-600' },
-                            { bg: 'bg-yellow-100', text: 'text-yellow-600' },
-                            { bg: 'bg-green-100', text: 'text-green-600' },
-                            { bg: 'bg-blue-100', text: 'text-blue-600' },
-                            { bg: 'bg-purple-100', text: 'text-purple-600' },
-                          ];
-                          const color = colors[index % colors.length];
-                          
-                          return (
-                            <div key={item.id} className="rounded-xl border border-slate-200 bg-slate-100 p-6 space-y-4">
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3 flex-1">
-                                  <div className={`h-8 w-8 rounded-full ${color.bg} flex items-center justify-center ${color.text} font-bold text-sm shrink-0`}>{index + 1}</div>
-                                  <Input
-                                    value={item.title}
-                                    onChange={(e) => updateLinkedQuickStartItem(item.id, 'title', e.target.value)}
-                                    className="font-bold bg-white border-slate-300"
-                                    placeholder="Step title..."
-                                  />
-                                </div>
-                                <Button variant="ghost" size="icon" onClick={() => removeLinkedQuickStartItem(item.id)} className="text-slate-400 hover:text-red-400 h-8 w-8 ml-2">
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
-                              </div>
-                              <div className="space-y-2">
-                                <div className="flex items-center gap-2">
-                                  <Label className="text-xs text-slate-500">Code Language:</Label>
-                                  <Input
-                                    value={item.codeLanguage}
-                                    onChange={(e) => updateLinkedQuickStartItem(item.id, 'codeLanguage', e.target.value.toUpperCase())}
-                                    className="h-7 text-xs w-24 bg-white border-slate-300"
-                                    placeholder="BASH"
-                                  />
-                                </div>
-                                <Textarea 
-                                  value={item.code}
-                                  onChange={(e) => updateLinkedQuickStartItem(item.id, 'code', e.target.value)}
-                                  className="font-mono text-sm bg-slate-900 text-slate-50 border-slate-700 min-h-[100px]"
-                                  placeholder="# Code..."
-                                />
-                              </div>
-                              <div className="space-y-2">
-                                <Label className="text-xs text-slate-500">Description</Label>
-                                <Textarea 
-                                  value={item.description}
-                                  onChange={(e) => updateLinkedQuickStartItem(item.id, 'description', e.target.value)}
-                                  className="text-sm bg-white border-slate-300 min-h-[60px]"
-                                  placeholder="Step description..."
-                                />
-                              </div>
-                            </div>
-                          );
-                        })}
-
-                        {/* API Definitions Section - Editable */}
-                        <div className="space-y-4">
+                        {/* API Definitions Section with Toggle */}
+                        <div className={cn(
+                          "rounded-xl border p-6 space-y-4",
+                          apiDefEnabled ? "border-slate-200 bg-white dark:bg-slate-950" : "border-slate-200 bg-slate-50 dark:bg-slate-900/50"
+                        )}>
                           <div className="flex items-center justify-between">
-                            <h3 className="text-lg font-bold flex items-center gap-2">
-                              <Database className="h-5 w-5" />
+                            <h3 className={cn("text-lg font-bold flex items-center gap-2", !apiDefEnabled && "text-slate-400")}>
+                              <Database className={cn("h-5 w-5", !apiDefEnabled && "text-slate-400")} />
                               API Definitions
                             </h3>
-                            <Button variant="outline" size="sm" onClick={addLinkedApiDefinition} className="gap-1">
-                              <Plus className="h-4 w-4" /> Add API
-                            </Button>
+                            <div className="flex items-center gap-3">
+                              <span className={cn(
+                                "text-sm font-medium",
+                                apiDefEnabled ? "text-blue-600" : "text-slate-400"
+                              )}>
+                                {apiDefEnabled ? "Enabled" : "Disabled"}
+                              </span>
+                              <Switch checked={apiDefEnabled} onCheckedChange={setApiDefEnabled} />
+                            </div>
                           </div>
 
-                          {linkedApiDefinitions.map((api) => (
-                            <div key={api.id} className="rounded-xl border border-slate-200 bg-slate-900 p-6 space-y-4">
-                              <div className="flex items-center justify-between">
-                                <Input
-                                  value={api.name}
-                                  onChange={(e) => updateLinkedApiDefinition(api.id, 'name', e.target.value)}
-                                  className="font-mono font-bold text-white bg-transparent border-slate-700 w-auto flex-1 mr-4"
-                                  placeholder="function_name"
-                                />
-                                <Button variant="ghost" size="icon" onClick={() => removeLinkedApiDefinition(api.id)} className="text-slate-400 hover:text-red-400 h-8 w-8">
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
-                              </div>
-                              <div className="space-y-3">
-                                <div className="flex gap-3">
-                                  <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
-                                  <div className="flex-1">
-                                    <Textarea 
-                                      value={api.description}
-                                      onChange={(e) => updateLinkedApiDefinition(api.id, 'description', e.target.value)}
-                                      className="text-sm bg-slate-800 text-slate-300 border-slate-700 min-h-[80px]"
-                                      placeholder="API 용도를 설명하세요..."
+                          {apiDefEnabled ? (
+                            <>
+                              {linkedApiDefinitions.map((api) => (
+                                <div key={api.id} className="rounded-xl border border-slate-200 bg-slate-900 p-6 space-y-4">
+                                  <div className="flex items-center justify-between">
+                                    <Input
+                                      value={api.name}
+                                      onChange={(e) => updateLinkedApiDefinition(api.id, 'name', e.target.value)}
+                                      className="font-mono font-bold text-white bg-transparent border-slate-700 w-auto flex-1 mr-4"
+                                      placeholder="function_name"
                                     />
+                                    <Button variant="ghost" size="icon" onClick={() => removeLinkedApiDefinition(api.id)} className="text-slate-400 hover:text-red-400 h-8 w-8">
+                                      <Trash2 className="h-4 w-4" />
+                                    </Button>
                                   </div>
-                                </div>
-                                <div className="flex gap-3">
-                                  <span className="text-slate-400 text-sm w-16 shrink-0">파라미터</span>
-                                  <div className="flex-1 space-y-2">
-                                    <div className="flex flex-wrap gap-2">
-                                      {api.parameters.map((param, paramIndex) => (
-                                        <div key={paramIndex} className="flex items-center gap-1 bg-slate-800 rounded px-2 py-1">
-                                          <Input
-                                            value={param}
-                                            onChange={(e) => updateLinkedParameter(api.id, paramIndex, e.target.value)}
-                                            className="h-6 text-xs font-mono bg-transparent border-none text-slate-300 w-28 p-0"
-                                            placeholder="param: type"
-                                          />
-                                          <button onClick={() => removeLinkedParameter(api.id, paramIndex)} className="text-slate-500 hover:text-red-400">
-                                            <XCircle className="h-3 w-3" />
-                                          </button>
+                                  <div className="space-y-3">
+                                    <div className="flex gap-3">
+                                      <span className="text-slate-400 text-sm w-16 shrink-0">용도</span>
+                                      <div className="flex-1">
+                                        <Textarea 
+                                          value={api.description}
+                                          onChange={(e) => updateLinkedApiDefinition(api.id, 'description', e.target.value)}
+                                          className="text-sm bg-slate-800 text-slate-300 border-slate-700 min-h-[80px]"
+                                          placeholder="API 용도를 설명하세요..."
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="flex gap-3">
+                                      <span className="text-slate-400 text-sm w-16 shrink-0">파라미터</span>
+                                      <div className="flex-1 space-y-2">
+                                        <div className="flex flex-wrap gap-2">
+                                          {api.parameters.map((param, paramIndex) => (
+                                            <div key={paramIndex} className="flex items-center gap-1 bg-slate-800 rounded px-2 py-1">
+                                              <Input
+                                                value={param}
+                                                onChange={(e) => updateLinkedParameter(api.id, paramIndex, e.target.value)}
+                                                className="h-6 text-xs font-mono bg-transparent border-none text-slate-300 w-28 p-0"
+                                                placeholder="param: type"
+                                              />
+                                              <button onClick={() => removeLinkedParameter(api.id, paramIndex)} className="text-slate-500 hover:text-red-400">
+                                                <XCircle className="h-3 w-3" />
+                                              </button>
+                                            </div>
+                                          ))}
+                                          <Button variant="ghost" size="sm" onClick={() => addLinkedParameter(api.id)} className="h-7 text-xs text-slate-400 hover:text-white">
+                                            <Plus className="h-3 w-3 mr-1" /> Add Param
+                                          </Button>
                                         </div>
-                                      ))}
-                                      <Button variant="ghost" size="sm" onClick={() => addLinkedParameter(api.id)} className="h-7 text-xs text-slate-400 hover:text-white">
-                                        <Plus className="h-3 w-3 mr-1" /> Add Param
-                                      </Button>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              ))}
+                              <Button variant="outline" size="sm" onClick={addLinkedApiDefinition} className="w-full gap-1 border-dashed">
+                                <Plus className="h-4 w-4" /> Add API
+                              </Button>
+                            </>
+                          ) : (
+                            <div className="py-4 text-center">
+                              <p className="text-sm text-slate-400">
+                                This section is disabled and will not be displayed in the documentation.
+                              </p>
+                              <p className="text-xs text-slate-300 mt-1">
+                                Enable to show API Definitions on your service page.
+                              </p>
                             </div>
-                          ))}
+                          )}
                         </div>
                         
                         {/* Full Documentation Section with Toggle */}
                         <div className={cn(
                           "rounded-xl border p-6 space-y-4",
-                          fullDocEnabled ? "border-slate-200 bg-slate-100" : "border-slate-200 bg-slate-50"
+                          fullDocEnabled ? "border-slate-200 bg-white dark:bg-slate-950" : "border-slate-200 bg-slate-50 dark:bg-slate-900/50"
                         )}>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <div className={cn(
-                                "h-8 w-8 rounded-full flex items-center justify-center font-bold text-sm",
-                                fullDocEnabled ? "bg-blue-100 text-blue-600" : "bg-slate-200 text-slate-400"
-                              )}>{linkedQuickStartItems.length + 1}</div>
-                              <h4 className={cn("font-bold", !fullDocEnabled && "text-slate-400")}>Full Documentation</h4>
+                              <h4 className={cn("font-bold flex items-center gap-2", !fullDocEnabled && "text-slate-400")}>
+                                <FileText className={cn("h-5 w-5", !fullDocEnabled && "text-slate-400")} />
+                                Full Documentation
+                              </h4>
                             </div>
                             <div className="flex items-center gap-3">
                               <span className={cn(
@@ -2667,6 +2718,8 @@ const client = new EMDataClient({
                         </DialogHeader>
                         <ScrollArea className="h-[65vh] pr-4">
                           <div className="space-y-6 py-4">
+                            {quickStartEnabled && (
+                            <>
                             <div className="flex items-center justify-between">
                               <h3 className="text-xl font-bold flex items-center gap-2">
                                 <Terminal className="h-5 w-5" />
@@ -2704,8 +2757,11 @@ const client = new EMDataClient({
                                 </div>
                               );
                             })}
+                            </>
+                            )}
 
                             {/* Preview API Definitions */}
+                            {apiDefEnabled && (
                             <div className="space-y-4">
                               <h3 className="text-lg font-bold flex items-center gap-2">
                                 <Database className="h-5 w-5" />
@@ -2733,6 +2789,7 @@ const client = new EMDataClient({
                                 </div>
                               ))}
                             </div>
+                            )}
 
                             {/* Preview Full Documentation */}
                             {fullDocEnabled && (
