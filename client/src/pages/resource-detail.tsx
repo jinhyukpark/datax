@@ -527,9 +527,9 @@ export default function ResourceDetail() {
                 </div>
 
                 {/* API Definitions Section */}
-                <div className="space-y-6">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50 space-y-6">
                   <div className="flex items-center gap-3">
-                    <Code className="h-5 w-5 text-slate-700" />
+                    <Code className="h-5 w-5 text-slate-700 dark:text-slate-300" />
                     <h3 className="text-xl font-bold">API Definitions</h3>
                   </div>
 
