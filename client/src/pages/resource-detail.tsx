@@ -617,29 +617,6 @@ export default function ResourceDetail() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Button variant="outline" className="flex items-center gap-2 h-auto py-4 px-6 justify-start border-slate-200 dark:border-slate-800">
-                    <FileText className="h-5 w-5 text-indigo-500" />
-                    <div className="text-left">
-                      <p className="font-bold text-sm">Full API Reference</p>
-                      <p className="text-xs text-muted-foreground">Comprehensive API guides</p>
-                    </div>
-                  </Button>
-                  <Button variant="outline" className="flex items-center gap-2 h-auto py-4 px-6 justify-start border-slate-200 dark:border-slate-800">
-                    <Terminal className="h-5 w-5 text-indigo-500" />
-                    <div className="text-left">
-                      <p className="font-bold text-sm">SDK Documentation</p>
-                      <p className="text-xs text-muted-foreground">Integration guides & tips</p>
-                    </div>
-                  </Button>
-                  <Button variant="outline" className="flex items-center gap-2 h-auto py-4 px-6 justify-start border-slate-200 dark:border-slate-800">
-                    <Database className="h-5 w-5 text-indigo-500" />
-                    <div className="text-left">
-                      <p className="font-bold text-sm">Data Dictionary</p>
-                      <p className="text-xs text-muted-foreground">Field definitions & types</p>
-                    </div>
-                  </Button>
-                </div>
               </TabsContent>
 
               <TabsContent value="terms-pricing" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
