@@ -1108,27 +1108,24 @@ const client = new EMDataClient({
                   }}
                   placeholder={`Enter example question ${idx + 1}`}
                   className="flex-1 h-10"
-                  disabled={!isEditable}
                   data-testid={`input-hosted-edit-try-asking-${idx}`}
                 />
-                {isEditable && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50 shrink-0"
-                    onClick={() => {
-                      setHostedTryAskingQuestions(hostedTryAskingQuestions.filter((_, i) => i !== idx));
-                    }}
-                    data-testid={`btn-remove-hosted-edit-try-asking-${idx}`}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                )}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50 shrink-0"
+                  onClick={() => {
+                    setHostedTryAskingQuestions(hostedTryAskingQuestions.filter((_, i) => i !== idx));
+                  }}
+                  data-testid={`btn-remove-hosted-edit-try-asking-${idx}`}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
             ))}
           </div>
 
-          {isEditable && hostedTryAskingQuestions.length < 5 && (
+          {hostedTryAskingQuestions.length < 5 && (
             <Button
               variant="outline"
               className="w-full border-dashed gap-2"
