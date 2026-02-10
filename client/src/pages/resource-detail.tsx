@@ -57,6 +57,23 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { Review } from "@shared/schema";
 import { RESOURCES, type Resource } from "@/lib/data";
+import { DialogDescription } from "@/components/ui/dialog";
+
+function getYoutubeEmbedUrl(url: string): string | null {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+  ];
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) return `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0`;
+  }
+  return null;
+}
+
+function isYoutubeUrl(url: string): boolean {
+  return /(?:youtube\.com|youtu\.be)/.test(url);
+}
 
 // Import generated images
 import aiAgentIcon from "@assets/generated_images/ai_agent_icon_abstract.png";
@@ -88,6 +105,7 @@ export default function ResourceDetail() {
     contact: ''
   });
   const [supportSubmitting, setSupportSubmitting] = useState(false);
+  const [demoVideoOpen, setDemoVideoOpen] = useState(false);
 
   // Try to fetch from API, but fall back to mock data
   const { data: apiResource, isLoading } = useQuery<Resource>({
@@ -254,12 +272,19 @@ export default function ResourceDetail() {
                 </Button>
               )}
               {resource.demoUrl && (
-                <Button variant="outline" className="border-slate-200 dark:border-slate-800" asChild>
-                  <a href={resource.demoUrl} target="_blank" rel="noopener noreferrer">
+                resource.demoUrl && isYoutubeUrl(resource.demoUrl) ? (
+                  <Button variant="outline" className="border-slate-200 dark:border-slate-800" onClick={() => setDemoVideoOpen(true)} data-testid="button-view-demo">
                     <Eye className="mr-2 h-4 w-4" />
                     {t("View Demo", "데모 보기")}
-                  </a>
-                </Button>
+                  </Button>
+                ) : (
+                  <Button variant="outline" className="border-slate-200 dark:border-slate-800" asChild data-testid="button-view-demo">
+                    <a href={resource.demoUrl} target="_blank" rel="noopener noreferrer">
+                      <Eye className="mr-2 h-4 w-4" />
+                      {t("View Demo", "데모 보기")}
+                    </a>
+                  </Button>
+                )
               )}
               
               <div className="flex items-center justify-center gap-2 rounded-md border border-green-200 bg-green-50 py-2.5 text-sm font-medium text-green-700 dark:border-green-900/30 dark:bg-green-900/20 dark:text-green-400">
@@ -1107,6 +1132,30 @@ export default function ResourceDetail() {
           </div>
         </div>
       </div>
+
+      {/* YouTube Demo Video Popup */}
+      {resource.demoUrl && isYoutubeUrl(resource.demoUrl) && (
+        <Dialog open={demoVideoOpen} onOpenChange={(open) => { setDemoVideoOpen(open); }}>
+          <DialogContent className="max-w-4xl p-0 overflow-hidden bg-black border-none rounded-2xl" data-testid="dialog-demo-video">
+            <DialogHeader className="sr-only">
+              <DialogTitle>{resource.title} - Demo</DialogTitle>
+              <DialogDescription>Demo video for {resource.title}</DialogDescription>
+            </DialogHeader>
+            <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+              {demoVideoOpen && (
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src={getYoutubeEmbedUrl(resource.demoUrl!) || ''}
+                  title={`${resource.title} Demo Video`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  frameBorder="0"
+                />
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
       
       <Footer />
     </div>

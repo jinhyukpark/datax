@@ -114,7 +114,7 @@ export const RESOURCES: Resource[] = [
     provider: "Social Trend Co.",
     founder: "Jane Doe",
     websiteUrl: "https://example.com",
-    demoUrl: "https://demo.example.com",
+    demoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     docsUrl: "https://docs.example.com",
     contactEmail: "contact@socialtrend.com",
     type: "API",
