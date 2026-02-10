@@ -611,6 +611,7 @@ export default function ResourceDetail() {
 
               <TabsContent value="terms-pricing" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
                 {resource.price === 'Paid' ? (
+                  (resource.termsOfService || resource.providedServices || resource.pricingPlans) ? (
                   <div className="space-y-10">
                     {/* Detailed Terms - Now at the top with enhanced design */}
                     <div className="relative overflow-hidden rounded-3xl border border-indigo-100 bg-gradient-to-br from-indigo-50/50 to-white p-8 shadow-sm dark:border-indigo-900/20 dark:from-indigo-900/10 dark:to-slate-950">
@@ -729,6 +730,47 @@ export default function ResourceDetail() {
                       </div>
                     </div>
                   </div>
+                  ) : (
+                    <div className="space-y-8">
+                      {/* Terms of Service Empty State */}
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                          <ShieldCheck className="h-5 w-5 text-indigo-600" />
+                          <h3 className="text-xl font-bold">{t("Terms of Service", "이용약관")}</h3>
+                        </div>
+                        <div className="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-10 text-center">
+                          <div className="flex flex-col items-center gap-3">
+                            <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                              <ShieldCheck className="h-6 w-6 text-slate-400" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{t("No Terms of Service available", "이용약관이 등록되지 않았습니다")}</p>
+                              <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">{t("The provider has not added terms of service for this resource yet.", "제공자가 아직 이 서비스에 대한 이용약관을 등록하지 않았습니다.")}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Service Guidelines Empty State */}
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                          <Zap className="h-5 w-5 text-blue-600" />
+                          <h3 className="text-xl font-bold">{t("Service Guidelines", "서비스 가이드라인")}</h3>
+                        </div>
+                        <div className="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-10 text-center">
+                          <div className="flex flex-col items-center gap-3">
+                            <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                              <Zap className="h-6 w-6 text-slate-400" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{t("No Service Guidelines available", "서비스 가이드라인이 등록되지 않았습니다")}</p>
+                              <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">{t("Service details such as provided services, pricing, and refund policies have not been configured yet.", "제공 서비스, 가격 정책, 환불 정책 등의 세부 사항이 아직 등록되지 않았습니다.")}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
                 ) : (
                   <div className="space-y-8">
                     <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center dark:border-slate-800 dark:bg-slate-900/50">
