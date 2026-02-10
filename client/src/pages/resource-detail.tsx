@@ -197,9 +197,18 @@ export default function ResourceDetail() {
                   {resource.provider}
                 </div>
                 <div className="flex items-center gap-1 text-sm font-medium text-amber-500">
-                  <Star className="h-3.5 w-3.5 fill-current" />
-                  <span>4.8</span>
-                  <span className="text-muted-foreground font-normal">(124 reviews)</span>
+                  {displayReviews.length > 0 ? (
+                    <>
+                      <Star className="h-3.5 w-3.5 fill-current" />
+                      <span>{(displayReviews.reduce((sum, r) => sum + r.rating, 0) / displayReviews.length).toFixed(1)}</span>
+                      <span className="text-muted-foreground font-normal">({displayReviews.length} reviews)</span>
+                    </>
+                  ) : (
+                    <>
+                      <Star className="h-3.5 w-3.5 text-slate-300" />
+                      <span className="text-muted-foreground font-normal">{t("No reviews", "리뷰 없음")}</span>
+                    </>
+                  )}
                   <button 
                     onClick={toggleFavorite}
                     className={cn(
@@ -817,60 +826,64 @@ export default function ResourceDetail() {
               </TabsContent>
 
               <TabsContent value="reviews" className="space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-500">
-                {/* Header Section */}
-                <div className="flex flex-col gap-0.5 max-w-4xl">
-                  <div className="flex items-center gap-4">
-                    <div className="flex flex-col">
-                      <span className="text-4xl font-bold text-slate-900 dark:text-white leading-none">4.8</span>
-                      <span className="text-[11px] text-slate-400 font-medium mt-1">out of 5</span>
-                    </div>
-                    <div className="flex-1 flex items-center gap-3">
-                      <div className="relative h-2 flex-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
-                        <div className="absolute left-0 top-0 h-full bg-amber-400 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.4)]" style={{ width: '96%' }}></div>
+                {displayReviews.length > 0 ? (
+                  <>
+                    {/* Header Section */}
+                    <div className="flex flex-col gap-0.5 max-w-4xl">
+                      <div className="flex items-center gap-4">
+                        <div className="flex flex-col">
+                          <span className="text-4xl font-bold text-slate-900 dark:text-white leading-none">
+                            {(displayReviews.reduce((sum, r) => sum + r.rating, 0) / displayReviews.length).toFixed(1)}
+                          </span>
+                          <span className="text-[11px] text-slate-400 font-medium mt-1">out of 5</span>
+                        </div>
+                        <div className="flex-1 flex items-center gap-3">
+                          <div className="relative h-2 flex-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
+                            <div className="absolute left-0 top-0 h-full bg-amber-400 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.4)]" style={{ width: `${(displayReviews.reduce((sum, r) => sum + r.rating, 0) / displayReviews.length / 5) * 100}%` }}></div>
+                          </div>
+                          <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap">{displayReviews.length} {displayReviews.length === 1 ? 'rating' : 'ratings'}</span>
+                        </div>
                       </div>
-                      <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap">124 ratings</span>
                     </div>
-                  </div>
-                </div>
 
-                {/* Write Review Section */}
-                <div className="p-6 rounded-[24px] bg-slate-50/80 border border-slate-200 shadow-sm dark:bg-slate-900/40 dark:border-slate-800">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400">
-                        <User className="h-5 w-5" />
+                    {/* Write Review Section */}
+                    <div className="p-6 rounded-[24px] bg-slate-50/80 border border-slate-200 shadow-sm dark:bg-slate-900/40 dark:border-slate-800">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400">
+                            <User className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-slate-900 dark:text-white text-base">{t("Write a Review", "리뷰 작성")}</h4>
+                            <p className="text-xs text-slate-500">{t("Share your experience with this resource", "이 서비스에 대한 경험을 공유해 주세요")}</p>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end gap-1">
+                          <div className="flex items-center gap-1 text-slate-200">
+                            {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-5 w-5 hover:text-amber-400 cursor-pointer transition-colors" />)}
+                          </div>
+                          <span className="text-[10px] text-slate-400 font-medium mr-1">{t("Click to rate", "클릭하여 평가")}</span>
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="font-bold text-slate-900 dark:text-white text-base">Write a Review</h4>
-                        <p className="text-xs text-slate-500">Share your experience with this resource</p>
+                      
+                      <div className="space-y-4">
+                        <Textarea 
+                          placeholder={t("Write your review here...", "리뷰를 작성해 주세요...")}
+                          className="min-h-[100px] rounded-xl border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-800 dark:bg-slate-950 text-sm" 
+                        />
+                        
+                        <div className="flex justify-end">
+                          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6 py-2.5 h-auto text-sm font-bold shadow-lg shadow-indigo-100 dark:shadow-none">
+                            <Send className="mr-2 h-4 w-4" />
+                            {t("Submit Review", "리뷰 등록")}
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <div className="flex items-center gap-1 text-slate-200">
-                        {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-5 w-5 hover:text-amber-400 cursor-pointer transition-colors" />)}
-                      </div>
-                      <span className="text-[10px] text-slate-400 font-medium mr-1">Click to rate</span>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <Textarea 
-                      placeholder="Write your review here..." 
-                      className="min-h-[100px] rounded-xl border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-800 dark:bg-slate-950 text-sm" 
-                    />
-                    
-                    <div className="flex justify-end">
-                      <Button className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6 py-2.5 h-auto text-sm font-bold shadow-lg shadow-indigo-100 dark:shadow-none">
-                        <Send className="mr-2 h-4 w-4" />
-                        Submit Review
-                      </Button>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Reviews List */}
-                <div className="space-y-8 mt-12">
-                  {displayReviews.map((review) => (
+                    {/* Reviews List */}
+                    <div className="space-y-8 mt-12">
+                      {displayReviews.map((review) => (
                     <div key={review.id} className="space-y-3">
                       <div className="flex justify-between items-start">
                         <div className="flex items-center gap-3">
@@ -919,7 +932,66 @@ export default function ResourceDetail() {
                       )}
                     </div>
                   ))}
-                </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="space-y-8">
+                    {/* Empty Reviews State */}
+                    <div className="rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 py-16 px-8 text-center">
+                      <div className="flex flex-col items-center gap-4 max-w-sm mx-auto">
+                        <div className="h-16 w-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                          <MessageSquare className="h-8 w-8 text-slate-400" />
+                        </div>
+                        <div>
+                          <p className="text-lg font-semibold text-slate-500 dark:text-slate-400">{t("No Reviews Yet", "아직 리뷰가 없습니다")}</p>
+                          <p className="text-sm text-slate-400 dark:text-slate-500 mt-2 leading-relaxed">
+                            {t("Be the first to share your experience with this service. Your feedback helps others make informed decisions.", "이 서비스에 대한 경험을 처음으로 공유해 주세요. 여러분의 피드백은 다른 사용자들의 선택에 도움이 됩니다.")}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-1 mt-2">
+                          {[1, 2, 3, 4, 5].map(i => (
+                            <Star key={i} className="h-6 w-6 text-slate-200 dark:text-slate-700" />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Write Review Section (still shown in empty state) */}
+                    <div className="p-6 rounded-[24px] bg-slate-50/80 border border-slate-200 shadow-sm dark:bg-slate-900/40 dark:border-slate-800">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400">
+                            <User className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-slate-900 dark:text-white text-base">{t("Write the First Review", "첫 리뷰를 작성해 주세요")}</h4>
+                            <p className="text-xs text-slate-500">{t("Share your experience with this resource", "이 서비스에 대한 경험을 공유해 주세요")}</p>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end gap-1">
+                          <div className="flex items-center gap-1 text-slate-200">
+                            {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-5 w-5 hover:text-amber-400 cursor-pointer transition-colors" />)}
+                          </div>
+                          <span className="text-[10px] text-slate-400 font-medium mr-1">{t("Click to rate", "클릭하여 평가")}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <Textarea 
+                          placeholder={t("Write your review here...", "리뷰를 작성해 주세요...")}
+                          className="min-h-[100px] rounded-xl border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-800 dark:bg-slate-950 text-sm" 
+                        />
+                        
+                        <div className="flex justify-end">
+                          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6 py-2.5 h-auto text-sm font-bold shadow-lg shadow-indigo-100 dark:shadow-none">
+                            <Send className="mr-2 h-4 w-4" />
+                            {t("Submit Review", "리뷰 등록")}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </TabsContent>
             </Tabs>
           </div>
