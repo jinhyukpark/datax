@@ -56,6 +56,26 @@ export interface Resource {
     content: string;
     endpoints?: { method: string; path: string; description: string }[];
   };
+  quickStartGuide?: {
+    steps: {
+      title: string;
+      codeLanguage: string;
+      code: string;
+      description?: string;
+    }[];
+  };
+  apiDefinitions?: {
+    apis: {
+      name: string;
+      description: string;
+      parameters?: { name: string; type: string }[];
+    }[];
+  };
+  fullDocumentation?: {
+    description: string;
+    buttonText: string;
+    url: string;
+  };
   pricingPlans?: {
     name: string;
     price: string;
@@ -191,7 +211,58 @@ export const RESOURCES: Resource[] = [
     tags: ["Patent", "Image", "Analysis"],
     image: "abstract_eye_aperture_logo_icon",
     publishedDate: "2025-08-01",
-    views: 411
+    views: 411,
+    quickStartGuide: {
+      steps: [
+        {
+          title: "Installation",
+          codeLanguage: "BASH",
+          code: "# Using npm\nnpm install @em-data/sdk\n\n# Using pip (Python)\npip install em-data-sdk",
+          description: "SDK를 설치하면 API 클라이언트와 필요한 모든 의존성이 함께 설치됩니다. Node.js 18+ 또는 Python 3.8+ 환경이 필요합니다."
+        },
+        {
+          title: "JavaScript / Node.js Integration",
+          codeLanguage: "JAVASCRIPT",
+          code: "import { EMDataClient } from '@em-data/sdk';\n\n// Initialize the client\nconst client = new EMDataClient({\n  apiKey: process.env.EM_API_KEY,\n  baseUrl: 'https://api.emdata.io'\n});\n\n// Fetch resources\nconst resources = await client.resources.list({\n  limit: 10,\n  category: 'financial'\n});",
+          description: "EMDataClient를 초기화할 때 API 키와 기본 URL을 설정합니다. API 키는 환경변수에서 가져오는 것을 권장합니다."
+        }
+      ]
+    },
+    apiDefinitions: {
+      apis: [
+        {
+          name: "get_genre_list",
+          description: "사용 가능한 모든 공연 장르 코드와 이름을 조회합니다. 연극, 뮤지컬, 무용, 클래식, 국악, 대중음악 등의 장르를 제공합니다.",
+          parameters: []
+        },
+        {
+          name: "search_events_by_location",
+          description: "특정 지역과 기간의 공연을 검색합니다. 검색 결과가 없으면 자동으로 구/군 → 시/도 → 전국 순으로 범위를 확장합니다.",
+          parameters: [
+            { name: "genreCode", type: "string" },
+            { name: "startDate", type: "string" },
+            { name: "endDate", type: "string" },
+            { name: "sidoCode", type: "string" },
+            { name: "gugunCode", type: "string" },
+            { name: "limit", type: "number" }
+          ]
+        },
+        {
+          name: "filter_free_events",
+          description: "무료 공연을 우선 검색합니다 (항상 오늘부터 30일 이내). 무료 공연이 5개 미만이면 저렴한 유료 공연으로 자동 보충합니다.",
+          parameters: [
+            { name: "genreCode", type: "string" },
+            { name: "sidoCode", type: "string" },
+            { name: "limit", type: "number" }
+          ]
+        }
+      ]
+    },
+    fullDocumentation: {
+      description: "Complete API reference and integration guides are available. Access comprehensive documentation including endpoint details, request/response examples, error handling, and best practices.",
+      buttonText: "View Documentation",
+      url: "https://docs.example.com"
+    }
   },
   {
     id: "201",

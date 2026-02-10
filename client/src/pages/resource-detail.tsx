@@ -477,125 +477,100 @@ export default function ResourceDetail() {
                       <Terminal className="h-5 w-5" />
                       Quick Start Guide
                     </h3>
-                    <Badge variant="outline">v2.1.0</Badge>
+                    {resource.quickStartGuide && resource.quickStartGuide.steps.length > 0 && (
+                      <Badge variant="outline">v2.1.0</Badge>
+                    )}
                   </div>
 
-                  {/* Step 1: Installation */}
-                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-sm">1</div>
-                      <h4 className="font-bold">Installation</h4>
+                  {resource.quickStartGuide && resource.quickStartGuide.steps.length > 0 ? (
+                    resource.quickStartGuide.steps.map((step, index) => {
+                      const colors = [
+                        { bg: 'bg-indigo-100 dark:bg-indigo-900/50', text: 'text-indigo-600 dark:text-indigo-400', descBg: 'bg-blue-50 dark:bg-blue-900/20', descBorder: 'border-blue-100 dark:border-blue-800', descText: 'text-blue-700 dark:text-blue-300' },
+                        { bg: 'bg-yellow-100 dark:bg-yellow-900/50', text: 'text-yellow-600 dark:text-yellow-400', descBg: 'bg-yellow-50 dark:bg-yellow-900/20', descBorder: 'border-yellow-100 dark:border-yellow-800', descText: 'text-yellow-700 dark:text-yellow-300' },
+                        { bg: 'bg-green-100 dark:bg-green-900/50', text: 'text-green-600 dark:text-green-400', descBg: 'bg-green-50 dark:bg-green-900/20', descBorder: 'border-green-100 dark:border-green-800', descText: 'text-green-700 dark:text-green-300' },
+                        { bg: 'bg-blue-100 dark:bg-blue-900/50', text: 'text-blue-600 dark:text-blue-400', descBg: 'bg-blue-50 dark:bg-blue-900/20', descBorder: 'border-blue-100 dark:border-blue-800', descText: 'text-blue-700 dark:text-blue-300' },
+                        { bg: 'bg-purple-100 dark:bg-purple-900/50', text: 'text-purple-600 dark:text-purple-400', descBg: 'bg-purple-50 dark:bg-purple-900/20', descBorder: 'border-purple-100 dark:border-purple-800', descText: 'text-purple-700 dark:text-purple-300' },
+                      ];
+                      const color = colors[index % colors.length];
+                      return (
+                        <div key={index} className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className={`h-8 w-8 rounded-full ${color.bg} flex items-center justify-center ${color.text} font-bold text-sm`}>{index + 1}</div>
+                            <h4 className="font-bold">{step.title}</h4>
+                          </div>
+                          <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
+                            <div className="absolute right-4 top-4 text-xs text-slate-400">{step.codeLanguage}</div>
+                            <pre className="whitespace-pre-wrap">{step.code}</pre>
+                          </div>
+                          {step.description && (
+                            <div className={`mt-4 p-3 ${color.descBg} rounded-lg border ${color.descBorder}`}>
+                              <p className={`text-sm ${color.descText}`}>{step.description}</p>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-10 text-center">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                          <Terminal className="h-6 w-6 text-slate-400" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">No Quick Start Guide available</p>
+                          <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">The provider has not added a quick start guide for this service yet.</p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50">
-                      <div className="absolute right-4 top-4 text-xs text-slate-400">BASH</div>
-                      <p className="text-slate-400"># Using npm</p>
-                      <p className="mb-3">npm install @em-data/sdk</p>
-                      <p className="text-slate-400"># Using pip (Python)</p>
-                      <p className="mb-3">pip install em-data-sdk</p>
-                      <p className="text-slate-400"># Using Maven (Java)</p>
-                      <p>&lt;dependency&gt;</p>
-                      <p>&nbsp;&nbsp;&lt;groupId&gt;com.emdata&lt;/groupId&gt;</p>
-                      <p>&nbsp;&nbsp;&lt;artifactId&gt;em-data-sdk&lt;/artifactId&gt;</p>
-                      <p>&nbsp;&nbsp;&lt;version&gt;2.1.0&lt;/version&gt;</p>
-                      <p>&lt;/dependency&gt;</p>
-                    </div>
-                  </div>
-
-                  {/* Step 2: JavaScript Integration */}
-                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="h-8 w-8 rounded-full bg-yellow-100 dark:bg-yellow-900/50 flex items-center justify-center text-yellow-600 dark:text-yellow-400 font-bold text-sm">2</div>
-                      <h4 className="font-bold">JavaScript / Node.js Integration</h4>
-                    </div>
-                    <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
-                      <div className="absolute right-4 top-4 text-xs text-slate-400">JAVASCRIPT</div>
-                      <p><span className="text-purple-400">import</span> {"{"} EMDataClient {"}"} <span className="text-purple-400">from</span> <span className="text-green-400">'@em-data/sdk'</span>;</p>
-                      <br/>
-                      <p className="text-slate-400">// Initialize the client</p>
-                      <p><span className="text-purple-400">const</span> client = <span className="text-blue-400">new</span> EMDataClient({"{"}</p>
-                      <p>&nbsp;&nbsp;apiKey: process.env.<span className="text-orange-400">EM_API_KEY</span>,</p>
-                      <p>&nbsp;&nbsp;baseUrl: <span className="text-green-400">'https://api.emdata.io'</span></p>
-                      <p>{"}"});</p>
-                      <br/>
-                      <p className="text-slate-400">// Fetch resources</p>
-                      <p><span className="text-purple-400">const</span> resources = <span className="text-purple-400">await</span> client.resources.list({"{"}</p>
-                      <p>&nbsp;&nbsp;limit: <span className="text-orange-400">10</span>,</p>
-                      <p>&nbsp;&nbsp;category: <span className="text-green-400">'financial'</span></p>
-                      <p>{"}"});</p>
-                    </div>
-                  </div>
+                  )}
                 </div>
 
                 {/* API Definitions Section */}
                 <div className="space-y-6">
                   <div className="flex items-center gap-3">
-                    <Code className="h-5 w-5 text-slate-700" />
+                    <Code className="h-5 w-5 text-slate-700 dark:text-slate-300" />
                     <h3 className="text-xl font-bold">API Definitions</h3>
                   </div>
 
-                  <div className="space-y-4">
-                    {/* API 1 */}
-                    <div className="rounded-xl bg-slate-900 p-5 space-y-4">
-                      <h4 className="font-mono font-bold text-white text-base">get_genre_list</h4>
-                      <div>
-                        <p className="text-xs text-slate-400 mb-1">용도</p>
-                        <p className="text-sm text-slate-200 leading-relaxed">사용 가능한 모든 공연 장르 코드와 이름을 조회합니다. 연극, 뮤지컬, 무용, 클래식, 국악, 대중음악 등의 장르를 제공합니다.</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-400 mb-2">파라미터</p>
-                        <p className="text-xs text-slate-500 italic">No parameters required</p>
-                      </div>
+                  {resource.apiDefinitions && resource.apiDefinitions.apis.length > 0 ? (
+                    <div className="space-y-4">
+                      {resource.apiDefinitions.apis.map((api, index) => (
+                        <div key={index} className="rounded-xl bg-slate-900 p-5 space-y-4">
+                          <h4 className="font-mono font-bold text-white text-base">{api.name}</h4>
+                          <div>
+                            <p className="text-xs text-slate-400 mb-1">용도</p>
+                            <p className="text-sm text-slate-200 leading-relaxed">{api.description}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-400 mb-2">파라미터</p>
+                            {api.parameters && api.parameters.length > 0 ? (
+                              <div className="flex flex-wrap gap-2">
+                                {api.parameters.map((p, i) => (
+                                  <span key={i} className="inline-flex items-center px-3 py-1.5 bg-slate-700 rounded-full text-xs font-mono text-slate-300">
+                                    {p.name}: {p.type}
+                                  </span>
+                                ))}
+                              </div>
+                            ) : (
+                              <p className="text-xs text-slate-500 italic">No parameters required</p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-
-                    {/* API 2 */}
-                    <div className="rounded-xl bg-slate-900 p-5 space-y-4">
-                      <h4 className="font-mono font-bold text-white text-base">search_events_by_location</h4>
-                      <div>
-                        <p className="text-xs text-slate-400 mb-1">용도</p>
-                        <p className="text-sm text-slate-200 leading-relaxed">특정 지역과 기간의 공연을 검색합니다. 검색 결과가 없으면 자동으로 구/군 → 시/도 → 전국 순으로 범위를 확장합니다.</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-400 mb-2">파라미터</p>
-                        <div className="flex flex-wrap gap-2">
-                          {[
-                            { name: "genreCode", type: "string" },
-                            { name: "startDate", type: "string" },
-                            { name: "endDate", type: "string" },
-                            { name: "sidoCode", type: "string" },
-                            { name: "gugunCode", type: "string" },
-                            { name: "limit", type: "number" },
-                          ].map((p, i) => (
-                            <span key={i} className="inline-flex items-center px-3 py-1.5 bg-slate-700 rounded-full text-xs font-mono text-slate-300">
-                              {p.name}: {p.type}
-                            </span>
-                          ))}
+                  ) : (
+                    <div className="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-10 text-center">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                          <Code className="h-6 w-6 text-slate-400" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">No API Definitions available</p>
+                          <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">The provider has not added API definitions for this service yet.</p>
                         </div>
                       </div>
                     </div>
-
-                    {/* API 3 */}
-                    <div className="rounded-xl bg-slate-900 p-5 space-y-4">
-                      <h4 className="font-mono font-bold text-white text-base">filter_free_events</h4>
-                      <div>
-                        <p className="text-xs text-slate-400 mb-1">용도</p>
-                        <p className="text-sm text-slate-200 leading-relaxed">무료 공연을 우선 검색합니다 (항상 오늘부터 30일 이내). 무료 공연이 5개 미만이면 저렴한 유료 공연으로 자동 보충합니다.</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-400 mb-2">파라미터</p>
-                        <div className="flex flex-wrap gap-2">
-                          {[
-                            { name: "genreCode", type: "string" },
-                            { name: "sidoCode", type: "string" },
-                            { name: "limit", type: "number" },
-                          ].map((p, i) => (
-                            <span key={i} className="inline-flex items-center px-3 py-1.5 bg-slate-700 rounded-full text-xs font-mono text-slate-300">
-                              {p.name}: {p.type}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  )}
                 </div>
 
                 {/* Full Documentation Section */}
@@ -604,17 +579,32 @@ export default function ResourceDetail() {
                     <FileText className="h-5 w-5 text-indigo-600" />
                     <h3 className="text-xl font-bold">Full Documentation</h3>
                   </div>
-                  <div className="rounded-xl border border-slate-200 bg-gradient-to-br from-indigo-50/50 to-white p-6 dark:border-slate-800 dark:from-slate-900/50 dark:to-slate-950">
-                    <p className="text-sm text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
-                      Complete API reference and integration guides are available. Access comprehensive documentation including endpoint details, request/response examples, error handling, and best practices.
-                    </p>
-                    <a href="https://docs.example.com" target="_blank" rel="noopener noreferrer">
-                      <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700">
-                        <ExternalLink className="h-4 w-4" />
-                        View Documentation
-                      </Button>
-                    </a>
-                  </div>
+
+                  {resource.fullDocumentation ? (
+                    <div className="rounded-xl border border-slate-200 bg-gradient-to-br from-indigo-50/50 to-white p-6 dark:border-slate-800 dark:from-slate-900/50 dark:to-slate-950">
+                      <p className="text-sm text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
+                        {resource.fullDocumentation.description}
+                      </p>
+                      <a href={resource.fullDocumentation.url} target="_blank" rel="noopener noreferrer">
+                        <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700">
+                          <ExternalLink className="h-4 w-4" />
+                          {resource.fullDocumentation.buttonText}
+                        </Button>
+                      </a>
+                    </div>
+                  ) : (
+                    <div className="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-10 text-center">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                          <FileText className="h-6 w-6 text-slate-400" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">No Full Documentation available</p>
+                          <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">The provider has not added full documentation for this service yet.</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
               </TabsContent>
