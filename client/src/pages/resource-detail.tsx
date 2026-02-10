@@ -527,14 +527,14 @@ export default function ResourceDetail() {
                 </div>
 
                 {/* API Definitions Section */}
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50 space-y-6">
+                <div className="space-y-6">
                   <div className="flex items-center gap-3">
                     <Code className="h-5 w-5 text-slate-700 dark:text-slate-300" />
                     <h3 className="text-xl font-bold">API Definitions</h3>
                   </div>
 
-                  <div className="space-y-4">
-                    {/* API 1 */}
+                  {/* API 1 */}
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50 space-y-4">
                     <div className="rounded-xl bg-slate-900 p-5 space-y-4">
                       <h4 className="font-mono font-bold text-white text-base">get_genre_list</h4>
                       <div>
@@ -546,8 +546,10 @@ export default function ResourceDetail() {
                         <p className="text-xs text-slate-500 italic">No parameters required</p>
                       </div>
                     </div>
+                  </div>
 
-                    {/* API 2 */}
+                  {/* API 2 */}
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50 space-y-4">
                     <div className="rounded-xl bg-slate-900 p-5 space-y-4">
                       <h4 className="font-mono font-bold text-white text-base">search_events_by_location</h4>
                       <div>
@@ -572,8 +574,10 @@ export default function ResourceDetail() {
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    {/* API 3 */}
+                  {/* API 3 */}
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50 space-y-4">
                     <div className="rounded-xl bg-slate-900 p-5 space-y-4">
                       <h4 className="font-mono font-bold text-white text-base">filter_free_events</h4>
                       <div>
