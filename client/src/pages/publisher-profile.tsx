@@ -256,22 +256,20 @@ export default function PublisherProfile() {
               </div>
 
               {serviceDetails.useCases && serviceDetails.useCases.length > 0 && (
-                <div className="mb-16">
+                <div className="border-t border-slate-200 dark:border-slate-800 pt-12 mb-16">
                   <h3 className="text-2xl font-bold text-foreground font-heading mb-8">
                     {t("Use Cases", "활용 사례")}
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-0 divide-y divide-slate-100 dark:divide-slate-800">
                     {serviceDetails.useCases.map((useCase, idx) => {
                       const [title, ...descParts] = useCase.split(" - ");
                       const desc = descParts.join(" - ");
                       return (
-                        <div key={idx} className="flex items-start gap-4 p-5 rounded-xl border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-indigo-200 dark:hover:border-indigo-800 transition-colors">
-                          <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center shrink-0">
-                            <Target className="h-5 w-5 text-white" />
-                          </div>
+                        <div key={idx} className="flex items-baseline gap-4 py-5">
+                          <span className="text-sm font-mono text-indigo-500 font-semibold shrink-0 w-8">{String(idx + 1).padStart(2, '0')}</span>
                           <div>
-                            <h4 className="font-semibold text-foreground text-sm mb-1">{title}</h4>
-                            {desc && <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>}
+                            <span className="font-semibold text-foreground">{title}</span>
+                            {desc && <span className="text-muted-foreground ml-1">— {desc}</span>}
                           </div>
                         </div>
                       );
