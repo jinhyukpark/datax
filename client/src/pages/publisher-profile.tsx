@@ -38,7 +38,8 @@ export default function PublisherProfile() {
   
   const currentResource = RESOURCES.find(r => r.id === providerName);
   const resourceTitle = currentResource?.title || providerName;
-  const serviceDetails = PLATFORM_SERVICE_DETAILS[resourceTitle] || null;
+  const resourceTitleKo = currentResource?.titleKo || resourceTitle;
+  const serviceDetails = PLATFORM_SERVICE_DETAILS[resourceTitleKo] || PLATFORM_SERVICE_DETAILS[resourceTitle] || null;
   const hasServiceDetails = serviceDetails !== null;
 
   // Provider descriptions mapping
@@ -59,8 +60,8 @@ export default function PublisherProfile() {
   // Generic description generator for others
   const genericDescription = `A trusted provider of high-quality data resources and technological solutions. ${providerName} is committed to delivering reliable, scalable, and secure infrastructure to help organizations innovate and grow. Specialized in delivering value through data-driven insights and advanced API capabilities.`;
 
-  const description = PROVIDER_DESCRIPTIONS[resourceTitle] || providerDescriptions[providerName] || genericDescription;
-  const companyTagline = PROVIDER_TAGLINES[resourceTitle] || "";
+  const description = PROVIDER_DESCRIPTIONS[resourceTitleKo] || PROVIDER_DESCRIPTIONS[resourceTitle] || providerDescriptions[providerName] || genericDescription;
+  const companyTagline = PROVIDER_TAGLINES[resourceTitleKo] || PROVIDER_TAGLINES[resourceTitle] || "";
 
   // Filter resources by this provider
   const providerResources = RESOURCES.filter(r => r.provider === providerName);
