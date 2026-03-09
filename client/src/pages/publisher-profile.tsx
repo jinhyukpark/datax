@@ -1,11 +1,12 @@
 import { useRoute, Link } from "wouter";
-import { RESOURCES } from "@/lib/data";
+import { RESOURCES, PLATFORM_SERVICE_DETAILS, PROVIDER_DESCRIPTIONS, PROVIDER_TAGLINES } from "@/lib/data";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ResourceCard } from "@/components/ui/resource-card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Building2, 
   MapPin, 
@@ -18,7 +19,13 @@ import {
   Twitter,
   Linkedin,
   Github,
-  ArrowLeft
+  ArrowLeft,
+  Lightbulb,
+  Target,
+  Layers,
+  Cpu,
+  CheckCircle2,
+  Info
 } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 
@@ -29,6 +36,11 @@ export default function PublisherProfile() {
   // Decode the provider ID (name) from the URL
   const providerName = params?.id ? decodeURIComponent(params.id) : "";
   
+  const currentResource = RESOURCES.find(r => r.id === providerName);
+  const resourceTitle = currentResource?.title || providerName;
+  const serviceDetails = PLATFORM_SERVICE_DETAILS[resourceTitle] || null;
+  const hasServiceDetails = serviceDetails !== null;
+
   // Provider descriptions mapping
   const providerDescriptions: Record<string, string> = {
     "Anthropic": "Anthropic is an AI safety and research company that builds reliable, interpretable, and steerable AI systems. We are dedicated to creating AI that is helpful, honest, and harmless, with a focus on large-scale systems like Claude that can reason, code, and communicate effectively.",
@@ -47,7 +59,8 @@ export default function PublisherProfile() {
   // Generic description generator for others
   const genericDescription = `A trusted provider of high-quality data resources and technological solutions. ${providerName} is committed to delivering reliable, scalable, and secure infrastructure to help organizations innovate and grow. Specialized in delivering value through data-driven insights and advanced API capabilities.`;
 
-  const description = providerDescriptions[providerName] || genericDescription;
+  const description = PROVIDER_DESCRIPTIONS[resourceTitle] || providerDescriptions[providerName] || genericDescription;
+  const companyTagline = PROVIDER_TAGLINES[resourceTitle] || "";
 
   // Filter resources by this provider
   const providerResources = RESOURCES.filter(r => r.provider === providerName);
@@ -80,19 +93,22 @@ export default function PublisherProfile() {
             {/* Logo Placeholder */}
             <div className="h-32 w-32 shrink-0 rounded-xl bg-indigo-50 flex items-center justify-center border border-indigo-100 dark:bg-slate-800 dark:border-slate-700">
               <span className="text-4xl font-bold text-indigo-600 dark:text-indigo-400">
-                {providerName.charAt(0)}
+                {resourceTitle.charAt(0)}
               </span>
             </div>
 
             <div className="flex-1 min-w-0 space-y-4">
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <h1 className="text-3xl font-bold font-heading text-foreground">{providerName}</h1>
+                  <h1 className="text-3xl font-bold font-heading text-foreground">{resourceTitle}</h1>
                   <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 gap-1 dark:bg-green-900/20 dark:text-green-300">
                     <ShieldCheck className="h-3.5 w-3.5" />
                     Verified Publisher
                   </Badge>
                 </div>
+                {companyTagline && (
+                  <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-1">{companyTagline}</p>
+                )}
                 <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
                   {description}
                 </p>
@@ -167,33 +183,154 @@ export default function PublisherProfile() {
           </div>
         </div>
 
-        {/* Major Activity History */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold font-heading mb-6 flex items-center gap-2">
-            <Calendar className="h-6 w-6 text-indigo-500" />
-            Activity History
-          </h2>
-          <div className="relative border-l-2 border-slate-200 dark:border-slate-800 ml-3 space-y-8 pb-4">
-            <div className="relative pl-8">
-              <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
-              <span className="text-sm text-muted-foreground font-mono mb-1 block">December 2025</span>
-              <h3 className="text-lg font-bold text-foreground">Released Inventory Management API v2.0</h3>
-              <p className="text-muted-foreground mt-1">Major update including real-time predictive analytics and enhanced security features.</p>
-            </div>
-            <div className="relative pl-8">
-              <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
-              <span className="text-sm text-muted-foreground font-mono mb-1 block">October 2025</span>
-              <h3 className="text-lg font-bold text-foreground">Strategic Partnership with CloudCorp</h3>
-              <p className="text-muted-foreground mt-1">Expanded infrastructure capabilities to support high-frequency trading data streams.</p>
-            </div>
-            <div className="relative pl-8">
-              <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
-              <span className="text-sm text-muted-foreground font-mono mb-1 block">July 2024</span>
-              <h3 className="text-lg font-bold text-foreground">Platform Launch</h3>
-              <p className="text-muted-foreground mt-1">Officially joined Data-X as a verified publisher with initial suite of 5 core APIs.</p>
+        {hasServiceDetails ? (
+          <Tabs defaultValue="details" className="mb-12">
+            <TabsList className="mb-8 bg-slate-100 dark:bg-slate-800/50 p-1 rounded-xl">
+              <TabsTrigger value="details" className="rounded-lg px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-900 font-semibold" data-testid="tab-service-details">
+                <Info className="h-4 w-4 mr-2" />
+                {t("Service Details", "서비스 상세")}
+              </TabsTrigger>
+              <TabsTrigger value="activity" className="rounded-lg px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-900 font-semibold" data-testid="tab-activity-history">
+                <Calendar className="h-4 w-4 mr-2" />
+                {t("Activity History", "활동 히스토리")}
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="details" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+              <div className="rounded-2xl bg-white p-8 shadow-sm border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+                <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                  <Info className="h-5 w-5 text-indigo-500" />
+                  {t("Overview", "서비스 개요")}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed text-[15px]">{serviceDetails.overview}</p>
+              </div>
+
+              <div className="rounded-2xl bg-white p-8 shadow-sm border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+                <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+                  <Lightbulb className="h-5 w-5 text-amber-500" />
+                  {t("Key Features", "주요 기능")}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {serviceDetails.features.map((feature, idx) => (
+                    <div key={idx} className="p-5 rounded-xl bg-slate-50 border border-slate-100 dark:bg-slate-800/50 dark:border-slate-700 hover:shadow-md transition-all">
+                      <div className="flex items-start gap-3">
+                        <div className="h-9 w-9 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center shrink-0 mt-0.5">
+                          <CheckCircle2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-foreground mb-1.5">{feature.title}</h4>
+                          <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {serviceDetails.useCases && serviceDetails.useCases.length > 0 && (
+                <div className="rounded-2xl bg-white p-8 shadow-sm border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+                  <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+                    <Target className="h-5 w-5 text-emerald-500" />
+                    {t("Use Cases", "활용 사례")}
+                  </h3>
+                  <div className="space-y-4">
+                    {serviceDetails.useCases.map((useCase, idx) => {
+                      const [title, ...descParts] = useCase.split(" - ");
+                      const desc = descParts.join(" - ");
+                      return (
+                        <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-emerald-50/50 border border-emerald-100 dark:bg-emerald-900/10 dark:border-emerald-900/30">
+                          <span className="flex items-center justify-center h-6 w-6 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 text-xs font-bold shrink-0 mt-0.5">
+                            {idx + 1}
+                          </span>
+                          <div>
+                            <span className="font-semibold text-foreground">{title}</span>
+                            {desc && <span className="text-muted-foreground"> — {desc}</span>}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {serviceDetails.targetAudience && (
+                <div className="rounded-2xl bg-white p-8 shadow-sm border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+                  <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                    <Users className="h-5 w-5 text-blue-500" />
+                    {t("Target Audience", "대상 사용자")}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">{serviceDetails.targetAudience}</p>
+                </div>
+              )}
+
+              {serviceDetails.techStack && serviceDetails.techStack.length > 0 && (
+                <div className="rounded-2xl bg-white p-8 shadow-sm border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+                  <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                    <Cpu className="h-5 w-5 text-violet-500" />
+                    {t("Technology Stack", "기술 스택")}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {serviceDetails.techStack.map((tech, idx) => (
+                      <Badge key={idx} variant="secondary" className="px-3 py-1.5 text-sm bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-900/20 dark:text-violet-300 dark:border-violet-800">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="activity" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+              <div className="relative border-l-2 border-slate-200 dark:border-slate-800 ml-3 space-y-8 pb-4">
+                <div className="relative pl-8">
+                  <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
+                  <span className="text-sm text-muted-foreground font-mono mb-1 block">December 2025</span>
+                  <h3 className="text-lg font-bold text-foreground">Released Inventory Management API v2.0</h3>
+                  <p className="text-muted-foreground mt-1">Major update including real-time predictive analytics and enhanced security features.</p>
+                </div>
+                <div className="relative pl-8">
+                  <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
+                  <span className="text-sm text-muted-foreground font-mono mb-1 block">October 2025</span>
+                  <h3 className="text-lg font-bold text-foreground">Strategic Partnership with CloudCorp</h3>
+                  <p className="text-muted-foreground mt-1">Expanded infrastructure capabilities to support high-frequency trading data streams.</p>
+                </div>
+                <div className="relative pl-8">
+                  <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
+                  <span className="text-sm text-muted-foreground font-mono mb-1 block">July 2024</span>
+                  <h3 className="text-lg font-bold text-foreground">Platform Launch</h3>
+                  <p className="text-muted-foreground mt-1">Officially joined Data-X as a verified publisher with initial suite of 5 core APIs.</p>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+        ) : (
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold font-heading mb-6 flex items-center gap-2">
+              <Calendar className="h-6 w-6 text-indigo-500" />
+              {t("Activity History", "활동 히스토리")}
+            </h2>
+            <div className="relative border-l-2 border-slate-200 dark:border-slate-800 ml-3 space-y-8 pb-4">
+              <div className="relative pl-8">
+                <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
+                <span className="text-sm text-muted-foreground font-mono mb-1 block">December 2025</span>
+                <h3 className="text-lg font-bold text-foreground">Released Inventory Management API v2.0</h3>
+                <p className="text-muted-foreground mt-1">Major update including real-time predictive analytics and enhanced security features.</p>
+              </div>
+              <div className="relative pl-8">
+                <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
+                <span className="text-sm text-muted-foreground font-mono mb-1 block">October 2025</span>
+                <h3 className="text-lg font-bold text-foreground">Strategic Partnership with CloudCorp</h3>
+                <p className="text-muted-foreground mt-1">Expanded infrastructure capabilities to support high-frequency trading data streams.</p>
+              </div>
+              <div className="relative pl-8">
+                <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
+                <span className="text-sm text-muted-foreground font-mono mb-1 block">July 2024</span>
+                <h3 className="text-lg font-bold text-foreground">Platform Launch</h3>
+                <p className="text-muted-foreground mt-1">Officially joined Data-X as a verified publisher with initial suite of 5 core APIs.</p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Resources Section */}
         <div className="space-y-6">

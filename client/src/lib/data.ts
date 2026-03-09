@@ -1336,3 +1336,51 @@ export const PROVIDER_TAGLINES: Record<string, string> = {
   "FIND 에너지 플랫폼": "한국남동발전(주)",
   "한국서부발전 디지털공유센터": "한국서부발전(주)"
 };
+
+export interface PlatformServiceDetail {
+  overview: string;
+  features: { title: string; description: string; icon?: string }[];
+  useCases?: string[];
+  targetAudience?: string;
+  techStack?: string[];
+  screenshots?: { url: string; caption: string }[];
+}
+
+export const PLATFORM_SERVICE_DETAILS: Record<string, PlatformServiceDetail> = {
+  "이미지 기반 특허 분석 서비스": {
+    overview: "이미지 기반 특허 분석 서비스는 딥러닝 기반의 이미지 인식 기술을 활용하여 글로벌 특허 문서에서 도면, 그래프, 회로도 등 시각적 정보를 자동으로 분석합니다. 기존의 텍스트 기반 특허 검색의 한계를 넘어, 이미지 유사도 분석을 통해 선행 기술 조사와 특허 침해 분석을 보다 정확하고 효율적으로 수행할 수 있습니다.",
+    features: [
+      { title: "이미지 유사도 검색", description: "특허 도면, 설계도, 회로도 등의 이미지를 업로드하면 유사한 특허를 자동으로 검색합니다. CNN 기반 딥러닝 모델을 활용하여 99% 이상의 정확도를 제공합니다." },
+      { title: "자동 분류 시스템", description: "IPC/CPC 분류 코드를 이미지 분석을 통해 자동으로 부여합니다. 수작업 분류 대비 처리 시간을 90% 이상 단축할 수 있습니다." },
+      { title: "기술 트렌드 시각화", description: "특허 이미지 데이터를 기반으로 기술 발전 추이를 타임라인과 히트맵으로 시각화합니다. 산업별 혁신 동향을 한눈에 파악할 수 있습니다." },
+      { title: "글로벌 특허 DB 연동", description: "미국(USPTO), 유럽(EPO), 일본(JPO), 한국(KIPRIS) 등 주요 특허청 데이터베이스와 실시간 연동하여 최신 특허 정보를 제공합니다." },
+      { title: "보고서 자동 생성", description: "분석 결과를 PDF, Excel 등의 형식으로 자동 생성합니다. 맞춤형 보고서 템플릿을 제공하여 보고서 작성 시간을 크게 줄입니다." }
+    ],
+    useCases: [
+      "선행 기술 조사 - 신규 특허 출원 전 기존 특허와의 유사도를 이미지 기반으로 검증",
+      "특허 침해 분석 - 제품 디자인과 등록 특허 도면 간의 유사성 자동 비교",
+      "기술 동향 분석 - 특정 기술 분야의 글로벌 특허 출원 트렌드 시각화",
+      "R&D 전략 수립 - 경쟁사 특허 포트폴리오 분석을 통한 연구개발 방향 설정",
+      "IP 포트폴리오 관리 - 보유 특허의 가치 평가 및 라이선스 전략 수립"
+    ],
+    targetAudience: "R&D 연구원, 특허 변호사/변리사, 기술이전 담당자, IP 전략팀, 스타트업 CTO 등 지식재산 관련 의사결정자",
+    techStack: ["Deep Learning (CNN/ResNet)", "Computer Vision", "NLP", "Graph Database", "Elasticsearch", "React", "Python/FastAPI"]
+  },
+  "소셜 트랜드 분석": {
+    overview: "소셜 트랜드 분석 서비스는 온라인에서 수집되는 다양한 형식의 빅데이터를 실시간으로 분석하여, 끊임없이 변화하는 웹 환경의 트렌드를 파악합니다. 소셜미디어, 뉴스, 블로그, 커뮤니티 등 다양한 채널의 데이터를 통합 분석하여 소비자 인사이트를 도출합니다.",
+    features: [
+      { title: "실시간 트렌드 모니터링", description: "주요 소셜 미디어 플랫폼과 뉴스 사이트의 데이터를 실시간으로 수집하고 분석하여 트렌드 변화를 즉시 감지합니다." },
+      { title: "감성 분석 엔진", description: "자연어 처리(NLP) 기술을 활용하여 텍스트의 감성(긍정/부정/중립)을 자동으로 분류합니다. 한국어에 특화된 감성 분석 모델을 적용합니다." },
+      { title: "키워드 네트워크 분석", description: "연관 키워드 간의 관계를 네트워크 그래프로 시각화합니다. 핵심 키워드를 중심으로 확산되는 담론 구조를 파악할 수 있습니다." },
+      { title: "인플루언서 분석", description: "특정 주제에 대한 영향력 있는 계정과 콘텐츠를 식별합니다. 영향력 지수, 참여율, 도달 범위 등을 종합 평가합니다." }
+    ],
+    useCases: [
+      "브랜드 모니터링 - 자사 및 경쟁사에 대한 온라인 여론 실시간 추적",
+      "위기 감지 - 부정적 여론 확산 초기 단계에서 신속하게 대응",
+      "마케팅 효과 측정 - 캠페인 전후 소셜 반응 변화 분석",
+      "시장 조사 - 소비자 니즈와 선호도 변화 트렌드 파악"
+    ],
+    targetAudience: "마케팅 담당자, PR/커뮤니케이션팀, 브랜드 매니저, 시장조사 분석가",
+    techStack: ["Apache Kafka", "Spark Streaming", "BERT/KoBERT", "Neo4j", "D3.js", "Python"]
+  }
+};
