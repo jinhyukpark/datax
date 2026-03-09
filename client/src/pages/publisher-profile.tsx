@@ -186,66 +186,80 @@ export default function PublisherProfile() {
 
         {hasServiceDetails ? (
           <Tabs defaultValue="details" className="mb-12">
-            <TabsList className="mb-8 bg-slate-100 dark:bg-slate-800/50 p-1 rounded-xl">
-              <TabsTrigger value="details" className="rounded-lg px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-900 font-semibold" data-testid="tab-service-details">
-                <Info className="h-4 w-4 mr-2" />
-                {t("Service Details", "서비스 상세")}
-              </TabsTrigger>
-              <TabsTrigger value="activity" className="rounded-lg px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-900 font-semibold" data-testid="tab-activity-history">
-                <Calendar className="h-4 w-4 mr-2" />
-                {t("Activity History", "활동 히스토리")}
-              </TabsTrigger>
-            </TabsList>
+            <div className="border-b border-slate-200 dark:border-slate-800 mb-10">
+              <TabsList className="bg-transparent p-0 h-auto gap-0 rounded-none">
+                <TabsTrigger 
+                  value="details" 
+                  className="rounded-none border-b-2 border-transparent px-6 py-4 text-sm font-semibold text-muted-foreground data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:border-indigo-400 dark:data-[state=active]:text-indigo-400 data-[state=active]:shadow-none bg-transparent hover:text-foreground transition-colors" 
+                  data-testid="tab-service-details"
+                >
+                  {t("Service Details", "서비스 상세")}
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="activity" 
+                  className="rounded-none border-b-2 border-transparent px-6 py-4 text-sm font-semibold text-muted-foreground data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 dark:data-[state=active]:border-indigo-400 dark:data-[state=active]:text-indigo-400 data-[state=active]:shadow-none bg-transparent hover:text-foreground transition-colors" 
+                  data-testid="tab-activity-history"
+                >
+                  {t("Activity History", "활동 히스토리")}
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
-            <TabsContent value="details" className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
-              <div className="rounded-2xl bg-white p-8 shadow-sm border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
-                <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-                  <Info className="h-5 w-5 text-indigo-500" />
-                  {t("Overview", "서비스 개요")}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed text-[15px]">{serviceDetails.overview}</p>
+            <TabsContent value="details" className="animate-in fade-in duration-500 mt-0">
+              <div className="relative rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-slate-900 overflow-hidden mb-16">
+                <div className="absolute inset-0 opacity-10">
+                  <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/3" />
+                  <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full translate-y-1/2 -translate-x-1/4" />
+                </div>
+                <div className="relative px-10 py-14 md:px-16 md:py-20 text-center">
+                  <h2 className="text-3xl md:text-4xl font-bold text-white font-heading mb-4">
+                    {resourceTitleKo}
+                  </h2>
+                  {companyTagline && (
+                    <p className="text-indigo-200 text-lg mb-6">{companyTagline}</p>
+                  )}
+                  <p className="text-indigo-100/90 text-base md:text-lg leading-relaxed max-w-3xl mx-auto">
+                    {serviceDetails.overview}
+                  </p>
+                </div>
               </div>
 
-              <div className="rounded-2xl bg-white p-8 shadow-sm border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
-                <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
-                  <Lightbulb className="h-5 w-5 text-amber-500" />
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-foreground font-heading mb-8">
                   {t("Key Features", "주요 기능")}
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
                   {serviceDetails.features.map((feature, idx) => (
-                    <div key={idx} className="p-5 rounded-xl bg-slate-50 border border-slate-100 dark:bg-slate-800/50 dark:border-slate-700 hover:shadow-md transition-all">
-                      <div className="flex items-start gap-3">
-                        <div className="h-9 w-9 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center shrink-0 mt-0.5">
-                          <CheckCircle2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-foreground mb-1.5">{feature.title}</h4>
-                          <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
-                        </div>
+                    <div key={idx} className="group">
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-100 text-indigo-600 text-sm font-bold dark:bg-indigo-900/40 dark:text-indigo-400">
+                          {String(idx + 1).padStart(2, '0')}
+                        </span>
+                        <h4 className="font-bold text-foreground text-[15px]">{feature.title}</h4>
                       </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed pl-11">{feature.description}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               {serviceDetails.useCases && serviceDetails.useCases.length > 0 && (
-                <div className="rounded-2xl bg-white p-8 shadow-sm border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
-                  <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
-                    <Target className="h-5 w-5 text-emerald-500" />
+                <div className="mb-16">
+                  <h3 className="text-2xl font-bold text-foreground font-heading mb-8">
                     {t("Use Cases", "활용 사례")}
                   </h3>
-                  <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {serviceDetails.useCases.map((useCase, idx) => {
                       const [title, ...descParts] = useCase.split(" - ");
                       const desc = descParts.join(" - ");
                       return (
-                        <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-emerald-50/50 border border-emerald-100 dark:bg-emerald-900/10 dark:border-emerald-900/30">
-                          <span className="flex items-center justify-center h-6 w-6 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 text-xs font-bold shrink-0 mt-0.5">
-                            {idx + 1}
-                          </span>
+                        <div key={idx} className="flex items-start gap-4 p-5 rounded-xl border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-indigo-200 dark:hover:border-indigo-800 transition-colors">
+                          <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center shrink-0">
+                            <Target className="h-5 w-5 text-white" />
+                          </div>
                           <div>
-                            <span className="font-semibold text-foreground">{title}</span>
-                            {desc && <span className="text-muted-foreground"> — {desc}</span>}
+                            <h4 className="font-semibold text-foreground text-sm mb-1">{title}</h4>
+                            {desc && <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>}
                           </div>
                         </div>
                       );
@@ -254,34 +268,36 @@ export default function PublisherProfile() {
                 </div>
               )}
 
-              {serviceDetails.targetAudience && (
-                <div className="rounded-2xl bg-white p-8 shadow-sm border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
-                  <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-                    <Users className="h-5 w-5 text-blue-500" />
-                    {t("Target Audience", "대상 사용자")}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">{serviceDetails.targetAudience}</p>
-                </div>
-              )}
-
-              {serviceDetails.techStack && serviceDetails.techStack.length > 0 && (
-                <div className="rounded-2xl bg-white p-8 shadow-sm border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
-                  <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-                    <Cpu className="h-5 w-5 text-violet-500" />
-                    {t("Technology Stack", "기술 스택")}
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {serviceDetails.techStack.map((tech, idx) => (
-                      <Badge key={idx} variant="secondary" className="px-3 py-1.5 text-sm bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-900/20 dark:text-violet-300 dark:border-violet-800">
-                        {tech}
-                      </Badge>
-                    ))}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+                {serviceDetails.targetAudience && (
+                  <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Users className="h-5 w-5 text-indigo-500" />
+                      <h4 className="font-bold text-foreground">{t("Target Audience", "대상 사용자")}</h4>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{serviceDetails.targetAudience}</p>
                   </div>
-                </div>
-              )}
+                )}
+
+                {serviceDetails.techStack && serviceDetails.techStack.length > 0 && (
+                  <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Cpu className="h-5 w-5 text-indigo-500" />
+                      <h4 className="font-bold text-foreground">{t("Technology Stack", "기술 스택")}</h4>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {serviceDetails.techStack.map((tech, idx) => (
+                        <Badge key={idx} variant="outline" className="px-2.5 py-1 text-xs font-medium">
+                          {tech}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </TabsContent>
 
-            <TabsContent value="activity" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <TabsContent value="activity" className="animate-in fade-in duration-500 mt-0">
               <div className="relative border-l-2 border-slate-200 dark:border-slate-800 ml-3 space-y-8 pb-4">
                 <div className="relative pl-8">
                   <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-950" />
