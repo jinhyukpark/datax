@@ -206,38 +206,50 @@ export default function PublisherProfile() {
             </div>
 
             <TabsContent value="details" className="animate-in fade-in duration-500 mt-0">
-              <div className="relative rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-slate-900 overflow-hidden mb-16">
-                <div className="absolute inset-0 opacity-10">
-                  <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/3" />
-                  <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full translate-y-1/2 -translate-x-1/4" />
+              {serviceDetails.heroImage && (
+                <div className="relative rounded-2xl overflow-hidden mb-0">
+                  <img 
+                    src={serviceDetails.heroImage} 
+                    alt={resourceTitleKo}
+                    className="w-full h-[320px] md:h-[400px] object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                    <h2 className="text-3xl md:text-4xl font-bold text-white font-heading mb-2">
+                      {resourceTitleKo}
+                    </h2>
+                    {companyTagline && (
+                      <p className="text-white/70 text-base">{companyTagline}</p>
+                    )}
+                  </div>
                 </div>
-                <div className="relative px-10 py-14 md:px-16 md:py-20 text-center">
-                  <h2 className="text-3xl md:text-4xl font-bold text-white font-heading mb-4">
-                    {resourceTitleKo}
-                  </h2>
-                  {companyTagline && (
-                    <p className="text-indigo-200 text-lg mb-6">{companyTagline}</p>
-                  )}
-                  <p className="text-indigo-100/90 text-base md:text-lg leading-relaxed max-w-3xl mx-auto">
-                    {serviceDetails.overview}
-                  </p>
-                </div>
+              )}
+
+              <div className="py-10 md:py-14 max-w-4xl mx-auto text-center mb-8">
+                <h3 className="text-2xl font-bold text-foreground font-heading mb-6">{resourceTitleKo}</h3>
+                <p className="text-muted-foreground text-base md:text-lg leading-[1.85] whitespace-pre-line">
+                  {serviceDetails.overview}
+                </p>
               </div>
 
-              <div className="mb-16">
-                <h3 className="text-2xl font-bold text-foreground font-heading mb-8">
+              <div className="border-t border-slate-200 dark:border-slate-800 pt-12 mb-16">
+                <h3 className="text-2xl font-bold text-foreground font-heading mb-10">
                   {t("Key Features", "주요 기능")}
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {serviceDetails.features.map((feature, idx) => (
                     <div key={idx} className="group">
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-100 text-indigo-600 text-sm font-bold dark:bg-indigo-900/40 dark:text-indigo-400">
-                          {String(idx + 1).padStart(2, '0')}
-                        </span>
-                        <h4 className="font-bold text-foreground text-[15px]">{feature.title}</h4>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed pl-11">{feature.description}</p>
+                      {feature.image && (
+                        <div className="rounded-xl overflow-hidden mb-4 bg-slate-100 dark:bg-slate-800 aspect-[16/10]">
+                          <img 
+                            src={feature.image} 
+                            alt={feature.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+                      )}
+                      <h4 className="font-bold text-foreground mb-2">{feature.title}</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
                     </div>
                   ))}
                 </div>
