@@ -17,7 +17,8 @@ import {
   Server,
   Layers,
   Newspaper,
-  BookOpen
+  BookOpen,
+  Inbox
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -78,6 +79,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     { name: "News Management", href: "/admin/news", icon: Newspaper },
     { name: "Blog Management", href: "/admin/blog", icon: BookOpen },
     { name: "Payments", href: "/admin/payments", icon: CreditCard },
+    { name: "문의 모아보기", href: "/admin/inquiries", icon: Inbox },
   ];
 
   const handleLogout = () => {

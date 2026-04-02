@@ -31,6 +31,7 @@ import BlogEdit from "@/pages/admin/blog-edit";
 import PaymentManagement from "@/pages/admin/payments";
 import Dashboard from "@/pages/admin/dashboard";
 import Notifications from "@/pages/admin/notifications";
+import InquiriesManagement from "@/pages/admin/inquiries";
 import { LanguageProvider } from "./lib/language-context";
 import { useHashLocation } from "./lib/hash-location";
 
@@ -70,6 +71,7 @@ function Router() {
         <Route path="/admin/blog/:id" component={BlogEdit} />
         <Route path="/admin/payments" component={PaymentManagement} />
         <Route path="/admin/notifications" component={Notifications} />
+        <Route path="/admin/inquiries" component={InquiriesManagement} />
 
         <Route component={NotFound} />
       </Switch>
