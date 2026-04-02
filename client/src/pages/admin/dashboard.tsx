@@ -120,6 +120,10 @@ const LINKED_STATUS_DATA = [
   { name: 'Rejected', value: 3, color: '#ef4444' },
 ];
 
+// New requests submitted today (for Pending Requests card)
+const HOSTED_NEW_TODAY = 4;
+const LINKED_NEW_TODAY = 2;
+
 const SUMMARY_METRICS = [
   { title: "Total Revenue", value: "$45,231.89", change: "+20.1% from last period", icon: DollarSign, color: "text-green-600 bg-green-100 dark:bg-green-900/20" },
   { title: "Data Sales", value: "1,234", change: "+180 since last period", icon: ShoppingCart, color: "text-blue-600 bg-blue-100 dark:bg-blue-900/20" },
@@ -251,51 +255,47 @@ export default function Dashboard() {
             </Card>
           ))}
 
-          {/* Pending Requests card — compact metric style with Hosted/Linked tabs */}
+          {/* Pending Requests card — compact, tab toggle beside title */}
           <Card className="border-slate-200 dark:border-slate-800">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Pending Requests</CardTitle>
-              <div className="h-8 w-8 rounded-full flex items-center justify-center text-amber-600 bg-amber-100 dark:bg-amber-900/20">
+              <div className="flex items-center gap-2 min-w-0">
+                <CardTitle className="text-sm font-medium text-muted-foreground whitespace-nowrap">Pending Requests</CardTitle>
+                <div className="flex rounded border overflow-hidden shrink-0">
+                  <button
+                    onClick={() => setPendingTab('hosted')}
+                    className={cn(
+                      "flex items-center gap-0.5 px-1.5 py-0.5 text-[9px] font-bold leading-none transition-colors",
+                      pendingTab === 'hosted'
+                        ? "bg-blue-600 text-white"
+                        : "bg-white text-slate-400 hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800"
+                    )}
+                  >
+                    <Server className="h-2 w-2" /> Hosted
+                  </button>
+                  <button
+                    onClick={() => setPendingTab('linked')}
+                    className={cn(
+                      "flex items-center gap-0.5 px-1.5 py-0.5 text-[9px] font-bold leading-none transition-colors border-l",
+                      pendingTab === 'linked'
+                        ? "bg-indigo-600 text-white border-indigo-600"
+                        : "bg-white text-slate-400 hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700"
+                    )}
+                  >
+                    <Link2 className="h-2 w-2" /> Linked
+                  </button>
+                </div>
+              </div>
+              <div className="h-8 w-8 rounded-full flex items-center justify-center text-amber-600 bg-amber-100 dark:bg-amber-900/20 shrink-0">
                 <FileText className="h-4 w-4" />
               </div>
             </CardHeader>
-            <CardContent className="space-y-3">
-              {/* Tab toggle */}
-              <div className="flex rounded-lg border overflow-hidden w-full">
-                <button
-                  onClick={() => setPendingTab('hosted')}
-                  className={cn(
-                    "flex-1 flex items-center justify-center gap-1 py-1 text-[11px] font-semibold transition-colors",
-                    pendingTab === 'hosted'
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-slate-500 hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800"
-                  )}
-                >
-                  <Server className="h-3 w-3" /> Hosted
-                </button>
-                <button
-                  onClick={() => setPendingTab('linked')}
-                  className={cn(
-                    "flex-1 flex items-center justify-center gap-1 py-1 text-[11px] font-semibold transition-colors",
-                    pendingTab === 'linked'
-                      ? "bg-indigo-600 text-white"
-                      : "bg-white text-slate-500 hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800"
-                  )}
-                >
-                  <Link2 className="h-3 w-3" /> Linked
-                </button>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {pendingTab === 'hosted' ? HOSTED_NEW_TODAY : LINKED_NEW_TODAY}
               </div>
-              {/* Count */}
-              <div>
-                <div className="text-2xl font-bold">
-                  {pendingTab === 'hosted' ? hostedPending : linkedPending}
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {pendingTab === 'hosted'
-                    ? `총 ${hostedTotal}건 중 대기`
-                    : `총 ${linkedTotal}건 중 대기`}
-                </p>
-              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                오늘 새롭게 요청된 건수
+              </p>
             </CardContent>
           </Card>
         </div>
