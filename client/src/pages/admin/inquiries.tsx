@@ -24,7 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
   Search,
@@ -65,6 +64,7 @@ interface Inquiry {
   content: string;
   sentAt: string;
   replied: boolean;
+  repliedAt?: string;
 }
 
 const MOCK_INQUIRIES: Inquiry[] = [
@@ -78,6 +78,7 @@ const MOCK_INQUIRIES: Inquiry[] = [
     content: "프로 플랜으로 업그레이드하고 싶은데, 법인 카드로 결제가 가능한지 문의드립니다. 또한 세금계산서 발행도 가능한지 알고 싶습니다.",
     sentAt: "2026-03-28T09:14:00Z",
     replied: true,
+    repliedAt: "2026-03-28T11:30:00Z",
   },
   {
     id: 2,
@@ -100,6 +101,7 @@ const MOCK_INQUIRIES: Inquiry[] = [
     content: "대용량 CSV 파일(500MB 이상) 다운로드 시 중간에 연결이 끊기는 현상이 반복적으로 발생하고 있습니다. 브라우저는 Chrome 최신 버전 사용 중입니다.",
     sentAt: "2026-03-26T11:05:00Z",
     replied: true,
+    repliedAt: "2026-03-27T08:45:00Z",
   },
   {
     id: 4,
@@ -122,6 +124,7 @@ const MOCK_INQUIRIES: Inquiry[] = [
     content: "기업 단위로 라이선스를 구매하려고 합니다. 50명 이상 팀원이 사용할 예정인데 엔터프라이즈 플랜에 대한 상세 견적을 받을 수 있을까요?",
     sentAt: "2026-03-24T10:20:00Z",
     replied: true,
+    repliedAt: "2026-03-25T09:10:00Z",
   },
   {
     id: 6,
@@ -233,13 +236,14 @@ export default function InquiriesManagement() {
   const repliedCount = inquiries.filter(i => i.replied).length;
 
   const toggleReplied = (id: number) => {
-    setInquiries(prev =>
-      prev.map(i => (i.id === id ? { ...i, replied: !i.replied } : i))
-    );
     const inq = inquiries.find(i => i.id === id);
-    if (inq) {
-      toast.success(inq.replied ? "답장 완료 해제됨" : "답장 완료로 표시됨");
-    }
+    if (!inq) return;
+    const nowReplied = !inq.replied;
+    const nowTime = nowReplied ? new Date().toISOString() : undefined;
+    setInquiries(prev =>
+      prev.map(i => (i.id === id ? { ...i, replied: nowReplied, repliedAt: nowTime } : i))
+    );
+    toast.success(nowReplied ? "답장 완료로 표시됨" : "답장 완료 해제됨");
   };
 
   const submitReply = (id: number, email: string) => {
@@ -248,11 +252,12 @@ export default function InquiriesManagement() {
       toast.error("답변 내용을 입력해주세요.");
       return;
     }
+    const now = new Date().toISOString();
     setSavedReplies(prev => ({ ...prev, [id]: text }));
     setInquiries(prev =>
-      prev.map(i => (i.id === id ? { ...i, replied: true } : i))
+      prev.map(i => (i.id === id ? { ...i, replied: true, repliedAt: now } : i))
     );
-    setSelectedInquiry(prev => prev ? { ...prev, replied: true } : null);
+    setSelectedInquiry(prev => prev ? { ...prev, replied: true, repliedAt: now } : null);
     toast.success(`${email}에 답변이 등록되었습니다.`);
   };
 
@@ -371,21 +376,18 @@ export default function InquiriesManagement() {
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
-                <TableHead className="w-10 text-center">
-                  <MailCheck className="h-4 w-4 mx-auto text-slate-400" />
-                </TableHead>
                 <TableHead>보낸 사람</TableHead>
                 <TableHead>상품</TableHead>
                 <TableHead>문의 유형</TableHead>
                 <TableHead className="max-w-xs">내용 미리보기</TableHead>
-                <TableHead>보낸 날짜</TableHead>
+                <TableHead>문의 날짜 / 답변 날짜</TableHead>
                 <TableHead className="text-center">상세보기</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filtered.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="py-16 text-center text-muted-foreground">
+                  <TableCell colSpan={6} className="py-16 text-center text-muted-foreground">
                     <MessageSquare className="h-8 w-8 mx-auto mb-2 text-slate-300" />
                     <p className="text-sm">조건에 맞는 문의가 없습니다.</p>
                   </TableCell>
@@ -399,22 +401,6 @@ export default function InquiriesManagement() {
                       data-testid={`row-inquiry-${inq.id}`}
                       className={cn(!inq.replied && "bg-amber-50/30 dark:bg-amber-900/5")}
                     >
-                      {/* Replied checkbox */}
-                      <TableCell className="text-center">
-                        <Checkbox
-                          data-testid={`checkbox-replied-${inq.id}`}
-                          checked={inq.replied}
-                          onCheckedChange={() => toggleReplied(inq.id)}
-                          title={inq.replied ? "답장 완료" : "답장 대기"}
-                          className={cn(
-                            "border-2",
-                            inq.replied
-                              ? "border-green-500 data-[state=checked]:bg-green-500"
-                              : "border-amber-400"
-                          )}
-                        />
-                      </TableCell>
-
                       {/* Sender */}
                       <TableCell>
                         <div className="space-y-0.5">
@@ -449,11 +435,22 @@ export default function InquiriesManagement() {
                         </p>
                       </TableCell>
 
-                      {/* Date */}
+                      {/* Dates */}
                       <TableCell>
-                        <span className="text-sm text-slate-500 whitespace-nowrap">
-                          {formatDate(inq.sentAt)}
-                        </span>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-1.5">
+                            <CalendarDays className="h-3 w-3 text-slate-400 shrink-0" />
+                            <span className="text-xs text-slate-500 whitespace-nowrap">{formatDate(inq.sentAt)}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <MailCheck className={cn("h-3 w-3 shrink-0", inq.repliedAt ? "text-green-500" : "text-slate-300")} />
+                            {inq.repliedAt ? (
+                              <span className="text-xs text-green-600 dark:text-green-400 whitespace-nowrap font-medium">{formatDate(inq.repliedAt)}</span>
+                            ) : (
+                              <span className="text-xs text-slate-300 dark:text-slate-600">—</span>
+                            )}
+                          </div>
+                        </div>
                       </TableCell>
 
                       {/* Detail */}
@@ -531,7 +528,7 @@ export default function InquiriesManagement() {
                     </div>
                     <div className="space-y-1.5">
                       <Label className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
-                        <CalendarDays className="h-3.5 w-3.5" /> 보낸 날짜
+                        <CalendarDays className="h-3.5 w-3.5" /> 문의 날짜
                       </Label>
                       <p className="text-sm text-slate-700 dark:text-slate-300">{formatDateTime(selectedInquiry.sentAt)}</p>
                     </div>
@@ -605,11 +602,16 @@ export default function InquiriesManagement() {
                   <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 flex items-center justify-between">
                     <div className="space-y-0.5">
                       <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">답장 완료 체크</p>
-                      <p className="text-xs text-muted-foreground">
-                        {selectedInquiry.replied
-                          ? "이 문의에 답장이 완료되었습니다."
-                          : "아직 이 문의에 답장하지 않았습니다."}
-                      </p>
+                      {selectedInquiry.replied && selectedInquiry.repliedAt ? (
+                        <p className="text-xs text-green-600 dark:text-green-400 flex items-center gap-1">
+                          <MailCheck className="h-3 w-3" />
+                          {formatDateTime(selectedInquiry.repliedAt)} 답변 완료
+                        </p>
+                      ) : (
+                        <p className="text-xs text-muted-foreground">
+                          아직 이 문의에 답장하지 않았습니다.
+                        </p>
+                      )}
                     </div>
                     <Button
                       data-testid="button-toggle-replied-modal"
@@ -622,8 +624,10 @@ export default function InquiriesManagement() {
                           : "bg-green-600 hover:bg-green-700 text-white"
                       )}
                       onClick={() => {
+                        const nowReplied = !selectedInquiry.replied;
+                        const nowTime = nowReplied ? new Date().toISOString() : undefined;
                         toggleReplied(selectedInquiry.id);
-                        setSelectedInquiry(prev => prev ? { ...prev, replied: !prev.replied } : null);
+                        setSelectedInquiry(prev => prev ? { ...prev, replied: nowReplied, repliedAt: nowTime } : null);
                       }}
                     >
                       {selectedInquiry.replied ? (
