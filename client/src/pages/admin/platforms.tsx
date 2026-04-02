@@ -24,7 +24,12 @@ import {
   Building2,
   ExternalLink,
   Database,
-  Link2
+  Link2,
+  Image as ImageIcon,
+  Layers,
+  Tag,
+  FileText,
+  Star,
 } from "lucide-react";
 import {
   Table,
@@ -148,6 +153,7 @@ export default function AdminPlatforms() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingPlatform, setEditingPlatform] = useState<Platform | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [modalTab, setModalTab] = useState<'info' | 'activity'>('info');
   
   const [formData, setFormData] = useState({
     name: "",
@@ -167,38 +173,38 @@ export default function AdminPlatforms() {
     keywords: [] as string[],
     linkedResources: [] as string[],
     activityHistory: [] as { date: string; title: string; description: string }[],
+    bannerImage: "",
+    bannerText: "",
+    bannerSubtitle: "",
+    mainTitle: "",
+    mainText: "",
+    features: [] as { image: string; title: string; text: string }[],
   });
   const [keywordInput, setKeywordInput] = useState("");
   const [resourceSearchQuery, setResourceSearchQuery] = useState("");
 
+  const EMPTY_FORM = {
+    name: "", description: "", logo: "", location: "", websiteUrl: "",
+    representativeEmail: "", establishedDate: "", linkedinUrl: "", twitterUrl: "",
+    githubUrl: "", discordUrl: "", telegramUrl: "", contactEmail: "", contactPhone: "",
+    keywords: [] as string[], linkedResources: [] as string[],
+    activityHistory: [] as { date: string; title: string; description: string }[],
+    bannerImage: "", bannerText: "", bannerSubtitle: "", mainTitle: "", mainText: "",
+    features: [] as { image: string; title: string; text: string }[],
+  };
+
   const openAddDialog = () => {
     setEditingPlatform(null);
-    setFormData({
-      name: "",
-      description: "",
-      logo: "",
-      location: "",
-      websiteUrl: "",
-      representativeEmail: "",
-      establishedDate: "",
-      linkedinUrl: "",
-      twitterUrl: "",
-      githubUrl: "",
-      discordUrl: "",
-      telegramUrl: "",
-      contactEmail: "",
-      contactPhone: "",
-      keywords: [],
-      linkedResources: [],
-      activityHistory: [],
-    });
+    setFormData(EMPTY_FORM);
     setResourceSearchQuery("");
+    setModalTab('info');
     setIsDialogOpen(true);
   };
 
   const openEditDialog = (platform: Platform) => {
     setEditingPlatform(platform);
     setFormData({
+      ...EMPTY_FORM,
       name: platform.name,
       description: platform.description,
       logo: (platform as any).logo || "",
@@ -214,10 +220,16 @@ export default function AdminPlatforms() {
       contactEmail: platform.contactEmail,
       contactPhone: platform.contactPhone,
       keywords: platform.keywords,
-      linkedResources: [],
       activityHistory: (platform as any).activityHistory || [],
+      bannerImage: (platform as any).bannerImage || "",
+      bannerText: (platform as any).bannerText || "",
+      bannerSubtitle: (platform as any).bannerSubtitle || "",
+      mainTitle: (platform as any).mainTitle || "",
+      mainText: (platform as any).mainText || "",
+      features: (platform as any).features || [],
     });
     setResourceSearchQuery("");
+    setModalTab('info');
     setIsDialogOpen(true);
   };
 
@@ -417,7 +429,7 @@ export default function AdminPlatforms() {
           </DialogHeader>
           
           <ScrollArea className="max-h-[calc(90vh-180px)]">
-            <div className="px-6 py-6 space-y-6">
+            <div className="px-6 py-6 space-y-5">
               <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-4">
                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                   <Building2 className="h-4 w-4 text-blue-500" />
