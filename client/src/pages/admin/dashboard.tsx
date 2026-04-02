@@ -124,14 +124,19 @@ const LINKED_STATUS_DATA = [
 const HOSTED_NEW_TODAY = 4;
 const LINKED_NEW_TODAY = 2;
 
-const SUMMARY_METRICS = [
+// Cards before Pending Requests (positions 1–3)
+const SUMMARY_METRICS_TOP = [
   { title: "Total Revenue", value: "$45,231.89", change: "+20.1% from last period", icon: DollarSign, color: "text-green-600 bg-green-100 dark:bg-green-900/20" },
   { title: "Data Sales", value: "1,234", change: "+180 since last period", icon: ShoppingCart, color: "text-blue-600 bg-blue-100 dark:bg-blue-900/20" },
   { title: "Active Users", value: "573", change: "+201 since last period", icon: Users, color: "text-indigo-600 bg-indigo-100 dark:bg-indigo-900/20" },
+];
+
+// Cards after Pending Requests (positions 5–8)
+const SUMMARY_METRICS_BOTTOM = [
   { title: "Ad Revenue", value: "$12,450", change: "+15% from last period", icon: Megaphone, color: "text-purple-600 bg-purple-100 dark:bg-purple-900/20" },
   { title: "Blog Posts", value: "84", change: "+2 this period", icon: FileText, color: "text-pink-600 bg-pink-100 dark:bg-pink-900/20" },
   { title: "Comments", value: "2,345", change: "+45 today", icon: MessageSquare, color: "text-cyan-600 bg-cyan-100 dark:bg-cyan-900/20" },
-  { title: "Avg. Visit Time", value: "4m 32s", change: "+12s from last period", icon: Activity, color: "text-slate-600 bg-slate-100 dark:bg-slate-800" },
+  { title: "방문자수", value: "24,831", change: "+1,204 from last period", icon: TrendingUp, color: "text-slate-600 bg-slate-100 dark:bg-slate-800" },
 ];
 
 // Recent Activity data per category
@@ -240,7 +245,8 @@ export default function Dashboard() {
 
         {/* Summary Cards */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {SUMMARY_METRICS.map((metric, index) => (
+          {/* Top 3 cards */}
+          {SUMMARY_METRICS_TOP.map((metric, index) => (
             <Card key={index} className="border-slate-200 dark:border-slate-800">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">{metric.title}</CardTitle>
@@ -264,24 +270,24 @@ export default function Dashboard() {
                   <button
                     onClick={() => setPendingTab('hosted')}
                     className={cn(
-                      "flex items-center gap-0.5 px-1.5 py-0.5 text-[9px] font-bold leading-none transition-colors",
+                      "flex items-center gap-1 px-2 py-1 text-[10px] font-bold leading-none transition-colors",
                       pendingTab === 'hosted'
                         ? "bg-blue-600 text-white"
                         : "bg-white text-slate-400 hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800"
                     )}
                   >
-                    <Server className="h-2 w-2" /> Hosted
+                    <Server className="h-2.5 w-2.5" /> Hosted
                   </button>
                   <button
                     onClick={() => setPendingTab('linked')}
                     className={cn(
-                      "flex items-center gap-0.5 px-1.5 py-0.5 text-[9px] font-bold leading-none transition-colors border-l",
+                      "flex items-center gap-1 px-2 py-1 text-[10px] font-bold leading-none transition-colors border-l",
                       pendingTab === 'linked'
                         ? "bg-indigo-600 text-white border-indigo-600"
                         : "bg-white text-slate-400 hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700"
                     )}
                   >
-                    <Link2 className="h-2 w-2" /> Linked
+                    <Link2 className="h-2.5 w-2.5" /> Linked
                   </button>
                 </div>
               </div>
@@ -298,6 +304,22 @@ export default function Dashboard() {
               </p>
             </CardContent>
           </Card>
+
+          {/* Bottom 4 cards */}
+          {SUMMARY_METRICS_BOTTOM.map((metric, index) => (
+            <Card key={index} className="border-slate-200 dark:border-slate-800">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">{metric.title}</CardTitle>
+                <div className={`h-8 w-8 rounded-full flex items-center justify-center ${metric.color}`}>
+                  <metric.icon className="h-4 w-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{metric.value}</div>
+                <p className="text-xs text-muted-foreground mt-1">{metric.change}</p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         {/* Charts row */}
