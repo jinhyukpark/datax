@@ -193,6 +193,34 @@ export default function AdminPlatforms() {
     features: [] as { image: string; title: string; text: string }[],
   };
 
+  const readImageFile = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+  const handleBannerImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const dataUrl = await readImageFile(file);
+    setFormData((prev) => ({ ...prev, bannerImage: dataUrl }));
+    e.target.value = "";
+  };
+
+  const handleFeatureImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const dataUrl = await readImageFile(file);
+    setFormData((prev) => {
+      const updated = [...prev.features];
+      updated[idx] = { ...updated[idx], image: dataUrl };
+      return { ...prev, features: updated };
+    });
+    e.target.value = "";
+  };
+
   const openAddDialog = () => {
     setEditingPlatform(null);
     setFormData(EMPTY_FORM);
@@ -647,19 +675,32 @@ export default function AdminPlatforms() {
                       배너 설정
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-sm">배너 이미지 URL</Label>
-                      <div className="flex gap-2">
-                        <Input
-                          value={formData.bannerImage}
-                          onChange={(e) => setFormData({ ...formData, bannerImage: e.target.value })}
-                          placeholder="https://... 이미지 URL 또는 업로드"
-                          className="flex-1"
-                        />
-                      </div>
+                      <Label className="text-sm">배너 이미지</Label>
+                      <label className="flex flex-col items-center justify-center gap-2 w-full h-28 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg cursor-pointer bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors overflow-hidden relative group">
+                        {formData.bannerImage ? (
+                          <>
+                            <img src={formData.bannerImage} alt="배너 미리보기" className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                              <span className="text-white text-xs font-medium flex items-center gap-1"><ImageIcon className="h-3.5 w-3.5" />이미지 변경</span>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <ImageIcon className="h-7 w-7 text-slate-400" />
+                            <span className="text-xs text-slate-500">클릭하여 이미지 첨부</span>
+                            <span className="text-xs text-slate-400">JPG, PNG, WebP 지원</span>
+                          </>
+                        )}
+                        <input type="file" accept="image/*" className="sr-only" onChange={handleBannerImageUpload} />
+                      </label>
                       {formData.bannerImage && (
-                        <div className="mt-2 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 h-28 bg-slate-100 dark:bg-slate-800">
-                          <img src={formData.bannerImage} alt="배너 미리보기" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, bannerImage: "" })}
+                          className="text-xs text-red-500 hover:text-red-700 flex items-center gap-1"
+                        >
+                          <X className="h-3 w-3" />이미지 제거
+                        </button>
                       )}
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -739,23 +780,38 @@ export default function AdminPlatforms() {
                               </Button>
                             </div>
                             <div className="space-y-1">
-                              <Label className="text-xs">이미지 URL</Label>
-                              <div className="flex gap-2 items-start">
-                                <Input
-                                  value={feat.image}
-                                  onChange={(e) => {
-                                    const updated = [...formData.features];
-                                    updated[idx] = { ...updated[idx], image: e.target.value };
-                                    setFormData({ ...formData, features: updated });
-                                  }}
-                                  placeholder="https://... 특징 이미지 URL"
-                                  className="h-8 text-sm flex-1"
-                                />
-                                {feat.image && (
-                                  <div className="h-8 w-8 rounded border border-slate-200 dark:border-slate-700 overflow-hidden shrink-0 bg-slate-100">
-                                    <img src={feat.image} alt="" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                                  </div>
-                                )}
+                              <Label className="text-xs">이미지 첨부</Label>
+                              <div className="flex items-center gap-2">
+                                <label className="flex items-center justify-center gap-1.5 h-16 w-16 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg cursor-pointer bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors overflow-hidden relative group shrink-0">
+                                  {feat.image ? (
+                                    <>
+                                      <img src={feat.image} alt="" className="w-full h-full object-cover" />
+                                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                        <ImageIcon className="h-4 w-4 text-white" />
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <ImageIcon className="h-5 w-5 text-slate-400" />
+                                  )}
+                                  <input type="file" accept="image/*" className="sr-only" onChange={(e) => handleFeatureImageUpload(e, idx)} />
+                                </label>
+                                <div className="flex-1 text-xs text-slate-500 space-y-1">
+                                  {feat.image ? (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const updated = [...formData.features];
+                                        updated[idx] = { ...updated[idx], image: "" };
+                                        setFormData({ ...formData, features: updated });
+                                      }}
+                                      className="text-red-500 hover:text-red-700 flex items-center gap-1"
+                                    >
+                                      <X className="h-3 w-3" />이미지 제거
+                                    </button>
+                                  ) : (
+                                    <span className="text-slate-400">클릭하여 이미지 첨부<br />JPG, PNG, WebP</span>
+                                  )}
+                                </div>
                               </div>
                             </div>
                             <div className="grid grid-cols-2 gap-3">
