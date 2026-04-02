@@ -141,27 +141,27 @@ const SUMMARY_METRICS_BOTTOM = [
 
 // Recent Activity data per category
 const ACTIVITY_PURCHASES = [
-  { user: "김민수", target: "Corporate Growth Data", price: "$78/mo", time: "2분 전", avatar: "KM" },
-  { user: "이지원", target: "Social Trend Analysis API", price: "$29/mo", time: "31분 전", avatar: "LJ" },
-  { user: "박성훈", target: "Image-based Patent Analysis", price: "$127/mo", time: "1시간 전", avatar: "PS" },
-  { user: "Acme Corp", target: "Smart Factory Sensor Grid", price: "Free", time: "3시간 전", avatar: "AC" },
-  { user: "최유진", target: "Wemeet Science Dataset", price: "$29/mo", time: "5시간 전", avatar: "CY" },
-  { user: "장현우", target: "KIRIA Robot Platform", price: "$78/mo", time: "1일 전", avatar: "JH" },
+  { user: "김민수", email: "minsu.kim@techcorp.io", target: "Corporate Growth Data", price: "$78/mo", time: "2분 전" },
+  { user: "이지원", email: "jiwon.lee@visionai.co", target: "Social Trend Analysis API", price: "$29/mo", time: "31분 전" },
+  { user: "박성훈", email: "sunghoon.park@startup.kr", target: "Image-based Patent Analysis", price: "$127/mo", time: "1시간 전" },
+  { user: "Acme Corp", email: "billing@acmecorp.com", target: "Smart Factory Sensor Grid", price: "Free", time: "3시간 전" },
+  { user: "최유진", email: "yujin.choi@research.ac.kr", target: "Wemeet Science Dataset", price: "$29/mo", time: "5시간 전" },
+  { user: "장현우", email: "hyunwoo.jang@enterprise.com", target: "KIRIA Robot Platform", price: "$78/mo", time: "1일 전" },
 ];
 
 const ACTIVITY_ADS = [
-  { user: "Global Systems", target: "메인 페이지 배너 광고", detail: "728×90 · 30일", price: "$450", time: "3시간 전", avatar: "GS" },
-  { user: "Vision AI", target: "사이드바 광고 슬롯 A", detail: "300×250 · 14일", price: "$210", time: "6시간 전", avatar: "VA" },
-  { user: "TechCorp Inc.", target: "뉴스레터 스폰서십", detail: "주 1회 · 4주", price: "$320", time: "1일 전", avatar: "TC" },
-  { user: "스타트업허브", target: "검색 결과 상단 배너", detail: "970×90 · 7일", price: "$180", time: "2일 전", avatar: "SH" },
+  { user: "Global Systems", email: "ads@globalsystems.io", target: "메인 페이지 배너 광고", detail: "728×90 · 30일", price: "$450", time: "3시간 전" },
+  { user: "Vision AI", email: "marketing@visionai.co", target: "사이드바 광고 슬롯 A", detail: "300×250 · 14일", price: "$210", time: "6시간 전" },
+  { user: "TechCorp Inc.", email: "sponsor@techcorp.com", target: "뉴스레터 스폰서십", detail: "주 1회 · 4주", price: "$320", time: "1일 전" },
+  { user: "스타트업허브", email: "ad@startuphub.kr", target: "검색 결과 상단 배너", detail: "970×90 · 7일", price: "$180", time: "2일 전" },
 ];
 
 const ACTIVITY_INQUIRIES = [
-  { user: "이서연", email: "seoyeon.lee@corp.io", target: "Image-based Patent Analysis", type: "Integration 문의", time: "14분 전", avatar: "LS", replied: false },
-  { user: "최유진", email: "yujin.choi@research.ac.kr", target: "Wemeet Science", type: "기능 요청", time: "1시간 전", avatar: "CY", replied: false },
-  { user: "윤소희", email: "sohee.yoon@fintech.io", target: "Startup Ecosystem Network", type: "결제 / 구독 문의", time: "4시간 전", avatar: "YS", replied: false },
-  { user: "한예린", email: "yerin.han@university.edu", target: "Wemeet Science", type: "일반 문의", time: "1일 전", avatar: "HY", replied: true },
-  { user: "강도현", email: "dohyun.kang@mfg.co.kr", target: "K-tools Smart Equipment", type: "버그 리포트", time: "2일 전", avatar: "KD", replied: true },
+  { user: "이서연", email: "seoyeon.lee@corp.io", target: "Image-based Patent Analysis", type: "Integration 문의", time: "14분 전", replied: false },
+  { user: "최유진", email: "yujin.choi@research.ac.kr", target: "Wemeet Science", type: "기능 요청", time: "1시간 전", replied: false },
+  { user: "윤소희", email: "sohee.yoon@fintech.io", target: "Startup Ecosystem Network", type: "결제 / 구독 문의", time: "4시간 전", replied: false },
+  { user: "한예린", email: "yerin.han@university.edu", target: "Wemeet Science", type: "일반 문의", time: "1일 전", replied: true },
+  { user: "강도현", email: "dohyun.kang@mfg.co.kr", target: "K-tools Smart Equipment", type: "버그 리포트", time: "2일 전", replied: true },
 ];
 
 const inquiryTypeBadge = (type: string) => {
@@ -498,16 +498,16 @@ export default function Dashboard() {
               <div className="divide-y divide-slate-100 dark:divide-slate-800">
                 {ACTIVITY_PURCHASES.map((item, i) => (
                   <div key={i} className="flex items-center justify-between py-3 first:pt-0 last:pb-0" data-testid={`activity-purchase-${i}`}>
-                    <div className="flex items-center gap-3">
-                      <AvatarBubble label={item.avatar} color={AVATAR_COLORS[i % AVATAR_COLORS.length]} />
-                      <div>
-                        <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{item.user}</p>
-                        <p className="text-xs text-muted-foreground">
-                          <span className="text-blue-600 dark:text-blue-400 font-medium">{item.target}</span> 구매
-                        </p>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 whitespace-nowrap">{item.user}</p>
+                        <span className="text-xs text-muted-foreground truncate">{item.email}</span>
                       </div>
+                      <p className="text-xs text-muted-foreground">
+                        <span className="text-blue-600 dark:text-blue-400 font-medium">{item.target}</span> 구매
+                      </p>
                     </div>
-                    <div className="text-right shrink-0">
+                    <div className="text-right shrink-0 ml-3">
                       <p className="text-sm font-bold text-slate-700 dark:text-slate-200">{item.price}</p>
                       <p className="text-xs text-muted-foreground">{item.time}</p>
                     </div>
@@ -521,17 +521,17 @@ export default function Dashboard() {
               <div className="divide-y divide-slate-100 dark:divide-slate-800">
                 {ACTIVITY_ADS.map((item, i) => (
                   <div key={i} className="flex items-center justify-between py-3 first:pt-0 last:pb-0" data-testid={`activity-ad-${i}`}>
-                    <div className="flex items-center gap-3">
-                      <AvatarBubble label={item.avatar} color={AVATAR_COLORS[(i + 2) % AVATAR_COLORS.length]} />
-                      <div>
-                        <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{item.user}</p>
-                        <p className="text-xs text-muted-foreground">
-                          <span className="text-purple-600 dark:text-purple-400 font-medium">{item.target}</span>
-                          <span className="ml-1 text-slate-400">· {item.detail}</span>
-                        </p>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 whitespace-nowrap">{item.user}</p>
+                        <span className="text-xs text-muted-foreground truncate">{item.email}</span>
                       </div>
+                      <p className="text-xs text-muted-foreground">
+                        <span className="text-purple-600 dark:text-purple-400 font-medium">{item.target}</span>
+                        <span className="ml-1 text-slate-400">· {item.detail}</span>
+                      </p>
                     </div>
-                    <div className="text-right shrink-0">
+                    <div className="text-right shrink-0 ml-3">
                       <p className="text-sm font-bold text-slate-700 dark:text-slate-200">{item.price}</p>
                       <p className="text-xs text-muted-foreground">{item.time}</p>
                     </div>
@@ -545,29 +545,26 @@ export default function Dashboard() {
               <div className="divide-y divide-slate-100 dark:divide-slate-800">
                 {ACTIVITY_INQUIRIES.map((item, i) => (
                   <div key={i} className="flex items-center justify-between py-3 first:pt-0 last:pb-0" data-testid={`activity-inquiry-${i}`}>
-                    <div className="flex items-center gap-3">
-                      <AvatarBubble label={item.avatar} color={AVATAR_COLORS[(i + 4) % AVATAR_COLORS.length]} />
-                      <div>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{item.user}</p>
-                          <Badge variant="outline" className={cn("text-[10px] px-1.5 py-0 h-4 border font-medium", inquiryTypeBadge(item.type))}>
-                            {item.type}
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 whitespace-nowrap">{item.user}</p>
+                        <span className="text-xs text-muted-foreground truncate">{item.email}</span>
+                        <Badge variant="outline" className={cn("text-[10px] px-1.5 py-0 h-4 border font-medium", inquiryTypeBadge(item.type))}>
+                          {item.type}
+                        </Badge>
+                        {item.replied ? (
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border font-medium bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400">
+                            답장완료
                           </Badge>
-                          {item.replied ? (
-                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border font-medium bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400">
-                              답장완료
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border font-medium bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400">
-                              대기중
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          <span className="text-emerald-600 dark:text-emerald-400 font-medium">{item.target}</span>
-                          <span className="ml-1">· {item.email}</span>
-                        </p>
+                        ) : (
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border font-medium bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400">
+                            대기중
+                          </Badge>
+                        )}
                       </div>
+                      <p className="text-xs text-muted-foreground">
+                        <span className="text-emerald-600 dark:text-emerald-400 font-medium">{item.target}</span>
+                      </p>
                     </div>
                     <p className="text-xs text-muted-foreground shrink-0 ml-3">{item.time}</p>
                   </div>
