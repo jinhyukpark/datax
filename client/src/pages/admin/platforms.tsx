@@ -538,309 +538,416 @@ export default function AdminPlatforms() {
                 </div>
               </div>
 
-              {/* Activity History Section */}
-              <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
-                    <Calendar className="h-4 w-4 text-indigo-500" />
-                    Activity History
-                  </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setFormData({
-                      ...formData,
-                      activityHistory: [...formData.activityHistory, { date: "", title: "", description: "" }]
-                    })}
-                    className="gap-1"
-                  >
-                    <Plus className="h-3 w-3" />
-                    Add Activity
-                  </Button>
-                </div>
-                
-                {formData.activityHistory.length === 0 ? (
-                  <div className="text-center py-6 text-muted-foreground text-sm">
-                    No activity history yet. Click "Add Activity" to add milestones.
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {formData.activityHistory.map((activity, index) => (
-                      <div key={index} className="p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-medium text-muted-foreground">Activity #{index + 1}</span>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setFormData({
-                              ...formData,
-                              activityHistory: formData.activityHistory.filter((_, i) => i !== index)
-                            })}
-                            className="h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
-                          >
-                            <X className="h-3 w-3" />
-                          </Button>
-                        </div>
-                        <div className="grid grid-cols-3 gap-3">
-                          <div className="space-y-1">
-                            <Label className="text-xs">Date</Label>
-                            <Input
-                              type="month"
-                              value={activity.date}
-                              onChange={(e) => {
-                                const updated = [...formData.activityHistory];
-                                updated[index] = { ...updated[index], date: e.target.value };
-                                setFormData({ ...formData, activityHistory: updated });
-                              }}
-                              className="h-8 text-sm"
-                            />
-                          </div>
-                          <div className="col-span-2 space-y-1">
-                            <Label className="text-xs">Title</Label>
-                            <Input
-                              value={activity.title}
-                              onChange={(e) => {
-                                const updated = [...formData.activityHistory];
-                                updated[index] = { ...updated[index], title: e.target.value };
-                                setFormData({ ...formData, activityHistory: updated });
-                              }}
-                              placeholder="e.g., Released API v2.0"
-                              className="h-8 text-sm"
-                            />
-                          </div>
-                        </div>
-                        <div className="space-y-1">
-                          <Label className="text-xs">Description</Label>
-                          <Input
-                            value={activity.description}
-                            onChange={(e) => {
-                              const updated = [...formData.activityHistory];
-                              updated[index] = { ...updated[index], description: e.target.value };
-                              setFormData({ ...formData, activityHistory: updated });
-                            }}
-                            placeholder="Brief description of the milestone..."
-                            className="h-8 text-sm"
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
+              {/* ── 2. Social Links ── */}
               <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-4">
                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                   <ExternalLink className="h-4 w-4 text-blue-500" />
                   Social Links
                 </div>
-                
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-sm flex items-center gap-2">
-                      <Linkedin className="h-4 w-4 text-blue-600" />
-                      LinkedIn URL
-                    </Label>
-                    <Input 
-                      value={formData.linkedinUrl}
-                      onChange={(e) => setFormData({ ...formData, linkedinUrl: e.target.value })}
-                      placeholder="https://linkedin.com/..."
-                    />
+                    <Label className="text-sm flex items-center gap-2"><Linkedin className="h-4 w-4 text-blue-600" />LinkedIn URL</Label>
+                    <Input value={formData.linkedinUrl} onChange={(e) => setFormData({ ...formData, linkedinUrl: e.target.value })} placeholder="https://linkedin.com/..." />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-sm flex items-center gap-2">
-                      <Twitter className="h-4 w-4 text-sky-500" />
-                      Twitter URL
-                    </Label>
-                    <Input 
-                      value={formData.twitterUrl}
-                      onChange={(e) => setFormData({ ...formData, twitterUrl: e.target.value })}
-                      placeholder="https://twitter.com/..."
-                    />
+                    <Label className="text-sm flex items-center gap-2"><Twitter className="h-4 w-4 text-sky-500" />Twitter URL</Label>
+                    <Input value={formData.twitterUrl} onChange={(e) => setFormData({ ...formData, twitterUrl: e.target.value })} placeholder="https://twitter.com/..." />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-sm flex items-center gap-2">
-                      <Github className="h-4 w-4" />
-                      GitHub URL
-                    </Label>
-                    <Input 
-                      value={formData.githubUrl}
-                      onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
-                      placeholder="https://github.com/..."
-                    />
+                    <Label className="text-sm flex items-center gap-2"><Github className="h-4 w-4" />GitHub URL</Label>
+                    <Input value={formData.githubUrl} onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })} placeholder="https://github.com/..." />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-sm flex items-center gap-2">
-                      <MessageCircle className="h-4 w-4 text-indigo-500" />
-                      Discord URL
-                    </Label>
-                    <Input 
-                      value={formData.discordUrl}
-                      onChange={(e) => setFormData({ ...formData, discordUrl: e.target.value })}
-                      placeholder="https://discord.gg/..."
-                    />
+                    <Label className="text-sm flex items-center gap-2"><MessageCircle className="h-4 w-4 text-indigo-500" />Discord URL</Label>
+                    <Input value={formData.discordUrl} onChange={(e) => setFormData({ ...formData, discordUrl: e.target.value })} placeholder="https://discord.gg/..." />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-sm flex items-center gap-2">
-                    <Send className="h-4 w-4 text-sky-400" />
-                    Telegram URL
-                  </Label>
-                  <Input 
-                    value={formData.telegramUrl}
-                    onChange={(e) => setFormData({ ...formData, telegramUrl: e.target.value })}
-                    placeholder="https://t.me/..."
-                  />
+                  <Label className="text-sm flex items-center gap-2"><Send className="h-4 w-4 text-sky-400" />Telegram URL</Label>
+                  <Input value={formData.telegramUrl} onChange={(e) => setFormData({ ...formData, telegramUrl: e.target.value })} placeholder="https://t.me/..." />
                 </div>
               </div>
 
+              {/* ── 3. Contact Information ── */}
               <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800 space-y-4">
                 <div className="flex items-center gap-2 text-sm font-semibold text-blue-700 dark:text-blue-300">
+                  <ExternalLink className="h-4 w-4" />
                   Contact Information
                 </div>
-                
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-sm">
-                      Contact Email <span className="text-red-500">*</span>
-                    </Label>
-                    <Input 
-                      type="email"
-                      value={formData.contactEmail}
-                      onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
-                      placeholder="email@company.com"
-                    />
+                    <Label className="text-sm">Contact Email <span className="text-red-500">*</span></Label>
+                    <Input type="email" value={formData.contactEmail} onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })} placeholder="email@company.com" />
                   </div>
                   <div className="space-y-2">
                     <Label className="text-sm">Contact Phone</Label>
-                    <Input 
-                      value={formData.contactPhone}
-                      onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
-                      placeholder="02-1234-5678"
-                    />
+                    <Input value={formData.contactPhone} onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })} placeholder="02-1234-5678" />
                   </div>
                 </div>
               </div>
 
+              {/* ── 4. Keywords ── */}
               <div className="space-y-3">
                 <Label className="flex justify-between text-sm">
-                  <span>Keywords <span className="text-red-500">*</span></span>
+                  <span className="flex items-center gap-1.5"><Tag className="h-3.5 w-3.5" />Keywords <span className="text-red-500">*</span></span>
                   <span className="text-xs text-muted-foreground">{formData.keywords.length}/5</span>
                 </Label>
                 <div className="flex flex-wrap gap-2 p-3 bg-slate-50 dark:bg-slate-900/30 rounded-lg border border-slate-200 dark:border-slate-800 min-h-[44px]">
                   {formData.keywords.map((keyword, index) => (
                     <span key={index} className="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
                       {keyword}
-                      <button 
-                        type="button" 
-                        onClick={() => removeKeyword(keyword)}
-                        className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-0.5 transition-colors"
-                      >
+                      <button type="button" onClick={() => removeKeyword(keyword)} className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-0.5 transition-colors">
                         <X className="h-3 w-3" />
                       </button>
                     </span>
                   ))}
                   {formData.keywords.length < 5 && (
-                    <Input 
+                    <Input
                       value={keywordInput}
                       onChange={(e) => setKeywordInput(e.target.value)}
                       placeholder={formData.keywords.length === 0 ? "Type keyword and press Enter" : "Add more..."}
                       className="flex-1 min-w-[120px] h-7 border-0 bg-transparent p-0 focus-visible:ring-0 text-sm"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
-                          addKeyword();
-                        }
-                      }}
+                      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addKeyword(); } }}
                     />
                   )}
                 </div>
               </div>
 
-              <div className="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-indigo-700 dark:text-indigo-300">
-                    <Link2 className="h-4 w-4" />
-                    Linked Resources
-                  </div>
-                  <Badge variant="secondary" className="text-xs">
-                    {formData.linkedResources.length} selected
-                  </Badge>
-                </div>
-                
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    placeholder="Search resources..." 
-                    className="pl-9 bg-white dark:bg-slate-900"
-                    value={resourceSearchQuery}
-                    onChange={(e) => setResourceSearchQuery(e.target.value)}
-                  />
-                </div>
-
-                <div className="max-h-[200px] overflow-y-auto space-y-2 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-2">
-                  {filteredAvailableResources.slice(0, 10).map((resource) => (
-                    <div 
-                      key={resource.id}
-                      className={`flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-colors ${
-                        formData.linkedResources.includes(resource.id)
-                          ? 'bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700'
-                          : 'hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent'
+              {/* ── Tab Switcher ── */}
+              <div className="border-b border-slate-200 dark:border-slate-700">
+                <div className="flex gap-0">
+                  {[
+                    { key: 'info', label: '정보', icon: FileText },
+                    { key: 'activity', label: '주요 활동', icon: Layers },
+                  ].map(({ key, label, icon: Icon }) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => setModalTab(key as 'info' | 'activity')}
+                      className={`flex items-center gap-1.5 px-5 py-2.5 text-sm font-semibold border-b-2 transition-colors ${
+                        modalTab === key
+                          ? 'border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400'
+                          : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
                       }`}
-                      onClick={() => toggleResource(resource.id)}
                     >
-                      <Checkbox 
-                        checked={formData.linkedResources.includes(resource.id)}
-                        className="pointer-events-none"
-                      />
-                      <div className="h-8 w-8 rounded bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0">
-                        <Database className="h-4 w-4 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{resource.title}</p>
-                        <p className="text-xs text-muted-foreground">{resource.provider} • {resource.type}</p>
-                      </div>
-                      <Badge variant="secondary" className="text-xs shrink-0">
-                        {resource.price}
-                      </Badge>
-                    </div>
+                      <Icon className="h-3.5 w-3.5" />
+                      {label}
+                    </button>
                   ))}
-                  {filteredAvailableResources.length === 0 && (
-                    <p className="text-sm text-muted-foreground text-center py-4">No resources found</p>
-                  )}
                 </div>
+              </div>
 
-                {formData.linkedResources.length > 0 && (
-                  <div className="pt-2 border-t border-indigo-200 dark:border-indigo-700">
-                    <p className="text-xs text-muted-foreground mb-2">Selected resources:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {formData.linkedResources.map((resourceId) => {
-                        const resource = RESOURCES.find(r => r.id === resourceId);
-                        return resource ? (
-                          <Badge key={resourceId} variant="secondary" className="gap-1 pr-1">
-                            {resource.title}
-                            <button 
-                              type="button" 
-                              onClick={() => toggleResource(resourceId)}
-                              className="hover:bg-slate-300 dark:hover:bg-slate-600 rounded-full p-0.5 ml-1"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                          </Badge>
-                        ) : null;
-                      })}
+              {/* ── Tab: 정보 ── */}
+              {modalTab === 'info' && (
+                <div className="space-y-5">
+                  {/* Banner section */}
+                  <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-4">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                      <ImageIcon className="h-4 w-4 text-purple-500" />
+                      배너 설정
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm">배너 이미지 URL</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          value={formData.bannerImage}
+                          onChange={(e) => setFormData({ ...formData, bannerImage: e.target.value })}
+                          placeholder="https://... 이미지 URL 또는 업로드"
+                          className="flex-1"
+                        />
+                      </div>
+                      {formData.bannerImage && (
+                        <div className="mt-2 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 h-28 bg-slate-100 dark:bg-slate-800">
+                          <img src={formData.bannerImage} alt="배너 미리보기" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                        </div>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label className="text-sm">배너 텍스트</Label>
+                        <Input value={formData.bannerText} onChange={(e) => setFormData({ ...formData, bannerText: e.target.value })} placeholder="배너에 표시될 주요 문구" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm">배너 서브타이틀</Label>
+                        <Input value={formData.bannerSubtitle} onChange={(e) => setFormData({ ...formData, bannerSubtitle: e.target.value })} placeholder="배너 보조 설명 문구" />
+                      </div>
                     </div>
                   </div>
-                )}
-              </div>
+
+                  {/* Main content section */}
+                  <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-4">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                      <FileText className="h-4 w-4 text-indigo-500" />
+                      메인 콘텐츠
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm">메인 제목</Label>
+                      <Input value={formData.mainTitle} onChange={(e) => setFormData({ ...formData, mainTitle: e.target.value })} placeholder="페이지 메인 제목" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="flex justify-between text-sm">
+                        <span>메인 텍스트</span>
+                        <span className="text-xs text-muted-foreground">{formData.mainText.length}/500</span>
+                      </Label>
+                      <Textarea
+                        value={formData.mainText}
+                        onChange={(e) => setFormData({ ...formData, mainText: e.target.value.slice(0, 500) })}
+                        placeholder="서비스 소개 본문 텍스트를 입력하세요..."
+                        className="min-h-[100px] resize-none text-sm"
+                        maxLength={500}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Features section */}
+                  <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                        <Star className="h-4 w-4 text-amber-500" />
+                        주요 특징 <span className="text-xs font-normal text-muted-foreground ml-1">({formData.features.length}/6)</span>
+                      </div>
+                      {formData.features.length < 6 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="gap-1 h-7 text-xs"
+                          onClick={() => setFormData({ ...formData, features: [...formData.features, { image: "", title: "", text: "" }] })}
+                        >
+                          <Plus className="h-3 w-3" /> 특징 추가
+                        </Button>
+                      )}
+                    </div>
+                    {formData.features.length === 0 ? (
+                      <div className="text-center py-6 text-muted-foreground text-sm">
+                        "특징 추가"를 클릭하여 주요 특징을 입력하세요. (최대 6개)
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {formData.features.map((feat, idx) => (
+                          <div key={idx} className="p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 space-y-3">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-semibold text-muted-foreground">특징 #{idx + 1}</span>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="h-6 w-6 p-0 text-red-500 hover:bg-red-50"
+                                onClick={() => setFormData({ ...formData, features: formData.features.filter((_, i) => i !== idx) })}
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </div>
+                            <div className="space-y-1">
+                              <Label className="text-xs">이미지 URL</Label>
+                              <div className="flex gap-2 items-start">
+                                <Input
+                                  value={feat.image}
+                                  onChange={(e) => {
+                                    const updated = [...formData.features];
+                                    updated[idx] = { ...updated[idx], image: e.target.value };
+                                    setFormData({ ...formData, features: updated });
+                                  }}
+                                  placeholder="https://... 특징 이미지 URL"
+                                  className="h-8 text-sm flex-1"
+                                />
+                                {feat.image && (
+                                  <div className="h-8 w-8 rounded border border-slate-200 dark:border-slate-700 overflow-hidden shrink-0 bg-slate-100">
+                                    <img src={feat.image} alt="" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-1">
+                                <Label className="text-xs">특징 제목</Label>
+                                <Input
+                                  value={feat.title}
+                                  onChange={(e) => {
+                                    const updated = [...formData.features];
+                                    updated[idx] = { ...updated[idx], title: e.target.value };
+                                    setFormData({ ...formData, features: updated });
+                                  }}
+                                  placeholder="특징 제목"
+                                  className="h-8 text-sm"
+                                />
+                              </div>
+                              <div className="space-y-1">
+                                <Label className="text-xs">특징 텍스트</Label>
+                                <Input
+                                  value={feat.text}
+                                  onChange={(e) => {
+                                    const updated = [...formData.features];
+                                    updated[idx] = { ...updated[idx], text: e.target.value };
+                                    setFormData({ ...formData, features: updated });
+                                  }}
+                                  placeholder="특징 설명"
+                                  className="h-8 text-sm"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Tab: 주요 활동 ── */}
+              {modalTab === 'activity' && (
+                <div className="space-y-5">
+                  {/* Activity History */}
+                  <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                        <Calendar className="h-4 w-4 text-indigo-500" />
+                        Activity History
+                      </div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="gap-1 h-7 text-xs"
+                        onClick={() => setFormData({ ...formData, activityHistory: [...formData.activityHistory, { date: "", title: "", description: "" }] })}
+                      >
+                        <Plus className="h-3 w-3" /> Add Activity
+                      </Button>
+                    </div>
+                    {formData.activityHistory.length === 0 ? (
+                      <div className="text-center py-6 text-muted-foreground text-sm">
+                        No activity history yet. Click "Add Activity" to add milestones.
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {formData.activityHistory.map((activity, index) => (
+                          <div key={index} className="p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 space-y-3">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-medium text-muted-foreground">Activity #{index + 1}</span>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setFormData({ ...formData, activityHistory: formData.activityHistory.filter((_, i) => i !== index) })}
+                                className="h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </div>
+                            <div className="grid grid-cols-3 gap-3">
+                              <div className="space-y-1">
+                                <Label className="text-xs">Date</Label>
+                                <Input
+                                  type="month"
+                                  value={activity.date}
+                                  onChange={(e) => {
+                                    const updated = [...formData.activityHistory];
+                                    updated[index] = { ...updated[index], date: e.target.value };
+                                    setFormData({ ...formData, activityHistory: updated });
+                                  }}
+                                  className="h-8 text-sm"
+                                />
+                              </div>
+                              <div className="col-span-2 space-y-1">
+                                <Label className="text-xs">Title</Label>
+                                <Input
+                                  value={activity.title}
+                                  onChange={(e) => {
+                                    const updated = [...formData.activityHistory];
+                                    updated[index] = { ...updated[index], title: e.target.value };
+                                    setFormData({ ...formData, activityHistory: updated });
+                                  }}
+                                  placeholder="e.g., Released API v2.0"
+                                  className="h-8 text-sm"
+                                />
+                              </div>
+                            </div>
+                            <div className="space-y-1">
+                              <Label className="text-xs">Description</Label>
+                              <Input
+                                value={activity.description}
+                                onChange={(e) => {
+                                  const updated = [...formData.activityHistory];
+                                  updated[index] = { ...updated[index], description: e.target.value };
+                                  setFormData({ ...formData, activityHistory: updated });
+                                }}
+                                placeholder="Brief description of the milestone..."
+                                className="h-8 text-sm"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Linked Resources */}
+                  <div className="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm font-semibold text-indigo-700 dark:text-indigo-300">
+                        <Link2 className="h-4 w-4" />
+                        Linked Resources
+                      </div>
+                      <Badge variant="secondary" className="text-xs">{formData.linkedResources.length} selected</Badge>
+                    </div>
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input placeholder="Search resources..." className="pl-9 bg-white dark:bg-slate-900" value={resourceSearchQuery} onChange={(e) => setResourceSearchQuery(e.target.value)} />
+                    </div>
+                    <div className="max-h-[200px] overflow-y-auto space-y-2 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-2">
+                      {filteredAvailableResources.slice(0, 10).map((resource) => (
+                        <div
+                          key={resource.id}
+                          className={`flex items-center gap-3 p-2.5 rounded-lg cursor-pointer transition-colors ${
+                            formData.linkedResources.includes(resource.id)
+                              ? 'bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700'
+                              : 'hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent'
+                          }`}
+                          onClick={() => toggleResource(resource.id)}
+                        >
+                          <Checkbox checked={formData.linkedResources.includes(resource.id)} className="pointer-events-none" />
+                          <div className="h-8 w-8 rounded bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0">
+                            <Database className="h-4 w-4 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{resource.title}</p>
+                            <p className="text-xs text-muted-foreground">{resource.provider} • {resource.type}</p>
+                          </div>
+                          <Badge variant="secondary" className="text-xs shrink-0">{resource.price}</Badge>
+                        </div>
+                      ))}
+                      {filteredAvailableResources.length === 0 && (
+                        <p className="text-sm text-muted-foreground text-center py-4">No resources found</p>
+                      )}
+                    </div>
+                    {formData.linkedResources.length > 0 && (
+                      <div className="pt-2 border-t border-indigo-200 dark:border-indigo-700">
+                        <p className="text-xs text-muted-foreground mb-2">Selected resources:</p>
+                        <div className="flex flex-wrap gap-2">
+                          {formData.linkedResources.map((resourceId) => {
+                            const resource = RESOURCES.find(r => r.id === resourceId);
+                            return resource ? (
+                              <Badge key={resourceId} variant="secondary" className="gap-1 pr-1">
+                                {resource.title}
+                                <button type="button" onClick={() => toggleResource(resourceId)} className="hover:bg-slate-300 dark:hover:bg-slate-600 rounded-full p-0.5 ml-1">
+                                  <X className="h-3 w-3" />
+                                </button>
+                              </Badge>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </ScrollArea>
 
           <div className="px-6 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-            <Button 
-              onClick={handleSave} 
+            <Button
+              onClick={handleSave}
               className="bg-blue-600 hover:bg-blue-700 min-w-[120px]"
               disabled={!formData.name || !formData.description || !formData.contactEmail}
             >
