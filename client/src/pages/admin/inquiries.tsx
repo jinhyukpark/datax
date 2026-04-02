@@ -39,8 +39,11 @@ import {
   Tag,
   ChevronDown,
   X,
+  Send,
+  ExternalLink,
+  CheckCircle2,
 } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -198,6 +201,14 @@ export default function InquiriesManagement() {
   const [filterReplied, setFilterReplied] = useState("all");
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [replyDraft, setReplyDraft] = useState("");
+  const [savedReplies, setSavedReplies] = useState<Record<number, string>>({});
+
+  useEffect(() => {
+    if (selectedInquiry) {
+      setReplyDraft(savedReplies[selectedInquiry.id] ?? "");
+    }
+  }, [selectedInquiry?.id]);
 
   const filtered = useMemo(() => {
     return inquiries.filter(inq => {
@@ -229,6 +240,20 @@ export default function InquiriesManagement() {
     if (inq) {
       toast.success(inq.replied ? "답장 완료 해제됨" : "답장 완료로 표시됨");
     }
+  };
+
+  const submitReply = (id: number, email: string) => {
+    const text = replyDraft.trim();
+    if (!text) {
+      toast.error("답변 내용을 입력해주세요.");
+      return;
+    }
+    setSavedReplies(prev => ({ ...prev, [id]: text }));
+    setInquiries(prev =>
+      prev.map(i => (i.id === id ? { ...i, replied: true } : i))
+    );
+    setSelectedInquiry(prev => prev ? { ...prev, replied: true } : null);
+    toast.success(`${email}에 답변이 등록되었습니다.`);
   };
 
   return (
@@ -526,13 +551,63 @@ export default function InquiriesManagement() {
                     </div>
                   </div>
 
+                  {/* Saved reply display */}
+                  {savedReplies[selectedInquiry.id] && (
+                    <div className="rounded-xl bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 p-4 space-y-1.5">
+                      <div className="flex items-center gap-1.5">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+                        <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300">등록된 답변</p>
+                      </div>
+                      <p className="text-sm text-indigo-900 dark:text-indigo-100 leading-relaxed whitespace-pre-wrap">
+                        {savedReplies[selectedInquiry.id]}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Direct reply input */}
+                  <div className="space-y-2">
+                    <Label className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
+                      <Send className="h-3.5 w-3.5" /> 직접 답변 작성
+                    </Label>
+                    <Textarea
+                      data-testid="textarea-reply-input"
+                      value={replyDraft}
+                      onChange={e => setReplyDraft(e.target.value)}
+                      placeholder="이 문의에 대한 답변을 입력하세요..."
+                      className="min-h-[100px] resize-none text-sm"
+                    />
+                    <div className="flex items-center justify-between gap-3">
+                      <a
+                        href={`mailto:${selectedInquiry.senderEmail}?subject=Re: ${selectedInquiry.productTitle} 문의 답변`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+                        data-testid="link-mailto"
+                      >
+                        <ExternalLink className="h-3 w-3" />
+                        메일로 답장하기
+                      </a>
+                      <Button
+                        data-testid="button-submit-reply"
+                        size="sm"
+                        className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white"
+                        onClick={() => submitReply(selectedInquiry.id, selectedInquiry.senderEmail)}
+                      >
+                        <Send className="h-3.5 w-3.5" />
+                        {savedReplies[selectedInquiry.id] ? "답변 수정 등록" : "답변 등록"}
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="h-px bg-slate-100 dark:bg-slate-800" />
+
                   {/* Reply status toggle */}
                   <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">메일 답장 완료</p>
+                      <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">답장 완료 체크</p>
                       <p className="text-xs text-muted-foreground">
                         {selectedInquiry.replied
-                          ? "이 문의에 메일로 답장했습니다."
+                          ? "이 문의에 답장이 완료되었습니다."
                           : "아직 이 문의에 답장하지 않았습니다."}
                       </p>
                     </div>
@@ -558,21 +633,6 @@ export default function InquiriesManagement() {
                       )}
                     </Button>
                   </div>
-                </div>
-
-                {/* Footer */}
-                <div className="px-6 py-4 border-t bg-slate-50/70 dark:bg-slate-800/40">
-                  <a
-                    href={`mailto:${selectedInquiry.senderEmail}?subject=Re: ${selectedInquiry.productTitle} 문의 답변`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
-                  >
-                    <Button className="w-full gap-2 bg-indigo-600 hover:bg-indigo-700 text-white" data-testid="button-send-email">
-                      <Mail className="h-4 w-4" />
-                      {selectedInquiry.senderEmail}로 메일 보내기
-                    </Button>
-                  </a>
                 </div>
               </>
             );
