@@ -251,81 +251,50 @@ export default function Dashboard() {
             </Card>
           ))}
 
-          {/* Pending Requests card - split by service type */}
-          <Card className="border-amber-200 dark:border-amber-900/40 bg-amber-50/30 dark:bg-amber-900/5 md:col-span-2 lg:col-span-4">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-sm font-semibold text-amber-800 dark:text-amber-300 flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    Pending Requests
-                  </CardTitle>
-                  <CardDescription className="text-xs mt-0.5">승인 대기 중인 서비스 신청 현황</CardDescription>
-                </div>
-                <Badge className="bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-300 border text-sm font-bold px-3">
-                  총 {hostedPending + linkedPending}건
-                </Badge>
+          {/* Pending Requests card — compact metric style with Hosted/Linked tabs */}
+          <Card className="border-slate-200 dark:border-slate-800">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Pending Requests</CardTitle>
+              <div className="h-8 w-8 rounded-full flex items-center justify-center text-amber-600 bg-amber-100 dark:bg-amber-900/20">
+                <FileText className="h-4 w-4" />
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4">
-                {/* Hosted */}
-                <div className={cn(
-                  "rounded-xl border-2 p-4 transition-all cursor-pointer",
-                  pendingTab === 'hosted'
-                    ? "border-blue-400 bg-blue-50 dark:bg-blue-900/10 dark:border-blue-600"
-                    : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-blue-300"
-                )} onClick={() => setPendingTab('hosted')}>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="h-9 w-9 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                      <Server className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Hosted Service</p>
-                      <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">{hostedPending}건</p>
-                    </div>
-                  </div>
-                  <div className="space-y-1.5">
-                    {HOSTED_STATUS_DATA.map(d => (
-                      <div key={d.name} className="flex items-center justify-between text-xs">
-                        <span className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
-                          <span className="h-2 w-2 rounded-full inline-block" style={{ background: d.color }} />
-                          {d.name}
-                        </span>
-                        <span className="font-semibold text-slate-700 dark:text-slate-200">{d.value}</span>
-                      </div>
-                    ))}
-                  </div>
+            <CardContent className="space-y-3">
+              {/* Tab toggle */}
+              <div className="flex rounded-lg border overflow-hidden w-full">
+                <button
+                  onClick={() => setPendingTab('hosted')}
+                  className={cn(
+                    "flex-1 flex items-center justify-center gap-1 py-1 text-[11px] font-semibold transition-colors",
+                    pendingTab === 'hosted'
+                      ? "bg-blue-600 text-white"
+                      : "bg-white text-slate-500 hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800"
+                  )}
+                >
+                  <Server className="h-3 w-3" /> Hosted
+                </button>
+                <button
+                  onClick={() => setPendingTab('linked')}
+                  className={cn(
+                    "flex-1 flex items-center justify-center gap-1 py-1 text-[11px] font-semibold transition-colors",
+                    pendingTab === 'linked'
+                      ? "bg-indigo-600 text-white"
+                      : "bg-white text-slate-500 hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800"
+                  )}
+                >
+                  <Link2 className="h-3 w-3" /> Linked
+                </button>
+              </div>
+              {/* Count */}
+              <div>
+                <div className="text-2xl font-bold">
+                  {pendingTab === 'hosted' ? hostedPending : linkedPending}
                 </div>
-
-                {/* Linked */}
-                <div className={cn(
-                  "rounded-xl border-2 p-4 transition-all cursor-pointer",
-                  pendingTab === 'linked'
-                    ? "border-indigo-400 bg-indigo-50 dark:bg-indigo-900/10 dark:border-indigo-600"
-                    : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-indigo-300"
-                )} onClick={() => setPendingTab('linked')}>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="h-9 w-9 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
-                      <Link2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Linked Service</p>
-                      <p className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">{linkedPending}건</p>
-                    </div>
-                  </div>
-                  <div className="space-y-1.5">
-                    {LINKED_STATUS_DATA.map(d => (
-                      <div key={d.name} className="flex items-center justify-between text-xs">
-                        <span className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
-                          <span className="h-2 w-2 rounded-full inline-block" style={{ background: d.color }} />
-                          {d.name}
-                        </span>
-                        <span className="font-semibold text-slate-700 dark:text-slate-200">{d.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {pendingTab === 'hosted'
+                    ? `총 ${hostedTotal}건 중 대기`
+                    : `총 ${linkedTotal}건 중 대기`}
+                </p>
               </div>
             </CardContent>
           </Card>
