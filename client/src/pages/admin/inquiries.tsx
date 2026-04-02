@@ -41,6 +41,9 @@ import {
   Send,
   ExternalLink,
   CheckCircle2,
+  Clock,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
 import { toast } from "sonner";
@@ -205,11 +208,13 @@ export default function InquiriesManagement() {
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [replyDraft, setReplyDraft] = useState("");
-  const [savedReplies, setSavedReplies] = useState<Record<number, string>>({});
+  const [savedReplies, setSavedReplies] = useState<Record<number, { text: string; savedAt: string; updatedAt?: string }>>({});
+  const [isEditingReply, setIsEditingReply] = useState(false);
 
   useEffect(() => {
     if (selectedInquiry) {
-      setReplyDraft(savedReplies[selectedInquiry.id] ?? "");
+      setReplyDraft(savedReplies[selectedInquiry.id]?.text ?? "");
+      setIsEditingReply(false);
     }
   }, [selectedInquiry?.id]);
 
@@ -253,12 +258,34 @@ export default function InquiriesManagement() {
       return;
     }
     const now = new Date().toISOString();
-    setSavedReplies(prev => ({ ...prev, [id]: text }));
+    const existing = savedReplies[id];
+    setSavedReplies(prev => ({
+      ...prev,
+      [id]: existing
+        ? { text, savedAt: existing.savedAt, updatedAt: now }
+        : { text, savedAt: now },
+    }));
     setInquiries(prev =>
       prev.map(i => (i.id === id ? { ...i, replied: true, repliedAt: now } : i))
     );
     setSelectedInquiry(prev => prev ? { ...prev, replied: true, repliedAt: now } : null);
-    toast.success(`${email}에 답변이 등록되었습니다.`);
+    setIsEditingReply(false);
+    toast.success(existing ? "답변이 수정되었습니다." : `${email}에 답변이 등록되었습니다.`);
+  };
+
+  const deleteReply = (id: number) => {
+    setSavedReplies(prev => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+    setReplyDraft("");
+    setIsEditingReply(false);
+    setInquiries(prev =>
+      prev.map(i => (i.id === id ? { ...i, replied: false, repliedAt: undefined } : i))
+    );
+    setSelectedInquiry(prev => prev ? { ...prev, replied: false, repliedAt: undefined } : null);
+    toast.success("답변이 삭제되었습니다.");
   };
 
   return (
@@ -550,51 +577,104 @@ export default function InquiriesManagement() {
 
                   {/* Saved reply display */}
                   {savedReplies[selectedInquiry.id] && (
-                    <div className="rounded-xl bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 p-4 space-y-1.5">
-                      <div className="flex items-center gap-1.5">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
-                        <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300">등록된 답변</p>
+                    <div className="rounded-xl bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 p-4 space-y-2.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+                          <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300">등록된 답변</p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            data-testid="button-edit-reply"
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 px-2 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 dark:text-indigo-400 dark:hover:bg-indigo-900/40 gap-1"
+                            onClick={() => {
+                              setReplyDraft(savedReplies[selectedInquiry.id]?.text ?? "");
+                              setIsEditingReply(true);
+                            }}
+                          >
+                            <Pencil className="h-3 w-3" />수정
+                          </Button>
+                          <Button
+                            data-testid="button-delete-reply"
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 px-2 text-xs text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 gap-1"
+                            onClick={() => deleteReply(selectedInquiry.id)}
+                          >
+                            <Trash2 className="h-3 w-3" />삭제
+                          </Button>
+                        </div>
                       </div>
                       <p className="text-sm text-indigo-900 dark:text-indigo-100 leading-relaxed whitespace-pre-wrap">
-                        {savedReplies[selectedInquiry.id]}
+                        {savedReplies[selectedInquiry.id].text}
                       </p>
+                      <div className="flex flex-col gap-0.5 pt-0.5 border-t border-indigo-200 dark:border-indigo-700">
+                        <p className="text-xs text-indigo-500 dark:text-indigo-400 flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          등록: {formatDateTime(savedReplies[selectedInquiry.id].savedAt)}
+                        </p>
+                        {savedReplies[selectedInquiry.id].updatedAt && (
+                          <p className="text-xs text-indigo-400 dark:text-indigo-500 flex items-center gap-1">
+                            <Pencil className="h-3 w-3" />
+                            수정: {formatDateTime(savedReplies[selectedInquiry.id].updatedAt!)}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   )}
 
-                  {/* Direct reply input */}
-                  <div className="space-y-2">
-                    <Label className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
-                      <Send className="h-3.5 w-3.5" /> 직접 답변 작성
-                    </Label>
-                    <Textarea
-                      data-testid="textarea-reply-input"
-                      value={replyDraft}
-                      onChange={e => setReplyDraft(e.target.value)}
-                      placeholder="이 문의에 대한 답변을 입력하세요..."
-                      className="min-h-[100px] resize-none text-sm"
-                    />
-                    <div className="flex items-center justify-between gap-3">
-                      <a
-                        href={`mailto:${selectedInquiry.senderEmail}?subject=Re: ${selectedInquiry.productTitle} 문의 답변`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
-                        data-testid="link-mailto"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                        메일로 답장하기
-                      </a>
-                      <Button
-                        data-testid="button-submit-reply"
-                        size="sm"
-                        className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white"
-                        onClick={() => submitReply(selectedInquiry.id, selectedInquiry.senderEmail)}
-                      >
+                  {/* Direct reply input — always shown when no reply, or when editing */}
+                  {(!savedReplies[selectedInquiry.id] || isEditingReply) && (
+                    <div className="space-y-2">
+                      <Label className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
                         <Send className="h-3.5 w-3.5" />
-                        {savedReplies[selectedInquiry.id] ? "답변 수정 등록" : "답변 등록"}
-                      </Button>
+                        {isEditingReply ? "답변 수정" : "직접 답변 작성"}
+                      </Label>
+                      <Textarea
+                        data-testid="textarea-reply-input"
+                        value={replyDraft}
+                        onChange={e => setReplyDraft(e.target.value)}
+                        placeholder="이 문의에 대한 답변을 입력하세요..."
+                        className="min-h-[100px] resize-none text-sm"
+                      />
+                      <div className="flex items-center justify-between gap-3">
+                        <a
+                          href={`mailto:${selectedInquiry.senderEmail}?subject=Re: ${selectedInquiry.productTitle} 문의 답변`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+                          data-testid="link-mailto"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                          메일로 답장하기
+                        </a>
+                        <div className="flex items-center gap-2">
+                          {isEditingReply && (
+                            <Button
+                              data-testid="button-cancel-edit-reply"
+                              variant="outline"
+                              size="sm"
+                              className="gap-1.5 text-xs"
+                              onClick={() => { setIsEditingReply(false); setReplyDraft(""); }}
+                            >
+                              <X className="h-3 w-3" />취소
+                            </Button>
+                          )}
+                          <Button
+                            data-testid="button-submit-reply"
+                            size="sm"
+                            className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white"
+                            onClick={() => submitReply(selectedInquiry.id, selectedInquiry.senderEmail)}
+                          >
+                            <Send className="h-3.5 w-3.5" />
+                            {isEditingReply ? "수정 완료" : "답변 등록"}
+                          </Button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   <div className="h-px bg-slate-100 dark:bg-slate-800" />
 
