@@ -1,60 +1,75 @@
-import { Github, Twitter, Linkedin } from "lucide-react";
-import { Logo } from "@/components/ui/logo";
 import { Link } from "wouter";
+import { Logo } from "@/components/ui/logo";
+
+function IllunexIcon() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="13" stroke="#94a3b8" strokeWidth="1.5" />
+      <polygon points="14,4 18,12 14,10 10,12" fill="#94a3b8" opacity="0.9" />
+      <polygon points="14,24 10,16 14,18 18,16" fill="#94a3b8" opacity="0.9" />
+      <polygon points="4,14 12,10 10,14 12,18" fill="#94a3b8" opacity="0.6" />
+      <polygon points="24,14 16,18 18,14 16,10" fill="#94a3b8" opacity="0.6" />
+      <circle cx="14" cy="14" r="2" fill="#94a3b8" />
+    </svg>
+  );
+}
 
 export function Footer() {
   return (
-    <footer className="border-t bg-slate-50 dark:bg-slate-950">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid gap-8 md:grid-cols-4">
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
+    <footer>
+      {/* ── Top section: light background ── */}
+      <div className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+        <div className="container mx-auto px-8 py-10">
+          <div className="grid grid-cols-2 gap-16 max-w-2xl">
+            {/* Left: Logo + description */}
+            <div className="space-y-3">
               <Logo />
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                산업용 데이터 API 및 자율 에이전트를 위한 프리미엄<br />
+                마켓플레이스. 기업과 데이터 리소스를 연결합니다.
+              </p>
             </div>
-            <p className="text-sm text-muted-foreground">
-              The premier marketplace for industrial data APIs and autonomous agents.
-              Connecting enterprises with high-quality data resources.
-            </p>
-          </div>
 
-          <div>
-            <h3 className="mb-4 font-heading font-semibold text-foreground">Platform</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/data-map" className="hover:text-primary">Data Map</Link></li>
-              <li><Link href="/platforms" className="hover:text-primary">AI Agents</Link></li>
-              <li><Link href="/submit" className="hover:text-primary">Submit Resource</Link></li>
-              <li><Link href="#" className="hover:text-primary">Pricing</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-4 font-heading font-semibold text-foreground">Company</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="#" className="hover:text-primary">About Us</Link></li>
-              <li><Link href="/blog" className="hover:text-primary">Blog</Link></li>
-              <li><Link href="#" className="hover:text-primary">Careers</Link></li>
-              <li><Link href="#" className="hover:text-primary">Contact</Link></li>
-              <li><Link href="/admin" className="hover:text-primary font-medium text-indigo-600">Admin Portal</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-4 font-heading font-semibold text-foreground">Connect</h3>
-            <div className="flex gap-4">
-              <a href="#" className="text-muted-foreground hover:text-primary">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary">
-                <Github className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary">
-                <Linkedin className="h-5 w-5" />
-              </a>
+            {/* Right: Platform links */}
+            <div>
+              <h3 className="font-semibold text-sm text-slate-900 dark:text-white mb-3">Platform</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link href="/data-map" className="hover:text-primary transition-colors">Data Map</Link></li>
+                <li><Link href="/platforms" className="hover:text-primary transition-colors">Platforms</Link></li>
+                <li><Link href="/news" className="hover:text-primary transition-colors">News</Link></li>
+                <li><Link href="/blog" className="hover:text-primary transition-colors">Blog</Link></li>
+                <li><Link href="/advertise" className="hover:text-primary transition-colors">Advertise</Link></li>
+              </ul>
             </div>
           </div>
         </div>
-        <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
-          © 2025 Data-X Platform. All rights reserved.
+      </div>
+
+      {/* ── Bottom section: dark navy ── */}
+      <div className="bg-[#1e2436] dark:bg-slate-950">
+        <div className="container mx-auto px-8 py-8 text-center space-y-3">
+          {/* illunex logo mark + wordmark */}
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <IllunexIcon />
+            <span className="text-slate-300 font-semibold text-base tracking-widest">illunex</span>
+          </div>
+
+          {/* Policy links */}
+          <div className="flex items-center justify-center text-xs text-slate-400">
+            <a href="#" className="hover:text-slate-200 transition-colors px-3 py-0.5">개인정보 이용약관</a>
+            <span className="text-slate-600">|</span>
+            <a href="#" className="hover:text-slate-200 transition-colors px-3 py-0.5">서비스 이용약관</a>
+            <span className="text-slate-600">|</span>
+            <a href="#" className="hover:text-slate-200 transition-colors px-3 py-0.5">환불정책</a>
+          </div>
+
+          {/* Company info */}
+          <p className="text-xs text-slate-500 leading-relaxed max-w-3xl mx-auto">
+            상주주소: 경기도 고양시 덕양구 정발산로 180, 제5동 베르메르-빌딩(정발동)&nbsp;&nbsp;|&nbsp;&nbsp;대표 070-4441-4580&nbsp;&nbsp;|&nbsp;&nbsp;help@illunex.com&nbsp;&nbsp;|&nbsp;&nbsp;국내 적용처&nbsp;&nbsp;|&nbsp;&nbsp;사업자등록번호 936-88-02029&nbsp;&nbsp;|&nbsp;&nbsp;통신판매 제2024-고양덕양구-2798호
+          </p>
+
+          {/* Copyright */}
+          <p className="text-xs text-slate-500">Copyright 2025 illunex. All Rights Reserved.</p>
         </div>
       </div>
     </footer>
