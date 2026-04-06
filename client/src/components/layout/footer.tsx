@@ -41,12 +41,12 @@ export function Footer() {
           </div>
 
           {/* Policy links */}
-          <div className="flex items-center justify-center text-xs text-slate-400">
-            <a href="#" className="hover:text-slate-200 transition-colors px-3 py-0.5">개인정보 이용약관</a>
+          <div className="flex items-center justify-center text-xs">
+            <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors px-4 py-0.5">개인정보 이용약관</a>
             <span className="text-slate-600">|</span>
-            <a href="#" className="hover:text-slate-200 transition-colors px-3 py-0.5">서비스 이용약관</a>
+            <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors px-4 py-0.5">서비스 이용약관</a>
             <span className="text-slate-600">|</span>
-            <a href="#" className="hover:text-slate-200 transition-colors px-3 py-0.5">환불정책</a>
+            <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors px-4 py-0.5">환불정책</a>
           </div>
 
           {/* Company info */}
