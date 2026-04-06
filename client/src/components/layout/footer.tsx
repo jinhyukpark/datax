@@ -1,19 +1,6 @@
 import { Link } from "wouter";
 import { Logo } from "@/components/ui/logo";
 
-function IllunexIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="14" cy="14" r="13" stroke="#94a3b8" strokeWidth="1.5" />
-      <polygon points="14,4 18,12 14,10 10,12" fill="#94a3b8" opacity="0.9" />
-      <polygon points="14,24 10,16 14,18 18,16" fill="#94a3b8" opacity="0.9" />
-      <polygon points="4,14 12,10 10,14 12,18" fill="#94a3b8" opacity="0.6" />
-      <polygon points="24,14 16,18 18,14 16,10" fill="#94a3b8" opacity="0.6" />
-      <circle cx="14" cy="14" r="2" fill="#94a3b8" />
-    </svg>
-  );
-}
-
 export function Footer() {
   return (
     <footer>
@@ -48,10 +35,9 @@ export function Footer() {
       {/* ── Bottom section: dark navy ── */}
       <div className="bg-[#1e2436] dark:bg-slate-950">
         <div className="container mx-auto px-8 py-8 text-center space-y-3">
-          {/* illunex logo mark + wordmark */}
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <IllunexIcon />
-            <span className="text-slate-300 font-semibold text-base tracking-widest">illunex</span>
+          {/* Logo */}
+          <div className="flex justify-center mb-1">
+            <Logo light />
           </div>
 
           {/* Policy links */}
