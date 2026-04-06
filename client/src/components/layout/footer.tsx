@@ -51,11 +51,11 @@ export function Footer() {
 
           {/* Company info */}
           <p className="text-xs text-slate-500 leading-relaxed max-w-3xl mx-auto">
-            상주주소: 경기도 고양시 덕양구 정발산로 180, 제5동 베르메르-빌딩(정발동)&nbsp;&nbsp;|&nbsp;&nbsp;대표 070-4441-4580&nbsp;&nbsp;|&nbsp;&nbsp;help@illunex.com&nbsp;&nbsp;|&nbsp;&nbsp;국내 적용처&nbsp;&nbsp;|&nbsp;&nbsp;사업자등록번호 936-88-02029&nbsp;&nbsp;|&nbsp;&nbsp;통신판매 제2024-고양덕양구-2798호
+            (주)일루넥스 | 경기도 고양시 덕양구 향기로 180, 10층 에프1005호~1012호(향동동) | 문의 070-4441-4580 / help@illunex.com | 대표 박진혁 | 사업자등록번호 638-88-01059 | 통신판매업 제2024-고양덕양구-2786호
           </p>
 
           {/* Copyright */}
-          <p className="text-xs text-slate-500">Copyright 2025 illunex. All Rights Reserved.</p>
+          <p className="text-xs text-slate-500">Copyright© 2025 illunex. All Rights Reserved.</p>
         </div>
       </div>
     </footer>
