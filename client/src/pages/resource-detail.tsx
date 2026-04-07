@@ -106,6 +106,8 @@ export default function ResourceDetail() {
   });
   const [supportSubmitting, setSupportSubmitting] = useState(false);
   const [demoVideoOpen, setDemoVideoOpen] = useState(false);
+  const [purchaseCheckOpen, setPurchaseCheckOpen] = useState(false);
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
   // Try to fetch from API, but fall back to mock data
   const { data: apiResource, isLoading } = useQuery<Resource>({
@@ -256,21 +258,33 @@ export default function ResourceDetail() {
                       )}
                     </div>
                   </div>
-                  <Button size="lg" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
-                    <a href={resource.websiteUrl || "#"} target="_blank" rel="noopener noreferrer">
-                      {resource.priceAmount === "Free" ? (
-                        <>
-                          <ExternalLink className="mr-2 h-4 w-4" />
-                          {t("Get Started", "시작하기")}
-                        </>
-                      ) : (
-                        <>
-                          <ShoppingCart className="mr-2 h-4 w-4" />
-                          {t("Purchase", "구매하기")}
-                        </>
-                      )}
-                    </a>
-                  </Button>
+                  {resource.type === "Dataset" && resource.price === "Paid" ? (
+                    <Button
+                      size="lg"
+                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20"
+                      onClick={() => setPurchaseCheckOpen(true)}
+                      data-testid="button-purchase-hosting"
+                    >
+                      <ShoppingCart className="mr-2 h-4 w-4" />
+                      {t("Purchase", "구매하기")}
+                    </Button>
+                  ) : (
+                    <Button size="lg" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
+                      <a href={resource.websiteUrl || "#"} target="_blank" rel="noopener noreferrer">
+                        {resource.priceAmount === "Free" ? (
+                          <>
+                            <ExternalLink className="mr-2 h-4 w-4" />
+                            {t("Get Started", "시작하기")}
+                          </>
+                        ) : (
+                          <>
+                            <ShoppingCart className="mr-2 h-4 w-4" />
+                            {t("Purchase", "구매하기")}
+                          </>
+                        )}
+                      </a>
+                    </Button>
+                  )}
                 </div>
               ) : (
                 <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
@@ -1204,6 +1218,125 @@ export default function ResourceDetail() {
           </div>
         </div>
       </div>
+
+      {/* ── Purchase Check Modal (Hosting Dataset only) ── */}
+      <Dialog open={purchaseCheckOpen} onOpenChange={setPurchaseCheckOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3 text-xl">
+              <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center shrink-0">
+                <Mail className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              관리자 협의 확인
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-2 space-y-4">
+            <div className="rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-4 space-y-2">
+              <p className="text-sm font-semibold text-amber-800 dark:text-amber-300 flex items-center gap-2">
+                <Info className="h-4 w-4 shrink-0" />
+                Hosting 데이터 구매 안내
+              </p>
+              <p className="text-sm text-amber-700 dark:text-amber-400 leading-relaxed">
+                관리자와의 메일을 통한 협의를 통해 <strong>데이터 필드 범위, 데이터 수량, 기간 및 조건, 제공 방식</strong> 등을 확정한 뒤, 데이터 생성 및 전달이 진행됩니다.
+              </p>
+            </div>
+            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium text-center pt-1">
+              관리자와 메일 협의가 완료되셨나요?
+            </p>
+          </div>
+          <DialogFooter className="flex-col gap-2 sm:flex-col">
+            <Button
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white gap-2"
+              data-testid="button-purchase-check-confirmed"
+              onClick={() => {
+                setPurchaseCheckOpen(false);
+                setPaymentModalOpen(true);
+              }}
+            >
+              <CheckCircle2 className="h-4 w-4" />
+              협의가 완료되었습니다 — 결제하기
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full gap-2"
+              data-testid="button-purchase-check-no-email"
+              onClick={() => {
+                setPurchaseCheckOpen(false);
+                setSupportForm({ title: `[데이터 구매 협의] ${resource.title}`, type: 'general', content: '', contact: '' });
+                setSupportDialogOpen(true);
+              }}
+            >
+              <Mail className="h-4 w-4" />
+              아직 메일을 보내지 않았습니다
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ── Payment Modal ── */}
+      <Dialog open={paymentModalOpen} onOpenChange={setPaymentModalOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3 text-xl">
+              <div className="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center shrink-0">
+                <CreditCard className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
+              결제
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-2 space-y-4">
+            <div className="rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-4 space-y-3">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="font-semibold text-slate-900 dark:text-white text-sm">{resource.title}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{resource.provider}</p>
+                </div>
+                <span className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                  {resource.priceAmount || "협의 금액"}
+                </span>
+              </div>
+              <div className="h-px bg-slate-200 dark:bg-slate-700" />
+              <p className="text-xs text-muted-foreground">
+                관리자 협의 내용에 따라 최종 금액이 결정됩니다. 결제 후 데이터 생성 및 전달이 진행됩니다.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <div className="space-y-1.5">
+                <Label className="text-sm font-medium">카드 번호</Label>
+                <Input placeholder="0000 0000 0000 0000" data-testid="input-card-number" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label className="text-sm font-medium">유효기간</Label>
+                  <Input placeholder="MM / YY" data-testid="input-card-expiry" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-sm font-medium">CVC</Label>
+                  <Input placeholder="000" data-testid="input-card-cvc" />
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-sm font-medium">카드 소유자 이름</Label>
+                <Input placeholder="이름을 입력하세요" data-testid="input-card-holder" />
+              </div>
+            </div>
+          </div>
+          <DialogFooter className="flex-col gap-2 sm:flex-row">
+            <Button variant="outline" onClick={() => setPaymentModalOpen(false)} className="sm:flex-1">취소</Button>
+            <Button
+              className="bg-green-600 hover:bg-green-700 text-white gap-2 sm:flex-1"
+              data-testid="button-payment-submit"
+              onClick={() => {
+                setPaymentModalOpen(false);
+                toast.success('결제가 완료되었습니다. 데이터 생성 및 전달이 시작됩니다.');
+              }}
+            >
+              <CreditCard className="h-4 w-4" />
+              결제 완료
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* YouTube Demo Video Popup */}
       {resource.demoUrl && isYoutubeUrl(resource.demoUrl) && (
