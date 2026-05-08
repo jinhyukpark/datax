@@ -327,17 +327,10 @@ const client = new EMDataClient({
   const handleCancelSubscription = () => {
     if (!cancelSubDialog.item) return;
     setPurchases(prev =>
-      prev.map(p => p.id === cancelSubDialog.item!.id ? { ...p, subscriptionActive: false, status: "Cancelled" } : p)
+      prev.map(p => p.id === cancelSubDialog.item!.id ? { ...p, subscriptionActive: false, status: "해지 완료" } : p)
     );
     toast.success(`${cancelSubDialog.item.nextBillingDate} 이후 정기결제가 해지됩니다.`);
     setCancelSubDialog({ open: false, item: null });
-  };
-
-  const handleResumeSubscription = (id: string) => {
-    setPurchases(prev =>
-      prev.map(p => p.id === id ? { ...p, subscriptionActive: true, status: "Active" } : p)
-    );
-    toast.success("정기결제가 재개되었습니다.");
   };
 
   // Mock My Shared Data (Approved) - matches submit form fields
@@ -1231,7 +1224,7 @@ const client = new EMDataClient({
                                   </span>
                                 </div>
                                 <div className="hidden md:col-span-2 md:flex md:justify-center">
-                                  {item.subscriptionActive ? (
+                                  {item.subscriptionActive && (
                                     <Button
                                       variant="outline"
                                       size="sm"
@@ -1241,17 +1234,6 @@ const client = new EMDataClient({
                                     >
                                       <XCircle className="h-3.5 w-3.5" />
                                       해지
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      className="text-xs h-7 px-3 text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700 dark:border-blue-900/40 dark:hover:bg-blue-900/20 gap-1"
-                                      onClick={() => handleResumeSubscription(item.id)}
-                                      data-testid={`button-resume-sub-${item.id}`}
-                                    >
-                                      <CheckCircle2 className="h-3.5 w-3.5" />
-                                      유지
                                     </Button>
                                   )}
                                 </div>
