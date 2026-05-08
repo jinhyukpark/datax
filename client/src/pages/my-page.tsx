@@ -306,7 +306,7 @@ const client = new EMDataClient({
       title: "Corporate Growth Big Data Center",
       date: "2025-11-20",
       price: "₩150,000",
-      status: "Active",
+      status: "정기결제 중",
       nextBillingDate: "2026-05-20",
       subscriptionActive: true,
     },
@@ -316,9 +316,19 @@ const client = new EMDataClient({
       title: "K-tools Smart Equipment Management Platform",
       date: "2025-10-05",
       price: "₩50,000",
-      status: "Active",
+      status: "정기결제 중",
       nextBillingDate: "2026-05-05",
       subscriptionActive: true,
+    },
+    {
+      id: "p3",
+      resourceId: "2",
+      title: "Seoul Mobility Flow Dataset 2023",
+      date: "2024-12-01",
+      price: "₩80,000",
+      status: "해지 완료",
+      nextBillingDate: "2025-04-01",
+      subscriptionActive: false,
     }
   ];
   const [purchases, setPurchases] = useState(purchasesBase);
@@ -327,7 +337,7 @@ const client = new EMDataClient({
   const handleCancelSubscription = () => {
     if (!cancelSubDialog.item) return;
     setPurchases(prev =>
-      prev.map(p => p.id === cancelSubDialog.item!.id ? { ...p, subscriptionActive: false, status: "해지 완료" } : p)
+      prev.map(p => p.id === cancelSubDialog.item!.id ? { ...p, subscriptionActive: false, status: "해지 예정" } : p)
     );
     toast.success(`${cancelSubDialog.item.nextBillingDate} 이후 정기결제가 해지됩니다.`);
     setCancelSubDialog({ open: false, item: null });
@@ -1216,15 +1226,17 @@ const client = new EMDataClient({
                                 <div className="col-span-3 md:col-span-2 font-medium">{item.price}</div>
                                 <div className="hidden md:col-span-2 md:block">
                                   <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-transparent shadow ${
-                                    item.subscriptionActive
+                                    item.status === "정기결제 중"
                                       ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                                      : item.status === "해지 예정"
+                                      ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
                                       : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
                                   }`}>
-                                    {item.subscriptionActive ? "정기결제 중" : "해지 예정"}
+                                    {item.status}
                                   </span>
                                 </div>
                                 <div className="hidden md:col-span-2 md:flex md:justify-center">
-                                  {item.subscriptionActive && (
+                                  {item.status === "정기결제 중" && (
                                     <Button
                                       variant="outline"
                                       size="sm"
@@ -1234,6 +1246,18 @@ const client = new EMDataClient({
                                     >
                                       <XCircle className="h-3.5 w-3.5" />
                                       해지
+                                    </Button>
+                                  )}
+                                  {item.status === "해지 완료" && (
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="text-xs h-7 px-3 text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700 dark:border-blue-900/40 dark:hover:bg-blue-900/20 gap-1"
+                                      onClick={() => setLocation(`/resource/${item.resourceId}`)}
+                                      data-testid={`button-repurchase-${item.id}`}
+                                    >
+                                      <ShoppingCart className="h-3.5 w-3.5" />
+                                      재구매
                                     </Button>
                                   )}
                                 </div>
