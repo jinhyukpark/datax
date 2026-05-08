@@ -1219,7 +1219,9 @@ const client = new EMDataClient({
                                 <div className="col-span-6 md:col-span-4">
                                   <p className="font-medium truncate">{item.title}</p>
                                   <p className="text-xs text-muted-foreground mt-0.5">
-                                    다음 결제일: <span className="font-medium text-slate-700 dark:text-slate-300">{item.nextBillingDate}</span>
+                                    {item.status === "정기결제 중" && <>다음 결제일: <span className="font-medium text-slate-700 dark:text-slate-300">{item.nextBillingDate}</span></>}
+                                    {item.status === "해지 예정" && <>해지 예정일: <span className="font-medium text-amber-600 dark:text-amber-400">{item.nextBillingDate}</span></>}
+                                    {item.status === "해지 완료" && <>해지 완료일: <span className="font-medium text-slate-500 dark:text-slate-400">{item.nextBillingDate}</span></>}
                                   </p>
                                 </div>
                                 <div className="col-span-3 md:col-span-2 text-muted-foreground">{item.date}</div>
@@ -1459,8 +1461,8 @@ const client = new EMDataClient({
                           <span className="font-medium">{cancelSubDialog.item.price} / 월</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">다음 결제일</span>
-                          <span className="font-medium text-blue-600 dark:text-blue-400">{cancelSubDialog.item.nextBillingDate}</span>
+                          <span className="text-muted-foreground">해지 예정일</span>
+                          <span className="font-medium text-amber-600 dark:text-amber-400">{cancelSubDialog.item.nextBillingDate}</span>
                         </div>
                       </div>
                       <div className="rounded-lg border border-amber-200 bg-amber-50 dark:border-amber-900/40 dark:bg-amber-900/10 p-3 text-sm text-amber-800 dark:text-amber-300 flex gap-2">
