@@ -114,8 +114,11 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
   ]);
   const [expandedApiDoc, setExpandedApiDoc] = useState(false);
 
-  // Quick Start Guide State - Dynamic Items
-  const [quickStartItems, setQuickStartItems] = useState([
+  // Quick Start Guide State - per platform (ChatGPT / Claude)
+  type QSPlatform = 'chatgpt' | 'claude';
+  const [quickStartPlatform, setQuickStartPlatform] = useState<QSPlatform>('chatgpt');
+
+  const [quickStartItemsChatGPT, setQuickStartItemsChatGPT] = useState([
     {
       id: 'qs1',
       title: 'Installation',
@@ -142,8 +145,42 @@ const client = new EMDataClient({
     }
   ]);
 
+  const [quickStartItemsClaude, setQuickStartItemsClaude] = useState([
+    {
+      id: 'cqs1',
+      title: 'MCP 서버 설치',
+      codeLanguage: 'BASH',
+      code: `# Claude MCP SDK 설치
+pip install mcp em-data-sdk
+
+# MCP 서버 실행 확인
+em-data-mcp --version`,
+      description: "Claude와 연동하려면 MCP(Model Context Protocol) 서버를 설치해야 합니다. Python 3.10+ 환경이 필요합니다."
+    },
+    {
+      id: 'cqs2',
+      title: 'Claude Desktop 설정',
+      codeLanguage: 'JSON',
+      code: `{
+  "mcpServers": {
+    "em-data": {
+      "command": "em-data-mcp",
+      "args": ["--api-key", "YOUR_API_KEY"],
+      "env": {
+        "EM_BASE_URL": "${detailsData.websiteUrl || "https://api.example.com"}"
+      }
+    }
+  }
+}`,
+      description: "Claude Desktop의 설정 파일(claude_desktop_config.json)에 위 내용을 추가하세요. YOUR_API_KEY를 발급받은 API 키로 교체하세요."
+    }
+  ]);
+
+  const activeQuickStartItems = quickStartPlatform === 'chatgpt' ? quickStartItemsChatGPT : quickStartItemsClaude;
+  const setActiveQuickStartItems = quickStartPlatform === 'chatgpt' ? setQuickStartItemsChatGPT : setQuickStartItemsClaude;
+
   const addQuickStartItem = () => {
-    setQuickStartItems([...quickStartItems, {
+    setActiveQuickStartItems([...activeQuickStartItems, {
       id: `qs${Date.now()}`,
       title: 'New Step',
       codeLanguage: 'BASH',
@@ -153,11 +190,11 @@ const client = new EMDataClient({
   };
 
   const removeQuickStartItem = (id: string) => {
-    setQuickStartItems(quickStartItems.filter(item => item.id !== id));
+    setActiveQuickStartItems(activeQuickStartItems.filter(item => item.id !== id));
   };
 
   const updateQuickStartItem = (id: string, field: string, value: string) => {
-    setQuickStartItems(quickStartItems.map(item =>
+    setActiveQuickStartItems(activeQuickStartItems.map(item =>
       item.id === id ? { ...item, [field]: value } : item
     ));
   };
@@ -798,15 +835,36 @@ const client = new EMDataClient({
                 Quick Start Guide
               </h3>
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" onClick={addQuickStartItem} className="gap-1">
-                  <Plus className="h-4 w-4" /> Add Step
-                </Button>
                 <Badge variant="outline">{detailsData.version || "v1.0.0"}</Badge>
               </div>
             </div>
 
+            {/* Platform Toggle */}
+            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 rounded-lg p-1 w-fit">
+              <button
+                onClick={() => setQuickStartPlatform('chatgpt')}
+                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+                  quickStartPlatform === 'chatgpt'
+                    ? 'bg-white dark:bg-slate-700 shadow text-slate-900 dark:text-slate-100'
+                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                }`}
+              >
+                <span className="text-[10px] text-green-500">●</span> ChatGPT
+              </button>
+              <button
+                onClick={() => setQuickStartPlatform('claude')}
+                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+                  quickStartPlatform === 'claude'
+                    ? 'bg-white dark:bg-slate-700 shadow text-slate-900 dark:text-slate-100'
+                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                }`}
+              >
+                <span className="text-[10px] text-orange-400">●</span> Claude
+              </button>
+            </div>
+
             {/* Dynamic Quick Start Items */}
-            {quickStartItems.map((item, index) => {
+            {activeQuickStartItems.map((item, index) => {
               const colors = [
                 { bg: 'bg-indigo-100', text: 'text-indigo-600' },
                 { bg: 'bg-yellow-100', text: 'text-yellow-600' },
@@ -861,6 +919,11 @@ const client = new EMDataClient({
                 </div>
               );
             })}
+
+            {/* Add Step Button */}
+            <Button variant="outline" size="sm" onClick={addQuickStartItem} className="gap-1 w-full border-dashed">
+              <Plus className="h-4 w-4" /> Add Step ({quickStartPlatform === 'chatgpt' ? 'ChatGPT' : 'Claude'})
+            </Button>
 
             {/* API Definitions Section - Editable */}
             <div className="space-y-4">
@@ -937,7 +1000,7 @@ const client = new EMDataClient({
             
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
               <div className="flex items-center gap-3 mb-4">
-                <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">{quickStartItems.length + 1}</div>
+                <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">{activeQuickStartItems.length + 1}</div>
                 <h4 className="font-bold">Full Documentation</h4>
               </div>
               <p className="text-sm text-muted-foreground mb-4">
@@ -972,8 +1035,28 @@ const client = new EMDataClient({
                     <Badge variant="outline">{detailsData.version || "v1.0.0"}</Badge>
                   </div>
 
+                  {/* Platform Toggle (Preview) */}
+                  <div className="flex items-center gap-1 bg-slate-100 rounded-lg p-1 w-fit">
+                    <button
+                      onClick={() => setQuickStartPlatform('chatgpt')}
+                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+                        quickStartPlatform === 'chatgpt' ? 'bg-white shadow text-slate-900' : 'text-slate-500 hover:text-slate-700'
+                      }`}
+                    >
+                      <span className="text-[10px] text-green-500">●</span> ChatGPT
+                    </button>
+                    <button
+                      onClick={() => setQuickStartPlatform('claude')}
+                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+                        quickStartPlatform === 'claude' ? 'bg-white shadow text-slate-900' : 'text-slate-500 hover:text-slate-700'
+                      }`}
+                    >
+                      <span className="text-[10px] text-orange-400">●</span> Claude
+                    </button>
+                  </div>
+
                   {/* Preview Quick Start Items */}
-                  {quickStartItems.map((item, index) => {
+                  {activeQuickStartItems.map((item, index) => {
                     const colors = [
                       { bg: 'bg-indigo-100', text: 'text-indigo-600', descBg: 'bg-blue-50', descBorder: 'border-blue-100', descText: 'text-blue-700' },
                       { bg: 'bg-yellow-100', text: 'text-yellow-600', descBg: 'bg-yellow-50', descBorder: 'border-yellow-100', descText: 'text-yellow-700' },
@@ -1034,7 +1117,7 @@ const client = new EMDataClient({
                   {/* Preview Full Documentation */}
                   <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">{quickStartItems.length + 1}</div>
+                      <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">{activeQuickStartItems.length + 1}</div>
                       <h4 className="font-bold">Full Documentation</h4>
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">For complete API reference, guides, and tutorials, please visit our documentation portal.</p>
