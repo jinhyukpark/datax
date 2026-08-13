@@ -639,6 +639,51 @@ export default function ResourceDetail() {
                       </div>
                     </div>
                   )}
+
+                  {/* Official MCP Docs Link */}
+                  {quickStartPlatform === 'chatgpt' ? (
+                    <div className="rounded-xl border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 p-5 flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="h-9 w-9 shrink-0 rounded-full bg-green-100 dark:bg-green-800/60 flex items-center justify-center">
+                          <span className="text-base">🤖</span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-green-900 dark:text-green-100">ChatGPT MCP 공식 연동 가이드</p>
+                          <p className="text-xs text-green-700 dark:text-green-400 mt-0.5">ChatGPT에서 MCP 서버를 연결하는 방법을 OpenAI 공식 문서에서 확인하세요.</p>
+                        </div>
+                      </div>
+                      <a
+                        href="https://platform.openai.com/docs/guides/tools-remote-mcp"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition-colors"
+                      >
+                        공식 문서 보기
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </a>
+                    </div>
+                  ) : quickStartPlatform === 'claude' ? (
+                    <div className="rounded-xl border border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-900/20 p-5 flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="h-9 w-9 shrink-0 rounded-full bg-orange-100 dark:bg-orange-800/60 flex items-center justify-center">
+                          <span className="text-base">🧠</span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-orange-900 dark:text-orange-100">Claude MCP 공식 연동 가이드</p>
+                          <p className="text-xs text-orange-700 dark:text-orange-400 mt-0.5">Claude에서 MCP 서버를 설정하는 방법을 Anthropic 공식 문서에서 확인하세요.</p>
+                        </div>
+                      </div>
+                      <a
+                        href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium transition-colors"
+                      >
+                        공식 문서 보기
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </a>
+                    </div>
+                  ) : null}
                 </div>
 
                 {/* API Definitions Section */}
