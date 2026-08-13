@@ -110,23 +110,6 @@ export default function ResourceDetail() {
   const [demoVideoOpen, setDemoVideoOpen] = useState(false);
   const [purchaseCheckOpen, setPurchaseCheckOpen] = useState(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
-  const [quickStartPlatform, setQuickStartPlatform] = useState<'chatgpt' | 'claude'>('chatgpt');
-
-  // Claude-specific Quick Start steps (mock)
-  const claudeQuickStartSteps = [
-    {
-      title: 'MCP 서버 설치',
-      codeLanguage: 'BASH',
-      code: '# Claude MCP SDK 설치\npip install mcp em-data-sdk\n\n# MCP 서버 실행 확인\nem-data-mcp --version',
-      description: 'Claude와 연동하려면 MCP(Model Context Protocol) 서버를 설치해야 합니다. Python 3.10+ 환경이 필요합니다.'
-    },
-    {
-      title: 'Claude Desktop 설정',
-      codeLanguage: 'JSON',
-      code: '{\n  "mcpServers": {\n    "em-data": {\n      "command": "em-data-mcp",\n      "args": ["--api-key", "YOUR_API_KEY"],\n      "env": {\n        "EM_BASE_URL": "https://api.emdata.io"\n      }\n    }\n  }\n}',
-      description: 'Claude Desktop의 설정 파일(claude_desktop_config.json)에 위 내용을 추가하세요. YOUR_API_KEY를 발급받은 API 키로 교체하세요.'
-    }
-  ];
 
   // Try to fetch from API, but fall back to mock data
   const { data: apiResource, isLoading } = useQuery<Resource>({
@@ -547,31 +530,7 @@ export default function ResourceDetail() {
                     )}
                   </div>
 
-                  {/* Platform Toggle */}
-                  <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 rounded-lg p-1 w-fit">
-                    <button
-                      onClick={() => setQuickStartPlatform('chatgpt')}
-                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                        quickStartPlatform === 'chatgpt'
-                          ? 'bg-white dark:bg-slate-700 shadow text-slate-900 dark:text-slate-100'
-                          : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-                      }`}
-                    >
-                      <span className="text-[10px] text-green-500">●</span> ChatGPT
-                    </button>
-                    <button
-                      onClick={() => setQuickStartPlatform('claude')}
-                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                        quickStartPlatform === 'claude'
-                          ? 'bg-white dark:bg-slate-700 shadow text-slate-900 dark:text-slate-100'
-                          : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-                      }`}
-                    >
-                      <span className="text-[10px] text-orange-400">●</span> Claude
-                    </button>
-                  </div>
-
-                  {quickStartPlatform === 'chatgpt' && resource.quickStartGuide && resource.quickStartGuide.steps.length > 0 ? (
+                  {resource.quickStartGuide && resource.quickStartGuide.steps.length > 0 ? (
                     resource.quickStartGuide.steps.map((step, index) => {
                       const colors = [
                         { bg: 'bg-indigo-100 dark:bg-indigo-900/50', text: 'text-indigo-600 dark:text-indigo-400', descBg: 'bg-blue-50 dark:bg-blue-900/20', descBorder: 'border-blue-100 dark:border-blue-800', descText: 'text-blue-700 dark:text-blue-300' },
@@ -599,91 +558,53 @@ export default function ResourceDetail() {
                         </div>
                       );
                     })
-                  ) : quickStartPlatform === 'claude' ? (
-                    claudeQuickStartSteps.map((step, index) => {
-                      const colors = [
-                        { bg: 'bg-indigo-100 dark:bg-indigo-900/50', text: 'text-indigo-600 dark:text-indigo-400', descBg: 'bg-blue-50 dark:bg-blue-900/20', descBorder: 'border-blue-100 dark:border-blue-800', descText: 'text-blue-700 dark:text-blue-300' },
-                        { bg: 'bg-yellow-100 dark:bg-yellow-900/50', text: 'text-yellow-600 dark:text-yellow-400', descBg: 'bg-yellow-50 dark:bg-yellow-900/20', descBorder: 'border-yellow-100 dark:border-yellow-800', descText: 'text-yellow-700 dark:text-yellow-300' },
-                        { bg: 'bg-green-100 dark:bg-green-900/50', text: 'text-green-600 dark:text-green-400', descBg: 'bg-green-50 dark:bg-green-900/20', descBorder: 'border-green-100 dark:border-green-800', descText: 'text-green-700 dark:text-green-300' },
-                        { bg: 'bg-orange-100 dark:bg-orange-900/50', text: 'text-orange-600 dark:text-orange-400', descBg: 'bg-orange-50 dark:bg-orange-900/20', descBorder: 'border-orange-100 dark:border-orange-800', descText: 'text-orange-700 dark:text-orange-300' },
-                      ];
-                      const color = colors[index % colors.length];
-                      return (
-                        <div key={index} className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
-                          <div className="flex items-center gap-3 mb-4">
-                            <div className={`h-8 w-8 rounded-full ${color.bg} flex items-center justify-center ${color.text} font-bold text-sm`}>{index + 1}</div>
-                            <h4 className="font-bold">{step.title}</h4>
-                          </div>
-                          <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
-                            <div className="absolute right-4 top-4 text-xs text-slate-400">{step.codeLanguage}</div>
-                            <pre className="whitespace-pre-wrap">{step.code}</pre>
-                          </div>
-                          {step.description && (
-                            <div className={`mt-4 p-3 ${color.descBg} rounded-lg border ${color.descBorder}`}>
-                              <p className={`text-sm ${color.descText}`}>{step.description}</p>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })
                   ) : (
-                    <div className="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-10 text-center">
-                      <div className="flex flex-col items-center gap-3">
+                    /* Empty state: no guide notice + official docs links in one card */
+                    <div className="rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                      {/* Top: notice */}
+                      <div className="flex flex-col items-center gap-3 bg-slate-50 dark:bg-slate-900/40 px-8 py-8 text-center border-b border-slate-200 dark:border-slate-700">
                         <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
                           <Terminal className="h-6 w-6 text-slate-400" />
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">No Quick Start Guide available</p>
-                          <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">The provider has not added a quick start guide for this service yet.</p>
+                          <p className="text-sm font-semibold text-slate-600 dark:text-slate-300">등록된 퀵스타트 가이드가 없습니다</p>
+                          <p className="text-xs text-slate-400 dark:text-slate-500 mt-1.5 leading-relaxed">
+                            서비스 제공자가 아직 퀵스타트 가이드를 등록하지 않았습니다.<br />
+                            아래 공식 문서에서 각 플랫폼의 MCP 연동 방법을 직접 확인하세요.
+                          </p>
                         </div>
+                      </div>
+                      {/* Bottom: official doc links */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-900/20">
+                        <a
+                          href="https://platform.openai.com/docs/guides/tools-remote-mcp"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-4 px-6 py-5 hover:bg-green-50 dark:hover:bg-green-900/10 transition-colors group"
+                        >
+                          <div className="h-10 w-10 shrink-0 rounded-xl bg-green-100 dark:bg-green-900/40 flex items-center justify-center text-lg">🤖</div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">ChatGPT MCP 공식 가이드</p>
+                            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">OpenAI 공식 문서 →</p>
+                          </div>
+                          <ExternalLink className="h-4 w-4 text-slate-300 group-hover:text-green-500 transition-colors shrink-0" />
+                        </a>
+                        <a
+                          href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-4 px-6 py-5 hover:bg-orange-50 dark:hover:bg-orange-900/10 transition-colors group"
+                        >
+                          <div className="h-10 w-10 shrink-0 rounded-xl bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center text-lg">🧠</div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Claude MCP 공식 가이드</p>
+                            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Anthropic 공식 문서 →</p>
+                          </div>
+                          <ExternalLink className="h-4 w-4 text-slate-300 group-hover:text-orange-400 transition-colors shrink-0" />
+                        </a>
                       </div>
                     </div>
                   )}
-
-                  {/* Official MCP Docs Link */}
-                  {quickStartPlatform === 'chatgpt' ? (
-                    <div className="rounded-xl border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 p-5 flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="h-9 w-9 shrink-0 rounded-full bg-green-100 dark:bg-green-800/60 flex items-center justify-center">
-                          <span className="text-base">🤖</span>
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-sm font-semibold text-green-900 dark:text-green-100">ChatGPT MCP 공식 연동 가이드</p>
-                          <p className="text-xs text-green-700 dark:text-green-400 mt-0.5">ChatGPT에서 MCP 서버를 연결하는 방법을 OpenAI 공식 문서에서 확인하세요.</p>
-                        </div>
-                      </div>
-                      <a
-                        href="https://platform.openai.com/docs/guides/tools-remote-mcp"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition-colors"
-                      >
-                        공식 문서 보기
-                        <ExternalLink className="h-3.5 w-3.5" />
-                      </a>
-                    </div>
-                  ) : quickStartPlatform === 'claude' ? (
-                    <div className="rounded-xl border border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-900/20 p-5 flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="h-9 w-9 shrink-0 rounded-full bg-orange-100 dark:bg-orange-800/60 flex items-center justify-center">
-                          <span className="text-base">🧠</span>
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-sm font-semibold text-orange-900 dark:text-orange-100">Claude MCP 공식 연동 가이드</p>
-                          <p className="text-xs text-orange-700 dark:text-orange-400 mt-0.5">Claude에서 MCP 서버를 설정하는 방법을 Anthropic 공식 문서에서 확인하세요.</p>
-                        </div>
-                      </div>
-                      <a
-                        href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium transition-colors"
-                      >
-                        공식 문서 보기
-                        <ExternalLink className="h-3.5 w-3.5" />
-                      </a>
-                    </div>
-                  ) : null}
                 </div>
 
                 {/* API Definitions Section */}
