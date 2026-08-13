@@ -49,6 +49,8 @@ import {
   FileText
 } from "lucide-react";
 import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
+import greenTechPreview1 from "@assets/preview-green-tech-1.jpg";
+import greenTechPreview2 from "@assets/preview-green-tech-2.jpg";
 import { useLanguage } from "@/lib/language-context";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -163,10 +165,8 @@ export default function ResourceDetail() {
   const displayUseCases = language === '한국어' && resource.useCasesKo ? (resource.useCasesKo as string[]) : (resource.useCases as string[] || []);
 
   const previewImages = [
-    { src: heroBg, label: "Interactive Dashboard View", views: resource.views || 0 },
-    { src: heroBg, label: "Data Analytics Panel", views: Math.floor((resource.views || 0) * 0.85) },
-    { src: heroBg, label: "API Integration Topology", views: Math.floor((resource.views || 0) * 0.7) },
-    { src: heroBg, label: "Real-time Monitoring", views: Math.floor((resource.views || 0) * 0.6) },
+    { src: greenTechPreview1, label: "Preview 1", views: resource.views || 0 },
+    { src: greenTechPreview2, label: "Preview 2", views: Math.floor((resource.views || 0) * 0.85) },
   ];
 
   return (
