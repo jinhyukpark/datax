@@ -7,8 +7,11 @@ import { useLanguage } from "@/lib/language-context";
 import { ShieldCheck, ArrowRight, Loader2, Save, Info, AlertCircle, CheckCircle2, Upload, Paperclip, Plus, Trash2, Zap, Star, Check, Terminal, Server, FileText, Shield, Calendar, XCircle, CreditCard, Database, Eye, MessageSquare, ExternalLink, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { DEFAULT_GUIDE_CARDS, mergeGuideCards, fileToDataUrl, type GuideCardDisplay, type GuideCardsResponse } from "@/lib/guide-cards";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent } from "@/components/ui/card";
@@ -124,36 +127,29 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
     pink: { border: 'border-pink-200 dark:border-pink-800', badge: 'bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-400', iconBg: 'bg-pink-100 dark:bg-pink-900/40', hoverBg: 'hover:bg-pink-50', hoverText: 'group-hover:text-pink-700', hoverIcon: 'group-hover:text-pink-500' },
   };
 
-  const [officialDocCards, setOfficialDocCards] = useState([
-    {
-      id: 'chatgpt',
-      label: 'ChatGPT',
-      imageUrl: '',
-      title: 'ChatGPT MCP 공식 가이드',
-      subtitle: 'ChatGPT에서 MCP 서버를 연결하는 방법을 OpenAI 공식 문서에서 확인하세요.',
-      link: 'https://platform.openai.com/docs/guides/tools-remote-mcp',
-      accentColor: 'green',
-      emoji: '🤖',
-    },
-    {
-      id: 'claude',
-      label: 'Claude',
-      imageUrl: '',
-      title: 'Claude MCP 공식 가이드',
-      subtitle: 'Claude에서 MCP 서버를 설정하는 방법을 Anthropic 공식 문서에서 확인하세요.',
-      link: 'https://docs.anthropic.com/en/docs/agents-and-tools/mcp',
-      accentColor: 'orange',
-      emoji: '🧠',
-    },
-  ]);
+  // Official guide cards are global content managed exclusively from the
+  // admin console (admin/submissions.tsx). Here they are shown for preview only;
+  // local edits are not persisted.
+  const { data: savedGuideCards } = useQuery<GuideCardsResponse>({ queryKey: ["/api/guide-cards"] });
+  const [officialDocCards, setOfficialDocCards] = useState<GuideCardDisplay[]>(DEFAULT_GUIDE_CARDS);
+
+  useEffect(() => {
+    if (savedGuideCards) {
+      setOfficialDocCards(mergeGuideCards(savedGuideCards));
+    }
+  }, [savedGuideCards]);
 
   const updateOfficialDocCard = (id: string, field: string, value: string) => {
     setOfficialDocCards(prev => prev.map(c => c.id === id ? { ...c, [field]: value } : c));
   };
 
-  const handleDocCardImage = (id: string, file: File) => {
-    const url = URL.createObjectURL(file);
-    setOfficialDocCards(prev => prev.map(c => c.id === id ? { ...c, imageUrl: url } : c));
+  const handleDocCardImage = async (id: string, file: File) => {
+    try {
+      const url = await fileToDataUrl(file);
+      setOfficialDocCards(prev => prev.map(c => c.id === id ? { ...c, imageUrl: url } : c));
+    } catch {
+      toast.error(t("Failed to read image", "이미지를 읽지 못했습니다."));
+    }
   };
 
   const addOfficialDocCard = () => {

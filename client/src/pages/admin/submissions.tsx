@@ -20,8 +20,11 @@ import {
   Plus, Trash2, BookOpen, DollarSign, Code, ChevronDown, ChevronUp
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { DEFAULT_GUIDE_CARDS, mergeGuideCards, fileToDataUrl, type GuideCardDisplay, type GuideCardsResponse } from "@/lib/guide-cards";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -56,36 +59,58 @@ function LinkedDocumentationTab() {
     pink: { border: 'border-pink-200 dark:border-pink-800', badge: 'bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-400', iconBg: 'bg-pink-100 dark:bg-pink-900/40' },
   };
 
-  const [officialDocCards, setOfficialDocCards] = useState([
-    {
-      id: 'chatgpt',
-      label: 'ChatGPT',
-      imageUrl: '',
-      title: 'ChatGPT MCP 공식 가이드',
-      subtitle: 'ChatGPT에서 MCP 서버를 연결하는 방법을 OpenAI 공식 문서에서 확인하세요.',
-      link: 'https://platform.openai.com/docs/guides/tools-remote-mcp',
-      accentColor: 'green',
-      emoji: '🤖',
-    },
-    {
-      id: 'claude',
-      label: 'Claude',
-      imageUrl: '',
-      title: 'Claude MCP 공식 가이드',
-      subtitle: 'Claude에서 MCP 서버를 설정하는 방법을 Anthropic 공식 문서에서 확인하세요.',
-      link: 'https://docs.anthropic.com/en/docs/agents-and-tools/mcp',
-      accentColor: 'orange',
-      emoji: '🧠',
-    },
-  ]);
+  const { data: savedGuideCards } = useQuery<GuideCardsResponse>({ queryKey: ["/api/guide-cards"] });
+  const [officialDocCards, setOfficialDocCards] = useState<GuideCardDisplay[]>(DEFAULT_GUIDE_CARDS);
+  const [isSavingCards, setIsSavingCards] = useState(false);
+
+  useEffect(() => {
+    if (savedGuideCards) {
+      setOfficialDocCards(mergeGuideCards(savedGuideCards));
+    }
+  }, [savedGuideCards]);
 
   const updateOfficialDocCard = (id: string, field: string, value: string) => {
     setOfficialDocCards(prev => prev.map(c => c.id === id ? { ...c, [field]: value } : c));
   };
 
-  const handleDocCardImage = (id: string, file: File) => {
-    const url = URL.createObjectURL(file);
-    setOfficialDocCards(prev => prev.map(c => c.id === id ? { ...c, imageUrl: url } : c));
+  const handleDocCardImage = async (id: string, file: File) => {
+    try {
+      const url = await fileToDataUrl(file);
+      setOfficialDocCards(prev => prev.map(c => c.id === id ? { ...c, imageUrl: url } : c));
+    } catch {
+      toast.error("이미지를 읽지 못했습니다.");
+    }
+  };
+
+  const saveOfficialDocCards = async () => {
+    setIsSavingCards(true);
+    try {
+      await apiRequest(
+        "PUT",
+        "/api/guide-cards",
+        officialDocCards.map(card => ({
+          id: card.id,
+          label: card.label,
+          imageUrl: card.imageUrl || null,
+          title: card.title,
+          subtitle: card.subtitle,
+          link: card.link,
+          accentColor: card.accentColor,
+          emoji: card.emoji,
+        })),
+      );
+      queryClient.invalidateQueries({ queryKey: ["/api/guide-cards"] });
+      toast.success("공식 가이드 카드가 저장되었습니다.");
+    } catch (err: any) {
+      const msg = String(err?.message || "");
+      if (msg.startsWith("401")) {
+        toast.error("관리자 로그인이 필요합니다. /admin에서 로그인해 주세요.");
+      } else {
+        toast.error("공식 가이드 카드 저장에 실패했습니다. 제목·부제목·링크(http/https)를 확인해 주세요.");
+      }
+    } finally {
+      setIsSavingCards(false);
+    }
   };
 
   const addOfficialDocCard = () => {
@@ -240,6 +265,18 @@ function LinkedDocumentationTab() {
         >
           <Plus className="h-4 w-4" /> 가이드 카드 추가
         </Button>
+
+        {/* Save guide cards */}
+        <div className="flex justify-end">
+          <Button
+            onClick={saveOfficialDocCards}
+            disabled={isSavingCards}
+            className="bg-indigo-600 hover:bg-indigo-700 gap-2"
+            data-testid="button-save-guide-cards"
+          >
+            {isSavingCards ? "저장 중..." : "가이드 카드 저장"}
+          </Button>
+        </div>
       </div>
 
       {/* API Definitions Section */}
