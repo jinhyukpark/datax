@@ -585,7 +585,7 @@ export default function ResourceDetail() {
                           <div className="h-10 w-10 shrink-0 rounded-xl bg-green-100 dark:bg-green-900/40 flex items-center justify-center text-lg">🤖</div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">ChatGPT MCP 공식 가이드</p>
-                            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">OpenAI 공식 문서 →</p>
+                            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">ChatGPT에서 MCP 서버를 연결하는 방법을 OpenAI 공식 문서에서 확인하세요.</p>
                           </div>
                           <ExternalLink className="h-4 w-4 text-slate-300 group-hover:text-green-500 transition-colors shrink-0" />
                         </a>
@@ -598,7 +598,7 @@ export default function ResourceDetail() {
                           <div className="h-10 w-10 shrink-0 rounded-xl bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center text-lg">🧠</div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Claude MCP 공식 가이드</p>
-                            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Anthropic 공식 문서 →</p>
+                            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Claude에서 MCP 서버를 설정하는 방법을 Anthropic 공식 문서에서 확인하세요.</p>
                           </div>
                           <ExternalLink className="h-4 w-4 text-slate-300 group-hover:text-orange-400 transition-colors shrink-0" />
                         </a>
