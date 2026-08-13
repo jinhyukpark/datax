@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/lib/language-context";
-import { ShieldCheck, ArrowRight, Loader2, Save, Info, AlertCircle, CheckCircle2, Upload, Paperclip, Plus, Trash2, Zap, Star, Check, Terminal, Server, FileText, Shield, Calendar, XCircle, CreditCard, Database, Eye, MessageSquare } from "lucide-react";
+import { ShieldCheck, ArrowRight, Loader2, Save, Info, AlertCircle, CheckCircle2, Upload, Paperclip, Plus, Trash2, Zap, Star, Check, Terminal, Server, FileText, Shield, Calendar, XCircle, CreditCard, Database, Eye, MessageSquare, ExternalLink, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useState } from "react";
@@ -114,89 +114,35 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
   ]);
   const [expandedApiDoc, setExpandedApiDoc] = useState(false);
 
-  // Quick Start Guide State - per platform (ChatGPT / Claude)
-  type QSPlatform = 'chatgpt' | 'claude';
-  const [quickStartPlatform, setQuickStartPlatform] = useState<QSPlatform>('chatgpt');
-
-  const [quickStartItemsChatGPT, setQuickStartItemsChatGPT] = useState([
+  // Official Doc Link Cards State
+  const [officialDocCards, setOfficialDocCards] = useState([
     {
-      id: 'qs1',
-      title: 'Installation',
-      codeLanguage: 'BASH',
-      code: `# Using npm
-npm install @em-data/sdk
-
-# Using pip (Python)
-pip install em-data-sdk`,
-      description: "SDK를 설치하면 API 클라이언트와 필요한 모든 의존성이 함께 설치됩니다. Node.js 18+ 또는 Python 3.8+ 환경이 필요합니다."
+      id: 'chatgpt',
+      imageUrl: '',
+      title: 'ChatGPT MCP 공식 가이드',
+      subtitle: 'ChatGPT에서 MCP 서버를 연결하는 방법을 OpenAI 공식 문서에서 확인하세요.',
+      link: 'https://platform.openai.com/docs/guides/tools-remote-mcp',
+      accentColor: 'green',
+      emoji: '🤖',
     },
     {
-      id: 'qs2',
-      title: 'JavaScript / Node.js Integration',
-      codeLanguage: 'JAVASCRIPT',
-      code: `import { EMDataClient } from '@em-data/sdk';
-
-// Initialize the client
-const client = new EMDataClient({
-  apiKey: process.env.EM_API_KEY,
-  baseUrl: '${detailsData.websiteUrl || "https://api.example.com"}'
-});`,
-      description: "EMDataClient를 초기화할 때 API 키와 기본 URL을 설정합니다. API 키는 환경변수에서 가져오는 것을 권장합니다."
-    }
-  ]);
-
-  const [quickStartItemsClaude, setQuickStartItemsClaude] = useState([
-    {
-      id: 'cqs1',
-      title: 'MCP 서버 설치',
-      codeLanguage: 'BASH',
-      code: `# Claude MCP SDK 설치
-pip install mcp em-data-sdk
-
-# MCP 서버 실행 확인
-em-data-mcp --version`,
-      description: "Claude와 연동하려면 MCP(Model Context Protocol) 서버를 설치해야 합니다. Python 3.10+ 환경이 필요합니다."
+      id: 'claude',
+      imageUrl: '',
+      title: 'Claude MCP 공식 가이드',
+      subtitle: 'Claude에서 MCP 서버를 설정하는 방법을 Anthropic 공식 문서에서 확인하세요.',
+      link: 'https://docs.anthropic.com/en/docs/agents-and-tools/mcp',
+      accentColor: 'orange',
+      emoji: '🧠',
     },
-    {
-      id: 'cqs2',
-      title: 'Claude Desktop 설정',
-      codeLanguage: 'JSON',
-      code: `{
-  "mcpServers": {
-    "em-data": {
-      "command": "em-data-mcp",
-      "args": ["--api-key", "YOUR_API_KEY"],
-      "env": {
-        "EM_BASE_URL": "${detailsData.websiteUrl || "https://api.example.com"}"
-      }
-    }
-  }
-}`,
-      description: "Claude Desktop의 설정 파일(claude_desktop_config.json)에 위 내용을 추가하세요. YOUR_API_KEY를 발급받은 API 키로 교체하세요."
-    }
   ]);
 
-  const activeQuickStartItems = quickStartPlatform === 'chatgpt' ? quickStartItemsChatGPT : quickStartItemsClaude;
-  const setActiveQuickStartItems = quickStartPlatform === 'chatgpt' ? setQuickStartItemsChatGPT : setQuickStartItemsClaude;
-
-  const addQuickStartItem = () => {
-    setActiveQuickStartItems([...activeQuickStartItems, {
-      id: `qs${Date.now()}`,
-      title: 'New Step',
-      codeLanguage: 'BASH',
-      code: '',
-      description: ''
-    }]);
+  const updateOfficialDocCard = (id: string, field: string, value: string) => {
+    setOfficialDocCards(prev => prev.map(c => c.id === id ? { ...c, [field]: value } : c));
   };
 
-  const removeQuickStartItem = (id: string) => {
-    setActiveQuickStartItems(activeQuickStartItems.filter(item => item.id !== id));
-  };
-
-  const updateQuickStartItem = (id: string, field: string, value: string) => {
-    setActiveQuickStartItems(activeQuickStartItems.map(item =>
-      item.id === id ? { ...item, [field]: value } : item
-    ));
+  const handleDocCardImage = (id: string, file: File) => {
+    const url = URL.createObjectURL(file);
+    setOfficialDocCards(prev => prev.map(c => c.id === id ? { ...c, imageUrl: url } : c));
   };
 
   // API Definitions State
@@ -839,91 +785,92 @@ em-data-mcp --version`,
               </div>
             </div>
 
-            {/* Platform Toggle */}
-            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 rounded-lg p-1 w-fit">
-              <button
-                onClick={() => setQuickStartPlatform('chatgpt')}
-                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                  quickStartPlatform === 'chatgpt'
-                    ? 'bg-white dark:bg-slate-700 shadow text-slate-900 dark:text-slate-100'
-                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-                }`}
-              >
-                <span className="text-[10px] text-green-500">●</span> ChatGPT
-              </button>
-              <button
-                onClick={() => setQuickStartPlatform('claude')}
-                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                  quickStartPlatform === 'claude'
-                    ? 'bg-white dark:bg-slate-700 shadow text-slate-900 dark:text-slate-100'
-                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-                }`}
-              >
-                <span className="text-[10px] text-orange-400">●</span> Claude
-              </button>
+            {/* Fixed notice bar (display only) */}
+            <div className="flex items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-50 dark:bg-slate-800/40 px-5 py-3.5">
+              <Terminal className="h-4 w-4 text-slate-400 shrink-0" />
+              <p className="text-sm text-slate-500 dark:text-slate-400">자세한 MCP 연동 방법은 아래 공식 가이드를 통해 확인해 주시길 바랍니다.</p>
+              <Badge variant="secondary" className="ml-auto text-[10px] shrink-0">고정 문구</Badge>
             </div>
 
-            {/* Dynamic Quick Start Items */}
-            {activeQuickStartItems.map((item, index) => {
-              const colors = [
-                { bg: 'bg-indigo-100', text: 'text-indigo-600' },
-                { bg: 'bg-yellow-100', text: 'text-yellow-600' },
-                { bg: 'bg-green-100', text: 'text-green-600' },
-                { bg: 'bg-blue-100', text: 'text-blue-600' },
-                { bg: 'bg-purple-100', text: 'text-purple-600' },
-              ];
-              const color = colors[index % colors.length];
-              
-              return (
-                <div key={item.id} className="rounded-xl border border-slate-200 bg-slate-100 p-6 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className={`h-8 w-8 rounded-full ${color.bg} flex items-center justify-center ${color.text} font-bold text-sm shrink-0`}>{index + 1}</div>
-                      <Input
-                        value={item.title}
-                        onChange={(e) => updateQuickStartItem(item.id, 'title', e.target.value)}
-                        className="font-bold bg-white border-slate-300"
-                        placeholder="Step title..."
-                      />
-                    </div>
-                    <Button variant="ghost" size="icon" onClick={() => removeQuickStartItem(item.id)} className="text-slate-400 hover:text-red-400 h-8 w-8 ml-2">
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+            {/* Official Doc Link Cards Editor */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {officialDocCards.map((card) => (
+                <div key={card.id} className={`rounded-xl border-2 ${card.accentColor === 'green' ? 'border-green-200 dark:border-green-800' : 'border-orange-200 dark:border-orange-800'} bg-white dark:bg-slate-900 p-5 space-y-4`}>
+                  {/* Card header badge */}
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${card.accentColor === 'green' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400'}`}>
+                      {card.accentColor === 'green' ? 'ChatGPT' : 'Claude'}
+                    </span>
+                    <span className="text-slate-400 text-xs">공식 가이드 카드</span>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Label className="text-xs text-slate-500">Code Language:</Label>
-                      <Input
-                        value={item.codeLanguage}
-                        onChange={(e) => updateQuickStartItem(item.id, 'codeLanguage', e.target.value.toUpperCase())}
-                        className="h-7 text-xs w-24 bg-white border-slate-300"
-                        placeholder="BASH"
-                      />
+
+                  {/* Image upload */}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-slate-500">이미지</Label>
+                    <div className="flex items-center gap-3">
+                      <div className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden ${card.accentColor === 'green' ? 'bg-green-100 dark:bg-green-900/40' : 'bg-orange-100 dark:bg-orange-900/40'}`}>
+                        {card.imageUrl ? (
+                          <img src={card.imageUrl} alt="icon" className="h-full w-full object-cover" />
+                        ) : (
+                          <span className="text-xl">{card.emoji}</span>
+                        )}
+                      </div>
+                      <label className="flex-1 cursor-pointer">
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-dashed border-slate-300 dark:border-slate-600 hover:border-slate-400 transition-colors text-sm text-slate-500">
+                          <Upload className="h-3.5 w-3.5 shrink-0" />
+                          <span className="truncate">{card.imageUrl ? '이미지 변경' : '이미지 첨부'}</span>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleDocCardImage(card.id, file);
+                          }}
+                        />
+                      </label>
                     </div>
-                    <Textarea 
-                      value={item.code}
-                      onChange={(e) => updateQuickStartItem(item.id, 'code', e.target.value)}
-                      className="font-mono text-sm bg-slate-900 text-slate-50 border-slate-700 min-h-[100px]"
-                      placeholder="# Code..."
+                  </div>
+
+                  {/* Title */}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-slate-500">대제목</Label>
+                    <Input
+                      value={card.title}
+                      onChange={(e) => updateOfficialDocCard(card.id, 'title', e.target.value)}
+                      className="text-sm bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                      placeholder="카드 대제목을 입력하세요"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label className="text-xs text-slate-500">Description</Label>
-                    <Textarea 
-                      value={item.description}
-                      onChange={(e) => updateQuickStartItem(item.id, 'description', e.target.value)}
-                      className="text-sm bg-white border-slate-300 min-h-[60px]"
-                      placeholder="Step description..."
+
+                  {/* Subtitle */}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-slate-500">부제목</Label>
+                    <Textarea
+                      value={card.subtitle}
+                      onChange={(e) => updateOfficialDocCard(card.id, 'subtitle', e.target.value)}
+                      className="text-sm bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 min-h-[60px] resize-none"
+                      placeholder="카드 부제목을 입력하세요"
                     />
+                  </div>
+
+                  {/* Link */}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-slate-500">링크 URL</Label>
+                    <div className="relative">
+                      <Link className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                      <Input
+                        value={card.link}
+                        onChange={(e) => updateOfficialDocCard(card.id, 'link', e.target.value)}
+                        className="text-sm pl-8 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono"
+                        placeholder="https://..."
+                      />
+                    </div>
                   </div>
                 </div>
-              );
-            })}
-
-            {/* Add Step Button */}
-            <Button variant="outline" size="sm" onClick={addQuickStartItem} className="gap-1 w-full border-dashed">
-              <Plus className="h-4 w-4" /> Add Step ({quickStartPlatform === 'chatgpt' ? 'ChatGPT' : 'Claude'})
-            </Button>
+              ))}
+            </div>
 
             {/* API Definitions Section - Editable */}
             <div className="space-y-4">
@@ -1000,7 +947,7 @@ em-data-mcp --version`,
             
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
               <div className="flex items-center gap-3 mb-4">
-                <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">{activeQuickStartItems.length + 1}</div>
+                <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">1</div>
                 <h4 className="font-bold">Full Documentation</h4>
               </div>
               <p className="text-sm text-muted-foreground mb-4">
@@ -1035,55 +982,36 @@ em-data-mcp --version`,
                     <Badge variant="outline">{detailsData.version || "v1.0.0"}</Badge>
                   </div>
 
-                  {/* Platform Toggle (Preview) */}
-                  <div className="flex items-center gap-1 bg-slate-100 rounded-lg p-1 w-fit">
-                    <button
-                      onClick={() => setQuickStartPlatform('chatgpt')}
-                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                        quickStartPlatform === 'chatgpt' ? 'bg-white shadow text-slate-900' : 'text-slate-500 hover:text-slate-700'
-                      }`}
-                    >
-                      <span className="text-[10px] text-green-500">●</span> ChatGPT
-                    </button>
-                    <button
-                      onClick={() => setQuickStartPlatform('claude')}
-                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                        quickStartPlatform === 'claude' ? 'bg-white shadow text-slate-900' : 'text-slate-500 hover:text-slate-700'
-                      }`}
-                    >
-                      <span className="text-[10px] text-orange-400">●</span> Claude
-                    </button>
-                  </div>
-
-                  {/* Preview Quick Start Items */}
-                  {activeQuickStartItems.map((item, index) => {
-                    const colors = [
-                      { bg: 'bg-indigo-100', text: 'text-indigo-600', descBg: 'bg-blue-50', descBorder: 'border-blue-100', descText: 'text-blue-700' },
-                      { bg: 'bg-yellow-100', text: 'text-yellow-600', descBg: 'bg-yellow-50', descBorder: 'border-yellow-100', descText: 'text-yellow-700' },
-                      { bg: 'bg-green-100', text: 'text-green-600', descBg: 'bg-green-50', descBorder: 'border-green-100', descText: 'text-green-700' },
-                      { bg: 'bg-blue-100', text: 'text-blue-600', descBg: 'bg-blue-50', descBorder: 'border-blue-100', descText: 'text-blue-700' },
-                      { bg: 'bg-purple-100', text: 'text-purple-600', descBg: 'bg-purple-50', descBorder: 'border-purple-100', descText: 'text-purple-700' },
-                    ];
-                    const color = colors[index % colors.length];
-                    
-                    return (
-                      <div key={item.id} className="rounded-xl border border-slate-200 bg-slate-50 p-6">
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className={`h-8 w-8 rounded-full ${color.bg} flex items-center justify-center ${color.text} font-bold text-sm`}>{index + 1}</div>
-                          <h4 className="font-bold">{item.title}</h4>
-                        </div>
-                        <div className="relative rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-50 overflow-x-auto">
-                          <div className="absolute right-4 top-4 text-xs text-slate-400">{item.codeLanguage}</div>
-                          <pre className="whitespace-pre-wrap">{item.code}</pre>
-                        </div>
-                        {item.description && (
-                          <div className={`mt-4 p-3 ${color.descBg} rounded-lg border ${color.descBorder}`}>
-                            <p className={`text-sm ${color.descText}`}>{item.description}</p>
+                  {/* Preview: Official Doc Link Cards */}
+                  <div className="rounded-2xl border border-slate-200 overflow-hidden">
+                    <div className="flex items-center justify-center gap-2.5 bg-slate-50 px-6 py-4 text-center border-b border-slate-200">
+                      <Terminal className="h-4 w-4 text-slate-400 shrink-0" />
+                      <p className="text-sm text-slate-600">자세한 MCP 연동 방법은 아래 공식 가이드를 통해 확인해 주시길 바랍니다.</p>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 bg-white">
+                      {officialDocCards.map((card) => (
+                        <a
+                          key={card.id}
+                          href={card.link || '#'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex items-center gap-4 px-6 py-5 transition-colors group ${card.accentColor === 'green' ? 'hover:bg-green-50' : 'hover:bg-orange-50'}`}
+                        >
+                          <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center overflow-hidden ${card.accentColor === 'green' ? 'bg-green-100' : 'bg-orange-100'}`}>
+                            {card.imageUrl
+                              ? <img src={card.imageUrl} alt="icon" className="h-full w-full object-cover" />
+                              : <span className="text-lg">{card.emoji}</span>
+                            }
                           </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-sm font-semibold text-slate-800 transition-colors ${card.accentColor === 'green' ? 'group-hover:text-green-700' : 'group-hover:text-orange-600'}`}>{card.title || '제목 없음'}</p>
+                            <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">{card.subtitle}</p>
+                          </div>
+                          <ExternalLink className={`h-4 w-4 text-slate-300 shrink-0 transition-colors ${card.accentColor === 'green' ? 'group-hover:text-green-500' : 'group-hover:text-orange-400'}`} />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
 
                   {/* Preview API Definitions */}
                   <div className="space-y-4">
@@ -1117,7 +1045,7 @@ em-data-mcp --version`,
                   {/* Preview Full Documentation */}
                   <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">{activeQuickStartItems.length + 1}</div>
+                      <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">1</div>
                       <h4 className="font-bold">Full Documentation</h4>
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">For complete API reference, guides, and tutorials, please visit our documentation portal.</p>
