@@ -12,14 +12,29 @@ export default function AdminLogin() {
   const [, setLocation] = useLocation();
   const [credentials, setCredentials] = useState({ id: "", password: "" });
 
-  const handleLogin = (e: React.FormEvent) => {
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock login logic
-    if (credentials.id && credentials.password) {
+    setIsLoggingIn(true);
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ password: credentials.password }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        toast.error(body?.message || "Login failed");
+        return;
+      }
       toast.success("Welcome back, Admin");
       setLocation("/admin/users");
-    } else {
-      toast.error("Please enter ID and Password");
+    } catch {
+      toast.error("Login failed");
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -68,8 +83,8 @@ export default function AdminLogin() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full bg-slate-900 text-white hover:bg-slate-800">
-              Sign In
+            <Button type="submit" disabled={isLoggingIn} className="w-full bg-slate-900 text-white hover:bg-slate-800">
+              {isLoggingIn ? "Signing In..." : "Sign In"}
             </Button>
           </CardFooter>
         </form>

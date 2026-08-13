@@ -59,6 +59,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { Review } from "@shared/schema";
 import { RESOURCES, type Resource } from "@/lib/data";
+import { useGuideCards, GUIDE_CARD_ACCENT_STYLES } from "@/lib/guide-cards";
 import { DialogDescription } from "@/components/ui/dialog";
 
 function getYoutubeEmbedUrl(url: string): string | null {
@@ -119,6 +120,9 @@ export default function ResourceDetail() {
 
   // Fall back to mock data if API returns nothing
   const resource = apiResource || RESOURCES.find(r => r.id === params?.id);
+
+  // Official guide cards (admin-configurable, falls back to defaults)
+  const { cards: guideCards } = useGuideCards();
 
   const { data: reviews = [] } = useQuery<Review[]>({
     queryKey: [`/api/resources/${params?.id}/reviews`],
@@ -566,34 +570,33 @@ export default function ResourceDetail() {
                         <Terminal className="h-4 w-4 text-slate-400 shrink-0" />
                         <p className="text-sm text-slate-600 dark:text-slate-300">자세한 MCP 연동 방법은 아래 공식 가이드를 통해 확인해 주시길 바랍니다.</p>
                       </div>
-                      {/* Bottom: official doc links */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-900/20">
-                        <a
-                          href="https://platform.openai.com/docs/guides/tools-remote-mcp"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-4 px-6 py-5 hover:bg-green-50 dark:hover:bg-green-900/10 transition-colors group"
-                        >
-                          <div className="h-10 w-10 shrink-0 rounded-xl bg-green-100 dark:bg-green-900/40 flex items-center justify-center text-lg">🤖</div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">ChatGPT MCP 공식 가이드</p>
-                            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">ChatGPT에서 MCP 서버를 연결하는 방법을 OpenAI 공식 문서에서 확인하세요.</p>
-                          </div>
-                          <ExternalLink className="h-4 w-4 text-slate-300 group-hover:text-green-500 transition-colors shrink-0" />
-                        </a>
-                        <a
-                          href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-4 px-6 py-5 hover:bg-orange-50 dark:hover:bg-orange-900/10 transition-colors group"
-                        >
-                          <div className="h-10 w-10 shrink-0 rounded-xl bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center text-lg">🧠</div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Claude MCP 공식 가이드</p>
-                            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Claude에서 MCP 서버를 설정하는 방법을 Anthropic 공식 문서에서 확인하세요.</p>
-                          </div>
-                          <ExternalLink className="h-4 w-4 text-slate-300 group-hover:text-orange-400 transition-colors shrink-0" />
-                        </a>
+                      {/* Bottom: official doc links — 2 columns up to 2 cards, single-column list from 3 */}
+                      <div className={guideCards.length <= 2
+                        ? "grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-900/20"
+                        : "grid grid-cols-1 divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-900/20"
+                      }>
+                        {guideCards.map((card) => {
+                          const accent = GUIDE_CARD_ACCENT_STYLES[card.accentColor] || GUIDE_CARD_ACCENT_STYLES.green;
+                          return (
+                            <a
+                              key={card.id}
+                              href={card.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`flex items-center gap-4 px-6 py-5 transition-colors group ${accent.hoverBg}`}
+                              data-testid={`link-guide-card-${card.id}`}
+                            >
+                              <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center text-lg overflow-hidden ${accent.iconBg}`}>
+                                {card.imageUrl ? <img src={card.imageUrl} alt="icon" className="h-full w-full object-cover" /> : card.emoji}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className={`text-sm font-semibold text-slate-800 dark:text-slate-100 transition-colors ${accent.hoverText}`}>{card.title}</p>
+                                <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{card.subtitle}</p>
+                              </div>
+                              <ExternalLink className={`h-4 w-4 text-slate-300 transition-colors shrink-0 ${accent.hoverIcon}`} />
+                            </a>
+                          );
+                        })}
                       </div>
                     </div>
                   )}

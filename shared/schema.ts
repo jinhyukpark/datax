@@ -50,6 +50,23 @@ export const reviews = pgTable("reviews", {
   replyDate: text("reply_date"),
 });
 
+export const guideCards = pgTable("guide_cards", {
+  id: varchar("id").primaryKey(),
+  label: text("label").notNull().default(""),
+  imageUrl: text("image_url"),
+  title: text("title").notNull(),
+  subtitle: text("subtitle").notNull(),
+  link: text("link").notNull(),
+  accentColor: text("accent_color").notNull().default("green"),
+  emoji: text("emoji").notNull().default("🔗"),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
+export const appSettings = pgTable("app_settings", {
+  key: varchar("key").primaryKey(),
+  value: text("value").notNull(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -57,6 +74,33 @@ export const insertUserSchema = createInsertSchema(users).pick({
 
 export const insertResourceSchema = createInsertSchema(resources);
 export const insertReviewSchema = createInsertSchema(reviews);
+const MAX_IMAGE_DATA_URL_BYTES = 2 * 1024 * 1024; // ~2MB of encoded data
+
+export const guideCardItemSchema = z.object({
+  id: z.string().min(1).max(100),
+  label: z.string().max(100).default(""),
+  imageUrl: z
+    .string()
+    .refine(
+      (v) =>
+        v === "" ||
+        /^https?:\/\//i.test(v) ||
+        (/^data:image\/(png|jpe?g|gif|webp);base64,/i.test(v) && v.length <= MAX_IMAGE_DATA_URL_BYTES),
+      { message: "imageUrl must be an http(s) URL or an image data URL under 2MB" },
+    )
+    .nullable()
+    .optional(),
+  title: z.string().min(1).max(200),
+  subtitle: z.string().min(1).max(1000),
+  link: z
+    .string()
+    .url()
+    .refine((v) => /^https?:\/\//i.test(v), { message: "link must be an http(s) URL" }),
+  accentColor: z.enum(["green", "orange", "blue", "purple", "pink"]).default("green"),
+  emoji: z.string().max(16).default("🔗"),
+});
+
+export const replaceGuideCardsSchema = z.array(guideCardItemSchema).max(12);
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -64,3 +108,5 @@ export type Resource = typeof resources.$inferSelect;
 export type Review = typeof reviews.$inferSelect;
 export type InsertResource = z.infer<typeof insertResourceSchema>;
 export type InsertReview = z.infer<typeof insertReviewSchema>;
+export type GuideCard = typeof guideCards.$inferSelect;
+export type GuideCardItem = z.infer<typeof guideCardItemSchema>;

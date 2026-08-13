@@ -1,10 +1,39 @@
 import express, { type Request, Response, NextFunction } from "express";
+import session from "express-session";
+import MemoryStoreFactory from "memorystore";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
 
 const app = express();
 const httpServer = createServer(app);
+
+declare module "express-session" {
+  interface SessionData {
+    isAdmin?: boolean;
+  }
+}
+
+if (!process.env.SESSION_SECRET) {
+  throw new Error("SESSION_SECRET must be set");
+}
+
+const MemoryStore = MemoryStoreFactory(session);
+app.set("trust proxy", 1);
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new MemoryStore({ checkPeriod: 86400000 }),
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 60 * 8, // 8 hours
+    },
+  }),
+);
 
 declare module "http" {
   interface IncomingMessage {
@@ -14,6 +43,7 @@ declare module "http" {
 
 app.use(
   express.json({
+    limit: "10mb",
     verify: (req, _res, buf) => {
       req.rawBody = buf;
     },
@@ -60,6 +90,12 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Apply pending database migrations before serving requests so the schema
+  // (e.g. guide_cards, app_settings) is guaranteed to exist in every environment.
+  const { migrate } = await import("drizzle-orm/node-postgres/migrator");
+  const { db } = await import("./db");
+  await migrate(db, { migrationsFolder: "migrations" });
+
   await registerRoutes(httpServer, app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
