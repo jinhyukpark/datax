@@ -115,9 +115,19 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
   const [expandedApiDoc, setExpandedApiDoc] = useState(false);
 
   // Official Doc Link Cards State
+  const docCardAccents = ['green', 'orange', 'blue', 'purple', 'pink'] as const;
+  const docCardAccentStyles: Record<string, { border: string; badge: string; iconBg: string; hoverBg: string; hoverText: string; hoverIcon: string }> = {
+    green: { border: 'border-green-200 dark:border-green-800', badge: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400', iconBg: 'bg-green-100 dark:bg-green-900/40', hoverBg: 'hover:bg-green-50', hoverText: 'group-hover:text-green-700', hoverIcon: 'group-hover:text-green-500' },
+    orange: { border: 'border-orange-200 dark:border-orange-800', badge: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400', iconBg: 'bg-orange-100 dark:bg-orange-900/40', hoverBg: 'hover:bg-orange-50', hoverText: 'group-hover:text-orange-600', hoverIcon: 'group-hover:text-orange-400' },
+    blue: { border: 'border-blue-200 dark:border-blue-800', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400', iconBg: 'bg-blue-100 dark:bg-blue-900/40', hoverBg: 'hover:bg-blue-50', hoverText: 'group-hover:text-blue-700', hoverIcon: 'group-hover:text-blue-500' },
+    purple: { border: 'border-purple-200 dark:border-purple-800', badge: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400', iconBg: 'bg-purple-100 dark:bg-purple-900/40', hoverBg: 'hover:bg-purple-50', hoverText: 'group-hover:text-purple-700', hoverIcon: 'group-hover:text-purple-500' },
+    pink: { border: 'border-pink-200 dark:border-pink-800', badge: 'bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-400', iconBg: 'bg-pink-100 dark:bg-pink-900/40', hoverBg: 'hover:bg-pink-50', hoverText: 'group-hover:text-pink-700', hoverIcon: 'group-hover:text-pink-500' },
+  };
+
   const [officialDocCards, setOfficialDocCards] = useState([
     {
       id: 'chatgpt',
+      label: 'ChatGPT',
       imageUrl: '',
       title: 'ChatGPT MCP 공식 가이드',
       subtitle: 'ChatGPT에서 MCP 서버를 연결하는 방법을 OpenAI 공식 문서에서 확인하세요.',
@@ -127,6 +137,7 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
     },
     {
       id: 'claude',
+      label: 'Claude',
       imageUrl: '',
       title: 'Claude MCP 공식 가이드',
       subtitle: 'Claude에서 MCP 서버를 설정하는 방법을 Anthropic 공식 문서에서 확인하세요.',
@@ -143,6 +154,23 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
   const handleDocCardImage = (id: string, file: File) => {
     const url = URL.createObjectURL(file);
     setOfficialDocCards(prev => prev.map(c => c.id === id ? { ...c, imageUrl: url } : c));
+  };
+
+  const addOfficialDocCard = () => {
+    setOfficialDocCards(prev => [...prev, {
+      id: `card-${Date.now()}`,
+      label: '',
+      imageUrl: '',
+      title: '',
+      subtitle: '',
+      link: '',
+      accentColor: docCardAccents[prev.length % docCardAccents.length],
+      emoji: '🔗',
+    }]);
+  };
+
+  const removeOfficialDocCard = (id: string) => {
+    setOfficialDocCards(prev => prev.filter(c => c.id !== id));
   };
 
   // API Definitions State
@@ -795,20 +823,31 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
             {/* Official Doc Link Cards Editor */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {officialDocCards.map((card) => (
-                <div key={card.id} className={`rounded-xl border-2 ${card.accentColor === 'green' ? 'border-green-200 dark:border-green-800' : 'border-orange-200 dark:border-orange-800'} bg-white dark:bg-slate-900 p-5 space-y-4`}>
+                <div key={card.id} className={`rounded-xl border-2 ${docCardAccentStyles[card.accentColor]?.border || docCardAccentStyles.green.border} bg-white dark:bg-slate-900 p-5 space-y-4`}>
                   {/* Card header badge */}
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${card.accentColor === 'green' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400'}`}>
-                      {card.accentColor === 'green' ? 'ChatGPT' : 'Claude'}
-                    </span>
+                    <Input
+                      value={card.label}
+                      onChange={(e) => updateOfficialDocCard(card.id, 'label', e.target.value)}
+                      className={`h-6 w-28 text-xs font-semibold px-2 py-0.5 rounded-full border-none focus-visible:ring-1 ${docCardAccentStyles[card.accentColor]?.badge || docCardAccentStyles.green.badge}`}
+                      placeholder="플랫폼명"
+                    />
                     <span className="text-slate-400 text-xs">공식 가이드 카드</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6 ml-auto text-slate-300 hover:text-red-500"
+                      onClick={() => removeOfficialDocCard(card.id)}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
                   </div>
 
                   {/* Image upload */}
                   <div className="space-y-1.5">
                     <Label className="text-xs font-medium text-slate-500">이미지</Label>
                     <div className="flex items-center gap-3">
-                      <div className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden ${card.accentColor === 'green' ? 'bg-green-100 dark:bg-green-900/40' : 'bg-orange-100 dark:bg-orange-900/40'}`}>
+                      <div className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden ${docCardAccentStyles[card.accentColor]?.iconBg || docCardAccentStyles.green.iconBg}`}>
                         {card.imageUrl ? (
                           <img src={card.imageUrl} alt="icon" className="h-full w-full object-cover" />
                         ) : (
@@ -871,6 +910,11 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
                 </div>
               ))}
             </div>
+
+            {/* Add Card Button */}
+            <Button variant="outline" className="w-full border-dashed gap-2" onClick={addOfficialDocCard}>
+              <Plus className="h-4 w-4" /> 가이드 카드 추가
+            </Button>
 
             {/* API Definitions Section - Editable */}
             <div className="space-y-4">
@@ -988,28 +1032,34 @@ export function HostedRequestDetails({ data, isEditable = false, mode = 'all' }:
                       <Terminal className="h-4 w-4 text-slate-400 shrink-0" />
                       <p className="text-sm text-slate-600">자세한 MCP 연동 방법은 아래 공식 가이드를 통해 확인해 주시길 바랍니다.</p>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 bg-white">
-                      {officialDocCards.map((card) => (
-                        <a
-                          key={card.id}
-                          href={card.link || '#'}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`flex items-center gap-4 px-6 py-5 transition-colors group ${card.accentColor === 'green' ? 'hover:bg-green-50' : 'hover:bg-orange-50'}`}
-                        >
-                          <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center overflow-hidden ${card.accentColor === 'green' ? 'bg-green-100' : 'bg-orange-100'}`}>
-                            {card.imageUrl
-                              ? <img src={card.imageUrl} alt="icon" className="h-full w-full object-cover" />
-                              : <span className="text-lg">{card.emoji}</span>
-                            }
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className={`text-sm font-semibold text-slate-800 transition-colors ${card.accentColor === 'green' ? 'group-hover:text-green-700' : 'group-hover:text-orange-600'}`}>{card.title || '제목 없음'}</p>
-                            <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">{card.subtitle}</p>
-                          </div>
-                          <ExternalLink className={`h-4 w-4 text-slate-300 shrink-0 transition-colors ${card.accentColor === 'green' ? 'group-hover:text-green-500' : 'group-hover:text-orange-400'}`} />
-                        </a>
-                      ))}
+                    <div className={officialDocCards.length <= 2
+                      ? "grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 bg-white"
+                      : "grid grid-cols-1 divide-y divide-slate-200 bg-white"
+                    }>
+                      {officialDocCards.map((card) => {
+                        const accent = docCardAccentStyles[card.accentColor] || docCardAccentStyles.green;
+                        return (
+                          <a
+                            key={card.id}
+                            href={card.link || '#'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`flex items-center gap-4 px-6 py-5 transition-colors group ${accent.hoverBg}`}
+                          >
+                            <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center overflow-hidden ${accent.iconBg}`}>
+                              {card.imageUrl
+                                ? <img src={card.imageUrl} alt="icon" className="h-full w-full object-cover" />
+                                : <span className="text-lg">{card.emoji}</span>
+                              }
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className={`text-sm font-semibold text-slate-800 transition-colors ${accent.hoverText}`}>{card.title || '제목 없음'}</p>
+                              <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">{card.subtitle}</p>
+                            </div>
+                            <ExternalLink className={`h-4 w-4 text-slate-300 shrink-0 transition-colors ${accent.hoverIcon}`} />
+                          </a>
+                        );
+                      })}
                     </div>
                   </div>
 

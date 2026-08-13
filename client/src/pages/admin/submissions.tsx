@@ -47,9 +47,19 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 function LinkedDocumentationTab() {
+  const docCardAccents = ['green', 'orange', 'blue', 'purple', 'pink'] as const;
+  const docCardAccentStyles: Record<string, { border: string; badge: string; iconBg: string }> = {
+    green: { border: 'border-green-200 dark:border-green-800', badge: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400', iconBg: 'bg-green-100 dark:bg-green-900/40' },
+    orange: { border: 'border-orange-200 dark:border-orange-800', badge: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400', iconBg: 'bg-orange-100 dark:bg-orange-900/40' },
+    blue: { border: 'border-blue-200 dark:border-blue-800', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400', iconBg: 'bg-blue-100 dark:bg-blue-900/40' },
+    purple: { border: 'border-purple-200 dark:border-purple-800', badge: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400', iconBg: 'bg-purple-100 dark:bg-purple-900/40' },
+    pink: { border: 'border-pink-200 dark:border-pink-800', badge: 'bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-400', iconBg: 'bg-pink-100 dark:bg-pink-900/40' },
+  };
+
   const [officialDocCards, setOfficialDocCards] = useState([
     {
       id: 'chatgpt',
+      label: 'ChatGPT',
       imageUrl: '',
       title: 'ChatGPT MCP 공식 가이드',
       subtitle: 'ChatGPT에서 MCP 서버를 연결하는 방법을 OpenAI 공식 문서에서 확인하세요.',
@@ -59,6 +69,7 @@ function LinkedDocumentationTab() {
     },
     {
       id: 'claude',
+      label: 'Claude',
       imageUrl: '',
       title: 'Claude MCP 공식 가이드',
       subtitle: 'Claude에서 MCP 서버를 설정하는 방법을 Anthropic 공식 문서에서 확인하세요.',
@@ -75,6 +86,23 @@ function LinkedDocumentationTab() {
   const handleDocCardImage = (id: string, file: File) => {
     const url = URL.createObjectURL(file);
     setOfficialDocCards(prev => prev.map(c => c.id === id ? { ...c, imageUrl: url } : c));
+  };
+
+  const addOfficialDocCard = () => {
+    setOfficialDocCards(prev => [...prev, {
+      id: `card-${Date.now()}`,
+      label: '',
+      imageUrl: '',
+      title: '',
+      subtitle: '',
+      link: '',
+      accentColor: docCardAccents[prev.length % docCardAccents.length],
+      emoji: '🔗',
+    }]);
+  };
+
+  const removeOfficialDocCard = (id: string) => {
+    setOfficialDocCards(prev => prev.filter(c => c.id !== id));
   };
   const [apiDefinitions, setApiDefinitions] = useState([
     { id: 1, name: "get_genre_list", description: "사용 가능한 모든 공연 장르 코드와 이름을 조회합니다.", params: [] as { name: string; type: string }[] },
@@ -110,19 +138,32 @@ function LinkedDocumentationTab() {
         {/* Official Doc Link Cards Editor */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {officialDocCards.map((card) => (
-            <div key={card.id} className={`rounded-xl border-2 ${card.accentColor === 'green' ? 'border-green-200 dark:border-green-800' : 'border-orange-200 dark:border-orange-800'} bg-white dark:bg-slate-900 p-5 space-y-4`}>
+            <div key={card.id} className={`rounded-xl border-2 ${docCardAccentStyles[card.accentColor]?.border || docCardAccentStyles.green.border} bg-white dark:bg-slate-900 p-5 space-y-4`}>
               <div className="flex items-center gap-2 mb-1">
-                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${card.accentColor === 'green' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400'}`}>
-                  {card.accentColor === 'green' ? 'ChatGPT' : 'Claude'}
-                </span>
+                <Input
+                  value={card.label}
+                  onChange={(e) => updateOfficialDocCard(card.id, 'label', e.target.value)}
+                  className={`h-6 w-28 text-xs font-semibold px-2 py-0.5 rounded-full border-none focus-visible:ring-1 ${docCardAccentStyles[card.accentColor]?.badge || docCardAccentStyles.green.badge}`}
+                  placeholder="플랫폼명"
+                  data-testid={`input-doc-card-label-${card.id}`}
+                />
                 <span className="text-slate-400 text-xs">공식 가이드 카드</span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6 ml-auto text-slate-300 hover:text-red-500"
+                  onClick={() => removeOfficialDocCard(card.id)}
+                  data-testid={`button-doc-card-remove-${card.id}`}
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </Button>
               </div>
 
               {/* Image upload */}
               <div className="space-y-1.5">
                 <Label className="text-xs font-medium text-slate-500">이미지</Label>
                 <div className="flex items-center gap-3">
-                  <div className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden ${card.accentColor === 'green' ? 'bg-green-100 dark:bg-green-900/40' : 'bg-orange-100 dark:bg-orange-900/40'}`}>
+                  <div className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden ${docCardAccentStyles[card.accentColor]?.iconBg || docCardAccentStyles.green.iconBg}`}>
                     {card.imageUrl ? (
                       <img src={card.imageUrl} alt="icon" className="h-full w-full object-cover" />
                     ) : (
@@ -189,6 +230,16 @@ function LinkedDocumentationTab() {
             </div>
           ))}
         </div>
+
+        {/* Add Card Button */}
+        <Button
+          variant="outline"
+          className="w-full border-dashed gap-2"
+          onClick={addOfficialDocCard}
+          data-testid="button-add-doc-card"
+        >
+          <Plus className="h-4 w-4" /> 가이드 카드 추가
+        </Button>
       </div>
 
       {/* API Definitions Section */}
