@@ -562,17 +562,9 @@ export default function ResourceDetail() {
                     /* Empty state: no guide notice + official docs links in one card */
                     <div className="rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
                       {/* Top: notice */}
-                      <div className="flex flex-col items-center gap-3 bg-slate-50 dark:bg-slate-900/40 px-8 py-8 text-center border-b border-slate-200 dark:border-slate-700">
-                        <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                          <Terminal className="h-6 w-6 text-slate-400" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold text-slate-600 dark:text-slate-300">등록된 퀵스타트 가이드가 없습니다</p>
-                          <p className="text-xs text-slate-400 dark:text-slate-500 mt-1.5 leading-relaxed">
-                            서비스 제공자가 아직 퀵스타트 가이드를 등록하지 않았습니다.<br />
-                            아래 공식 문서에서 각 플랫폼의 MCP 연동 방법을 직접 확인하세요.
-                          </p>
-                        </div>
+                      <div className="flex items-center justify-center gap-2.5 bg-slate-50 dark:bg-slate-900/40 px-6 py-4 text-center border-b border-slate-200 dark:border-slate-700">
+                        <Terminal className="h-4 w-4 text-slate-400 shrink-0" />
+                        <p className="text-sm text-slate-600 dark:text-slate-300">자세한 MCP 연동 방법은 아래 공식 가이드를 통해 확인해 주시길 바랍니다.</p>
                       </div>
                       {/* Bottom: official doc links */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-900/20">
