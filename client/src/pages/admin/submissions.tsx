@@ -47,11 +47,35 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 function LinkedDocumentationTab() {
-  const [quickStartItems, setQuickStartItems] = useState([
-    { id: 1, title: "Install SDK", codeLanguage: "bash", code: "npm install @data-x/sdk", description: "Install the SDK package using npm or yarn." },
-    { id: 2, title: "Initialize Client", codeLanguage: "javascript", code: "import { DataX } from '@data-x/sdk';\nconst client = new DataX({ apiKey: 'YOUR_API_KEY' });", description: "Import and initialize the client with your API key." },
-    { id: 3, title: "Make Your First Request", codeLanguage: "javascript", code: "const result = await client.query({\n  dataset: 'sample',\n  limit: 10\n});", description: "Query the dataset and get results." },
+  const [officialDocCards, setOfficialDocCards] = useState([
+    {
+      id: 'chatgpt',
+      imageUrl: '',
+      title: 'ChatGPT MCP 공식 가이드',
+      subtitle: 'ChatGPT에서 MCP 서버를 연결하는 방법을 OpenAI 공식 문서에서 확인하세요.',
+      link: 'https://platform.openai.com/docs/guides/tools-remote-mcp',
+      accentColor: 'green',
+      emoji: '🤖',
+    },
+    {
+      id: 'claude',
+      imageUrl: '',
+      title: 'Claude MCP 공식 가이드',
+      subtitle: 'Claude에서 MCP 서버를 설정하는 방법을 Anthropic 공식 문서에서 확인하세요.',
+      link: 'https://docs.anthropic.com/en/docs/agents-and-tools/mcp',
+      accentColor: 'orange',
+      emoji: '🧠',
+    },
   ]);
+
+  const updateOfficialDocCard = (id: string, field: string, value: string) => {
+    setOfficialDocCards(prev => prev.map(c => c.id === id ? { ...c, [field]: value } : c));
+  };
+
+  const handleDocCardImage = (id: string, file: File) => {
+    const url = URL.createObjectURL(file);
+    setOfficialDocCards(prev => prev.map(c => c.id === id ? { ...c, imageUrl: url } : c));
+  };
   const [apiDefinitions, setApiDefinitions] = useState([
     { id: 1, name: "get_genre_list", description: "사용 가능한 모든 공연 장르 코드와 이름을 조회합니다.", params: [] as { name: string; type: string }[] },
     { id: 2, name: "search_events_by_location", description: "특정 지역과 기간의 공연을 검색합니다.", params: [
@@ -64,9 +88,6 @@ function LinkedDocumentationTab() {
   const [fullDocDescription, setFullDocDescription] = useState("Complete API reference and integration guides.");
   const [fullDocButtonText, setFullDocButtonText] = useState("View Documentation");
   const [fullDocUrl, setFullDocUrl] = useState("https://docs.example.com");
-  const [nextId, setNextId] = useState(4);
-
-  const stepColors = ["bg-indigo-100 text-indigo-600", "bg-yellow-100 text-yellow-700", "bg-green-100 text-green-600", "bg-blue-100 text-blue-600", "bg-purple-100 text-purple-600"];
 
   return (
     <div className="space-y-6">
@@ -74,76 +95,100 @@ function LinkedDocumentationTab() {
         <BookOpen className="h-5 w-5 text-indigo-600" />
         <div>
           <h3 className="font-bold text-lg">Quick Start Guide</h3>
-          <p className="text-xs text-muted-foreground">Define the steps users should follow to get started.</p>
+          <p className="text-xs text-muted-foreground">공식 가이드 링크 카드의 이미지·제목·부제목·링크를 설정하세요.</p>
         </div>
       </div>
 
       <div className="space-y-4">
-        {quickStartItems.map((item, index) => (
-          <div key={item.id} className="border rounded-xl p-4 space-y-3 bg-white dark:bg-slate-900/50">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className={`h-8 w-8 rounded-full flex items-center justify-center font-bold text-sm ${stepColors[index % stepColors.length]}`}>
-                  {index + 1}
+        {/* Fixed notice bar (display only) */}
+        <div className="flex items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-50 dark:bg-slate-800/40 px-5 py-3.5">
+          <Terminal className="h-4 w-4 text-slate-400 shrink-0" />
+          <p className="text-sm text-slate-500 dark:text-slate-400">자세한 MCP 연동 방법은 아래 공식 가이드를 통해 확인해 주시길 바랍니다.</p>
+          <Badge variant="secondary" className="ml-auto text-[10px] shrink-0">고정 문구</Badge>
+        </div>
+
+        {/* Official Doc Link Cards Editor */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {officialDocCards.map((card) => (
+            <div key={card.id} className={`rounded-xl border-2 ${card.accentColor === 'green' ? 'border-green-200 dark:border-green-800' : 'border-orange-200 dark:border-orange-800'} bg-white dark:bg-slate-900 p-5 space-y-4`}>
+              <div className="flex items-center gap-2 mb-1">
+                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${card.accentColor === 'green' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400'}`}>
+                  {card.accentColor === 'green' ? 'ChatGPT' : 'Claude'}
+                </span>
+                <span className="text-slate-400 text-xs">공식 가이드 카드</span>
+              </div>
+
+              {/* Image upload */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-slate-500">이미지</Label>
+                <div className="flex items-center gap-3">
+                  <div className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden ${card.accentColor === 'green' ? 'bg-green-100 dark:bg-green-900/40' : 'bg-orange-100 dark:bg-orange-900/40'}`}>
+                    {card.imageUrl ? (
+                      <img src={card.imageUrl} alt="icon" className="h-full w-full object-cover" />
+                    ) : (
+                      <span className="text-xl">{card.emoji}</span>
+                    )}
+                  </div>
+                  <label className="flex-1 cursor-pointer">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-dashed border-slate-300 dark:border-slate-600 hover:border-slate-400 transition-colors text-sm text-slate-500">
+                      <Plus className="h-3.5 w-3.5 shrink-0" />
+                      <span className="truncate">{card.imageUrl ? '이미지 변경' : '이미지 첨부'}</span>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleDocCardImage(card.id, file);
+                      }}
+                      data-testid={`input-doc-card-image-${card.id}`}
+                    />
+                  </label>
                 </div>
-                <Input 
-                  value={item.title} 
-                  onChange={(e) => setQuickStartItems(items => items.map(i => i.id === item.id ? { ...i, title: e.target.value } : i))}
-                  className="font-semibold border-none shadow-none p-0 h-auto text-base focus-visible:ring-0"
-                  data-testid={`input-admin-qs-title-${item.id}`}
+              </div>
+
+              {/* Title */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-slate-500">대제목</Label>
+                <Input
+                  value={card.title}
+                  onChange={(e) => updateOfficialDocCard(card.id, 'title', e.target.value)}
+                  className="text-sm bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                  placeholder="카드 대제목을 입력하세요"
+                  data-testid={`input-doc-card-title-${card.id}`}
                 />
               </div>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="h-7 w-7 text-red-400 hover:text-red-600"
-                onClick={() => setQuickStartItems(items => items.filter(i => i.id !== item.id))}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-            <div className="flex gap-2 items-center">
-              <Select value={item.codeLanguage} onValueChange={(val) => setQuickStartItems(items => items.map(i => i.id === item.id ? { ...i, codeLanguage: val } : i))}>
-                <SelectTrigger className="w-[140px] h-8 text-xs">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="bash">Bash</SelectItem>
-                  <SelectItem value="javascript">JavaScript</SelectItem>
-                  <SelectItem value="python">Python</SelectItem>
-                  <SelectItem value="curl">cURL</SelectItem>
-                  <SelectItem value="json">JSON</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="bg-slate-900 rounded-lg p-3">
-              <Textarea
-                value={item.code}
-                onChange={(e) => setQuickStartItems(items => items.map(i => i.id === item.id ? { ...i, code: e.target.value } : i))}
-                className="font-mono text-xs text-green-400 bg-transparent border-none resize-none min-h-[60px] focus-visible:ring-0"
-                data-testid={`textarea-admin-qs-code-${item.id}`}
-              />
-            </div>
-            <Textarea
-              value={item.description}
-              onChange={(e) => setQuickStartItems(items => items.map(i => i.id === item.id ? { ...i, description: e.target.value } : i))}
-              placeholder="Description for this step..."
-              className="text-sm min-h-[50px]"
-              data-testid={`textarea-admin-qs-desc-${item.id}`}
-            />
-          </div>
-        ))}
 
-        <Button
-          variant="outline"
-          className="w-full border-dashed gap-2"
-          onClick={() => {
-            setQuickStartItems([...quickStartItems, { id: nextId, title: "New Step", codeLanguage: "javascript", code: "", description: "" }]);
-            setNextId(nextId + 1);
-          }}
-        >
-          <Plus className="h-4 w-4" /> Add Step
-        </Button>
+              {/* Subtitle */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-slate-500">부제목</Label>
+                <Textarea
+                  value={card.subtitle}
+                  onChange={(e) => updateOfficialDocCard(card.id, 'subtitle', e.target.value)}
+                  className="text-sm bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 min-h-[60px] resize-none"
+                  placeholder="카드 부제목을 입력하세요"
+                  data-testid={`textarea-doc-card-subtitle-${card.id}`}
+                />
+              </div>
+
+              {/* Link */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-slate-500">링크 URL</Label>
+                <div className="relative">
+                  <ExternalLink className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                  <Input
+                    value={card.link}
+                    onChange={(e) => updateOfficialDocCard(card.id, 'link', e.target.value)}
+                    className="text-sm pl-8 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 font-mono"
+                    placeholder="https://..."
+                    data-testid={`input-doc-card-link-${card.id}`}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* API Definitions Section */}
