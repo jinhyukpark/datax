@@ -49,8 +49,8 @@ import {
   FileText
 } from "lucide-react";
 import heroBg from "@assets/generated_images/hero_background_with_connecting_data_streams.png";
-import greenTechPreview1 from "@assets/preview-green-tech-1.jpg";
-import greenTechPreview2 from "@assets/preview-green-tech-2.jpg";
+import greenTechPreview1 from "@assets/preview-tech-cert.jpg";
+import greenTechPreview2 from "@assets/preview-industrial-innovation.jpg";
 import { useLanguage } from "@/lib/language-context";
 import { useState } from "react";
 import { toast } from "sonner";
