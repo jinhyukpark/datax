@@ -1,0 +1,1 @@
+- [Merge asset loss](merge-asset-loss.md) — task-agent merges can delete attached_assets; restore via `git checkout <pre-merge>^ -- attached_assets`.
