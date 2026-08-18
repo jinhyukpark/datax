@@ -18,6 +18,7 @@ import {
   RotateCcw
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { RESOURCES } from "@/lib/data";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
@@ -71,6 +72,26 @@ export default function AgentChat() {
   const [pendingMode, setPendingMode] = useState<'test' | 'production' | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // localStorage에 저장된 무료 구매 리소스를 MCPService 형태로 변환
+  const [freePurchasedMCPs, setFreePurchasedMCPs] = useState<(MCPService & { isFree: true })[]>([]);
+  useEffect(() => {
+    const stored: any[] = JSON.parse(localStorage.getItem('free_purchases') || '[]');
+    const converted = stored.map((p) => {
+      const resource = RESOURCES.find((r) => r.id === p.resourceId);
+      return {
+        id: `free-mcp-${p.resourceId}`,
+        name: p.title,
+        provider: resource?.provider ?? '',
+        description: resource?.description ?? '',
+        icon: `https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(p.title)}`,
+        status: 'active' as const,
+        isPurchased: true,
+        isFree: true as const,
+      };
+    });
+    setFreePurchasedMCPs(converted);
+  }, []);
 
   // AI Models
   const aiModels = [
@@ -464,41 +485,55 @@ export default function AgentChat() {
                       </button>
                     ))
                   ) : (
-                    purchasedMCPs.length > 0 ? (
-                      purchasedMCPs.map((service) => (
-                        <button
-                          key={service.id}
-                          onClick={() => handleServiceToggle(service.id)}
-                          className={cn(
-                            "w-full text-left p-3 rounded-xl transition-all border",
-                            selectedServiceIds.includes(service.id)
-                              ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 ring-1 ring-green-300 dark:ring-green-700"
-                              : "bg-white dark:bg-slate-900 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700"
-                          )}
-                        >
-                          <div className="flex items-start gap-3">
-                            <Avatar className="h-10 w-10 border border-slate-200 dark:border-slate-700">
-                              <AvatarImage src={service.icon} />
-                              <AvatarFallback>{service.name.substring(0, 2)}</AvatarFallback>
-                            </Avatar>
-                            <div className="flex-1 overflow-hidden">
-                              <div className="flex items-center justify-between">
-                                <h3 className="font-semibold text-sm truncate pr-2">{service.name}</h3>
-                                {selectedServiceIds.includes(service.id) && (
-                                  <Crown className="h-3.5 w-3.5 text-yellow-600 dark:text-yellow-400 shrink-0" />
-                                )}
+                    (() => {
+                      const allPurchased = [...purchasedMCPs, ...freePurchasedMCPs];
+                      return allPurchased.length > 0 ? (
+                        allPurchased.map((service) => {
+                          const isFree = 'isFree' in service && service.isFree;
+                          const isSelected = selectedServiceIds.includes(service.id);
+                          return (
+                            <button
+                              key={service.id}
+                              onClick={() => handleServiceToggle(service.id)}
+                              className={cn(
+                                "w-full text-left p-3 rounded-xl transition-all border",
+                                isSelected
+                                  ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 ring-1 ring-green-300 dark:ring-green-700"
+                                  : "bg-white dark:bg-slate-900 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700"
+                              )}
+                            >
+                              <div className="flex items-start gap-3">
+                                <Avatar className="h-10 w-10 border border-slate-200 dark:border-slate-700">
+                                  <AvatarImage src={service.icon} />
+                                  <AvatarFallback>{service.name.substring(0, 2)}</AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 overflow-hidden">
+                                  <div className="flex items-center justify-between">
+                                    <h3 className="font-semibold text-sm truncate pr-2">{service.name}</h3>
+                                    <div className="flex items-center gap-1 shrink-0">
+                                      {isFree && (
+                                        <span className="text-[10px] font-semibold bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded-full">
+                                          무료
+                                        </span>
+                                      )}
+                                      {isSelected && (
+                                        <Crown className="h-3.5 w-3.5 text-yellow-600 dark:text-yellow-400" />
+                                      )}
+                                    </div>
+                                  </div>
+                                  <p className="text-xs text-muted-foreground truncate mt-0.5">{service.provider}</p>
+                                </div>
                               </div>
-                              <p className="text-xs text-muted-foreground truncate mt-0.5">{service.provider}</p>
-                            </div>
-                          </div>
-                        </button>
-                      ))
-                    ) : (
-                      <div className="p-8 text-center text-muted-foreground bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-200 dark:border-slate-800">
-                        <ShoppingBag className="h-8 w-8 mx-auto mb-2 opacity-20" />
-                        <p className="text-sm">{t("No purchased services", "구매한 서비스가 없습니다")}</p>
-                      </div>
-                    )
+                            </button>
+                          );
+                        })
+                      ) : (
+                        <div className="p-8 text-center text-muted-foreground bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-slate-200 dark:border-slate-800">
+                          <ShoppingBag className="h-8 w-8 mx-auto mb-2 opacity-20" />
+                          <p className="text-sm">{t("No purchased services", "구매한 서비스가 없습니다")}</p>
+                        </div>
+                      );
+                    })()
                   )}
                 </div>
               </ScrollArea>
