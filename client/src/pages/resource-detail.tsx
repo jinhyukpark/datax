@@ -1281,6 +1281,23 @@ export default function ResourceDetail() {
               className="bg-indigo-600 hover:bg-indigo-700 text-white gap-2 sm:flex-1"
               data-testid="button-free-purchase-confirm"
               onClick={() => {
+                // 무료 구매 내역을 localStorage에 저장 → 마이페이지 이용 현황에 반영
+                const key = 'free_purchases';
+                const prev = JSON.parse(localStorage.getItem(key) || '[]');
+                const alreadyExists = prev.some((p: any) => p.resourceId === String(resource.id));
+                if (!alreadyExists) {
+                  const entry = {
+                    id: `free-${resource.id}-${Date.now()}`,
+                    resourceId: String(resource.id),
+                    title: resource.title,
+                    date: new Date().toISOString().slice(0, 10),
+                    price: '무료',
+                    status: '이용 중',
+                    nextBillingDate: '-',
+                    subscriptionActive: false,
+                  };
+                  localStorage.setItem(key, JSON.stringify([...prev, entry]));
+                }
                 setFreePurchaseStep1Open(false);
                 setFreePurchaseStep2Open(true);
               }}
