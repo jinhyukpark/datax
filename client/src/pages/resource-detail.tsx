@@ -111,6 +111,8 @@ export default function ResourceDetail() {
   const [demoVideoOpen, setDemoVideoOpen] = useState(false);
   const [purchaseCheckOpen, setPurchaseCheckOpen] = useState(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [freePurchaseStep1Open, setFreePurchaseStep1Open] = useState(false);
+  const [freePurchaseStep2Open, setFreePurchaseStep2Open] = useState(false);
 
   // Try to fetch from API, but fall back to mock data
   const { data: apiResource, isLoading } = useQuery<Resource>({
@@ -247,57 +249,58 @@ export default function ResourceDetail() {
             </div>
 
             <div className="flex flex-col gap-3 shrink-0 md:min-w-[200px]">
-              {resource.price === 'Paid' ? (
-                <div className="space-y-3">
-                  <div className="p-4 rounded-xl bg-indigo-50 border border-indigo-100 dark:bg-indigo-900/20 dark:border-indigo-800">
-                    <div className="text-xs font-semibold text-indigo-600/70 dark:text-indigo-400/70 uppercase tracking-wider mb-1">
-                      {resource.priceAmount === "Free" ? t("Price", "가격") : t("Subscription", "구독 요금")}
-                    </div>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">
-                        {resource.priceAmount === "Free" ? t("Free", "무료") : (resource.priceAmount || "$78.00")}
-                      </span>
-                      {resource.priceAmount !== "Free" && (
-                        <span className="text-sm text-indigo-600/60 dark:text-indigo-400/60">/mo</span>
-                      )}
-                    </div>
-                  </div>
-                  {resource.type === "Dataset" && resource.price === "Paid" ? (
-                    <Button
-                      size="lg"
-                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20"
-                      onClick={() => setPurchaseCheckOpen(true)}
-                      data-testid="button-purchase-hosting"
-                    >
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      {t("Purchase", "구매하기")}
-                    </Button>
-                  ) : (
-                    <Button size="lg" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
-                      <a href={resource.websiteUrl || "#"} target="_blank" rel="noopener noreferrer">
-                        {resource.priceAmount === "Free" ? (
-                          <>
-                            <ExternalLink className="mr-2 h-4 w-4" />
-                            {t("Get Started", "시작하기")}
-                          </>
-                        ) : (
-                          <>
-                            <ShoppingCart className="mr-2 h-4 w-4" />
-                            {t("Purchase", "구매하기")}
-                          </>
+              {/* Price display — always shown */}
+              {(() => {
+                const isFreeResource = resource.price !== 'Paid' || resource.priceAmount === "Free";
+                const showSubscription = !isFreeResource;
+                return (
+                  <div className="space-y-3">
+                    <div className="p-4 rounded-xl bg-indigo-50 border border-indigo-100 dark:bg-indigo-900/20 dark:border-indigo-800">
+                      <div className="text-xs font-semibold text-indigo-600/70 dark:text-indigo-400/70 uppercase tracking-wider mb-1">
+                        {showSubscription ? t("Subscription", "구독 요금") : t("Price", "가격")}
+                      </div>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">
+                          {isFreeResource ? t("Free", "무료") : (resource.priceAmount || "$78.00")}
+                        </span>
+                        {showSubscription && (
+                          <span className="text-sm text-indigo-600/60 dark:text-indigo-400/60">/mo</span>
                         )}
-                      </a>
-                    </Button>
-                  )}
-                </div>
-              ) : (
-                <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
-                  <a href={resource.websiteUrl || resource.demoUrl || "#"} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    {t("Access Resource", "리소스 접근")}
-                  </a>
-                </Button>
-              )}
+                      </div>
+                    </div>
+
+                    {/* Purchase button — always 구매하기 */}
+                    {isFreeResource ? (
+                      <Button
+                        size="lg"
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20"
+                        onClick={() => setFreePurchaseStep1Open(true)}
+                        data-testid="button-purchase-free"
+                      >
+                        <ShoppingCart className="mr-2 h-4 w-4" />
+                        {t("Purchase", "구매하기")}
+                      </Button>
+                    ) : resource.type === "Dataset" ? (
+                      <Button
+                        size="lg"
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20"
+                        onClick={() => setPurchaseCheckOpen(true)}
+                        data-testid="button-purchase-hosting"
+                      >
+                        <ShoppingCart className="mr-2 h-4 w-4" />
+                        {t("Purchase", "구매하기")}
+                      </Button>
+                    ) : (
+                      <Button size="lg" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20" asChild>
+                        <a href={resource.websiteUrl || "#"} target="_blank" rel="noopener noreferrer">
+                          <ShoppingCart className="mr-2 h-4 w-4" />
+                          {t("Purchase", "구매하기")}
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                );
+              })()}
               {resource.demoUrl && (
                 resource.demoUrl && isYoutubeUrl(resource.demoUrl) ? (
                   <Button variant="outline" className="border-slate-200 dark:border-slate-800" onClick={() => setDemoVideoOpen(true)} data-testid="button-view-demo">
@@ -1247,6 +1250,104 @@ export default function ResourceDetail() {
           </div>
         </div>
       </div>
+
+      {/* ── Free Purchase Step 1: 구매 확인 ── */}
+      <Dialog open={freePurchaseStep1Open} onOpenChange={setFreePurchaseStep1Open}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3 text-xl">
+              <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center shrink-0">
+                <ShoppingCart className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              구매하기
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-2 space-y-3">
+            <p className="text-sm text-slate-700 dark:text-slate-300">
+              <span className="font-semibold">{resource.title}</span>을 구매하시겠습니까?
+            </p>
+            <div className="rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">가격</span>
+                <span className="text-lg font-bold text-indigo-600 dark:text-indigo-400">무료</span>
+              </div>
+            </div>
+          </div>
+          <DialogFooter className="flex-col gap-2 sm:flex-row">
+            <Button variant="outline" className="sm:flex-1" onClick={() => setFreePurchaseStep1Open(false)}>
+              취소
+            </Button>
+            <Button
+              className="bg-indigo-600 hover:bg-indigo-700 text-white gap-2 sm:flex-1"
+              data-testid="button-free-purchase-confirm"
+              onClick={() => {
+                // 무료 구매 내역을 localStorage에 저장 → 마이페이지 이용 현황에 반영
+                const key = 'free_purchases';
+                const prev = JSON.parse(localStorage.getItem(key) || '[]');
+                const alreadyExists = prev.some((p: any) => p.resourceId === String(resource.id));
+                if (!alreadyExists) {
+                  const entry = {
+                    id: `free-${resource.id}-${Date.now()}`,
+                    resourceId: String(resource.id),
+                    title: resource.title,
+                    date: new Date().toISOString().slice(0, 10),
+                    price: '무료',
+                    status: '이용 중',
+                    nextBillingDate: '-',
+                    subscriptionActive: false,
+                  };
+                  localStorage.setItem(key, JSON.stringify([...prev, entry]));
+                }
+                setFreePurchaseStep1Open(false);
+                setFreePurchaseStep2Open(true);
+              }}
+            >
+              <ShoppingCart className="h-4 w-4" />
+              구매하기
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ── Free Purchase Step 2: 구매 완료 ── */}
+      <Dialog open={freePurchaseStep2Open} onOpenChange={setFreePurchaseStep2Open}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3 text-xl">
+              <div className="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center shrink-0">
+                <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
+              구매 완료
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-2 space-y-4">
+            <div className="rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 p-4 space-y-1">
+              <p className="text-sm text-green-800 dark:text-green-300 font-semibold flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 shrink-0" />
+                구매가 완료되었습니다
+              </p>
+              <p className="text-sm text-green-700 dark:text-green-400 leading-relaxed pl-6">
+                리소스 정보는 <span className="font-medium">[마이 페이지 &gt; 이용 현황]</span>에서 확인하실 수 있습니다.
+              </p>
+            </div>
+            <Link href="/my-page">
+              <Button
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white gap-2"
+                data-testid="button-free-purchase-mypage"
+                onClick={() => setFreePurchaseStep2Open(false)}
+              >
+                <ExternalLink className="h-4 w-4" />
+                리소스 보러가기
+              </Button>
+            </Link>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" className="w-full" onClick={() => setFreePurchaseStep2Open(false)}>
+              닫기
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* ── Purchase Check Modal (Hosting Dataset only) ── */}
       <Dialog open={purchaseCheckOpen} onOpenChange={setPurchaseCheckOpen}>

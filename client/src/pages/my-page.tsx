@@ -331,7 +331,13 @@ const client = new EMDataClient({
       subscriptionActive: false,
     }
   ];
-  const [purchases, setPurchases] = useState(purchasesBase);
+  const [purchases, setPurchases] = useState(() => {
+    const stored = JSON.parse(localStorage.getItem('free_purchases') || '[]');
+    // 중복 없이 무료 구매 내역을 뒤에 병합
+    const existingIds = new Set(purchasesBase.map(p => p.resourceId));
+    const newEntries = stored.filter((p: any) => !existingIds.has(p.resourceId));
+    return [...purchasesBase, ...newEntries];
+  });
   const [cancelSubDialog, setCancelSubDialog] = useState<{ open: boolean; item: typeof purchasesBase[0] | null }>({ open: false, item: null });
 
   const handleCancelSubscription = () => {
