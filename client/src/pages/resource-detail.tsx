@@ -1310,12 +1310,9 @@ export default function ResourceDetail() {
                 구매가 완료되었습니다
               </p>
               <p className="text-sm text-green-700 dark:text-green-400 leading-relaxed pl-6">
-                <span className="font-medium">{resource.title}</span>을 구매하셨습니다.
+                리소스 정보는 <span className="font-medium">[마이 페이지 &gt; 이용 현황]</span>에서 확인하실 수 있습니다.
               </p>
             </div>
-            <p className="text-sm text-muted-foreground text-center">
-              리소스 정보 보러가기
-            </p>
             <Link href="/my-page">
               <Button
                 className="w-full bg-indigo-600 hover:bg-indigo-700 text-white gap-2"
@@ -1323,7 +1320,7 @@ export default function ResourceDetail() {
                 onClick={() => setFreePurchaseStep2Open(false)}
               >
                 <ExternalLink className="h-4 w-4" />
-                마이페이지 &gt; 리소스 이용 현황
+                리소스 보러가기
               </Button>
             </Link>
           </div>
